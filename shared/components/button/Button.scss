@@ -1,51 +1,68 @@
-@import '~styles/config';
-
-$btn-height: 40px;
-$btn-border-width: 2px;
-
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
 .button {
-  @include reset-button();
-
-  display: inline-flex;
   position: relative;
-
-  padding: 0 $gutter;
-
-  height: $btn-height;
-
-  font-size: $font-size;
-  line-height: ($btn-height - 2 * $btn-border-width);
-  vertical-align: middle;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-
+  border-radius: $border-radius;
+  overflow: hidden;
+  border: 0;
+  padding: 11px 20px;
+  margin-bottom: 0.5em;
   cursor: pointer;
-
-  border: $btn-border-width solid transparent;
-  border-radius: $btn-border-width;
-
-  background: $color-primary;
-
-  transition: 180ms;
-  transition-property: border-color, background-color, color, opacity;
-
-  & + & {
-    margin-left: $gutter / 2;
-  }
-
-  &:hover,
-  &:focus {
-    outline: none;
-  }
-
+  transition: box-shadow .25s ease-out, transform .20s ease-out, opacity .10s ease-out, background .15s ease-out, color .2s ease-out;
+  color: $button-color;
   &:hover {
-    background-color: darken($color-primary, 10%);
+    opacity: 0.9;
+    box-shadow: $box-shadow;
+    color: $button-color-hover;
+    transform: translate3d(0, -4px, 0);
   }
+  &:focus {
+    outline: 0;
+    color: $button-color-hover;
+    background: darken($button-background, 5%);
+  }
+}
 
-  &.disabled {
-    cursor: default;
+.fullWidth {
+  width: 100%;
+}
 
-    background-color: #bbb;
+.purple {
+  background: $primary-purple;
+  &:hover {
+    background: darken($primary-purple, 15%);
+  }
+  &:focus {
+    background: darken($primary-purple, 15%);
+  }
+}
+
+.default {
+  background: $button-background;
+  &:hover {
+    background: darken($button-background, 15%);
+  }
+}
+
+.icon {
+  transition: all .25s ease-out;
+  position: absolute;
+  right: 4%;
+  top: 8px;
+}
+
+.button:hover .icon {
+  animation: forwardBackInfinite 1.2s infinite;
+}
+
+@keyframes forwardBackInfinite {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  60% {
+    transform: translate3d(5px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }

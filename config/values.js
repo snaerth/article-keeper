@@ -99,7 +99,7 @@ const values = {
       lang: 'en',
     },
     title: 'Home',
-    titleTemplate: 'Ueno. - %s',
+    titleTemplate: 'Starter kit universal. - %s',
     meta: [
       /*
         A great reference for favicons:
@@ -110,38 +110,119 @@ const values = {
         http://www.favicomatic.com/
       */
       { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' },
-      { name: 'description', content: 'Ueno. description text here!' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no' }, // prevents inputs from zooming, but iOS still allows normal pinch zoom
+      { name: 'description', content: 'Starter kit universal. description text here!' },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1, user-scalable=no',
+      }, // prevents inputs from zooming, but iOS still allows normal pinch zoom
       { name: 'msapplication-TileColor', content: '#00E2AD' },
-      { name: 'msapplication-TileImage', content: '/favicons/mstile-150x150.png' },
-      { name: 'msapplication-square70x70logo', content: '/favicons/mstile-70x70.png' },
-      { name: 'msapplication-square150x150logo', content: '/favicons/mstile-150x150.png' },
-      { name: 'msapplication-wide310x150logo', content: '/favicons/mstile-310x150.png' },
-      { name: 'msapplication-square310x310logo', content: '/favicons/mstile-310x310.png' },
+      {
+        name: 'msapplication-TileImage',
+        content: '/favicons/mstile-150x150.png',
+      },
+      {
+        name: 'msapplication-square70x70logo',
+        content: '/favicons/mstile-70x70.png',
+      },
+      {
+        name: 'msapplication-square150x150logo',
+        content: '/favicons/mstile-150x150.png',
+      },
+      {
+        name: 'msapplication-wide310x150logo',
+        content: '/favicons/mstile-310x150.png',
+      },
+      {
+        name: 'msapplication-square310x310logo',
+        content: '/favicons/mstile-310x310.png',
+      },
       { name: 'theme-color', content: '#00E2AD' },
       { property: 'og:image', content: '/favicons/android-chrome-192x192.png' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:image', content: '/favicons/android-chrome-192x192.png' },
+      {
+        name: 'twitter:image',
+        content: '/favicons/android-chrome-192x192.png',
+      },
       { name: 'twitter:site', content: '@ueno' },
       { name: 'twitter:creator', content: '@ueno' },
-      { name: 'twitter:description', content: 'Ueno. description text here!' },
-      { name: 'twitter:title', content: 'Ueno.' },
+      { name: 'twitter:description', content: 'Starter kit universal. description text here!' },
+      { name: 'twitter:title', content: 'Starter kit universal.' },
     ],
     link: [
-      { rel: 'apple-touch-icon-precomposed', sizes: '152x152', href: '/favicons/apple-touch-icon-152x152.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '144x144', href: '/favicons/apple-touch-icon-144x144.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '120x120', href: '/favicons/apple-touch-icon-120x120.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '114x114', href: '/favicons/apple-touch-icon-114x114.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '76x76', href: '/favicons/apple-touch-icon-76x76.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '72x72', href: '/favicons/apple-touch-icon-72x72.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '57x57', href: '/favicons/apple-touch-icon-57x57.png' },
-      { rel: 'apple-touch-icon-precomposed', sizes: '60x60', href: '/favicons/apple-touch-icon-60x60.png' },
-      { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicons/apple-touch-icon-180x180.png' },
-      { rel: 'mask-icon', href: '/favicons/safari-pinned-tab.svg', color: '#00a9d9' },
-      { rel: 'icon', type: 'image/png', href: '/favicons/favicon-196x196.png', sizes: '196x196' },
-      { rel: 'icon', type: 'image/png', href: '/favicons/favicon-128.png', sizes: '128x128' },
-      { rel: 'icon', type: 'image/png', href: '/favicons/favicon-96x96.png', sizes: '96x96' },
-      { rel: 'icon', type: 'image/png', href: '/favicons/favicon-32x32.png', sizes: '32x32' },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '152x152',
+        href: '/favicons/apple-touch-icon-152x152.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '144x144',
+        href: '/favicons/apple-touch-icon-144x144.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '120x120',
+        href: '/favicons/apple-touch-icon-120x120.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '114x114',
+        href: '/favicons/apple-touch-icon-114x114.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '76x76',
+        href: '/favicons/apple-touch-icon-76x76.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '72x72',
+        href: '/favicons/apple-touch-icon-72x72.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '57x57',
+        href: '/favicons/apple-touch-icon-57x57.png',
+      },
+      {
+        rel: 'apple-touch-icon-precomposed',
+        sizes: '60x60',
+        href: '/favicons/apple-touch-icon-60x60.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/favicons/apple-touch-icon-180x180.png',
+      },
+      {
+        rel: 'mask-icon',
+        href: '/favicons/safari-pinned-tab.svg',
+        color: '#00a9d9',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: '/favicons/favicon-196x196.png',
+        sizes: '196x196',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: '/favicons/favicon-128.png',
+        sizes: '128x128',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: '/favicons/favicon-96x96.png',
+        sizes: '96x96',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: '/favicons/favicon-32x32.png',
+        sizes: '32x32',
+      },
       { rel: 'icon', sizes: '16x16 32x32', href: '/favicon.ico' },
       { rel: 'manifest', href: '/manifest.json' },
     ],
@@ -154,11 +235,7 @@ const values = {
     connectSrc: ['ws:', 'swapi.co'],
     defaultSrc: [],
     fontSrc: ['fonts.googleapis.com/css', 'fonts.gstatic.com'],
-    imgSrc: [
-      '*.facebook.com',
-      '*.google-analytics.com',
-      't.co',
-    ],
+    imgSrc: ['*.facebook.com', '*.google-analytics.com', 't.co'],
     mediaSrc: [],
     manifestSrc: [],
     objectSrc: [],
@@ -172,11 +249,7 @@ const values = {
       'static.ads-twitter.com',
       'analytics.twitter.com',
     ],
-    styleSrc: [
-      "'self' 'unsafe-inline'",
-      'fonts.googleapis.com',
-      'blob:',
-    ],
+    styleSrc: ["'self' 'unsafe-inline'", 'fonts.googleapis.com', 'blob:'],
   },
 
   // Path to the public assets that will be served off the root of the
@@ -306,8 +379,13 @@ const values = {
           'react-ga',
           'react-helmet',
           'react-router-dom',
-          'mobx',
-          'mobx-react',
+          'redux',
+          'react-redux',
+          'redux-thunk',
+          'react-transition-group',
+          'react-modal',
+          'gsap',
+          'axios',
           'core-decorators',
         ],
 
@@ -383,7 +461,9 @@ const values = {
       plugins.push('transform-decorators-legacy');
 
       // Remove stage-# prests
-      presets.forEach((val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1));
+      presets.forEach(
+        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1),
+      );
       // Add stage-0 to list of presets
       presets.push('stage-0');
 

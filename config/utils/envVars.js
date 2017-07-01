@@ -32,16 +32,24 @@ function registerEnvFile() {
     // Is there an environment config file at the app root for our target
     // environment name?
     // e.g. /projects/react-universally/.env.staging
-    ifElse(DEPLOYMENT)(path.resolve(appRootDir.get(), `${envFile}.${DEPLOYMENT}`)),
+    ifElse(DEPLOYMENT)(
+      path.resolve(appRootDir.get(), `${envFile}.${DEPLOYMENT}`),
+    ),
   ]);
 
   // Find the first env file path match.
-  const envFilePath = envFileResolutionOrder.find(filePath => fs.existsSync(filePath));
+  const envFilePath = envFileResolutionOrder.find(filePath =>
+    fs.existsSync(filePath),
+  );
 
   // If we found an env file match the register it.
   if (envFilePath) {
     // eslint-disable-next-line no-console
-    console.log(colors.bgBlue.white(`==> Registering environment variables from: ${envFilePath}`));
+    console.log(
+      colors.bgBlue.white(
+        `==> Registering environment variables from: ${envFilePath}`,
+      ),
+    );
     dotenv.config({ path: envFilePath });
   }
 }
@@ -77,5 +85,7 @@ export function number(name, defaultVal) {
 }
 
 export function bool(name, defaultVal) {
-  return process.env[name] ? process.env[name] === 'true' || process.env[name] === '1' : defaultVal;
+  return process.env[name]
+    ? process.env[name] === 'true' || process.env[name] === '1'
+    : defaultVal;
 }

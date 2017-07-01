@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "experimentalDecorators": true
+    },
+    "include": [
+        "shared/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

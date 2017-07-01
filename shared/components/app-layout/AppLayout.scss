@@ -1,9 +1,10 @@
 @import '~styles/config';
-
 :global {
-  @import '~styles/base';
+    @import '~styles/base';
+    @import '~styles/animate.scss';
+    @import '~styles/modal.scss';
 }
 
 .layout {
-  display: block;
+    display: block;
 }

@@ -1,0 +1,24 @@
+.ReactModal__Content {
+    transform: scale(0.7);
+    transition: all 0.3s;
+    opacity: 0;
+    &--after-open {
+        transform: scale(1);
+        opacity: 1;
+    }
+    &--before-close {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+}
+
+.ReactModal__Overlay {
+    transition: all 0.3s;
+    opacity: 0;
+    &--after-open {
+        opacity: 1;
+    }
+    &--before-close {
+        opacity: 0;
+    }
+}

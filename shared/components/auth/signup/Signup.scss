@@ -1,0 +1,14 @@
+@import '../../../styles/variables.scss';
+.svg {
+    fill: $border-color;
+    width: 100%;
+    transition: fill .2s ease-out;
+}
+
+.iconArrowForward {
+  fill: $primary-white;
+}
+
+.noPaddingBottom {
+  padding-bottom: 0;
+}

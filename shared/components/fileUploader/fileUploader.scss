@@ -1,0 +1,79 @@
+@import '../../../styles/variables.scss';
+
+.svg {
+    fill: $border-color;
+    width: 100%;
+    transition: fill .2s ease-out;
+}
+
+.uploadPhotoContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    grid-column-gap: 1em;
+    margin: 2em 0 1em;
+}
+
+.dropzoneContainer {
+    display: grid;
+    border-width: 2px;
+    border-color: $border-color;
+    border-style: dashed;
+    border-radius: 1px;
+    transition: all .10s ease-out;
+    &:hover {
+        border-color: $border-color-dark;
+        .svg {
+            fill: $border-color-dark;
+        }
+        .dropzoneBoxText {
+            color: $border-color-dark;
+        }
+    }
+}
+
+.dropzoneContainerInner {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    padding: .6em;
+    cursor: pointer;
+    transition: color .2s ease-out;
+}
+
+.dropzoneBoxImage {
+    align-self: center;
+}
+
+.dropzoneBoxText {
+    color: $border-color;
+    text-align: center;
+    align-self: center;
+}
+
+.imagePreviewContainer {
+    max-height: 291px;
+}
+
+.fieldsetButton {
+    margin-top: 1em;
+}
+
+.fakeFrame {
+    border: 1px solid $border-color;
+    width: 100%;
+    display: grid;
+    align-content: center;
+}
+
+@media screen and (max-width: $max-768) {
+    .uploadPhotoContainer {
+        grid-template-columns: 1fr;
+        grid-row-gap: 1em;
+    }
+    .dropzoneContainerInner {
+        padding: 3em;
+    }
+    .fakeFrame {
+        display: none;
+    }
+}

@@ -1,35 +1,71 @@
-@import '~styles/config';
+@import '../../../styles/variables.scss';
+@import '../../../styles/mixins.scss';
+.background {
+    background: $linear-background-primary;
+    background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
+    background-repeat: no-repeat;
+    background-size: 100% 1000px;
+    min-height: 200px;
+    overflow: hidden;
+}
 
-.header {
-  display: block;
+.container {
+    max-width: $max-width;
+    margin: 0 auto;
+    position: relative;
+}
 
-  margin: 0 0 $gutter;
+.navUpper {
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
 
-  background-color: #fff;
+.navUpper>div a:first-child {
+    margin-left: 0;
+}
 
-  &__container {
-    @include container();
-  }
+.navUpper>div a:last-child {
+    margin-right: 0;
+}
 
-  &__content {
-    display: flex;
-    align-items: center;
-
-    padding: $gutter 0;
-
-    border-bottom: 1px solid #ccc;
-  }
-
-  &__logo {
-    @include reset-anchor;
-
-    &Svg {
-      display: block;
+a.link {
+    @include responsive-font(1.5vw, 16px, 18px);
+    text-decoration: none;
+    outline: none;
+    margin: 0 0.5em;
+    pointer-events: visible;
+    cursor: pointer;
+    color: lighten($primary-pink, 18%);
+    &:hover {
+        color: $primary-white;
     }
-  }
+}
 
-  &__navigation {
-    display: flex;
-    margin-left: auto;
-  }
+a.home_link {
+    color: lighten($primary-pink, 18%);
+}
+
+a.active {
+    color: $primary-white;
+}
+
+.links_right {
+    text-align: right;
+}
+
+.banner {
+    color: lighten($primary-pink, 18%);
+    position: absolute;
+}
+
+@media only screen and (min-width: $min-320) {
+    .container {
+        padding: 0.5em 1em;
+    }
+}
+
+@media only screen and (min-width: $max-768) {
+    .container {
+        padding: 0.6em;
+    }
 }

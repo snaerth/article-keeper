@@ -1,0 +1,61 @@
+@import '../../../styles/variables.scss';
+.fullWidth {
+    width: 100%;
+}
+
+.centerLink {
+    margin-top: 9px;
+}
+
+.signinContainer {
+    display: inline-flex;
+    width: 100%;
+}
+
+.forgotPasswordContainer {
+    text-align: center;
+    padding-top: 1em;
+}
+
+.back {
+    text-align: center;
+    padding-bottom: 1em;
+    cursor: pointer;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.iconArrowForward,
+.iconFacebook {
+    fill: $primary-white;
+}
+
+.iconArrowBackward {
+    fill: $text-dark;
+}
+
+.iconFacebook {
+    height: 24px;
+    width: 24px;
+}
+
+.buttonContainer {
+    margin: 0 2px;
+    padding: 3em .625em .75em;
+}
+
+.container {
+    width: 100%;
+    min-width: 100%;
+    transform: translate3d(0, 0, 0);
+    padding: 2em 1em 0;
+}
+
+.almostHidden {
+    opacity: 0.1;
+}
+
+.noMarginBottom {
+    margin-bottom: 0;
+}
