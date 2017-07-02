@@ -1,9 +1,9 @@
-// import { createAsyncComponent } from 'react-async-component';
-//
-// export default createAsyncComponent({
-//   resolve: () => System.import('./About'),
-//   ssrMode: 'boundary',
-//   name: 'About',
-// });
+import { asyncComponent } from 'react-async-component';
 
-export default from './About';
+export default asyncComponent({
+  resolve: () => System.import('./about'),
+  ssrMode: 'boundary',
+  name: 'About',
+});
+
+// export { default } from './about';

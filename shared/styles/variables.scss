@@ -16,6 +16,7 @@ $text-dark: #484848;
 $facebook:#3b5998;
 $twitter: #00abf1;
 $google: #F44336;
+$color-placeholder: #dddfe2;
 $linear-background-primary: linear-gradient(-135deg, $primary-pink, $primary-pink-darker);
 // Link
 $link-color: #404d5b;
@@ -73,6 +74,7 @@ $min-540: 540px;
 $min-480: 480px;
 $min-375: 375px;
 $min-360: 360px;
+$min-320: 320px;
 // Custom break points (Max)
 $max-1280: 1279px;
 $max-1200: 1199px;
@@ -88,6 +90,7 @@ $max-540: 539px;
 $max-480: 479px;
 $max-375: 374px;
 $max-360: 359px;
+$max-320: 320px;
 // Predefined breakpoints
 $min-mobile: $min-480;
 $min-tablet: $min-720;

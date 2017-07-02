@@ -7,9 +7,10 @@ import classnames from 'classnames';
 import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './header.scss';
 import ModalWrapper from '../modal';
-import Signup from '../../auth/signup';
-import Signin from '../../auth/signin';
-import * as actionCreators from '../../auth/actions';
+import Signup from '../auth/signup';
+import Signin from '../auth/signin';
+import Container from '../container';
+import * as actionCreators from '../auth/actions';
 
 /**
  * Header Component
@@ -49,10 +50,12 @@ class Header extends Component {
   }
 
   /**
-     * Changes state for modal component and opens modal
-     * @param {String} modalName
-     */
-  changeModalComponent(modalName) {
+   * Changes state for modal component and opens modal
+   * @param {String} modalName
+   */
+  changeModalComponent(e, modalName) {
+    e.preventDefault();
+
     this.setState({
       activeModal: modalName === 'signup' ? 'signup' : 'signin',
     });
@@ -60,10 +63,10 @@ class Header extends Component {
   }
 
   /**
-     * Renders auth links. If authenticated then signout link
-     * else signin and signup
-     * @returns {Component} Link
-     */
+   * Renders auth links. If authenticated then signout link
+   * else signin and signup
+   * @returns {Component} Link
+   */
   renderAuthLinks() {
     if (this.props.authenticated) {
       const links = [
@@ -102,20 +105,20 @@ class Header extends Component {
     }
     return [
       <Link
-        to="#"
+        to="/signin"
         role="button"
         key="signin"
         className={styles.link}
-        onClick={() => this.changeModalComponent('signin')}
+        onClick={e => this.changeModalComponent(e, 'signin')}
       >
         Sign in
       </Link>,
       <Link
-        to="#"
+        to="/signup"
         role="button"
         key="signup"
         className={styles.link}
-        onClick={() => this.changeModalComponent('signup')}
+        onClick={e => this.changeModalComponent(e, 'signup')}
       >
         Sign up
       </Link>,
@@ -125,7 +128,7 @@ class Header extends Component {
   render() {
     return (
       <div className={styles.background}>
-        <div className={styles.container}>
+        <Container>
           <nav className={styles.navUpper}>
             <div>
               <Link
@@ -152,7 +155,7 @@ class Header extends Component {
               {this.props.name}
             </h1>
           </CSSTransitionGroup>
-        </div>
+        </Container>
 
         <ModalWrapper
           isOpen={this.props.modalOpen}

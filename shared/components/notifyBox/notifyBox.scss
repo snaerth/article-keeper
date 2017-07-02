@@ -1,5 +1,4 @@
-@import '../../../styles/variables.scss';
-
+@import '~styles/variables';
 .box {
     border-radius: $border-radius;
     padding: 11px 15px;
@@ -10,7 +9,6 @@
 
 .error {
     background: $primary-red;
-
 }
 
 .success {

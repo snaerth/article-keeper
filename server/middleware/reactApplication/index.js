@@ -7,15 +7,13 @@ import {
 } from 'react-async-component';
 import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
-import { Provider, useStaticRendering } from 'mobx-react';
+import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import timing from 'utils/timing';
 import configureStore from '../../../shared/store/configureStore';
 import config from '../../../config';
 import App from '../../../shared';
 import ServerHTML from './ServerHTML';
-
-useStaticRendering(true);
 
 /**
  * React application middleware, supports server side rendering.
@@ -57,6 +55,7 @@ export default function reactApplicationMiddleware(request, response) {
 
   // Compile an initial state
   const preloadedState = {};
+
   // Create a new Redux store instance
   const store = configureStore(preloadedState);
 
@@ -64,11 +63,11 @@ export default function reactApplicationMiddleware(request, response) {
   const app = (
     <AsyncComponentProvider asyncContext={asyncComponentsContext}>
       <JobProvider jobContext={jobContext}>
-        <StaticRouter location={request.url} context={reactRouterContext}>
-          <Provider store={store}>
+        <Provider store={store} key="provider">
+          <StaticRouter location={request.url} context={reactRouterContext}>
             <App />
-          </Provider>
-        </StaticRouter>
+          </StaticRouter>
+        </Provider>
       </JobProvider>
     </AsyncComponentProvider>
   );

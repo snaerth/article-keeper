@@ -3,17 +3,17 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import BrowserRouter from 'react-router-dom/BrowserRouter';
+import { ConnectedRouter } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { AsyncComponentProvider } from 'react-async-component';
 import { JobProvider } from 'react-jobs';
-import { Provider } from 'mobx-react';
-import { toJS } from 'mobx';
-import stringify from 'json-stringify-safe';
+import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
 import config from 'utils/config';
 import configureStore from '../shared/store/configureStore';
 import ReactHotLoader from './components/ReactHotLoader';
+import rootReducer from '../shared/reducers';
 import App from '../shared';
 
 // Initialize Google Analytics
@@ -27,9 +27,10 @@ const container = document.querySelector('#app');
 
 // Compile an initial state
 const preloadedState = {};
-// Create a new Redux store instance
-let store = configureStore(preloadedState);
 
+// Create an enhanced history that syncs navigation events with the store
+const history = createHistory();
+const store = configureStore(preloadedState, history);
 window.store = store;
 
 // Does the user's browser support the HTML5 history API?
@@ -38,9 +39,8 @@ window.store = store;
 const supportsHistory = 'pushState' in window.history;
 
 // Get any rehydrateState for the async components.
-// eslint-disable-next-line no-underscore-dangle
 const asyncComponentsRehydrateState =
-  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
+  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line no-underscore-dangle
 
 // Get any "rehydrate" state sent back by the server
 // eslint-disable-next-line no-underscore-dangle
@@ -56,10 +56,10 @@ function renderApp(TheApp) {
     <ReactHotLoader>
       <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
         <JobProvider rehydrateState={rehydrateState}>
-          <Provider store={store}>
-            <BrowserRouter forceRefresh={!supportsHistory}>
+          <Provider store={store} key="provider">
+            <ConnectedRouter history={history} forceRefresh={!supportsHistory}>
               <TheApp />
-            </BrowserRouter>
+            </ConnectedRouter>
           </Provider>
         </JobProvider>
       </AsyncComponentProvider>
@@ -82,14 +82,9 @@ require('./registerServiceWorker');
 
 // The following is needed so that we can support hot reloading our application.
 if (process.env.BUILD_FLAG_IS_DEV === 'true' && module.hot) {
-  if (module.hot.data && module.hot.data.store) {
-    // Create new store with previous store state
-    store = new Store(JSON.parse(module.hot.data.store));
-  }
-
-  module.hot.dispose((data) => {
-    // Deserialize store and keep in hot module data for next replacement
-    data.store = stringify(toJS(store));
+  module.hot.accept('../shared/reducers', () => {
+    // redux store has a method replaceReducer
+    store.replaceReducer(rootReducer);
   });
 
   // Accept changes to this file for hot reloading.

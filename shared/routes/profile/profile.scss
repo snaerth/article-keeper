@@ -1,16 +1,16 @@
-@import '../../styles/variables.scss';
+@import '~styles/variables';
 .grid {
-  display: grid;
-  grid-template-columns: 30% 70%;
-  grid-template-rows: 100%;
-  grid-column-gap: 1em;
-  overflow: hidden;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 100%;
+    grid-column-gap: 1em;
+    overflow: hidden;
 }
 
 .card {
-  background: $primary-card;
-  padding: 2em;
-  position: relative;
+    background: $primary-card;
+    padding: 2em;
+    position: relative;
 }
 
 .cardLeft {
@@ -33,14 +33,14 @@
 }
 
 @media screen and (max-width: $max-960) {
-  .grid {
-    grid-template-columns: 40% 60%;
-  }
+    .grid {
+        grid-template-columns: 40% 60%;
+    }
 }
 
 @media screen and (max-width: $max-768) {
-  .grid {
-    grid-template-columns: 100%;
-    grid-row-gap: 1em;
-  }
+    .grid {
+        grid-template-columns: 100%;
+        grid-row-gap: 1em;
+    }
 }

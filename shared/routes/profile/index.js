@@ -1,3 +1,9 @@
-import profile from './profile';
+// import { asyncComponent } from 'react-async-component';
 
-export default profile;
+// export default asyncComponent({
+//   resolve: () => System.import('./profile'),
+//   ssrMode: 'boundary',
+//   name: 'Profile',
+// });
+
+export { default } from './profile';

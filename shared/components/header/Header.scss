@@ -1,5 +1,5 @@
-@import '../../../styles/variables.scss';
-@import '../../../styles/mixins.scss';
+@import '~styles/variables';
+@import '~styles/mixins';
 .background {
     background: $linear-background-primary;
     background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
@@ -7,12 +7,6 @@
     background-size: 100% 1000px;
     min-height: 200px;
     overflow: hidden;
-}
-
-.container {
-    max-width: $max-width;
-    margin: 0 auto;
-    position: relative;
 }
 
 .navUpper {
@@ -56,16 +50,4 @@ a.active {
 .banner {
     color: lighten($primary-pink, 18%);
     position: absolute;
-}
-
-@media only screen and (min-width: $min-320) {
-    .container {
-        padding: 0.5em 1em;
-    }
-}
-
-@media only screen and (min-width: $max-768) {
-    .container {
-        padding: 0.6em;
-    }
 }
