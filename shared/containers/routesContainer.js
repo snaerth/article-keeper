@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
+// Components
+import Header from '../components/header';
 
 const RouteContainer = ({ children, name }) => (
-  <CSSTransitionGroup
-    transitionName="fadeIn"
-    transitionLeave={false}
-    transitionEnterTimeout={700}
-  >
-    {React.cloneElement(children, { key: name })}
-  </CSSTransitionGroup>
+  <div>
+    <Header name={name} />
+    <CSSTransitionGroup
+      transitionName="fadeIn"
+      transitionLeave={false}
+      transitionEnterTimeout={700}
+    >
+      {React.cloneElement(children, { key: name })}
+    </CSSTransitionGroup>
+  </div>
 );
 
 RouteContainer.propTypes = {
@@ -20,7 +26,7 @@ RouteContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const routes = ownProps.children.props.children;
-  const pathName = state.routing.location.pathname;
+  const pathName = ownProps.history.location.pathname;
 
   // Filter route by current location path
   const filteredRoute = routes.filter((route) => {
@@ -36,4 +42,4 @@ function mapStateToProps(state, ownProps) {
   return { ...state, name: filteredRoute[0].props.name };
 }
 
-export default connect(mapStateToProps)(RouteContainer);
+export default withRouter(connect(mapStateToProps)(RouteContainer));

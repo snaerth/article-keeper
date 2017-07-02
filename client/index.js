@@ -3,12 +3,11 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { AsyncComponentProvider } from 'react-async-component';
 import { JobProvider } from 'react-jobs';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import config from 'utils/config';
 import configureStore from '../shared/store/configureStore';
@@ -29,8 +28,7 @@ const container = document.querySelector('#app');
 const preloadedState = {};
 
 // Create an enhanced history that syncs navigation events with the store
-const history = createHistory();
-const store = configureStore(preloadedState, history);
+const store = configureStore(preloadedState);
 window.store = store;
 
 // Does the user's browser support the HTML5 history API?
@@ -57,9 +55,9 @@ function renderApp(TheApp) {
       <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
         <JobProvider rehydrateState={rehydrateState}>
           <Provider store={store} key="provider">
-            <ConnectedRouter history={history} forceRefresh={!supportsHistory}>
+            <BrowserRouter forceRefresh={!supportsHistory}>
               <TheApp />
-            </ConnectedRouter>
+            </BrowserRouter>
           </Provider>
         </JobProvider>
       </AsyncComponentProvider>

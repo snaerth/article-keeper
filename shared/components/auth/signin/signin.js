@@ -201,7 +201,7 @@ class Signin extends Component {
         <div className={forgotPasswordContainer}>
           <Link
             role="button"
-            to="forgotpassword"
+            to="/forgotpassword"
             className="link-slideright"
             onClick={e => this.toggleView(e, 2)}
           >
