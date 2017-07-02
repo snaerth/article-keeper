@@ -2,6 +2,7 @@ import appRootDir from 'app-root-dir';
 import AssetsPlugin from 'assets-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
 import path from 'path';
 import webpack from 'webpack';
@@ -340,6 +341,19 @@ export default function webpackConfigFactory(buildOptions) {
           new ExtractTextPlugin({
             filename: '[name]-[chunkhash].css',
             allChunks: true,
+          }),
+      ),
+
+      // Prepare compressed versions of assets to serve them with Content-Encoding
+      // @see https://github.com/webpack-contrib/compression-webpack-plugin
+      ifProdClient(
+        () =>
+          new CompressionPlugin({
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.(js|jsx|css|html|svg)$/,
+            threshold: 10240,
+            minRatio: 0.8,
           }),
       ),
 
