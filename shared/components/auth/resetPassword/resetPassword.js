@@ -4,14 +4,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router';
-import MainHeading from '../../common/mainheading';
-import styles from './resetPassword.scss';
-import Password from '../../common/password';
-import Button from '../../common/button';
-import NotifyBox from '../../common/notifyBox';
+import MainHeading from '../../mainheading';
+import Password from '../../password';
+import Button from '../../button';
+import NotifyBox from '../../notifyBox';
 import * as actionCreators from '../actions';
-import Spinner from '../../common/spinner';
-import ArrowForward from '../../../common/svg/arrow_forward.svg';
+import Spinner from '../../spinner';
+import ArrowForward from '../../../assets/images/arrow_forward.svg';
+import styles from './resetPassword.scss';
 
 /**
  * Signin component

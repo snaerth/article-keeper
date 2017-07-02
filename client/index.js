@@ -11,9 +11,8 @@ import { Provider } from 'mobx-react';
 import { toJS } from 'mobx';
 import stringify from 'json-stringify-safe';
 import ReactGA from 'react-ga';
-import Store from 'store';
 import config from 'utils/config';
-
+import configureStore from '../shared/store/configureStore';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from '../shared';
 
@@ -26,7 +25,11 @@ if (gaId) {
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
 
-let store = new Store();
+// Compile an initial state
+const preloadedState = {};
+// Create a new Redux store instance
+let store = configureStore(preloadedState);
+
 window.store = store;
 
 // Does the user's browser support the HTML5 history API?
@@ -36,7 +39,8 @@ const supportsHistory = 'pushState' in window.history;
 
 // Get any rehydrateState for the async components.
 // eslint-disable-next-line no-underscore-dangle
-const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
+const asyncComponentsRehydrateState =
+  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__;
 
 // Get any "rehydrate" state sent back by the server
 // eslint-disable-next-line no-underscore-dangle
@@ -52,7 +56,7 @@ function renderApp(TheApp) {
     <ReactHotLoader>
       <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
         <JobProvider rehydrateState={rehydrateState}>
-          <Provider {...store}>
+          <Provider store={store}>
             <BrowserRouter forceRefresh={!supportsHistory}>
               <TheApp />
             </BrowserRouter>

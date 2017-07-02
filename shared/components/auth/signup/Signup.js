@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import Input from '../../common/input';
-import Password from '../../common/password';
+import Input from '../../input';
+import Password from '../../password';
 import styles from './Signup.scss';
-import Button from '../../common/button';
-import MainHeading from '../../common/mainheading';
-import NotifyBox from '../../common/notifyBox';
-import FileUploader from '../../common/fileUploader';
-import Spinner from '../../common/spinner';
+import Button from '../../button';
+import MainHeading from '../../mainheading';
+import NotifyBox from '../../notifyBox';
+import FileUploader from '../../fileUploader';
+import Spinner from '../../spinner';
 import * as actionCreators from '../actions';
 import validateEmail from './../../../utils/validate';
-import Person from '../../../common/svg/person.svg';
-import Email from '../../../common/svg/email.svg';
-import ArrowForward from '../../../common/svg/arrow_forward.svg';
+import Person from '../../../assets/images/person.svg';
+import Email from '../../../assets/images/email.svg';
+import ArrowForward from '../../../assets/images/arrow_forward.svg';
 
 /**
  * Signup component

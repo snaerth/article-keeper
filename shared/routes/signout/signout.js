@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import styles from './signout.scss';
-import Button from '../../components/common/button';
+import Button from '../../components/button';
 import * as actions from '../../components/auth/actions';
 
 /**

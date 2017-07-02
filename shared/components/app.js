@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CSSTransitionGroup } from 'react-transition-group';
 import AppLayout from './app-layout';
-import Header from './common/header';
+import Header from './header';
 
 const App = ({ children, name }) => (
   <AppLayout>

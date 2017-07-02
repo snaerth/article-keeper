@@ -5,23 +5,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { TimelineLite, Power2 } from 'gsap';
-import Input from '../../common/input';
-import Password from '../../common/password';
+import Input from '../../input';
+import Password from '../../password';
 import styles from './signin.scss';
-import Button from '../../common/button';
-import ButtonLink from '../../common/buttonLink';
-import NotifyBox from '../../common/notifyBox';
-import MainHeading from '../../common/mainheading';
+import Button from '../../button';
+import ButtonLink from '../../buttonLink';
+import NotifyBox from '../../notifyBox';
+import MainHeading from '../../mainheading';
 import ForgotPassword from '../forgotPassword';
 import validateEmail from './../../../utils/validate';
-import Spinner from '../../common/spinner';
+import Spinner from '../../spinner';
 import * as actionCreators from '../actions';
-import Email from '../../../common/svg/email.svg';
-import ArrowForward from '../../../common/svg/arrow_forward.svg';
-import ArrowBackward from '../../../common/svg/arrow_backward.svg';
-import FacebookIcon from '../../../common/svg/facebook.svg';
-import TwitterIcon from '../../../common/svg/twitter.svg';
-import GoogleIcon from '../../../common/svg/google.svg';
+import Email from '../../../assets/images//email.svg';
+import ArrowForward from '../../../assets/images/arrow_forward.svg';
+import ArrowBackward from '../../../assets/images//arrow_backward.svg';
+import FacebookIcon from '../../../assets/images//facebook.svg';
+import TwitterIcon from '../../../assets/images//twitter.svg';
+import GoogleIcon from '../../../assets/images/google.svg';
 
 /**
  * Signin component
@@ -165,7 +165,7 @@ class Signin extends Component {
       <form
         onSubmit={handleSubmit(this.handleFormSubmit)}
         noValidate
-        ref={c => this.el1 = c}
+        ref={c => (this.el1 = c)}
         className={container}
       >
         <MainHeading text="Sign in with email" className="medium" />
@@ -221,7 +221,7 @@ class Signin extends Component {
     const { container, iconFacebook, iconArrowForward } = styles;
 
     return (
-      <div className={container} ref={c => this.el0 = c}>
+      <div className={container} ref={c => (this.el0 = c)}>
         <MainHeading text="Sign in with a social network" className="medium" />
         <ButtonLink
           href="/admin/auth/facebook"
@@ -272,7 +272,7 @@ class Signin extends Component {
     const { container } = styles;
 
     return (
-      <div ref={c => this.el2 = c} className={container}>
+      <div ref={c => (this.el2 = c)} className={container}>
         <MainHeading text="Reset password" className="medium" />
         <ForgotPassword hideHeading />
       </div>

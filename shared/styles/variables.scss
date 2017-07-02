@@ -1,29 +1,60 @@
+// Colors
+$primary-yellow: #facb7a;
+$primary-purple: #7A29E7;
+$primary-red: #DC886C;
+$primary-green: #9ccc65;
+$primary-pink: #F478DC;
+$primary-pink-darker: #CC62EE;
+$primary-black: #000;
+$primary-white: #ffffff;
+$primary-card: #ffffff;
+$primary-background: #EFF1F5;
+$secondary-black:#2f3238;
+$navbar-background: #A9BAC2;
+$navbar-text: #586A6E;
+$text-dark: #484848;
+$facebook:#3b5998;
+$twitter: #00abf1;
+$google: #F44336;
+$linear-background-primary: linear-gradient(-135deg, $primary-pink, $primary-pink-darker);
+// Link
+$link-color: #404d5b;
+// Button
+$button-background: #F478DC;
+$button-color: #ffffff;
+$button-color-hover: #ffffff;
+// Inputs
+$input-border-color: #dddfe2;
+$input-border-height: 1px;
+// Animations
+$hover-transition: .15s;
+// Borders
+$border-radius: 3px;
+$border-color: #dddfe2;
+$border-color-dark: $text-dark;
+$border-color-light:rgba(0, 0, 0, .05);
+$border: 2px;
+$border-height-light: 1px;
+$box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+$box-shadow-color:rgba(0, 0, 0, 0.2);
 $gutter: 30px;
 $container-gutter-mobile: $gutter;
 $container-gutter-tablet: 50px;
 $container-gutter-desktop: 70px;
-
 // page dimensions
 $page-width: 1080px;
-$limit: $page-width + ($container-gutter-desktop * 2);
-
+$limit: $page-width+($container-gutter-desktop * 2);
 // Fonts
-$font-family: 'Roboto', sans-serif;
+$font-family: 'Roboto',
+sans-serif;
 $font-size: 16px;
 $font-color: #333;
 $font-color-light: #777;
 $font-color-dark: #111;
 $line-height: 1.5;
-
-// Colors
-$color-pink: #aa0078;
-$color-primary: $color-pink;
-$color-placeholder: #ddd;
-
 // Timings
 $transition-enter: 200ms;
 $transition-leave: 500ms;
-
 // Custom break point (Min)
 $min-1800: 1800px;
 $min-1440: 1440px;
@@ -42,7 +73,6 @@ $min-540: 540px;
 $min-480: 480px;
 $min-375: 375px;
 $min-360: 360px;
-
 // Custom break points (Max)
 $max-1280: 1279px;
 $max-1200: 1199px;
@@ -58,12 +88,10 @@ $max-540: 539px;
 $max-480: 479px;
 $max-375: 374px;
 $max-360: 359px;
-
 // Predefined breakpoints
 $min-mobile: $min-480;
 $min-tablet: $min-720;
 $min-desktop: $min-1080;
-
 // Segment
 $segment-padding-mobile: $gutter * 3;
 $segment-padding: 200px; //percentage-based segments spacing

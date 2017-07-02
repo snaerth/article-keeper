@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './password.scss';
 import ErrorText from '../errorText';
-import VisibilitySvg from './visibility.svg';
-import VisibilityOffSvg from './visibility_off.svg';
+import VisibilitySvg from '../../assets/images/visibility.svg';
+import VisibilityOffSvg from '../../assets/images/visibility_off.svg';
 
 class Password extends Component {
   static propTypes = {
@@ -78,5 +78,4 @@ class Password extends Component {
     );
   }
 }
-
 export default Password;

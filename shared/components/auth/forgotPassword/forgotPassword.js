@@ -4,15 +4,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styles from './forgotPassword.scss';
-import MainHeading from '../../common/mainheading';
-import Input from '../../common/input';
-import Button from '../../common/button';
-import NotifyBox from '../../common/notifyBox';
+import MainHeading from '../../mainheading';
+import Input from '../../input';
+import Button from '../../button';
+import NotifyBox from '../../notifyBox';
 import validateEmail from './../../../utils/validate';
 import * as actionCreators from '../actions';
-import Spinner from '../../common/spinner';
-import Email from '../../../common/svg/email.svg';
-import ArrowForward from '../../../common/svg/arrow_forward.svg';
+import Spinner from '../../spinner';
+import Email from '../../../assets/images/email.svg';
+import ArrowForward from '../../../assets/images/arrow_forward.svg';
 
 /**
  * Signin component

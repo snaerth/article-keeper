@@ -1,14 +1,16 @@
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component';
 import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider, useStaticRendering } from 'mobx-react';
 import Helmet from 'react-helmet';
-import Store from 'store';
 import timing from 'utils/timing';
-
+import configureStore from '../../../shared/store/configureStore';
 import config from '../../../config';
 import App from '../../../shared';
 import ServerHTML from './ServerHTML';
@@ -35,7 +37,9 @@ export default function reactApplicationMiddleware(request, response) {
     }
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
-    const html = renderToStaticMarkup(<ServerHTML helmet={Helmet.rewind()} nonce={nonce} />);
+    const html = renderToStaticMarkup(
+      <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />,
+    );
     response.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
@@ -51,15 +55,17 @@ export default function reactApplicationMiddleware(request, response) {
   // us the ability to track the resolved jobs to send back to the client.
   const jobContext = createJobContext();
 
-  // Initialize the store
-  const store = new Store();
+  // Compile an initial state
+  const preloadedState = {};
+  // Create a new Redux store instance
+  const store = configureStore(preloadedState);
 
   // Declare our React application.
   const app = (
     <AsyncComponentProvider asyncContext={asyncComponentsContext}>
       <JobProvider jobContext={jobContext}>
         <StaticRouter location={request.url} context={reactRouterContext}>
-          <Provider {...store}>
+          <Provider store={store}>
             <App />
           </Provider>
         </StaticRouter>

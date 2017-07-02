@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import styles from './fileUploader.scss';
-import UploadPhoto from './uploadPhoto.svg';
-import Face from './face.svg';
+import UploadPhoto from '../../assets/images/uploadPhoto.svg';
+import Face from '../../assets/images/face.svg';
 
 /**
  * Signup component

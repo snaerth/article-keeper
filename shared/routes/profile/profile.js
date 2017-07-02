@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import styles from './profile.scss';
-import CircleImage from '../../components/common/circleImage';
-import ModalWrapper from '../../components/common/modal';
-import ImageBlurWrapper from '../../components/common/imageBlurWrapper';
+import CircleImage from '../../components/circleImage';
+import ModalWrapper from '../../components/modal';
+import ImageBlurWrapper from '../../components/imageBlurWrapper';
 
 /**
  * Profile component

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import styles from './imageBlurWrapper.scss';
-import { processImage } from '../../../utils/stackBlur';
+import { processImage } from '../../utils/stackBlur';
 
 /**
  * Image blur wrapper component
