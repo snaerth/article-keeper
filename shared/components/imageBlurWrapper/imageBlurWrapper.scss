@@ -1,34 +1,34 @@
 .canvas {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin: auto;
-    transition: visibility 2s linear, opacity .2s;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  transition: visibility 2s linear, opacity .2s;
 }
 
 .hide {
-    visibility: hidden;
-    opacity: 0;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .image {
-    width: 100%;
-    visibility: hidden;
-    backface-visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 0s, opacity .3s .15s;
+  width: 100%;
+  visibility: hidden;
+  backface-visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s linear 0s, opacity .3s .15s;
 }
 
 .show {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .container {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
 }

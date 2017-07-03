@@ -1,59 +1,56 @@
 @import '~styles/variables';
+
 .exit {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    fill: $text-dark;
-    cursor: pointer;
-    transition: fill $hover-transition;
-    height: 30px;
-    width: 30px;
-    z-index: 1;
-    &:hover {
-        fill: $primary-black;
-    }
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  fill: $text-dark;
+  cursor: pointer;
+  transition: fill $hover-transition;
+  height: 30px;
+  width: 30px;
+  z-index: 1;
+
+  &:hover {
+    fill: $primary-black;
+  }
 }
 
 .modalInner {
-    pointer-events: all;
-    background: $primary-white;
-    position: relative;
-    width: 100%;
-    max-width: $max-480;
-    min-width: $min-320;
-    max-height: $max-768;
-    overflow-y: auto;
-    overflow-x: hidden;
+  pointer-events: all;
+  background: $primary-white;
+  position: relative;
+  width: 100%;
+  max-width: $max-480;
+  min-width: $min-320;
+  max-height: $max-768;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-
 @media screen and (max-width: $max-768) {
-    .modalInner {
-        max-height: 560px;
-        padding: 20px 0;
-    }
+  .modalInner {
+    max-height: 560px;
+    padding: 20px 0;
+  }
 }
-
 @media screen and (max-width: $max-768) and (min-height: $min-768) {
-    .modalInner {
-        max-height: $max-768;
-        padding: 20px 0;
-    }
+  .modalInner {
+    max-height: $max-768;
+    padding: 20px 0;
+  }
 }
-
 @media screen and (max-height: 600px) {
-    .modalInner {
-        max-height: $max-480;
-    }
+  .modalInner {
+    max-height: $max-480;
+  }
 }
-
 @media screen and (max-height: 480px) {
-    .modalInner {
-        max-height: 400px;
-    }
+  .modalInner {
+    max-height: 400px;
+  }
 }
-
 @media screen and (max-height: 400px) {
-    .modalInner {
-        max-height: 320px;
-    }
+  .modalInner {
+    max-height: 320px;
+  }
 }

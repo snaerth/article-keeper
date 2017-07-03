@@ -1,40 +1,40 @@
 .slideInOut-enter {
-    opacity: 0.01;
-    transform: translate3d(-100px, 0, 0);
+  opacity: .01;
+  transform: translate3d(-100px, 0, 0);
 }
 
 .slideInOut-enter.slideInOut-enter-active {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition: all 300ms ease-in-out;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: all 300ms ease-in-out;
 }
 
 .slideInOut-leave {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .slideInOut-leave.slideInOut-leave-active {
-    opacity: 0.01;
-    transform: translate3d(100px, 0, 0);
-    transition: all 100ms ease-in-out;
+  opacity: .01;
+  transform: translate3d(100px, 0, 0);
+  transition: all 100ms ease-in-out;
 }
 
 // Fade in
 .fadeIn-enter {
-    opacity: 0.01;
+  opacity: .01;
 }
 
 .fadeIn-enter.fadeIn-enter-active {
-    opacity: 1;
-    transition: opacity 700ms ease-in-out;
+  opacity: 1;
+  transition: opacity 700ms ease-in-out;
 }
 
 .fadeIn-leave {
-    opacity: 1;
+  opacity: 1;
 }
 
 .fadeIn-leave.fadeIn-leave-active {
-    opacity: 0.01;
-    transition: opacity 300ms ease-in-out;
+  opacity: .01;
+  transition: opacity 300ms ease-in-out;
 }

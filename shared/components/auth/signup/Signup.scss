@@ -1,14 +1,15 @@
 @import '~styles/variables';
+
 .svg {
-    fill: $border-color;
-    width: 100%;
-    transition: fill .2s ease-out;
+  fill: $border-color;
+  width: 100%;
+  transition: fill .2s ease-out;
 }
 
 .iconArrowForward {
-    fill: $primary-white;
+  fill: $primary-white;
 }
 
 .noPaddingBottom {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }

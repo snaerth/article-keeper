@@ -1,16 +1,17 @@
 @import '~styles/variables';
+
 .box {
-    border-radius: $border-radius;
-    padding: 11px 15px;
-    margin: 0 0 2em;
-    width: 100%;
-    box-shadow: $box-shadow;
+  border-radius: $border-radius;
+  padding: 11px 15px;
+  margin: 0 0 2em;
+  width: 100%;
+  box-shadow: $box-shadow;
 }
 
 .error {
-    background: $primary-red;
+  background: $primary-red;
 }
 
 .success {
-    background: $primary-green;
+  background: $primary-green;
 }

@@ -1,53 +1,55 @@
 @import '~styles/variables';
 @import '~styles/mixins';
+
 .background {
-    background: $linear-background-primary;
-    background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
-    background-repeat: no-repeat;
-    background-size: 100% 1000px;
-    min-height: 200px;
-    overflow: hidden;
+  background: $linear-background-primary;
+  background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
+  background-repeat: no-repeat;
+  background-size: 100% 1000px;
+  min-height: 200px;
+  overflow: hidden;
 }
 
 .navUpper {
-    display: grid;
-    grid-template-columns: 20% 80%;
+  display: grid;
+  grid-template-columns: 20% 80%;
 }
 
-.navUpper>div a:first-child {
-    margin-left: 0;
+.navUpper > div a:first-child {
+  margin-left: 0;
 }
 
-.navUpper>div a:last-child {
-    margin-right: 0;
+.navUpper > div a:last-child {
+  margin-right: 0;
 }
 
 a.link {
-    @include responsive-font(1.5vw, 16px, 18px);
-    text-decoration: none;
-    outline: none;
-    margin: 0 0.5em;
-    pointer-events: visible;
-    cursor: pointer;
-    color: lighten($primary-pink, 18%);
-    &:hover {
-        color: $primary-white;
-    }
+  @include responsive-font(1.5vw, 16px, 18px);
+  text-decoration: none;
+  outline: none;
+  margin: 0 .5em;
+  pointer-events: visible;
+  cursor: pointer;
+  color: lighten($primary-pink, 18%);
+
+  &:hover {
+    color: $primary-white;
+  }
 }
 
 a.home_link {
-    color: lighten($primary-pink, 18%);
+  color: lighten($primary-pink, 18%);
 }
 
 a.active {
-    color: $primary-white;
+  color: $primary-white;
 }
 
 .links_right {
-    text-align: right;
+  text-align: right;
 }
 
 .banner {
-    color: lighten($primary-pink, 18%);
-    position: absolute;
+  color: lighten($primary-pink, 18%);
+  position: absolute;
 }

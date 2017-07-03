@@ -1,98 +1,107 @@
 @import '~styles/variables';
 @import '~styles/mixins';
+
 .button {
-    position: relative;
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    border-radius: $border-radius;
-    overflow: hidden;
-    border: 0;
-    padding: 8px 20px;
-    margin-bottom: 1em;
-    cursor: pointer;
-    transition: box-shadow .25s ease-out, transform .20s ease-out, opacity .10s ease-out, background .15s ease-out, color .2s ease-out;
-    color: $button-color;
-    &:hover {
-        opacity: 0.9;
-        box-shadow: $box-shadow;
-        color: $button-color-hover;
-        transform: translate3d(0, -4px, 0);
-    }
-    &:focus {
-        outline: 0;
-        color: $button-color-hover;
-        background: darken($button-background, 5%);
-    }
+  position: relative;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: $border-radius;
+  overflow: hidden;
+  border: 0;
+  padding: 8px 20px;
+  margin-bottom: 1em;
+  cursor: pointer;
+  transition: box-shadow .25s ease-out, transform .20s ease-out, opacity .10s ease-out, background .15s ease-out, color .2s ease-out;
+  color: $button-color;
+
+  &:hover {
+    opacity: .9;
+    box-shadow: $box-shadow;
+    color: $button-color-hover;
+    transform: translate3d(0, -4px, 0);
+  }
+
+  &:focus {
+    outline: 0;
+    color: $button-color-hover;
+    background: darken($button-background, 5%);
+  }
 }
 
 .fullWidth {
-    width: 100%;
+  width: 100%;
 }
 
 .purple {
-    background: $primary-purple;
-    &:hover,
-    &:focus {
-        background: darken($primary-purple, 15%);
-    }
+  background: $primary-purple;
+
+  &:focus,
+  &:hover {
+    background: darken($primary-purple, 15%);
+  }
 }
 
 .facebook {
-    background: $facebook;
-    &:hover,
-    &:focus {
-        background: lighten($facebook, 5%);
-    }
+  background: $facebook;
+
+  &:focus,
+  &:hover {
+    background: lighten($facebook, 5%);
+  }
 }
 
 .twitter {
-    background: $twitter;
-    &:hover,
-    &:focus {
-        background: darken($twitter, 10%);
-    }
+  background: $twitter;
+
+  &:focus,
+  &:hover {
+    background: darken($twitter, 10%);
+  }
 }
 
 .google {
-    background: $google;
-    &:hover,
-    &:focus {
-        background: lighten($google, 5%);
-    }
+  background: $google;
+
+  &:focus,
+  &:hover {
+    background: lighten($google, 5%);
+  }
 }
 
 .default {
-    background: $button-background;
-    &:hover {
-        background: darken($button-background, 15%);
-    }
+  background: $button-background;
+
+  &:hover {
+    background: darken($button-background, 15%);
+  }
 }
 
 .icon {
-    transition: all .25s ease-out;
-    position: absolute;
-    right: 4%;
-    top: 8px;
+  transition: all .25s ease-out;
+  position: absolute;
+  right: 4%;
+  top: 8px;
 }
 
 .icon.left {
-    position: relative;
-    top: 8px;
+  position: relative;
+  top: 8px;
 }
 
 .button:hover .icon {
-    animation: forwardBackInfinite 1.2s infinite;
+  animation: forwardBackInfinite 1.2s infinite;
 }
-
 @keyframes forwardBackInfinite {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-    60% {
-        transform: translate3d(5px, 0, 0);
-    }
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  60% {
+    transform: translate3d(5px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
