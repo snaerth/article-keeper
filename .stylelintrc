@@ -4,6 +4,7 @@
     "stylelint-order"
   ],
   "rules": {
+    "indentation": 2,
     "no-unsupported-browser-features": null,
     "string-quotes": "single",
     "max-empty-lines": 5,
