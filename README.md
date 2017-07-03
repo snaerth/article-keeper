@@ -1,14 +1,14 @@
 
-# ueno. starter kit. universally.
+# Starter-kit-universal
 
 ## New projects
 
 Clone this repo, add the upstream for updates
 
 ```bash
-git clone https://github.com/ueno-llc/starter-kit-universally.git my-project
+git clone https://github.com/snaerth/starter-kit-universal.git my-project
 cd my-project
-git remote add upstream https://github.com/ueno-llc/starter-kit-universally.git
+git remote add upstream https://github.com/snaerth/starter-kit-universal.git
 git remote set-url --push upstream no_push # disable push to upstream
 ```
 

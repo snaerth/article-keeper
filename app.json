@@ -1,13 +1,17 @@
 {
-  "name": "Starter kit",
+  "name": "Starter kit universal",
   "description": "",
   "keywords": [
     "starter kit",
+    "redux",
+    "react",
+    "universal",
+    "isomporphic",
     "www"
   ],
   "scripts": {},
-  "website": "https://github.com/ueno-llc/starter-kit-universally#readme",
-  "repository": "https://github.com/ueno-llc/starter-kit-universally.git",
+  "website": "https://github.com/snaerth/starter-kit-universal#readme",
+  "repository": "https://github.com/snaerth/starter-kit-universal.git",
   "env": {
     "NODE_ENV": {
       "description": "Environment to build",
@@ -28,7 +32,9 @@
   },
   "addons": [],
   "image": "heroku/nodejs",
-  "buildpacks": [{
-    "url": "heroku/nodejs"
-  }]
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
 }
