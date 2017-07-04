@@ -4,11 +4,9 @@
 @import './variables';
 @import './mixins';
 @-ms-viewport {
-  // stylelint-disable-line
   width: device-width;
 }
 @-o-viewport {
-  // stylelint-disable-line
   width: device-width;
 }
 @viewport {
@@ -26,9 +24,8 @@
   box-sizing: border-box;
 }
 
-#app,
-body,
-html {
+// stylelint-disable-next-line
+body, html {
   min-height: 100vh;
 }
 
@@ -40,20 +37,19 @@ html {
 
 body {
   @include responsive-font(1.5vw, 16px, 16px);
-  background: $primary-background;
   position: relative;
   margin: 0;
-  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: "Helvetica Neue, Helvetica, Arial", sans-serif;
   line-height: 1.5;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   color: $text-dark; // iOS on orientation change
+  background: $primary-background;
   text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 img {
-  // stylelint-disable-line
   display: block;
   max-width: 100%;
   height: auto;
