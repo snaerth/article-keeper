@@ -39,7 +39,7 @@ body {
   @include responsive-font(1.5vw, 16px, 16px);
   position: relative;
   margin: 0;
-  font-family: "Helvetica Neue, Helvetica, Arial", sans-serif;
+  font-family: 'Helvetica Neue, Helvetica, Arial', sans-serif;
   line-height: 1.5;
   letter-spacing: 0.5px;
   color: $text-dark; // iOS on orientation change
@@ -72,41 +72,37 @@ h6 {
 }
 
 ul {
-  list-style-type: none;
   padding: 0;
+  list-style-type: none;
 }
 
-a::active,
-a::link,
-a::visited {
+a:active,
+a:link,
+a:visited {
   color: $primary-black;
 }
 
-a::hover {
-  transition: color $hover-transition ease-out;
+a:hover {
   color: $primary-red;
+  transition: color $hover-transition ease-out;
 }
 
 .link-slideright {
-  color: $primary-pink;
-  position: relative;
   display: inline-block;
-  outline: none;
-  vertical-align: bottom;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
+  position: relative;
   padding-bottom: 2px;
-}
-
-button.link-slideright {
+  vertical-align: bottom;
+  white-space: nowrap;
+  color: $primary-pink;
+  cursor: pointer;
   background: transparent;
   border: 0;
-  padding: 0 0 2px;
-  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  outline: none;
 }
 
-.link-slideright::hover {
+.link-slideright:hover {
   color: darken($primary-pink, 20%);
 }
 
@@ -118,7 +114,7 @@ button.link-slideright {
   width: 100%;
   height: 1px;
   background: darken($primary-pink, 20%);
-  transition: transform .3s;
+  transition: transform 0.3s;
   transform: scaleY(0.618) translateX(100%);
 }
 
@@ -132,19 +128,38 @@ fieldset {
 }
 
 .cardContainer {
-  max-width: $max-480;
   margin: 0 auto;
+  max-width: $max-480;
 }
 
 .card {
-  background: $primary-card;
-  padding: 3em 1em 1em;
   position: relative;
+  padding: 3em 1em 1em;
+  background: $primary-card;
   overflow-x: hidden;
 }
 
+/*
+Visually hide an element
+------------------------------------------------------------------
+When you hide an element with display: none, that prevents
+screen readers from reading it to the user. Sometimes that’s fine,
+but in other cases this will make the site hard to use for people
+with screen readers. Thus, we have to use another technique for
+hiding elements while at the same time make them accessible.
+In this example, we are using the Sass placeholder selector since
+the output will always be the same, which enables us to reduce
+repetetive code in the output.
+*/
 .visually-hidden {
-  @extend %visuallyhidden;
+  position: absolute;
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
 }
 
 // placeholders
@@ -152,11 +167,11 @@ input,
 select,
 textarea {
   // stylelint-disable-line
-  &::-webkit-input-placeholder {
+  &:-webkit-input-placeholder {
     color: $color-placeholder;
   }
 
-  &::-moz-placeholder {
+  &:-moz-placeholder {
     opacity: 1;
     color: $color-placeholder;
   }
@@ -167,5 +182,5 @@ textarea {
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px white inset;
+  box-shadow: 0 0 0 1000px #fff inset;
 }

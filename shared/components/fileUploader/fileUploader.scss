@@ -1,26 +1,26 @@
 @import '~styles/variables';
 
 .svg {
-  fill: $border-color;
   width: 100%;
-  transition: fill .2s ease-out;
+  fill: $border-color;
+  transition: fill 0.2s ease-out;
 }
 
 .uploadPhotoContainer {
   display: grid;
+  margin: 2em 0 1em;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   grid-column-gap: 1em;
-  margin: 2em 0 1em;
 }
 
 .dropzoneContainer {
   display: grid;
+  border-radius: 1px;
   border-width: 2px;
   border-color: $border-color;
   border-style: dashed;
-  border-radius: 1px;
-  transition: all .10s ease-out;
+  transition: border 0.1s ease-out;
 
   &:hover {
     border-color: $border-color-dark;
@@ -37,10 +37,10 @@
 
 .dropzoneContainerInner {
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  padding: .6em;
+  padding: 0.6em;
   cursor: pointer;
-  transition: color .2s ease-out;
+  grid-template-rows: 1fr 1fr;
+  transition: color 0.2s ease-out;
 }
 
 .dropzoneBoxImage {
@@ -48,9 +48,9 @@
 }
 
 .dropzoneBoxText {
+  align-self: center;
   color: $border-color;
   text-align: center;
-  align-self: center;
 }
 
 .imagePreviewContainer {
@@ -62,9 +62,9 @@
 }
 
 .fakeFrame {
-  border: 1px solid $border-color;
-  width: 100%;
   display: grid;
+  width: 100%;
+  border: 1px solid $border-color;
   align-content: center;
 }
 @media screen and (max-width: $max-768) {

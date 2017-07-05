@@ -19,7 +19,7 @@
     "preinstall": "node internal/scripts/preinstall",
     "postinstall": "if [ \"x$NODE_ENV\" != \"x\" ] && [ \"$NODE_ENV\" != \"development\" ]; then (npm run fix-sass && npm run build); fi;",
     "start": "cross-env NODE_ENV=production node build/server",
-    "lint": "npm run eslint; npm run stylelint",
+    "lint": "npm run eslint && npm run stylelint",
     "lint-staged": "lint-staged",
     "eslint": "eslint client server shared config internal api",
     "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",

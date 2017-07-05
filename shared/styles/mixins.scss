@@ -1,38 +1,4 @@
 /*
-Visually hide an element
-------------------------------------------------------------------
-When you hide an element with display: none, that prevents
-screen readers from reading it to the user. Sometimes that’s fine,
-but in other cases this will make the site hard to use for people
-with screen readers. Thus, we have to use another technique for
-hiding elements while at the same time make them accessible.
-In this example, we are using the Sass placeholder selector since
-the output will always be the same, which enables us to reduce
-repetetive code in the output.
-*/
-
-%visuallyhidden {
-  position: absolute;
-  margin: -1px;
-  padding: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip: rect(0, 0, 0, 0);
-}
-
-/*
-Usage
--------------------------------------------------------------------------
-<div class="visually-hidden">I am hidden but not from screen readers/div>
-
-.visually-hidden {
-  @extend %visuallyhidden;
-}
-*/
-
-/*
 Animations and keyframes
 -------------------------------------------------------------------
 Animations are always a pain to create with all the vendor prefixes

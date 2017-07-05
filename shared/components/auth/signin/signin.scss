@@ -14,17 +14,17 @@
 }
 
 .forgotPasswordContainer {
-  text-align: center;
   padding-top: 1em;
+  text-align: center;
 }
 
 .back {
-  text-align: center;
-  padding-bottom: 1em;
-  cursor: pointer;
   position: absolute;
   left: 10px;
   top: 10px;
+  padding-bottom: 1em;
+  text-align: center;
+  cursor: pointer;
 }
 
 .iconArrowForward,
@@ -43,18 +43,18 @@
 
 .buttonContainer {
   margin: 0 2px;
-  padding: 3em .625em .75em;
+  padding: 3em 0.625em 0.75em;
 }
 
 .container {
+  padding: 2em 1em 0;
   width: 100%;
   min-width: 100%;
   transform: translate3d(0, 0, 0);
-  padding: 2em 1em 0;
 }
 
 .almostHidden {
-  opacity: .1;
+  opacity: 0.1;
 }
 
 .noMarginBottom {

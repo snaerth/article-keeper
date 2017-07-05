@@ -3,26 +3,27 @@
 
 .button {
   position: relative;
-  border-radius: $border-radius;
-  overflow: hidden;
-  border: 0;
   padding: 11px 20px;
-  margin-bottom: .5em;
-  cursor: pointer;
-  transition: box-shadow .25s ease-out, transform .20s ease-out, opacity .10s ease-out, background .15s ease-out, color .2s ease-out;
+  margin-bottom: 0.5em;
   color: $button-color;
+  cursor: pointer;
+  border-radius: $border-radius;
+  border: 0;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease-out, transform 0.2s ease-out, opacity 0.1s ease-out, background 0.15s ease-out, color 0.2s ease-out;
+
 
   &:hover {
-    opacity: .9;
-    box-shadow: $box-shadow;
+    opacity: 0.9;
     color: $button-color-hover;
+    box-shadow: $box-shadow;
     transform: translate3d(0, -4px, 0);
   }
 
   &:focus {
-    outline: 0;
     color: $button-color-hover;
     background: darken($button-background, 5%);
+    outline: 0;
   }
 }
 
@@ -51,10 +52,10 @@
 }
 
 .icon {
-  transition: all .25s ease-out;
   position: absolute;
   right: 4%;
   top: 8px;
+  transition: position 0.25s ease-out;
 }
 
 .button:hover .icon {

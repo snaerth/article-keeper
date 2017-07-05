@@ -4,12 +4,12 @@
   position: absolute;
   right: 10px;
   top: 10px;
-  fill: $text-dark;
-  cursor: pointer;
-  transition: fill $hover-transition;
+  z-index: 1;
   height: 30px;
   width: 30px;
-  z-index: 1;
+  cursor: pointer;
+  fill: $text-dark;
+  transition: fill $hover-transition;
 
   &:hover {
     fill: $primary-black;
@@ -17,26 +17,26 @@
 }
 
 .modalInner {
-  pointer-events: all;
-  background: $primary-white;
   position: relative;
   width: 100%;
   max-width: $max-480;
   min-width: $min-320;
   max-height: $max-768;
+  pointer-events: all;
+  background: $primary-white;
   overflow-y: auto;
   overflow-x: hidden;
 }
 @media screen and (max-width: $max-768) {
   .modalInner {
-    max-height: 560px;
     padding: 20px 0;
+    max-height: 560px;
   }
 }
 @media screen and (max-width: $max-768) and (min-height: $min-768) {
   .modalInner {
-    max-height: $max-768;
     padding: 20px 0;
+    max-height: $max-768;
   }
 }
 @media screen and (max-height: 600px) {
