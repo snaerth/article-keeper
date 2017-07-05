@@ -3,6 +3,7 @@
 
 # Build output folders
 build/
+build_api/
 
 # Logs
 logs
