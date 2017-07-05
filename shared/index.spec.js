@@ -1,8 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import ReactShallowRenderer from 'react-test-renderer/shallow';
 import App from './index';
 
 it('renders without crashing', () => {
-  const wrapper = shallow(<App />);
-  expect(wrapper).not.toBe(undefined);
+  const renderer = new ReactShallowRenderer();
+  renderer.render(<App />);
+  expect(renderer).not.toBe(undefined);
 });

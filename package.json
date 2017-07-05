@@ -20,11 +20,18 @@
     "postinstall": "if [ \"x$NODE_ENV\" != \"x\" ] && [ \"$NODE_ENV\" != \"development\" ]; then (npm run fix-sass && npm run build); fi;",
     "start": "cross-env NODE_ENV=production node build/server",
     "lint": "npm run eslint && npm run stylelint",
-    "lint-staged": "lint-staged",
+    "precommit": "lint-staged && npm run test",
     "eslint": "eslint client server shared config internal api",
     "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",
     "test": "jest",
     "test:coverage": "jest --coverage"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "(*.scss|*.css)": "npm run stylelint"
   },
   "repository": {
     "type": "git",
@@ -64,7 +71,6 @@
     ]
   },
   "pre-commit": "lint-staged",
-  "lint-staged": {},
   "dependencies": {
     "app-root-dir": "^1.0.2",
     "assets-webpack-plugin": "^3.5.1",
@@ -145,6 +151,7 @@
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-test-renderer": "^15.6.1",
     "react-transition-group": "^1.2.0",
     "redux": "^3.7.1",
     "redux-form": "^6.8.0",
@@ -174,7 +181,6 @@
     "enzyme-to-json": "1.5.1",
     "eslint": "3.19.0",
     "eslint-config-airbnb": "15.0.1",
-    "eslint-import-resolver-webpack": "0.8.3",
     "eslint-plugin-flowtype": "2.34.1",
     "eslint-plugin-import": "2.6.1",
     "eslint-plugin-jsx-a11y": "6.0.2",

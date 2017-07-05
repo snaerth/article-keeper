@@ -49,7 +49,7 @@ export default function webpackConfigFactory(buildOptions) {
   const ifPublicUrl = ifElse(config('publicUrl'));
 
   console.log(
-    `==> Creating ${isProd ? 'an optimised' : 'a development'} bundle configuration for the "${target}"`
+    `==> Creating ${isProd ? 'an optimised' : 'a development'} bundle configuration for the "${target}"`,
   );
 
   const bundleConfig = isServer || isClient
@@ -65,19 +65,19 @@ export default function webpackConfigFactory(buildOptions) {
   // UENO: Local identname
   const localIdentName = ifDev(
     '[name]_[local]_[hash:base64:5]',
-    '[hash:base64:10]'
+    '[hash:base64:10]',
   );
 
   // UENO: Get public url for webpack dev server based on if it is proxied or not.
   const publicUrl = ifElse(config('clientDevProxy'))(
     ifPublicUrl(
       `${config('publicUrl')}/webpack`,
-      `http://${config('host')}:${config('port')}/webpack`
+      `http://${config('host')}:${config('port')}/webpack`,
     ),
     ifPublicUrl(
       config('publicUrl'),
-      `http://${config('host')}:${config('clientDevServerPort')}`
-    )
+      `http://${config('host')}:${config('clientDevServerPort')}`,
+    ),
   );
 
   let webpackConfig = {
@@ -97,11 +97,11 @@ export default function webpackConfigFactory(buildOptions) {
         // Required to support hot reloading of our client.
         ifDevClient(
           () =>
-            `webpack-hot-middleware/client?reload=true&path=${publicUrl}/__webpack_hmr`
+            `webpack-hot-middleware/client?reload=true&path=${publicUrl}/__webpack_hmr`,
         ),
         // The source entry file for the bundle.
-        path.resolve(appRootDir.get(), bundleConfig.srcEntryFile)
-      ])
+        path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
+      ]),
     },
 
     // Bundle output configuration.
@@ -120,7 +120,7 @@ export default function webpackConfigFactory(buildOptions) {
         // For any other bundle (typically a server/node) bundle we want a
         // determinable output name to allow for easier importing/execution
         // of the bundle by our scripts.
-        '[name].js'
+        '[name].js',
       ),
       // The name format for any additional chunks produced for the bundle.
       chunkFilename: '[name]-[chunkhash].js',
@@ -133,8 +133,8 @@ export default function webpackConfigFactory(buildOptions) {
         // bundles we need to use an absolute http path for the public path.
         `${publicUrl}${config('bundles.client.webPath')}`,
         // Otherwise we expect our bundled client to be served from this path.
-        bundleConfig.webPath
-      )
+        bundleConfig.webPath,
+      ),
     },
 
     target: isClient
@@ -148,7 +148,7 @@ export default function webpackConfigFactory(buildOptions) {
     // ignored otherwise.
     node: {
       __dirname: true,
-      __filename: true
+      __filename: true,
     },
 
     // Source map settings.
@@ -161,12 +161,12 @@ export default function webpackConfigFactory(buildOptions) {
         isDev ||
         // Allow for the following flag to force source maps even for production
         // builds.
-        config('includeSourceMapsForOptimisedClientBundle')
+        config('includeSourceMapsForOptimisedClientBundle'),
     )(
       // Produces an external source map (lives next to bundle output files).
       config('sourcemap') || 'eval',
       // Produces no source map.
-      'hidden-source-map'
+      'hidden-source-map',
     ),
 
     // Performance budget feature.
@@ -179,7 +179,7 @@ export default function webpackConfigFactory(buildOptions) {
       // Enable webpack's performance hints for production client builds.
       { hints: 'warning' },
       // Else we have to set a value of "false" if we don't want the feature.
-      false
+      false,
     ),
 
     resolve: {
@@ -193,8 +193,8 @@ export default function webpackConfigFactory(buildOptions) {
       modules: [
         './shared',
         path.resolve(appRootDir.get(), 'shared'),
-        'node_modules'
-      ]
+        'node_modules',
+      ],
     },
 
     // We don't want our node_modules to be bundled with any bundle that is
@@ -213,14 +213,14 @@ export default function webpackConfigFactory(buildOptions) {
             whitelist: removeNil([
               // We always want the source-map-support included in
               // our node target bundles.
-              'source-map-support/register'
+              'source-map-support/register',
             ])
               // And any items that have been whitelisted in the config need
               // to be included in the bundling process too.
-              .concat(config('nodeExternalsFileTypeWhitelist') || [])
-          }
-        )
-      )
+              .concat(config('nodeExternalsFileTypeWhitelist') || []),
+          },
+        ),
+      ),
     ]),
 
     plugins: removeNil([
@@ -234,8 +234,8 @@ export default function webpackConfigFactory(buildOptions) {
           new webpack.BannerPlugin({
             banner: 'require("source-map-support").install();',
             raw: true,
-            entryOnly: false
-          })
+            entryOnly: false,
+          }),
       ),
 
       // We use this so that our generated [chunkhash]'s are only different if
@@ -285,7 +285,7 @@ export default function webpackConfigFactory(buildOptions) {
         // Is this a node bundle?
         BUILD_FLAG_IS_NODE: JSON.stringify(isNode),
         // Is this a development build?
-        BUILD_FLAG_IS_DEV: JSON.stringify(isDev)
+        BUILD_FLAG_IS_DEV: JSON.stringify(isDev),
       }),
 
       // Generates a JSON file containing a map of all the output files for
@@ -297,8 +297,8 @@ export default function webpackConfigFactory(buildOptions) {
         () =>
           new AssetsPlugin({
             filename: config('bundleAssetsFileName'),
-            path: path.resolve(appRootDir.get(), bundleConfig.outputPath)
-          })
+            path: path.resolve(appRootDir.get(), bundleConfig.outputPath),
+          }),
       ),
 
       // We don't want webpack errors to occur during development as it will
@@ -313,8 +313,8 @@ export default function webpackConfigFactory(buildOptions) {
       ifProdClient(
         () =>
           new webpack.LoaderOptionsPlugin({
-            minimize: true
-          })
+            minimize: true,
+          }),
       ),
 
       // For our production client we need to make sure we pass the required
@@ -325,18 +325,18 @@ export default function webpackConfigFactory(buildOptions) {
             sourceMap: config('includeSourceMapsForOptimisedClientBundle'),
             compress: {
               screw_ie8: true,
-              warnings: false
+              warnings: false,
             },
             mangle: {
               screw_ie8: true,
               // UENO: We like this.
-              keep_fnames: true
+              keep_fnames: true,
             },
             output: {
               comments: false,
-              screw_ie8: true
-            }
-          })
+              screw_ie8: true,
+            },
+          }),
       ),
 
       // For the production build of the client we need to extract the CSS into
@@ -345,8 +345,8 @@ export default function webpackConfigFactory(buildOptions) {
         () =>
           new ExtractTextPlugin({
             filename: '[name]-[chunkhash].css',
-            allChunks: true
-          })
+            allChunks: true,
+          }),
       ),
 
       // Prepare compressed versions of assets to serve them with Content-Encoding
@@ -358,8 +358,8 @@ export default function webpackConfigFactory(buildOptions) {
             algorithm: 'zopfli',
             test: /\.(js|jsx|css|html|svg)$/,
             threshold: 10240,
-            minRatio: 0.8
-          })
+            minRatio: 0.8,
+          }),
       ),
 
       // Prepare Brotli-compressed versions of assets to serve them with Content-Encoding: br
@@ -370,8 +370,8 @@ export default function webpackConfigFactory(buildOptions) {
             asset: '[path].br[query]',
             test: /\.(js|jsx|css|html|svg)$/,
             threshold: 10240,
-            minRatio: 0.8
-          })
+            minRatio: 0.8,
+          }),
       ),
 
       // -----------------------------------------------------------------------
@@ -423,7 +423,7 @@ export default function webpackConfigFactory(buildOptions) {
                   // For a node bundle we use the specific target against
                   // babel-preset-env so that only the unsupported features of
                   // our target node version gets transpiled.
-                  ifNode(['env', { targets: { node: true } }])
+                  ifNode(['env', { targets: { node: true } }]),
                 ].filter(x => x != null),
 
                 plugins: [
@@ -445,13 +445,13 @@ export default function webpackConfigFactory(buildOptions) {
                   // and the resulting allocations. More importantly, it tells
                   // React that the subtree hasn’t changed so React can completely
                   // skip it when reconciling.
-                  ifProd('transform-react-constant-elements')
-                ].filter(x => x != null)
+                  ifProd('transform-react-constant-elements'),
+                ].filter(x => x != null),
               },
-              buildOptions
-            )
-          }
-        ]
+              buildOptions,
+            ),
+          },
+        ],
       }),
 
       // HappyPack 'css' instance for development client.
@@ -468,26 +468,26 @@ export default function webpackConfigFactory(buildOptions) {
                 sourceMap: true,
                 modules: true,
                 importLoaders: 1,
-                localIdentName
-              }
+                localIdentName,
+              },
             },
             { path: 'postcss-loader' },
             {
               path: 'sass-loader',
               options: {
                 outputStyle: 'expanded',
-                sourceMap: true
-              }
-            }
-          ]
-        })
+                sourceMap: true,
+              },
+            },
+          ],
+        }),
       ),
 
       // END: HAPPY PACK PLUGINS
       // -----------------------------------------------------------------------
 
       // UENO: We want this, which file system?
-      new CaseSensitivePathsPlugin()
+      new CaseSensitivePathsPlugin(),
     ]),
     module: {
       // Don't parse the file that exports process.env
@@ -503,10 +503,10 @@ export default function webpackConfigFactory(buildOptions) {
           use: 'happypack/loader?id=happypack-javascript',
           include: removeNil([
             ...bundleConfig.srcPaths.map(srcPath =>
-              path.resolve(appRootDir.get(), srcPath)
+              path.resolve(appRootDir.get(), srcPath),
             ),
-            ifProdClient(path.resolve(appRootDir.get(), 'src/html'))
-          ])
+            ifProdClient(path.resolve(appRootDir.get(), 'src/html')),
+          ]),
         },
 
         // CSS
@@ -518,14 +518,14 @@ export default function webpackConfigFactory(buildOptions) {
             {
               test: /(\.scss|\.css)$/,
               // Dont add css-modules to node_modules css files.
-              exclude: /node_modules.*\.css$/
+              exclude: /node_modules.*\.css$/,
             },
             // For development clients we will defer all our css processing to the
             // happypack plugin named "happypack-devclient-css".
             // See the respective plugin within the plugins section for full
             // details on what loader is being implemented.
             ifDevClient({
-              use: 'happypack/loader?id=happypack-devclient-css'
+              use: 'happypack/loader?id=happypack-devclient-css',
             }),
             // For a production client build we use the ExtractTextPlugin which
             // will extract our CSS into CSS files. We don't use happypack here
@@ -541,10 +541,10 @@ export default function webpackConfigFactory(buildOptions) {
                   use: [
                     `css-loader?modules=1&importLoaders=1&localIdentName=${localIdentName}`,
                     'postcss-loader',
-                    'sass-loader?outputStyle=expanded'
-                  ]
-                })
-              ]
+                    'sass-loader?outputStyle=expanded',
+                  ],
+                }),
+              ],
             })),
             // When targetting the server we use the "/locals" version of the
             // css loader, as we don't need any css files for the server.
@@ -553,10 +553,10 @@ export default function webpackConfigFactory(buildOptions) {
                 'classnames-loader',
                 `css-loader/locals?modules=1&sourceMap&importLoaders=1&localIdentName=${localIdentName}`,
                 'postcss-loader',
-                'sass-loader?outputStyle=expanded&sourceMap'
-              ]
-            })
-          )
+                'sass-loader?outputStyle=expanded&sourceMap',
+              ],
+            }),
+          ),
         ),
 
         // Dont CSS modules on css files from node_modules folder
@@ -565,13 +565,13 @@ export default function webpackConfigFactory(buildOptions) {
           use: ifProdClient(
             ExtractTextPlugin.extract({
               fallback: 'style-loader',
-              use: ['css-loader', 'postcss-loader']
+              use: ['css-loader', 'postcss-loader'],
             }),
             [
               ...ifNode(['css-loader/locals'], ['style-loader', 'css-loader']),
-              'postcss-loader'
-            ]
-          )
+              'postcss-loader',
+            ],
+          ),
         }),
 
         // ASSETS (Images/Fonts/etc)
@@ -581,7 +581,7 @@ export default function webpackConfigFactory(buildOptions) {
         ifElse(isClient || isServer)(() => ({
           test: new RegExp(
             `\\.(${config('bundleAssetTypes').join('|')})$`,
-            'i'
+            'i',
           ),
           loader: 'file-loader',
           query: {
@@ -598,17 +598,17 @@ export default function webpackConfigFactory(buildOptions) {
             // We only emit files when building a web bundle, for the server
             // bundle we only care about the file loader being able to create
             // the correct asset URLs.
-            emitFile: isClient
-          }
+            emitFile: isClient,
+          },
         })),
 
         // SVG IMPORT loader
         {
           test: /\.svg$/,
-          use: ['babel-loader', 'svg-to-jsx-loader']
-        }
-      ])
-    }
+          use: ['babel-loader', 'svg-to-jsx-loader'],
+        },
+      ]),
+    },
   };
 
   if (isProd && isClient) {
