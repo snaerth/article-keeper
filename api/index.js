@@ -6,8 +6,8 @@ import session from 'express-session';
 import routes from './routes';
 import errorHandlers from '../server/middleware/errorHandlers';
 import middleware from './middleware';
-import config from '../config';
-import db from './db';
+import config from './config';
+import db from './database/db';
 import { createDefaultDirectorys } from './services/fileService';
 
 // VARIABLES

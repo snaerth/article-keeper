@@ -47,7 +47,9 @@
   "homepage": "https://github.com/ctrlplusb/react-universally#readme",
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
+      "shared/**/*.{js,jsx}",
+      "server/**/*.{js}",
+      "api/**/*.{js}"
     ],
     "snapshotSerializers": [
       "<rootDir>/node_modules/enzyme-to-json/serializer"
@@ -58,7 +60,8 @@
     ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "<rootDir>/internal/jest/styleMock.js",
-      "\\.(je?pg|png|gif|ico|otf|ttf|eot|woff|woff2|svg)$": "<rootDir>/internal/jest/assetMock.js"
+      "\\.(je?pg|png|gif|ico|otf|ttf|eot|woff|woff2|svg)$": "<rootDir>/internal/jest/assetMock.js",
+      "^mongoose$": "<rootDir>/node_modules/mongoose"
     },
     "testPathIgnorePatterns": [
       "<rootDir>/(build|internal|node_modules|flow-typed|public)/"
@@ -115,7 +118,7 @@
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "mongodb": "^2.2.29",
-    "mongoose": "^4.11.1",
+    "mongoose": "4.11.1",
     "morgan": "^1.8.2",
     "node-fetch": "^1.7.1",
     "node-sass": "^4.5.3",

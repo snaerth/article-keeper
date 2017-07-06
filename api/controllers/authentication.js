@@ -157,7 +157,7 @@ export function tokenForUser(user) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-function saveUser(user, propsToDelArr) {
+export function saveUser(user, propsToDelArr) {
   return new Promise((resolve, reject) => {
     if (user.constructor.name === 'model') {
       // Save user to databases
