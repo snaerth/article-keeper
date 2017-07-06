@@ -441,12 +441,12 @@ function sendResetPasswordEmail({ url, email, name }) {
       subject: 'Password reset',
       text: 'Password reset',
       html: `
-                    <p>Hi ${name}</p>
-                    <p>We've received a request to reset your password. If you didn't make the request</p>
-                    <p>just ignore this email. Otherwise you can reset your password using this link:</p>
-                    <a href="http://${url}">Click here to reset your password</a>
-                    <p>Thank you.</p>
-                `,
+          <p>Hi ${name}</p>
+          <p>We've received a request to reset your password. If you didn't make the request</p>
+          <p>just ignore this email. Otherwise you can reset your password using this link:</p>
+          <a href="http://${url}">Click here to reset your password</a>
+          <p>Thank you.</p>
+      `,
     };
 
     const { to, subject, text, html } = mailOptions;
