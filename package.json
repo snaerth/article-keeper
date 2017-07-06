@@ -22,7 +22,7 @@
     "lint": "npm run eslint && npm run stylelint",
     "precommit": "npm run lint && npm run test",
     "eslint": "eslint client server shared config internal api",
-    "stylelint": "stylelint \"shared/**/*.scss\";exit 0 --syntax scss",
+    "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"

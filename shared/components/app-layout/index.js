@@ -1,2 +1,3 @@
-export default from './AppLayout';
-export Content from './Content';
+export default from './appLayout';
+
+export Content from './content';
