@@ -20,18 +20,12 @@
     "postinstall": "if [ \"x$NODE_ENV\" != \"x\" ] && [ \"$NODE_ENV\" != \"development\" ]; then (npm run fix-sass && npm run build); fi;",
     "start": "cross-env NODE_ENV=production node build/server",
     "lint": "npm run eslint && npm run stylelint",
-    "precommit": "lint-staged && npm run test",
+    "precommit": "npm run lint && npm run test",
     "eslint": "eslint client server shared config internal api",
     "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "(*.scss|*.css)": "npm run stylelint"
   },
   "repository": {
     "type": "git",
@@ -70,7 +64,6 @@
       "<rootDir>/(build|internal|node_modules|flow-typed|public)/"
     ]
   },
-  "pre-commit": "lint-staged",
   "dependencies": {
     "app-root-dir": "^1.0.2",
     "assets-webpack-plugin": "^3.5.1",
@@ -188,10 +181,8 @@
     "http-proxy-middleware": "0.17.4",
     "husky": "0.14.2",
     "jest": "20.0.4",
-    "lint-staged": "4.0.0",
     "ngrok": "2.2.11",
     "node-notifier": "5.1.2",
-    "pre-commit": "1.2.2",
     "react-addons-test-utils": "15.6.0",
     "redux-devtools": "^3.4.0",
     "stylelint": "^7.12.0",
