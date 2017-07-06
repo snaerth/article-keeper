@@ -59,7 +59,13 @@ function checkUserByEmail(email) {
  * @returns {String} error
  * @author Snær Seljan Þóroddsson
  */
-function validateSignup({ email, password, newPassword, name, dateOfBirth }) {
+export function validateSignup({
+  email,
+  password,
+  newPassword,
+  name,
+  dateOfBirth,
+}) {
   // Check if email, password or message exist in request
   if (!email || !password || !name) {
     return 'You must provide name, email and password';
