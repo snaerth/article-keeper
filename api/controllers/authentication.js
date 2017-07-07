@@ -21,29 +21,21 @@ const { PORT, HOST } = config;
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-// eslint-disable-next-line
-function checkUserByEmail(email) {
-  // eslint-disable-line
-  return new Promise((resolve, reject) => {
+async function checkUserByEmail(email) {
+  try {
     // See if user with given email exists
-    User.findOne(
-      {
-        email,
-      },
-      (error, user) => {
-        if (error) {
-          return reject(error);
-        }
+    const user = await User.findOne({
+      email,
+    });
+    // If a user does exist, return error
+    if (user) {
+      throw new Error('Email is in use');
+    }
 
-        // If a user does exist, return error
-        if (user) {
-          return reject('Email is in use');
-        }
-
-        return resolve();
-      },
-    );
-  });
+    return Promise.resolve();
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -157,25 +149,24 @@ export function tokenForUser(user) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-export function saveUser(user, propsToDelArr) {
-  return new Promise((resolve, reject) => {
-    if (user.constructor.name === 'model') {
-      // Save user to databases
-      return user.save((error) => {
-        if (error) {
-          return reject(error);
-        }
+export async function saveUser(user, propsToDelArr) {
+  if (user.constructor.name === 'model') {
+    try {
+      // Save user to database
+      await user.save();
+      // Remove unwanted props for client
+      const newUser = removeUserProps(user, propsToDelArr);
 
-        const newUser = removeUserProps(user, propsToDelArr);
-
-        return resolve({
-          token: tokenForUser(user),
-          ...newUser,
-        });
-      });
+      return {
+        token: tokenForUser(user),
+        ...newUser,
+      };
+    } catch (error) {
+      throw new Error(error);
     }
-    return reject('Object is not a mongoose object');
-  });
+  } else {
+    throw new Error('Object is not a mongoose object');
+  }
 }
 
 /**
@@ -221,22 +212,22 @@ export async function signup(req, res) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-function findUserByEmail(email) {
-  return new Promise((resolve, reject) => {
+async function findUserByEmail(email) {
+  try {
     // See if user with given email exists
-    User.findOne(
-      {
-        email,
-      },
-      (error, user) => {
-        if (error) {
-          return reject(error);
-        }
+    const user = await User.findOne({
+      email,
+    });
 
-        return resolve(user);
-      },
-    );
-  });
+    // If a user does exist, return error
+    if (!user) {
+      throw new Error('No user found');
+    }
+
+    return Promise.resolve(user);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -304,7 +295,7 @@ export async function updateUser(req, res) {
  * @author Snær Seljan Þóroddsson */
 export function uploadUserImage(req, res) {
   const { email } = req.user;
-  const form = formidable.IncomingForm({ uploadDir: './assets/images/users/' });
+  const form = formidable.IncomingForm({ uploadDir: './public/images/users/' });
 
   form.on('error', () =>
     res.status(500).send({ error: 'An error has occured with image upload' }),
@@ -381,20 +372,18 @@ export function signin(req, res) {
 /**
  * Generates uniq token
  *
- * @returns {Promise} promise - TOken
+ * @returns {Promise} promise - Token
  * @author Snær Seljan Þóroddsson
  */
-function createRandomToken() {
-  return new Promise((resolve, reject) => {
-    crypto.randomBytes(20, (error, buffer) => {
-      if (error) {
-        return reject(error);
-      }
-
-      const token = buffer.toString('hex');
-      return resolve(token);
-    });
-  });
+async function createRandomToken() {
+  try {
+    // Create buffer
+    const buffer = await crypto.randomBytes(20);
+    const token = buffer.toString('hex');
+    return Promise.resolve(token);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -402,30 +391,26 @@ function createRandomToken() {
  * set resetPasswordToken and resetPasswordExpires props
  * save those props to user
  *
- * @returns {Promise} promise - User
+ * @param {Object} props - Token for user and email
+ * @returns {Promise} promise - user
  * @author Snær Seljan Þóroddsson
  */
-function attachTokenToUser({ token, email }) {
-  return new Promise((resolve, reject) => {
-    const hourInSeconds = 60 * 60 * 1000; // 1 hour
+async function attachTokenToUser({ token, email }) {
+  const hourInSeconds = 60 * 60 * 1000; // 1 hour
 
-    User.findOne(
-      {
-        email,
-      },
-      (error, user) => {
-        if (error) {
-          return reject(error);
-        }
+  try {
+    const user = User.findOne({
+      email,
+    });
 
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + hourInSeconds;
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + hourInSeconds;
 
-        // Save user to databases
-        return saveUser(user);
-      },
-    );
-  });
+    // Save user to databases
+    return saveUser(user);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -434,31 +419,30 @@ function attachTokenToUser({ token, email }) {
  * @returns {Promise} promise - User
  * @author Snær Seljan Þóroddsson
  */
-function sendResetPasswordEmail({ url, email, name }) {
-  return new Promise((resolve, reject) => {
-    const mailOptions = {
-      to: email,
-      subject: 'Password reset',
-      text: 'Password reset',
-      html: `
+async function sendResetPasswordEmail({ url, email, name }) {
+  const mailOptions = {
+    to: email,
+    subject: 'Password reset',
+    text: 'Password reset',
+    html: `
           <p>Hi ${name}</p>
           <p>We've received a request to reset your password. If you didn't make the request</p>
           <p>just ignore this email. Otherwise you can reset your password using this link:</p>
           <a href="http://${url}">Click here to reset your password</a>
           <p>Thank you.</p>
       `,
-    };
+  };
 
-    const { to, subject, text, html } = mailOptions;
+  const { to, subject, text, html } = mailOptions;
 
-    sendMail(to, subject, text, html, (error, info) => {
-      if (error) {
-        return reject(error);
-      }
-
-      return resolve({ info, email });
-    });
-  });
+  try {
+    // Send email
+    const info = await sendMail(to, subject, text, html);
+    // Return info and email
+    return Promise.resolve({ info, email });
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -500,39 +484,33 @@ export async function forgotPassword(req, res) {
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-function updateUserPassword({ token, password }) {
-  return new Promise((resolve, reject) => {
-    const hourInSeconds = 60 * 60 * 1000;
+async function updateUserPassword({ token, password }) {
+  const hourInSeconds = 60 * 60 * 1000;
 
-    User.findOne(
-      {
-        resetPasswordToken: token,
-        resetPasswordExpires: {
-          $gt: Date.now() - hourInSeconds,
-        },
+  try {
+    const user = User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: {
+        $gt: Date.now() - hourInSeconds,
       },
-      (error, user) => {
-        if (error || !user) {
-          return reject({
-            error: 'Password reset token is invalid or has expired.',
-          });
-        }
+    });
 
-        user.password = password;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
+    if (!user) {
+      return Promise.reject({
+        error: 'Password reset token is invalid or has expired.',
+      });
+    }
 
-        // Save user to databases
-        return user.save((err) => {
-          if (err) {
-            return reject(err);
-          }
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
 
-          return resolve(user);
-        });
-      },
-    );
-  });
+    // Save user to databases
+    await user.save();
+    return Promise.resolve(user);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 /**

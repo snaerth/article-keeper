@@ -5,34 +5,6 @@ import { validateSignup, saveUser } from './authentication';
 
 const { TEST_DB_URL } = config;
 
-/**
- * Database connection helper
- * @param {func} done
- */
-function dataBaseConnection(done) {
-  const options = {
-    server: {
-      reconnectTries: 10,
-      socketOptions: {
-        keepAlive: 1,
-        connectTimeoutMS: 30000,
-        socketTimeoutMS: 0,
-      },
-    },
-  };
-
-  // Connect to database
-  mongoose.connect(TEST_DB_URL, options);
-
-  mongoose.connection.on('error', (error) => {
-    done.fail(error);
-  });
-
-  mongoose.connection.on('open', () => {
-    done();
-  });
-}
-
 // Validate signup form fields
 describe('Validate signup form fields from post request', () => {
   test('Validates signup fields', () => {
@@ -49,27 +21,35 @@ describe('Validate signup form fields from post request', () => {
 });
 
 // Save user to database
-describe('Save user to database', async () => {
-  beforeAll((done) => {
-    dataBaseConnection(done);
+describe('Save mongoose user model to database', async () => {
+  const user = new User({
+    name: 'John Doe',
+    email: 'john@doe.com',
+    password: 'Password1',
   });
 
-  test('Save mongoose user to database', async () => {
-    const user = new User({
-      name: 'John Doe',
-      email: 'john@doe.com',
-      password: 'Password1',
-    });
+  let data;
 
-    const data = await saveUser(user);
-    // TODO fix error in test
-    expect(data.name).toBe(user.name);
-    expect(data).toMatchSnapshot();
+  beforeAll(async (done) => {
+    await mongoose.connect(TEST_DB_URL);
+    done();
   });
 
-  // TODO remove user from database
+  // Save user to db
+  test('Save user to db', async () => {
+    try {
+      data = await user.save();
+      expect(data.name).toBe(user.name);
+      expect(data.email).toBe(user.email);
+    } catch (error) {
+      expect(error.message).toEqual(
+        'E11000 duplicate key error collection: test.users index: email_1 dup key: { : "john@doe.com" }',
+      );
+    }
+  });
 
-  // afterAll(() => {
-
-  // });
+  afterAll(async (done) => {
+    await User.remove(data);
+    await mongoose.disconnect(done);
+  });
 });

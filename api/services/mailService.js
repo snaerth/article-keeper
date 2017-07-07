@@ -10,10 +10,9 @@ const { EMAIL_USERNAME, EMAIL_PASSWORD } = config;
  * @param {String} subject - Email subject
  * @param {String} text - Email text
  * @param {String} html - Email html string
- * @param {Function} callback - Callback function
  * @author Snær Seljan Þóroddsson
  */
-export default function sendMail(to, subject, text, html, callback) {
+export default async function sendMail(to, subject, text, html) {
   // Create transport
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -32,12 +31,11 @@ export default function sendMail(to, subject, text, html, callback) {
     html,
   };
 
-  // Send mail
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      callback(error, info);
-    }
-
-    callback(null, info);
-  });
+  try {
+    // Send mail
+    const info = await transporter.sendMail(mailOptions);
+    return Promise.resolve(info);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
