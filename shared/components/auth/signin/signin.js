@@ -5,11 +5,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { TimelineLite, Power2 } from 'gsap';
+import SocialsButtons from '../socials';
 import Input from '../../input';
 import Password from '../../password';
-import styles from './signin.scss';
 import Button from '../../button';
-import ButtonLink from '../../buttonLink';
 import NotifyBox from '../../notifyBox';
 import MainHeading from '../../mainheading';
 import ForgotPassword from '../forgotPassword';
@@ -17,11 +16,9 @@ import validateEmail from './../../../utils/validate';
 import Spinner from '../../spinner';
 import * as actionCreators from '../actions';
 import Email from '../../../assets/images//email.svg';
-import ArrowForward from '../../../assets/images/arrow_forward.svg';
-import ArrowBackward from '../../../assets/images//arrow_backward.svg';
-import FacebookIcon from '../../../assets/images//facebook.svg';
-import TwitterIcon from '../../../assets/images//twitter.svg';
-import GoogleIcon from '../../../assets/images/google.svg';
+import ArrowForward from '../../../assets/images/arrow_backward.svg';
+import ArrowBackward from '../../../assets/images/arrow_backward.svg';
+import styles from './signin.scss';
 
 /**
  * Signin component
@@ -165,7 +162,7 @@ class Signin extends Component {
       <form
         onSubmit={handleSubmit(this.handleFormSubmit)}
         noValidate
-        ref={c => (this.el1 = c)}
+        ref={c => this.el1 = c}
         className={container}
       >
         <MainHeading text="Sign in with email" className="medium" />
@@ -213,57 +210,6 @@ class Signin extends Component {
   }
 
   /**
-     * Renders socials sign in or sign up buttons
-     *
-     * @returns {undefined}
-     */
-  renderSocials() {
-    const { container, iconFacebook, iconArrowForward } = styles;
-
-    return (
-      <div className={container} ref={c => (this.el0 = c)}>
-        <MainHeading text="Sign in with a social network" className="medium" />
-        <ButtonLink
-          href="/admin/auth/facebook"
-          text="Continue with facebook"
-          title="Facebook login"
-          color="facebook"
-          className="fullWidth"
-        >
-          <FacebookIcon className={iconFacebook} />
-        </ButtonLink>
-        <ButtonLink
-          href="/admin/auth/twitter"
-          text="Continue with Twitter"
-          title="Twitter login"
-          color="twitter"
-          className="fullWidth"
-        >
-          <TwitterIcon className={iconFacebook} />
-        </ButtonLink>
-        <ButtonLink
-          href="/admin/auth/google"
-          text="Continue with Google"
-          title="Google login"
-          color="google"
-          className="fullWidth"
-        >
-          <GoogleIcon className={iconFacebook} />
-        </ButtonLink>
-        <ButtonLink
-          href="#"
-          onClick={e => this.toggleView(e, 1)}
-          text="Sign in with email"
-          title="Sign in with email"
-          className="fullWidth"
-        >
-          <ArrowForward className={iconArrowForward} />
-        </ButtonLink>
-      </div>
-    );
-  }
-
-  /**
      * Renders ForgotPassword component
      *
      * @returns {undefined}
@@ -272,7 +218,7 @@ class Signin extends Component {
     const { container } = styles;
 
     return (
-      <div ref={c => (this.el2 = c)} className={container}>
+      <div ref={c => this.el2 = c} className={container}>
         <MainHeading text="Reset password" className="medium" />
         <ForgotPassword hideHeading />
       </div>
@@ -281,7 +227,13 @@ class Signin extends Component {
 
   render() {
     const { handleSubmit, isFetching } = this.props;
-    const { back, iconArrowBackward, almostHidden, signinContainer } = styles;
+    const {
+      back,
+      iconArrowBackward,
+      almostHidden,
+      signinContainer,
+      container,
+    } = styles;
     const { currentSlide } = this.state;
 
     return (
@@ -289,19 +241,21 @@ class Signin extends Component {
         <div className="card">
           {currentSlide
             ? <div className={back}>
-              <button
-                className="link-slideright"
-                onClick={e => this.toggleView(e, null, true)}
-              >
-                <ArrowBackward className={iconArrowBackward} />
-              </button>
-            </div>
+                <button
+                  className="link-slideright"
+                  onClick={e => this.toggleView(e, null, true)}
+                >
+                  <ArrowBackward className={iconArrowBackward} />
+                </button>
+              </div>
             : null}
           {isFetching ? <Spinner>Signing in</Spinner> : null}
           <div className={isFetching ? almostHidden : ''}>
             {this.renderError()}
             <div className={signinContainer}>
-              {this.renderSocials()}
+              <div className={container} ref={c => this.el0 = c}>
+                <SocialsButtons onClick={e => this.toggleView(e, 1)} />
+              </div>
               {this.renderForm(handleSubmit)}
               {this.renderForgotPassword()}
             </div>

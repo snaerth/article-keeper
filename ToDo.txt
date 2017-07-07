@@ -1,0 +1,5 @@
+- Setup tests in api and client
+- Refactor Signin component
+- Refactor Header component
+- Import .env file from former project
+- Get the api working
