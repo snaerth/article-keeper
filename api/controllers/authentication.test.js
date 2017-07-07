@@ -38,7 +38,7 @@ describe('Save mongoose user model to database', async () => {
   // Save user to db
   test('Save user to db', async () => {
     try {
-      data = await user.save();
+      data = await saveUser(user);
       expect(data.name).toBe(user.name);
       expect(data.email).toBe(user.email);
     } catch (error) {

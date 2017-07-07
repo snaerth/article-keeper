@@ -108,7 +108,9 @@ export function validateSignup({
  */
 export function removeUserProps(user, moreProps) {
   let delProps = ['__v', '_id', 'createdAt'];
-  delProps = delProps.concat(moreProps);
+  delProps = moreProps && moreProps.length
+    ? delProps.concat(moreProps)
+    : delProps;
   const newUser = user.toObject();
 
   for (let i = 0; i < delProps.length; i++) {
@@ -149,18 +151,12 @@ export function tokenForUser(user) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-export async function saveUser(user, propsToDelArr) {
+export async function saveUser(user) {
   if (user.constructor.name === 'model') {
     try {
       // Save user to database
       await user.save();
-      // Remove unwanted props for client
-      const newUser = removeUserProps(user, propsToDelArr);
-
-      return {
-        token: tokenForUser(user),
-        ...newUser,
-      };
+      return Promise.resolve(user);
     } catch (error) {
       throw new Error(error);
     }
@@ -195,8 +191,13 @@ export async function signup(req, res) {
       const user = new User({ name, email, password });
       // Save user in database
       const data = await saveUser(user);
+      // Remove unwanted props for client
+      const newUser = removeUserProps(user);
       // Send response object with user token and user information
-      return res.status(200).json(data);
+      return res.status(200).json({
+        token: tokenForUser(data),
+        ...newUser,
+      });
     } catch (err) {
       return res.status(422).send({ error: err });
     }
@@ -276,7 +277,13 @@ export async function updateUser(req, res) {
         user.password = newPassword;
         // Save new user to databases
         const updatedUser = await saveUser(user);
-        return res.status(200).json(updatedUser);
+        // Remove unwanted props for client
+        const newUser = removeUserProps(user);
+        // Send response object with user token and user information
+        return res.status(200).json({
+          token: tokenForUser(updatedUser),
+          ...newUser,
+        });
       });
     } catch (err) {
       return res.status(422).send({ error: err });
@@ -328,9 +335,14 @@ export function uploadUserImage(req, res) {
 
         user.thumbnailUrl = `${fileName}-thumbnail${ext}`;
         await checkFileAndDelete(image.path);
-        const updatedUser = await saveUser(user, ['password']);
-
-        return res.status(200).send(updatedUser);
+        const updatedUser = await saveUser(user);
+        // Remove unwanted props for client
+        const newUser = removeUserProps(user, ['password']);
+        // Send response object with user token and user information
+        return res.status(200).json({
+          token: tokenForUser(updatedUser),
+          ...newUser,
+        });
       } catch (error) {
         return res.status(422).send({ error });
       }
@@ -407,7 +419,9 @@ async function attachTokenToUser({ token, email }) {
     user.resetPasswordExpires = Date.now() + hourInSeconds;
 
     // Save user to databases
-    return saveUser(user);
+    await saveUser(user);
+    // Remove unwanted props for client
+    return removeUserProps(user);
   } catch (error) {
     throw new Error(error);
   }
