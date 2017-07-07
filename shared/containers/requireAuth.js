@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export default function(ComposedComponent, userRole) {
+export default function (ComposedComponent, userRole) {
   class Authentication extends Component {
     static propTypes = {
       authenticated: PropTypes.bool,
-      roles: PropTypes.array
+      roles: PropTypes.array,
     };
 
     static contextTypes = {
-      router: PropTypes.object
+      router: PropTypes.object,
     };
 
     componentWillMount() {
@@ -44,7 +44,7 @@ export default function(ComposedComponent, userRole) {
 
   function mapStateToProps(state) {
     const newStateToProps = {
-      authenticated: state.auth.authenticated
+      authenticated: state.auth.authenticated,
     };
 
     if (state.auth.user && state.auth.user.roles) {

@@ -16,7 +16,7 @@ import validateEmail from './../../../utils/validate';
 import Spinner from '../../spinner';
 import * as actionCreators from '../actions';
 import Email from '../../../assets/images//email.svg';
-import ArrowForward from '../../../assets/images/arrow_backward.svg';
+import ArrowForward from '../../../assets/images/arrow_forward.svg';
 import ArrowBackward from '../../../assets/images/arrow_backward.svg';
 import styles from './signin.scss';
 
@@ -241,13 +241,13 @@ class Signin extends Component {
         <div className="card">
           {currentSlide
             ? <div className={back}>
-                <button
-                  className="link-slideright"
-                  onClick={e => this.toggleView(e, null, true)}
-                >
-                  <ArrowBackward className={iconArrowBackward} />
-                </button>
-              </div>
+              <button
+                className="link-slideright"
+                onClick={e => this.toggleView(e, null, true)}
+              >
+                <ArrowBackward className={iconArrowBackward} />
+              </button>
+            </div>
             : null}
           {isFetching ? <Spinner>Signing in</Spinner> : null}
           <div className={isFetching ? almostHidden : ''}>
