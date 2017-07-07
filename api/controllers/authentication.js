@@ -107,7 +107,7 @@ export function validateSignup({
  * @returns {Object} newUser
  */
 export function removeUserProps(user, moreProps) {
-  let delProps = ['__v', '_id', 'createdAt'];
+  let delProps = ['__v', '_id', 'createdAt', 'password'];
   delProps = moreProps && moreProps.length
     ? delProps.concat(moreProps)
     : delProps;
@@ -337,7 +337,7 @@ export function uploadUserImage(req, res) {
         await checkFileAndDelete(image.path);
         const updatedUser = await saveUser(user);
         // Remove unwanted props for client
-        const newUser = removeUserProps(user, ['password']);
+        const newUser = removeUserProps(user);
         // Send response object with user token and user information
         return res.status(200).json({
           token: tokenForUser(updatedUser),
@@ -366,7 +366,7 @@ export function signin(req, res) {
   let data = null;
 
   if (user) {
-    const userObject = removeUserProps(user, ['password']);
+    const userObject = removeUserProps(user);
 
     data = {
       token: tokenForUser(user),
