@@ -288,6 +288,9 @@ export default function webpackConfigFactory(buildOptions) {
         BUILD_FLAG_IS_DEV: JSON.stringify(isDev),
       }),
 
+      // Webpack 3 Scope Hoisting
+      new webpack.optimize.ModuleConcatenationPlugin(),
+
       // Generates a JSON file containing a map of all the output files for
       // our webpack bundle.  A necessisty for our server rendering process
       // as we need to interogate these files in order to know what JS/CSS
