@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "command": "${workspaceRoot}/node_modules/.bin/babel",
+  "isShellCommand": true,
+  "tasks": [
+    {
+      "taskName": "watch",
+      "args": [
+        "api",
+        "--out-dir",
+        "build_api",
+        "--watch",
+        "--source-maps"
+      ],
+      "suppressTaskName": true,
+      "isBuildCommand": true,
+      "isBackground": true
+    }
+  ]
+}
