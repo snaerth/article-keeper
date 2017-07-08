@@ -418,7 +418,6 @@ const values = {
     // server will manage starting them up for you.  The only requirement is that
     // within the entry for each bundle you create and return the "express"
     // listener.
-    /*
     apiServer: {
       srcEntryFile: './api/index.js',
       srcPaths: [
@@ -427,8 +426,7 @@ const values = {
         './config',
       ],
       outputPath: './build/api',
-    }
-    */
+    },
   },
 
   // These plugin definitions provide you with advanced hooks into customising

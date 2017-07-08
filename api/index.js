@@ -73,3 +73,5 @@ server.listen(ADMIN_PORT, (error) => {
     ADMIN_PORT,
   );
 });
+
+export default app;
