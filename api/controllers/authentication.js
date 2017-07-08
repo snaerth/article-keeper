@@ -21,7 +21,7 @@ const { PORT, HOST } = config;
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-async function checkUserByEmail(email) {
+export async function checkUserByEmail(email) {
   try {
     // See if user with given email exists
     const user = await User.findOne({

@@ -110,7 +110,10 @@ const values = {
         http://www.favicomatic.com/
       */
       { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' },
-      { name: 'description', content: 'Starter kit universal. description text here!' },
+      {
+        name: 'description',
+        content: 'Starter kit universal. description text here!',
+      },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1, user-scalable=no',
@@ -145,7 +148,10 @@ const values = {
       },
       { name: 'twitter:site', content: '@ueno' },
       { name: 'twitter:creator', content: '@ueno' },
-      { name: 'twitter:description', content: 'Starter kit universal. description text here!' },
+      {
+        name: 'twitter:description',
+        content: 'Starter kit universal. description text here!',
+      },
       { name: 'twitter:title', content: 'Starter kit universal.' },
     ],
     link: [
@@ -420,11 +426,7 @@ const values = {
     // listener.
     apiServer: {
       srcEntryFile: './api/index.js',
-      srcPaths: [
-        './api',
-        './shared',
-        './config',
-      ],
+      srcPaths: ['./api', './shared', './config'],
       outputPath: './build/api',
     },
   },
