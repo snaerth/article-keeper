@@ -2,8 +2,7 @@
 .env
 
 # Build output folders
-build/
-build_api/
+build*
 
 # Logs
 logs

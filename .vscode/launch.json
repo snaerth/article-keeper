@@ -9,7 +9,7 @@
         "type": "node",
         "protocol": "inspector",
         "request": "launch",
-        "program": "${workspaceRoot}\\build_api\\api\\index.js",
+        "program": "${workspaceRoot}\\build\\api\\index",
         "stopOnEntry": false,
         "args": [],
         "cwd": "${workspaceRoot}",
@@ -19,7 +19,7 @@
         ],
         "sourceMaps": true,
         "outFiles": [
-          "${workspaceRoot}/dist/**/*.js"
+          "${workspaceRoot}/build/api/**/*.js"
         ]
       },
       {

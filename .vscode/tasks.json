@@ -8,7 +8,7 @@
       "args": [
         "api",
         "--out-dir",
-        "build_api",
+        "build/api",
         "--watch",
         "--source-maps"
       ],

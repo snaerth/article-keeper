@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import LocalStrategy from 'passport-local';
-import config from '../../config';
+import config from '../config';
 import User from '../models/user';
 
 // VARIABLES

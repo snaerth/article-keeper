@@ -8,7 +8,7 @@ import sendMail from '../services/mailService';
 import { resizeImage } from '../services/imageService';
 import { checkFileAndDelete } from '../services/fileService';
 import User from '../models/user';
-import config from '../../config';
+import config from '../config';
 
 // VARIABLES
 const { PORT, HOST } = config;
