@@ -1,3 +1,1 @@
-import Banner from './banner';
-
-export default Banner;
+export { default } from './banner';

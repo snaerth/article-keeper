@@ -1,3 +1,1 @@
-import modalWrapper from './modalWrapper';
-
-export default modalWrapper;
+export { default } from './modalWrapper';

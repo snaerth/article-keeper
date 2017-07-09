@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
+import Container from '../../components/container';
 
-export default class About extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet title="About" />
-        about
-      </div>
-    );
-  }
-}
+const About = () => (
+  <Container>
+    <Helmet title="About" />
+    About
+  </Container>
+);
+
+export default About;

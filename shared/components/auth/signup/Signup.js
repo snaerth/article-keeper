@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import Input from '../../input';
 import Password from '../../password';
-import styles from './Signup.scss';
 import Button from '../../button';
 import MainHeading from '../../mainheading';
 import NotifyBox from '../../notifyBox';
@@ -16,6 +15,7 @@ import validateEmail from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
+import styles from './signup.scss';
 
 /**
  * Signup component

@@ -10,6 +10,7 @@ import ModalWrapper from '../modal';
 import Signup from '../auth/signup';
 import Signin from '../auth/signin';
 import Container from '../container';
+import Navigation from '../navigation';
 import * as actionCreators from '../auth/actions';
 
 /**
@@ -52,6 +53,7 @@ class Header extends Component {
   /**
    * Changes state for modal component and opens modal
    * @param {String} modalName
+   * @returns {undefined}
    */
   changeModalComponent(e, modalName) {
     e.preventDefault();
@@ -70,32 +72,17 @@ class Header extends Component {
   renderAuthLinks() {
     if (this.props.authenticated) {
       const links = [
-        <Link
-          to="/profile"
-          key="profile"
-          active={styles.active}
-          className={styles.link}
-        >
+        <Link to="/profile" key="profile" active={styles.active}>
           Profile
         </Link>,
-        <Link
-          to="/signout"
-          key="signout"
-          active={styles.active}
-          className={styles.link}
-        >
+        <Link to="/signout" key="signout" active={styles.active}>
           Sign out
         </Link>,
       ];
 
       if (this.props.roles && this.props.roles.indexOf('admin') > -1) {
         links.unshift(
-          <Link
-            to="/admin"
-            key="admin"
-            active={styles.active}
-            className={styles.link}
-          >
+          <Link to="/admin" key="admin" active={styles.active}>
             Admin
           </Link>,
         );
@@ -108,7 +95,6 @@ class Header extends Component {
         to="/signin"
         role="button"
         key="signin"
-        className={styles.link}
         onClick={e => this.changeModalComponent(e, 'signin')}
       >
         Sign in
@@ -117,7 +103,6 @@ class Header extends Component {
         to="/signup"
         role="button"
         key="signup"
-        className={styles.link}
         onClick={e => this.changeModalComponent(e, 'signup')}
       >
         Sign up
@@ -129,23 +114,10 @@ class Header extends Component {
     return (
       <div className={styles.background}>
         <Container>
-          <nav className={styles.navUpper}>
-            <div>
-              <Link
-                to="/"
-                className={classnames(
-                  styles.home_link,
-                  styles.link,
-                  styles.active,
-                )}
-              >
-                Home
-              </Link>
-            </div>
-            <div className={styles.links_right}>
-              {this.renderAuthLinks()}
-            </div>
-          </nav>
+          <Navigation>
+            <Link to="/">Home</Link>
+            {this.renderAuthLinks()}
+          </Navigation>
           <CSSTransitionGroup
             transitionName="slideInOut"
             transitionEnterTimeout={700}

@@ -1,0 +1,40 @@
+@import '~styles/variables';
+
+.nav {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.list {
+  display: flex;
+  align-items: stretch;
+  justify-content:flex-end;
+  margin: 0;
+  list-style: none;
+}
+
+.left {
+  margin-right:auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+
+.link {
+  padding: 5px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: lighten($primary-pink, 18%);
+  border-bottom: 1px solid transparent;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  transition: border-color $hover-transition, color $hover-transition;
+  &.active, &:hover {
+    border-color: $primary-white;
+    color: $primary-white;
+  }
+}

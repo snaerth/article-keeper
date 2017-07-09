@@ -14,8 +14,8 @@ import errorHandlers from './middleware/errorHandlers';
 import enforceHttps from './middleware/enforceHttps';
 import config from '../config';
 
-const { apiProtocol, apiHost, apiPort } = config;
-const target = `${apiProtocol}://${apiHost}:${apiPort}`;
+// Api target
+const target = `${config('apiProtocol')}://${config('apiHost')}:${config('apiPort')}`;
 
 // Create our express based server.
 const app = express();

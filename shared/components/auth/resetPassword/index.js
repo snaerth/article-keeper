@@ -1,3 +1,1 @@
-import resetPassword from './resetPassword';
-
-export default resetPassword;
+export { default } from './resetPassword';

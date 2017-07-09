@@ -39,7 +39,11 @@ function mapStateToProps(state, ownProps) {
     return name;
   });
 
-  return { ...state, name: filteredRoute[0].props.name };
+  const name = filteredRoute && filteredRoute[0]
+    ? filteredRoute[0].props.name
+    : '404';
+
+  return { ...state, name };
 }
 
 export default withRouter(connect(mapStateToProps)(RouteContainer));

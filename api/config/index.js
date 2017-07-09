@@ -8,13 +8,13 @@ const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
 
   // Protocol
-  PROTOCOL: process.env.PROTOCOL || 'http',
+  API_PROTOCOL: process.env.API_PROTOCOL || 'http',
 
   // Port
-  PORT: process.env.PORT || 3030,
+  API_PORT: process.env.API_PORT || 3030,
 
   // Host
-  HOST: process.env.HOST || 'localhost',
+  API_HOST: process.env.API_HOST || 'localhost',
 
   // Database url
   DB_URL: process.env.DB_URL || 'mongodb://localhost/application',

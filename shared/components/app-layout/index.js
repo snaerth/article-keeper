@@ -1,3 +1,3 @@
-export default from './appLayout';
+export Content from './content'; // eslint-disable-line
 
-export Content from './content';
+export { default } from './appLayout';

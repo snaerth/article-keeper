@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import Helmet from 'react-helmet';
 import styles from './profile.scss';
 import CircleImage from '../../components/circleImage';
 import ModalWrapper from '../../components/modal';
 import ImageBlurWrapper from '../../components/imageBlurWrapper';
+import Container from '../../components/container';
 
 /**
  * Profile component
@@ -43,41 +45,44 @@ class Profile extends Component {
     const { name, imageUrl, thumbnailUrl, email } = this.props.user;
 
     return (
-      <div className="container">
-        <div className={styles.grid}>
-          <div className={classnames(styles.card, styles.cardLeft)}>
-            <CircleImage
-              src={`images/users/${imageUrl}`}
-              alt={name}
-              className={styles.profileImage}
-              onClick={this.openModal}
-            />
-            <p className={styles.name}>{name}</p>
-            <a
-              href={`mailto${email}`}
-              title={`Send mail to ${email}`}
-              className="link-slideright"
-            >
-              {email}
-            </a>
+      <div>
+        <Helmet title="Home" />
+        <Container>
+          <div className={styles.grid}>
+            <div className={classnames(styles.card, styles.cardLeft)}>
+              <CircleImage
+                src={`images/users/${imageUrl}`}
+                alt={name}
+                className={styles.profileImage}
+                onClick={this.openModal}
+              />
+              <p className={styles.name}>{name}</p>
+              <a
+                href={`mailto${email}`}
+                title={`Send mail to ${email}`}
+                className="link-slideright"
+              >
+                {email}
+              </a>
+            </div>
+            <div className={styles.card}>
+              <h2 className={styles.noMarginTop}>Additonal information</h2>
+            </div>
           </div>
-          <div className={styles.card}>
-            <h2 className={styles.noMarginTop}>Additonal information</h2>
-          </div>
-        </div>
 
-        <ModalWrapper
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Image Modal"
-        >
-          <ImageBlurWrapper
-            id="1"
-            src={`images/users/${imageUrl}`}
-            thumbnail={`images/users/${thumbnailUrl}`}
-            alt={name}
-          />
-        </ModalWrapper>
+          <ModalWrapper
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="Image Modal"
+          >
+            <ImageBlurWrapper
+              id="1"
+              src={`images/users/${imageUrl}`}
+              thumbnail={`images/users/${thumbnailUrl}`}
+              alt={name}
+            />
+          </ModalWrapper>
+        </Container>
       </div>
     );
   }

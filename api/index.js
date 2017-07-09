@@ -11,7 +11,7 @@ import db from './database/db';
 import { createDefaultDirectorys } from './services/fileService';
 
 // VARIABLES
-const { ADMIN_HOST, ADMIN_PORT, DB_URL, SESSION_SECRET } = config;
+const { API_PORT, DB_URL, SESSION_SECRET } = config;
 
 // Create default directorys if not exist
 createDefaultDirectorys();
@@ -62,16 +62,14 @@ db(DB_URL, () => {
   app.use(...errorHandlers);
 });
 
-// Start Admin
-server.listen(ADMIN_PORT, (error) => {
+// Create an http listener for our express app.
+const listener = server.listen(API_PORT, (error) => {
   if (error) {
     console.error(error);
   }
-  console.info(
-    '==> ✅  Admin server is running on %s:%s.',
-    ADMIN_HOST,
-    ADMIN_PORT,
-  );
+  console.info('Api server listening on port %s', API_PORT);
 });
 
-export default app;
+// We export the listener as it will be handy for our development hot reloader,
+// or for exposing a general extension layer for application customisations.
+export default listener;

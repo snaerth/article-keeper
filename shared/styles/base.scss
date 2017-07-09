@@ -76,14 +76,7 @@ ul {
   list-style-type: none;
 }
 
-a:active,
-a:link,
-a:visited {
-  color: $primary-black;
-}
-
 a:hover {
-  color: $primary-red;
   transition: color $hover-transition ease-out;
 }
 
