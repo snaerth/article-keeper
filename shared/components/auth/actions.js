@@ -79,7 +79,7 @@ export function signinUser({ email, password }) {
   return async (dispatch) => {
     try {
       // Post email/password to admin server for sign in Get token back from server
-      const response = await axios.post('/admin/signin', { email, password });
+      const response = await axios.post('/api/signin', { email, password });
       const payload = {
         user: response.data.user,
       };
@@ -104,7 +104,7 @@ export function signinUser({ email, password }) {
 export function signinFacebook() {
   return async (dispatch) => {
     try {
-      const response = await axios.get('/admin/facebook');
+      const response = await axios.get('/api/facebook');
       const payload = response.data; // eslint-disable-line
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
@@ -114,8 +114,8 @@ export function signinFacebook() {
 
 /**
  * Signup Post request
- * Post request to /admin/signup to signup user
- * Post request to /admin/userimage to save user image
+ * Post request to /api/signup to signup user
+ * Post request to /api/userimage to save user image
  * Stores token in localStorage if response success and dispatches action AUTH_USER
  * if auth error dispatch error auth
  *
@@ -127,7 +127,7 @@ export function signupUser({ email, password, name, formData }) {
   return async (dispatch) => {
     try {
       // Post email/password to admin server to register user Get token back from server
-      const response = await axios.post('/admin/signup', {
+      const response = await axios.post('/api/signup', {
         email,
         password,
         name,
@@ -153,7 +153,7 @@ export function signupUser({ email, password, name, formData }) {
           },
         };
 
-        const res = await axios.post('/admin/userimage', formData, config);
+        const res = await axios.post('/api/userimage', formData, config);
         // Dispatch USER_UPDATED action to authReducer
         dispatch({ type: USER_UPDATED, payload: res.data });
         // Save token to localStorage
@@ -172,7 +172,7 @@ export function signupUser({ email, password, name, formData }) {
 
 /**
  * Add user image to user
- * Post request to /admin/userimage to save user image
+ * Post request to /api/userimage to save user image
  * if success dispatch action ADD_USER_IMAGE_SUCCESS
  * if auth error dispatch error auth
  *
@@ -190,7 +190,7 @@ export function addUserImage(formData, token) {
     };
 
     try {
-      const response = await axios.post('/admin/userimage', formData, config);
+      const response = await axios.post('/api/userimage', formData, config);
       // Dispatch USER_UPDATED action to authReducer
       dispatch({ type: USER_UPDATED, payload: response.data });
       // Save token to localStorage
@@ -255,7 +255,7 @@ export function forgotPassword({ email }) {
   return async (dispatch) => {
     try {
       // Post email to admin server to retreive new password
-      const response = await axios.post('/admin/forgot', { email });
+      const response = await axios.post('/api/forgot', { email });
       dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: response.data });
     } catch (error) {
       dispatch(authError(FORGOT_PASSWORD_ERROR, error));
@@ -274,7 +274,7 @@ export function resetPassword({ password, token }) {
   return async (dispatch) => {
     try {
       // Post email to admin server to retreive new password
-      const response = await axios.post(`/admin/reset/${token}`, { password });
+      const response = await axios.post(`/api/reset/${token}`, { password });
 
       if (!response.data.error) {
         dispatch({

@@ -37,6 +37,15 @@ const values = {
   // The port on which the server should bind to.
   port: EnvVars.number('PORT', 3000),
 
+  // Application protocol
+  apiProtocol: EnvVars.string('API_PROTOCOL', 'http'),
+
+  // The host on which the server should bind to.
+  apiHost: EnvVars.string('API_HOST', 'localhost'),
+
+  // The port on which the server should bind to.
+  apiPort: EnvVars.number('API_PORT', 3030),
+
   // Should the webpack dev server be proxied through the public url
   clientDevProxy: EnvVars.bool('CLIENT_DEV_PROXY', false),
 
