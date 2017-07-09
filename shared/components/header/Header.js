@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
-import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './header.scss';
 import ModalWrapper from '../modal';
 import Signup from '../auth/signup';
 import Signin from '../auth/signin';
 import Container from '../container';
+import Navigation from '../navigation';
 import * as actionCreators from '../auth/actions';
 
 /**
@@ -52,6 +52,7 @@ class Header extends Component {
   /**
    * Changes state for modal component and opens modal
    * @param {String} modalName
+   * @returns {undefined}
    */
   changeModalComponent(e, modalName) {
     e.preventDefault();
@@ -70,58 +71,41 @@ class Header extends Component {
   renderAuthLinks() {
     if (this.props.authenticated) {
       const links = [
-        <Link
-          to="/profile"
-          key="profile"
-          active={styles.active}
-          className={styles.link}
-        >
+        <NavLink to="/profile" key="profile" activeClassName={styles.active}>
           Profile
-        </Link>,
-        <Link
-          to="/signout"
-          key="signout"
-          active={styles.active}
-          className={styles.link}
-        >
+        </NavLink>,
+        <NavLink to="/signout" key="signout" activeClassName={styles.active}>
           Sign out
-        </Link>,
+        </NavLink>,
       ];
 
       if (this.props.roles && this.props.roles.indexOf('admin') > -1) {
         links.unshift(
-          <Link
-            to="/admin"
-            key="admin"
-            active={styles.active}
-            className={styles.link}
-          >
+          <NavLink to="/admin" key="admin" activeClassName={styles.active}>
             Admin
-          </Link>,
+          </NavLink>,
         );
       }
 
       return links;
     }
     return [
-      <Link
+      <NavLink
         to="/signin"
         role="button"
         key="signin"
-        className={styles.link}
         onClick={e => this.changeModalComponent(e, 'signin')}
       >
         Sign in
-      </Link>,
-      <Link
+      </NavLink>,
+      <NavLink
         to="/signup"
         role="button"
         key="signup"
-        className={styles.link}
         onClick={e => this.changeModalComponent(e, 'signup')}
       >
         Sign up
-      </Link>,
+      </NavLink>,
     ];
   }
 
@@ -129,29 +113,16 @@ class Header extends Component {
     return (
       <div className={styles.background}>
         <Container>
-          <nav className={styles.navUpper}>
-            <div>
-              <Link
-                to="/"
-                className={classnames(
-                  styles.home_link,
-                  styles.link,
-                  styles.active,
-                )}
-              >
-                Home
-              </Link>
-            </div>
-            <div className={styles.links_right}>
-              {this.renderAuthLinks()}
-            </div>
-          </nav>
+          <Navigation>
+            <NavLink to="/">Home</NavLink>
+            {this.renderAuthLinks()}
+          </Navigation>
           <CSSTransitionGroup
             transitionName="slideInOut"
             transitionEnterTimeout={700}
             transitionLeaveTimeout={100}
           >
-            <h1 className={styles.banner} key={this.props.name}>
+            <h1 className={styles.bannerText} key={this.props.name}>
               {this.props.name}
             </h1>
           </CSSTransitionGroup>

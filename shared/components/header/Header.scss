@@ -1,6 +1,5 @@
 @import '~styles/variables';
 @import '~styles/mixins';
-
 .background {
   min-height: 200px;
   background: $linear-background-primary;
@@ -8,32 +7,6 @@
   background-repeat: no-repeat;
   background-size: 100% 1000px;
   overflow: hidden;
-}
-
-.navUpper {
-  display: grid;
-  grid-template-columns: 20% 80%;
-}
-
-.navUpper > div a:first-child {
-  margin-left: 0;
-}
-
-.navUpper > div a:last-child {
-  margin-right: 0;
-}
-
-.link {
-  @include responsive-font(1.5vw, 16px, 18px);
-  margin: 0 0.5em;
-  color: lighten($primary-pink, 18%);
-  cursor: pointer;
-  pointer-events: visible;
-  text-decoration: none;
-  outline: none;
-  &:hover {
-    color: $primary-white;
-  }
 }
 
 .home_link {
@@ -44,11 +17,7 @@
   color: $primary-white;
 }
 
-.links_right {
-  text-align: right;
-}
-
-.banner {
-  position: absolute;
+.bannerText {
+  margin-top: 15px;
   color: lighten($primary-pink, 18%);
 }

@@ -3,7 +3,6 @@
 .container {
   @include container();
   margin-top: 25px;
-  
   .full {
     max-width: none;
     @include viewport(tablet) {
