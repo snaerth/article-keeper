@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
-import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './header.scss';
 import ModalWrapper from '../modal';
@@ -72,41 +71,41 @@ class Header extends Component {
   renderAuthLinks() {
     if (this.props.authenticated) {
       const links = [
-        <Link to="/profile" key="profile" active={styles.active}>
+        <NavLink to="/profile" key="profile" activeClassName={styles.active}>
           Profile
-        </Link>,
-        <Link to="/signout" key="signout" active={styles.active}>
+        </NavLink>,
+        <NavLink to="/signout" key="signout" activeClassName={styles.active}>
           Sign out
-        </Link>,
+        </NavLink>,
       ];
 
       if (this.props.roles && this.props.roles.indexOf('admin') > -1) {
         links.unshift(
-          <Link to="/admin" key="admin" active={styles.active}>
+          <NavLink to="/admin" key="admin" activeClassName={styles.active}>
             Admin
-          </Link>,
+          </NavLink>,
         );
       }
 
       return links;
     }
     return [
-      <Link
+      <NavLink
         to="/signin"
         role="button"
         key="signin"
         onClick={e => this.changeModalComponent(e, 'signin')}
       >
         Sign in
-      </Link>,
-      <Link
+      </NavLink>,
+      <NavLink
         to="/signup"
         role="button"
         key="signup"
         onClick={e => this.changeModalComponent(e, 'signup')}
       >
         Sign up
-      </Link>,
+      </NavLink>,
     ];
   }
 
@@ -115,7 +114,7 @@ class Header extends Component {
       <div className={styles.background}>
         <Container>
           <Navigation>
-            <Link to="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
             {this.renderAuthLinks()}
           </Navigation>
           <CSSTransitionGroup
@@ -123,7 +122,7 @@ class Header extends Component {
             transitionEnterTimeout={700}
             transitionLeaveTimeout={100}
           >
-            <h1 className={styles.banner} key={this.props.name}>
+            <h1 className={styles.bannerText} key={this.props.name}>
               {this.props.name}
             </h1>
           </CSSTransitionGroup>
