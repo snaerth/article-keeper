@@ -388,7 +388,6 @@ const values = {
         include: [
           'react-async-bootstrapper',
           'react-async-component',
-          'react-jobs',
           'react',
           'react-dom',
           'react-ga',
