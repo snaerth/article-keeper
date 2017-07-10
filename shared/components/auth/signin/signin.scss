@@ -14,7 +14,6 @@
 }
 
 .forgotPasswordContainer {
-  padding-top: 1em;
   text-align: center;
 }
 
@@ -29,6 +28,10 @@
 
 .iconArrowBackward {
   fill: $text-dark;
+}
+
+.iconArrowForward {
+  fill: $primary-white;
 }
 
 .buttonContainer {
