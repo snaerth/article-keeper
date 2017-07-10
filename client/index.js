@@ -12,7 +12,6 @@ import ReactGA from 'react-ga';
 import config from 'utils/config';
 import configureStore from '../shared/store/configureStore';
 import ReactHotLoader from './components/ReactHotLoader';
-import rootReducer from '../shared/reducers';
 import App from '../shared';
 
 // Initialize Google Analytics

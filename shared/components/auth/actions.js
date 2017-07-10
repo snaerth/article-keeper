@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router-dom';
 import {
   AUTH_USER,
   UNAUTH_USER,
@@ -87,8 +86,7 @@ export function signinUser({ email, password }) {
       dispatch({ type: AUTH_USER, payload });
       // Save token to localStorage
       localStorage.setItem('user', JSON.stringify(response.data));
-      // Reroute user to home page
-      browserHistory.push('/');
+      return Promise.resolve();
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
     }
@@ -142,28 +140,24 @@ export function signupUser({ email, password, name, formData }) {
       dispatch({ type: SIGNUP_USER, payload });
       // Reroute user to home page
       if (!formData) {
-        // Reroute user to profile page
-        browserHistory.push('/profile');
+        return Promise.resolve();
       }
 
-      if (formData) {
-        const config = {
-          headers: {
-            authorization: response.data.token,
-          },
-        };
+      const config = {
+        headers: {
+          authorization: response.data.token,
+        },
+      };
 
-        const res = await axios.post('/api/userimage', formData, config);
-        // Dispatch USER_UPDATED action to authReducer
-        dispatch({ type: USER_UPDATED, payload: res.data });
-        // Save token to localStorage
-        localStorage.setItem('user', {
-          user: JSON.stringify(res.data),
-        });
+      const res = await axios.post('/api/userimage', formData, config);
+      // Dispatch USER_UPDATED action to authReducer
+      dispatch({ type: USER_UPDATED, payload: res.data });
+      // Save token to localStorage
+      localStorage.setItem('user', {
+        user: JSON.stringify(res.data),
+      });
 
-        // Reroute user to profile page
-        browserHistory.push('/profile');
-      }
+      return Promise.resolve();
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
     }

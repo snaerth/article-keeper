@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styles from './signout.scss';
 import Button from '../../components/button';
 import Container from '../../components/container';
+import * as actionCreators from '../../components/auth/actions';
 
 /**
  * Signout component
  */
 class Signout extends Component {
   static propTypes = {
-    signoutUser: PropTypes.func
+    actions: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
-    this.props.signoutUser();
+    this.props.actions.signoutUser();
   }
 
   render() {
@@ -31,12 +34,26 @@ class Signout extends Component {
           <Link to="/">
             <Button text="Back to home" ariaLabel="Back to home" />
           </Link>
-          &nbsp;&nbsp;
-          <Link to="/"><Button text="Sign in" ariaLabel="Sign in" /></Link>
+          <Link to="/signin">
+            <Button text="Sign in" ariaLabel="Sign in" />
+          </Link>
         </div>
       </Container>
     );
   }
 }
 
-export default Signout;
+/**
+ * Maps dispatch to components props
+ *
+ * @param {Object} dispatch - Redux dispatch medhod
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actionCreators, dispatch),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Signout);

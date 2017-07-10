@@ -8,9 +8,9 @@ import Signout from './signout';
 import NotFound from './not-found';
 import Profile from './profile';
 import Admin from './admin';
+import Signin from './signin';
 
 // Components
-import Signin from '../components/auth/signin';
 import Signup from '../components/auth/signup';
 import ForgotPassword from '../components/auth/forgotPassword';
 import ResetPassword from '../components/auth/resetPassword';
