@@ -18,14 +18,14 @@ const values = {
     welcomeMessage: true,
     // We only need to expose the enabled flag of the service worker.
     serviceWorker: {
-      enabled: true,
+      enabled: true
     },
     // We need to expose all the polyfill.io settings.
     polyfillIO: true,
     // We need to expose all the htmlPage settings.
     helmet: true,
     // Google Analytics is initialized on the client.
-    gaId: true,
+    gaId: true
   },
 
   // The public facing url of the app
@@ -96,8 +96,8 @@ const values = {
     features: [
       // The default list.
       'default',
-      'es6',
-    ],
+      'es6'
+    ]
   },
 
   // Basic configuration for the HTML page that hosts our application.
@@ -105,7 +105,7 @@ const values = {
   // @see https://github.com/nfl/react-helmet
   helmet: {
     htmlAttributes: {
-      lang: 'en',
+      lang: 'en'
     },
     title: 'Home',
     titleTemplate: 'Starter kit universal. - %s',
@@ -121,126 +121,126 @@ const values = {
       { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' },
       {
         name: 'description',
-        content: 'Starter kit universal. description text here!',
+        content: 'Starter kit universal. description text here!'
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1, user-scalable=no',
+        content: 'width=device-width, initial-scale=1, user-scalable=no'
       }, // prevents inputs from zooming, but iOS still allows normal pinch zoom
       { name: 'msapplication-TileColor', content: '#00E2AD' },
       {
         name: 'msapplication-TileImage',
-        content: '/favicons/mstile-150x150.png',
+        content: '/favicons/mstile-150x150.png'
       },
       {
         name: 'msapplication-square70x70logo',
-        content: '/favicons/mstile-70x70.png',
+        content: '/favicons/mstile-70x70.png'
       },
       {
         name: 'msapplication-square150x150logo',
-        content: '/favicons/mstile-150x150.png',
+        content: '/favicons/mstile-150x150.png'
       },
       {
         name: 'msapplication-wide310x150logo',
-        content: '/favicons/mstile-310x150.png',
+        content: '/favicons/mstile-310x150.png'
       },
       {
         name: 'msapplication-square310x310logo',
-        content: '/favicons/mstile-310x310.png',
+        content: '/favicons/mstile-310x310.png'
       },
       { name: 'theme-color', content: '#00E2AD' },
       { property: 'og:image', content: '/favicons/android-chrome-192x192.png' },
       { name: 'twitter:card', content: 'summary_large_image' },
       {
         name: 'twitter:image',
-        content: '/favicons/android-chrome-192x192.png',
+        content: '/favicons/android-chrome-192x192.png'
       },
       { name: 'twitter:site', content: '@ueno' },
       { name: 'twitter:creator', content: '@ueno' },
       {
         name: 'twitter:description',
-        content: 'Starter kit universal. description text here!',
+        content: 'Starter kit universal. description text here!'
       },
-      { name: 'twitter:title', content: 'Starter kit universal.' },
+      { name: 'twitter:title', content: 'Starter kit universal.' }
     ],
     link: [
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '152x152',
-        href: '/favicons/apple-touch-icon-152x152.png',
+        href: '/favicons/apple-touch-icon-152x152.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '144x144',
-        href: '/favicons/apple-touch-icon-144x144.png',
+        href: '/favicons/apple-touch-icon-144x144.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '120x120',
-        href: '/favicons/apple-touch-icon-120x120.png',
+        href: '/favicons/apple-touch-icon-120x120.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '114x114',
-        href: '/favicons/apple-touch-icon-114x114.png',
+        href: '/favicons/apple-touch-icon-114x114.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '76x76',
-        href: '/favicons/apple-touch-icon-76x76.png',
+        href: '/favicons/apple-touch-icon-76x76.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '72x72',
-        href: '/favicons/apple-touch-icon-72x72.png',
+        href: '/favicons/apple-touch-icon-72x72.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '57x57',
-        href: '/favicons/apple-touch-icon-57x57.png',
+        href: '/favicons/apple-touch-icon-57x57.png'
       },
       {
         rel: 'apple-touch-icon-precomposed',
         sizes: '60x60',
-        href: '/favicons/apple-touch-icon-60x60.png',
+        href: '/favicons/apple-touch-icon-60x60.png'
       },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',
-        href: '/favicons/apple-touch-icon-180x180.png',
+        href: '/favicons/apple-touch-icon-180x180.png'
       },
       {
         rel: 'mask-icon',
         href: '/favicons/safari-pinned-tab.svg',
-        color: '#00a9d9',
+        color: '#00a9d9'
       },
       {
         rel: 'icon',
         type: 'image/png',
         href: '/favicons/favicon-196x196.png',
-        sizes: '196x196',
+        sizes: '196x196'
       },
       {
         rel: 'icon',
         type: 'image/png',
         href: '/favicons/favicon-128.png',
-        sizes: '128x128',
+        sizes: '128x128'
       },
       {
         rel: 'icon',
         type: 'image/png',
         href: '/favicons/favicon-96x96.png',
-        sizes: '96x96',
+        sizes: '96x96'
       },
       {
         rel: 'icon',
         type: 'image/png',
         href: '/favicons/favicon-32x32.png',
-        sizes: '32x32',
+        sizes: '32x32'
       },
       { rel: 'icon', sizes: '16x16 32x32', href: '/favicon.ico' },
-      { rel: 'manifest', href: '/manifest.json' },
-    ],
+      { rel: 'manifest', href: '/manifest.json' }
+    ]
   },
 
   // Content Security Policy (CSP)
@@ -262,9 +262,9 @@ const values = {
       '*.google-analytics.com',
       'connect.facebook.net',
       'static.ads-twitter.com',
-      'analytics.twitter.com',
+      'analytics.twitter.com'
     ],
-    styleSrc: ["'self' 'unsafe-inline'", 'fonts.googleapis.com', 'blob:'],
+    styleSrc: ["'self' 'unsafe-inline'", 'fonts.googleapis.com', 'blob:']
   },
 
   // Path to the public assets that will be served off the root of the
@@ -302,7 +302,7 @@ const values = {
     'woff2',
     'otf',
     'mp4',
-    'webm',
+    'webm'
   ],
 
   // What should we name the json output file that webpack generates
@@ -319,7 +319,7 @@ const values = {
     /\.(eot|woff|woff2|ttf|otf)$/,
     /\.(svg|png|jpg|jpeg|gif|ico)$/,
     /\.(mp4|mp3|ogg|swf|webp)$/,
-    /\.(css|scss|sass|sss|less)$/,
+    /\.(css|scss|sass|sss|less)$/
   ],
 
   // Note: you can only have a single service worker instance.  Our service
@@ -341,10 +341,10 @@ const values = {
       // You may or may not want to be including these assets.  Feel free
       // to remove this or instead include only a very specific set of
       // assets.
-      './**/*',
+      './**/*'
     ],
     // Offline page file name.
-    offlinePageFileName: 'offline.html',
+    offlinePageFileName: 'offline.html'
   },
 
   bundles: {
@@ -359,7 +359,7 @@ const values = {
         // The service worker offline page generation needs access to the
         // config folder.  Don't worry we have guards within the config files
         // to ensure they never get included in a client bundle.
-        './config',
+        './config'
       ],
 
       // Where does the client bundle output live?
@@ -392,6 +392,7 @@ const values = {
           'react-dom',
           'react-ga',
           'react-helmet',
+          'react-jobs',
           'react-router-dom',
           'redux',
           'react-redux',
@@ -400,12 +401,12 @@ const values = {
           'react-modal',
           'gsap',
           'axios',
-          'core-decorators',
+          'core-decorators'
         ],
 
         // The name of the vendor DLL.
-        name: '__dev_vendor_dll__',
-      },
+        name: '__dev_vendor_dll__'
+      }
     },
 
     server: {
@@ -416,8 +417,8 @@ const values = {
       srcPaths: ['./server', './shared', './config'],
 
       // Where does the server bundle output live?
-      outputPath: './build/server',
-    },
+      outputPath: './build/server'
+    }
   },
 
   additionalNodeBundles: {
@@ -435,8 +436,8 @@ const values = {
     apiServer: {
       srcEntryFile: './api/index.js',
       srcPaths: ['./api', './shared', './config'],
-      outputPath: './build/api',
-    },
+      outputPath: './build/api'
+    }
   },
 
   // These plugin definitions provide you with advanced hooks into customising
@@ -470,7 +471,7 @@ const values = {
 
       // Remove stage-# prests
       presets.forEach(
-        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1),
+        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1)
       );
       // Add stage-0 to list of presets
       presets.push('stage-0');
@@ -506,15 +507,15 @@ const values = {
       */
 
       return webpackConfig;
-    },
-  },
+    }
+  }
 };
 
 // This protects us from accidentally including this configuration in our
 // client bundle. That would be a big NO NO to do. :)
 if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
   throw new Error(
-    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.",
+    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`."
   );
 }
 

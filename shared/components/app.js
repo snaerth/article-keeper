@@ -4,26 +4,23 @@ import { connect } from 'react-redux';
 import { CSSTransitionGroup } from 'react-transition-group';
 import AppLayout from './app-layout';
 import Header from './header';
-import s from './app.scss';
 
 const App = ({ children, name }) => (
   <AppLayout>
     <Header name={name} />
-    <div className={s.container}>
-      <CSSTransitionGroup
-        transitionName="fadeIn"
-        transitionLeave={false}
-        transitionEnterTimeout={700}
-      >
-        {React.cloneElement(children, { key: name })}
-      </CSSTransitionGroup>
-    </div>
+    <CSSTransitionGroup
+      transitionName="fadeIn"
+      transitionLeave={false}
+      transitionEnterTimeout={700}
+    >
+      {React.cloneElement(children, { key: name })}
+    </CSSTransitionGroup>
   </AppLayout>
 );
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -31,7 +28,7 @@ function mapStateToProps(state, ownProps) {
   const pathName = state.routing.location.pathname;
 
   // Filter route by current location path
-  const filteredRoute = routes.filter((route) => {
+  const filteredRoute = routes.filter(route => {
     let name = '';
 
     if (route && route.props.path === pathName) {

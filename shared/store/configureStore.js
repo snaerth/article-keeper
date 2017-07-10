@@ -11,9 +11,17 @@ export default function configureStore(initialState) {
       typeof window === 'object' &&
         typeof window.devToolsExtension !== 'undefined'
         ? window.devToolsExtension()
-        : f => f,
-    ),
+        : f => f
+    )
   );
+
+  if (module.hot) {
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('../reducers', () => {
+      const nextRootReducer = require('../reducers');
+      store.replaceReducer(nextRootReducer);
+    });
+  }
 
   return store;
 }

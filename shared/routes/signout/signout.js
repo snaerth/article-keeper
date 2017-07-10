@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Helmet from 'react-helmet';
 import styles from './signout.scss';
 import Button from '../../components/button';
-import * as actions from '../../components/auth/actions';
+import Container from '../../components/container';
 
 /**
  * Signout component
  */
 class Signout extends Component {
   static propTypes = {
-    signoutUser: PropTypes.func,
+    signoutUser: PropTypes.func
   };
 
   componentWillMount() {
@@ -20,7 +20,8 @@ class Signout extends Component {
 
   render() {
     return (
-      <div className="container">
+      <Container className="mt25">
+        <Helmet title="Sign out" />
         <div className={styles.center}>
           <p>
             You have successfully been signed out. You can sign in again at any
@@ -33,9 +34,9 @@ class Signout extends Component {
           &nbsp;&nbsp;
           <Link to="/"><Button text="Sign in" ariaLabel="Sign in" /></Link>
         </div>
-      </div>
+      </Container>
     );
   }
 }
 
-export default connect(null, actions)(Signout);
+export default Signout;

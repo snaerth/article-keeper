@@ -16,14 +16,14 @@ class Profile extends Component {
   static propTypes = {
     user: PropTypes.object,
     imageUrl: PropTypes.string,
-    name: PropTypes.string,
+    name: PropTypes.string
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      modalIsOpen: false,
+      modalIsOpen: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -45,45 +45,43 @@ class Profile extends Component {
     const { name, imageUrl, thumbnailUrl, email } = this.props.user;
 
     return (
-      <div>
-        <Helmet title="Home" />
-        <Container>
-          <div className={styles.grid}>
-            <div className={classnames(styles.card, styles.cardLeft)}>
-              <CircleImage
-                src={`images/users/${imageUrl}`}
-                alt={name}
-                className={styles.profileImage}
-                onClick={this.openModal}
-              />
-              <p className={styles.name}>{name}</p>
-              <a
-                href={`mailto${email}`}
-                title={`Send mail to ${email}`}
-                className="link-slideright"
-              >
-                {email}
-              </a>
-            </div>
-            <div className={styles.card}>
-              <h2 className={styles.noMarginTop}>Additonal information</h2>
-            </div>
-          </div>
-
-          <ModalWrapper
-            isOpen={this.state.modalIsOpen}
-            onRequestClose={this.closeModal}
-            contentLabel="Image Modal"
-          >
-            <ImageBlurWrapper
-              id="1"
+      <Container className="mt25">
+        <Helmet title="Profile" />
+        <div className={styles.grid}>
+          <div className={classnames(styles.card, styles.cardLeft)}>
+            <CircleImage
               src={`images/users/${imageUrl}`}
-              thumbnail={`images/users/${thumbnailUrl}`}
               alt={name}
+              className={styles.profileImage}
+              onClick={this.openModal}
             />
-          </ModalWrapper>
-        </Container>
-      </div>
+            <p className={styles.name}>{name}</p>
+            <a
+              href={`mailto${email}`}
+              title={`Send mail to ${email}`}
+              className="link-slideright"
+            >
+              {email}
+            </a>
+          </div>
+          <div className={styles.card}>
+            <h2 className={styles.noMarginTop}>Additonal information</h2>
+          </div>
+        </div>
+
+        <ModalWrapper
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Image Modal"
+        >
+          <ImageBlurWrapper
+            id="1"
+            src={`images/users/${imageUrl}`}
+            thumbnail={`images/users/${thumbnailUrl}`}
+            alt={name}
+          />
+        </ModalWrapper>
+      </Container>
     );
   }
 }

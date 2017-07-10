@@ -3,10 +3,10 @@ import Helmet from 'react-helmet';
 import Container from '../../components/container';
 
 const Admin = () => (
-  <div>
+  <Container className="mt25">
     <Helmet title="Admin Page" />
-    <Container>Admin</Container>
-  </div>
+    Admin
+  </Container>
 );
 
 export default Admin;

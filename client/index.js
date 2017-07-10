@@ -80,11 +80,6 @@ require('./registerServiceWorker');
 
 // The following is needed so that we can support hot reloading our application.
 if (process.env.BUILD_FLAG_IS_DEV === 'true' && module.hot) {
-  module.hot.accept('../shared/reducers', () => {
-    // redux store has a method replaceReducer
-    store.replaceReducer(rootReducer);
-  });
-
   // Accept changes to this file for hot reloading.
   module.hot.accept('./index.js');
   // Any changes to our App will cause a hotload re-render.
