@@ -25,8 +25,7 @@
 
 .link {
   padding: 5px 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: $font-size;
   color: lighten($primary-pink, 18%);
   text-decoration: none;
   outline: none;
