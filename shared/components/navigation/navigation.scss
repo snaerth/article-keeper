@@ -28,15 +28,11 @@
   font-size: 14px;
   font-weight: 700;
   color: lighten($primary-pink, 18%);
-  border-bottom: 1px solid transparent;
-  text-transform: uppercase;
   text-decoration: none;
   outline: none;
   transition: border-color $hover-transition, color $hover-transition;
   &.active,
   &:hover {
     color: $primary-white;
-    border-color: $primary-white;
-
   }
 }

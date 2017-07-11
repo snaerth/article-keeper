@@ -1,3 +1,4 @@
+@import '~styles/config';
 @import '~styles/variables';
 
 .fullWidth {
@@ -39,11 +40,18 @@
   padding: 3em 0.625em 0.75em;
 }
 
-.container {
+.container,
+.socialsContainer {
   padding: 2em 1em 0;
   width: 100%;
   min-width: 100%;
   transform: translate3d(0, 0, 0);
+}
+
+.container {
+  @include viewport(handset) {
+    padding: 2em 0;
+  }
 }
 
 .almostHidden {

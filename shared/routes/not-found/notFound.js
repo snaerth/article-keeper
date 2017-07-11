@@ -6,8 +6,8 @@ import Container from '../../components/container';
 export default class NotFound extends Component {
   static propTypes = {
     staticContext: PropTypes.shape({
-      status: PropTypes.number
-    })
+      status: PropTypes.number,
+    }),
   };
 
   componentWillMount() {

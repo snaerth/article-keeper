@@ -3,6 +3,7 @@
 */
 @import './variables';
 @import './mixins';
+
 @-ms-viewport {
   width: device-width;
 }
@@ -39,7 +40,7 @@ body {
   @include responsive-font(1.5vw, 16px, 16px);
   position: relative;
   margin: 0;
-  font-family: 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  font-family: 'Open Sans', arial, sans-serif;
   line-height: 1.5;
   letter-spacing: 0.5px;
   color: $text-dark; // iOS on orientation change
@@ -130,6 +131,9 @@ fieldset {
   padding: 3em 1em 1em;
   background: $primary-card;
   overflow-x: hidden;
+  @include viewport(handset) {
+    padding: 3em 0 1em;
+  }
 }
 
 /*

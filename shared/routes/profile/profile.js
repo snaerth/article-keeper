@@ -16,14 +16,14 @@ class Profile extends Component {
   static propTypes = {
     user: PropTypes.object,
     imageUrl: PropTypes.string,
-    name: PropTypes.string
+    name: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -49,12 +49,14 @@ class Profile extends Component {
         <Helmet title="Profile" />
         <div className={styles.grid}>
           <div className={classnames(styles.card, styles.cardLeft)}>
-            <CircleImage
-              src={`images/users/${imageUrl}`}
-              alt={name}
-              className={styles.profileImage}
-              onClick={this.openModal}
-            />
+            {imageUrl
+              ? <CircleImage
+                src={`images/users/${imageUrl}`}
+                alt={name}
+                className={styles.profileImage}
+                onClick={this.openModal}
+              />
+              : null}
             <p className={styles.name}>{name}</p>
             <a
               href={`mailto${email}`}

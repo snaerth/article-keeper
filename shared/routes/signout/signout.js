@@ -18,25 +18,29 @@ class Signout extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.signoutUser();
+    // this.props.actions.signoutUser();
   }
 
   render() {
+    const { signoutContainer, buttonContainer } = styles;
+
     return (
       <Container className="mt25">
         <Helmet title="Sign out" />
-        <div className={styles.center}>
-          <p>
-            You have successfully been signed out. You can sign in again at any
+        <div className={signoutContainer}>
+          <h2>
+            You have successfully been signed out. <br /> You can sign in again at any
             time.
-          </p>
+          </h2>
           <br />
-          <Link to="/">
-            <Button text="Back to home" ariaLabel="Back to home" />
-          </Link>
-          <Link to="/signin">
-            <Button text="Sign in" ariaLabel="Sign in" />
-          </Link>
+          <div className={buttonContainer}>
+            <Link to="/">
+              <Button text="Back to home" ariaLabel="Back to home" />
+            </Link>
+            <Link to="/signin">
+              <Button text="Sign in" ariaLabel="Sign in" />
+            </Link>
+          </div>
         </div>
       </Container>
     );

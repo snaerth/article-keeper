@@ -30,7 +30,7 @@ class Signin extends Component {
     signinUser: PropTypes.func,
     actions: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
-    isFetching: PropTypes.bool
+    isFetching: PropTypes.bool,
   };
 
   constructor(props) {
@@ -40,7 +40,7 @@ class Signin extends Component {
     this.toggleView = this.toggleView.bind(this);
 
     this.state = {
-      currentSlide: 0
+      currentSlide: 0,
     };
   }
 
@@ -129,24 +129,24 @@ class Signin extends Component {
         .to(firstEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut
+          ease: Power2.easeOut,
         })
         .to(secondEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut
+          ease: Power2.easeOut,
         });
     } else {
       tl
         .to(secondEl, 0.2, {
           x: `10 + ${multiplier * 100}%`,
           opacity: 1,
-          ease: Power2.easeOut
+          ease: Power2.easeOut,
         })
         .to(firstEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut
+          ease: Power2.easeOut,
         });
     }
   }
@@ -161,7 +161,7 @@ class Signin extends Component {
       forgotPasswordContainer,
       container,
       iconArrowForward,
-      mb25
+      mb25,
     } = styles;
 
     return (
@@ -238,7 +238,7 @@ class Signin extends Component {
       iconArrowBackward,
       almostHidden,
       signinContainer,
-      container
+      socialsContainer,
     } = styles;
     const { currentSlide } = this.state;
 
@@ -247,19 +247,19 @@ class Signin extends Component {
         <div className="card">
           {currentSlide
             ? <div className={back}>
-                <button
-                  className="link-slideright"
-                  onClick={e => this.toggleView(e, null, true)}
-                >
-                  <ArrowBackward className={iconArrowBackward} />
-                </button>
-              </div>
+              <button
+                className="link-slideright"
+                onClick={e => this.toggleView(e, null, true)}
+              >
+                <ArrowBackward className={iconArrowBackward} />
+              </button>
+            </div>
             : null}
           {isFetching ? <Spinner>Signing in</Spinner> : null}
           <div className={isFetching ? almostHidden : ''}>
             {this.renderError()}
             <div className={signinContainer}>
-              <div className={container} ref={c => this.el0 = c}>
+              <div className={socialsContainer} ref={c => this.el0 = c}>
                 <SocialsButtons onClick={e => this.toggleView(e, 1)} />
               </div>
               {this.renderForm(handleSubmit)}
@@ -329,7 +329,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actionCreators, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch),
   };
 }
 
@@ -337,6 +337,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'signin',
     fields: ['email', 'password'],
-    validate
-  })(Signin)
+    validate,
+  })(Signin),
 );

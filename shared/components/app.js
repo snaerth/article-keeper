@@ -20,7 +20,7 @@ const App = ({ children, name }) => (
 
 App.propTypes = {
   children: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -28,7 +28,7 @@ function mapStateToProps(state, ownProps) {
   const pathName = state.routing.location.pathname;
 
   // Filter route by current location path
-  const filteredRoute = routes.filter(route => {
+  const filteredRoute = routes.filter((route) => {
     let name = '';
 
     if (route && route.props.path === pathName) {
