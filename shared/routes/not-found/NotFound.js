@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import Container from '../../components/container';
 
 export default class NotFound extends Component {
   static propTypes = {
@@ -18,10 +19,10 @@ export default class NotFound extends Component {
 
   render() {
     return (
-      <div>
+      <Container className="mt25">
         <Helmet title="404 Not Found" />
         <h1>Page was not found</h1>
-      </div>
+      </Container>
     );
   }
 }

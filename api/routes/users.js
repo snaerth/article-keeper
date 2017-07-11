@@ -1,4 +1,5 @@
-import { uploadUserImage, updateUser } from '../controllers/authentication';
+import { updateUser } from '../controllers/authentication';
+import { uploadUserImage } from '../controllers/users';
 
 /**
  * Default Admin routes

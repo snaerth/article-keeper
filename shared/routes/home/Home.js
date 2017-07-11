@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import Container from '../../components/container';
 
 const Home = () => (
-  <Container>
+  <Container className="mt25">
     <Helmet title="Home" />
     Home
   </Container>

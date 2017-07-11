@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'react-router';
 import Input from '../../input';
 import Password from '../../password';
 import Button from '../../button';
@@ -25,6 +26,7 @@ class Signup extends Component {
     handleSubmit: PropTypes.func.isRequired,
     signupUser: PropTypes.func,
     actions: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
     image: PropTypes.object,
     isFetching: PropTypes.bool,
@@ -64,7 +66,17 @@ class Signup extends Component {
       formData.append('image', this.props.image);
     }
 
-    this.props.actions.signupUser({ email, password, name, formData });
+    this.props.actions
+      .signupUser({ email, password, name, formData })
+      .then(this.signupUserSuccess());
+  }
+
+    /**
+   * Reroute user to profile page
+   * @returns {undefined}
+   */
+  signupUserSuccess() {
+    this.props.history.push('/profile');
   }
 
   /**
@@ -276,10 +288,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'signup',
     fields: ['name', 'email', 'password', 'image'],
     validate,
   })(Signup),
-);
+));
