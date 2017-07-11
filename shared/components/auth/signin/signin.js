@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { TimelineLite, Power2 } from 'gsap';
+import classnames from 'classnames';
 import SocialsButtons from '../socials';
 import Input from '../../input';
 import Password from '../../password';
@@ -29,7 +30,7 @@ class Signin extends Component {
     signinUser: PropTypes.func,
     actions: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
-    isFetching: PropTypes.bool,
+    isFetching: PropTypes.bool
   };
 
   constructor(props) {
@@ -39,7 +40,7 @@ class Signin extends Component {
     this.toggleView = this.toggleView.bind(this);
 
     this.state = {
-      currentSlide: 0,
+      currentSlide: 0
     };
   }
 
@@ -128,24 +129,24 @@ class Signin extends Component {
         .to(firstEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut
         })
         .to(secondEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut
         });
     } else {
       tl
         .to(secondEl, 0.2, {
           x: `10 + ${multiplier * 100}%`,
           opacity: 1,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut
         })
         .to(firstEl, 0.2, {
           x: `-${100 * multiplier}%`,
           opacity: 1,
-          ease: Power2.easeOut,
+          ease: Power2.easeOut
         });
     }
   }
@@ -156,7 +157,12 @@ class Signin extends Component {
   * @returns {undefined}
   */
   renderForm(handleSubmit) {
-    const { forgotPasswordContainer, container, iconArrowForward } = styles;
+    const {
+      forgotPasswordContainer,
+      container,
+      iconArrowForward,
+      mb25
+    } = styles;
 
     return (
       <form
@@ -195,7 +201,7 @@ class Signin extends Component {
             </Button>
           </div>
         </fieldset>
-        <div className={forgotPasswordContainer}>
+        <div className={classnames(forgotPasswordContainer, mb25)}>
           <Link
             role="button"
             to="/forgotpassword"
@@ -232,7 +238,7 @@ class Signin extends Component {
       iconArrowBackward,
       almostHidden,
       signinContainer,
-      container,
+      container
     } = styles;
     const { currentSlide } = this.state;
 
@@ -241,13 +247,13 @@ class Signin extends Component {
         <div className="card">
           {currentSlide
             ? <div className={back}>
-              <button
-                className="link-slideright"
-                onClick={e => this.toggleView(e, null, true)}
-              >
-                <ArrowBackward className={iconArrowBackward} />
-              </button>
-            </div>
+                <button
+                  className="link-slideright"
+                  onClick={e => this.toggleView(e, null, true)}
+                >
+                  <ArrowBackward className={iconArrowBackward} />
+                </button>
+              </div>
             : null}
           {isFetching ? <Spinner>Signing in</Spinner> : null}
           <div className={isFetching ? almostHidden : ''}>
@@ -323,7 +329,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actionCreators, dispatch),
+    actions: bindActionCreators(actionCreators, dispatch)
   };
 }
 
@@ -331,6 +337,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'signin',
     fields: ['email', 'password'],
-    validate,
-  })(Signin),
+    validate
+  })(Signin)
 );

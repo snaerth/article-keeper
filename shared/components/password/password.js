@@ -13,7 +13,7 @@ class Password extends Component {
     placeholder: PropTypes.string,
     input: PropTypes.object,
     meta: PropTypes.object,
-    autocomplete: PropTypes.string,
+    autocomplete: PropTypes.string
   };
 
   constructor(props) {
@@ -32,7 +32,7 @@ class Password extends Component {
 
     this.setState({
       passwordVisibility: !passwordVisibility,
-      type,
+      type
     });
   };
 

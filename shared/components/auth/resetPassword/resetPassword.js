@@ -25,7 +25,7 @@ class ResetPassword extends Component {
     message: PropTypes.string,
     token: PropTypes.string,
     params: PropTypes.object,
-    isFetching: PropTypes.bool,
+    isFetching: PropTypes.bool
   };
 
   componentWillMount() {
@@ -104,6 +104,7 @@ class ResetPassword extends Component {
             id="password"
             type="password"
             label="New password"
+            placeholder="someone@example.com"
           />
         </fieldset>
         <fieldset>
@@ -173,7 +174,7 @@ function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
     message: state.auth.message,
-    isFetching: state.auth.isFetching,
+    isFetching: state.auth.isFetching
   };
 }
 
@@ -186,12 +187,12 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actionCreators, dispatch),
+    actions: bindActionCreators(actionCreators, dispatch)
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({ form: 'resetPassword', fields: ['password'], validate })(
-    ResetPassword,
-  ),
+    ResetPassword
+  )
 );
