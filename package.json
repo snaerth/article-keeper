@@ -184,6 +184,7 @@
     "http-proxy-middleware": "0.17.4",
     "husky": "0.14.2",
     "jest": "20.0.4",
+    "jest-cli": "^20.0.4",
     "ngrok": "2.2.11",
     "node-notifier": "5.1.2",
     "pre-commit": "^1.2.2",
