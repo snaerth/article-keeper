@@ -1,4 +1,4 @@
-import { isAdmin } from '../controllers/authentication';
+import { isAdmin } from '../controllers/users';
 import {
   getNews,
   deleteNews,
