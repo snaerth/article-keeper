@@ -3,7 +3,7 @@ import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
 import User from '../../models/user';
-import { uploadUserImage } from '../users';
+import { uploadUserImage, saveUser } from '../users';
 import config from '../../config';
 
 const { TEST_DB_URL } = config;
