@@ -59,19 +59,19 @@ class Signup extends Component {
     this.props.actions.isFetching();
 
     // TODO make async promise or something to wait for signup user
-    // let formData = null;
+    let formData = null;
 
-    // if (this.props.image) {
-    //   formData = new FormData();
-    //   formData.append('image', this.props.image);
-    // }
+    if (this.props.image) {
+      formData = new FormData();
+      formData.append('image', this.props.image);
+    }
 
-    // this.props.actions
-    //   .signupUser({ email, password, name, formData })
-    //   .then(this.signupUserSuccess());
+    this.props.actions
+      .signupUser({ email, password, name, formData })
+      .then(this.signupUserSuccess());
   }
 
-  /**
+    /**
    * Reroute user to profile page
    * @returns {undefined}
    */
@@ -127,15 +127,15 @@ class Signup extends Component {
 
   render() {
     const { handleSubmit, errorMessage, isFetching } = this.props;
-    const { almostHidden } = styles;
+
     return (
       <div className="cardContainer">
         <div className="card">
           <MainHeading text="Sign up" />
-          {isFetching ? <Spinner>Signing up</Spinner> : null}
-          <div className={isFetching ? almostHidden : ''}>
-            {this.renderError(errorMessage)}
-            <form
+          {!isFetching ? this.renderError(errorMessage) : null}
+          {isFetching
+            ? <Spinner>Signing up</Spinner>
+            : <form
               onSubmit={handleSubmit(this.handleFormSubmit)}
               noValidate
               autoComplete="off"
@@ -185,13 +185,13 @@ class Signup extends Component {
                 />
                 {' '}
                 {this.state.showImageLoader
-                  ? <FileUploader
-                    accept="image/*"
-                    onDrop={this.onDrop}
-                    multiple={false}
-                    image={this.props.image}
-                  />
-                  : null}
+                    ? <FileUploader
+                      accept="image/*"
+                      onDrop={this.onDrop}
+                      multiple={false}
+                      image={this.props.image}
+                    />
+                    : null}
               </fieldset>
               <fieldset className={styles.fieldsetButton}>
                 <div>
@@ -204,8 +204,7 @@ class Signup extends Component {
                   </Button>
                 </div>
               </fieldset>
-            </form>
-          </div>
+            </form>}
         </div>
       </div>
     );
@@ -289,12 +288,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm({
-      form: 'signup',
-      fields: ['name', 'email', 'password', 'image'],
-      validate,
-    })(Signup),
-  ),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'signup',
+    fields: ['name', 'email', 'password', 'image'],
+    validate,
+  })(Signup),
+));
