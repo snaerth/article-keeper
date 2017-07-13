@@ -55,7 +55,7 @@ class Signup extends Component {
      * @returns {undefined}
      * @author Snær Seljan Þóroddsson
      */
-  async handleFormSubmit({ email, password, name }) {
+  handleFormSubmit({ email, password, name }) {
     this.props.actions.isFetching();
 
     // TODO make async promise or something to wait for signup user
@@ -66,12 +66,9 @@ class Signup extends Component {
       formData.append('image', this.props.image);
     }
 
-    try {
-      await this.props.actions.signupUser({ email, password, name, formData });
-      this.signupUserSuccess();
-    } catch (error) {
-      // eslint-disable-line
-    }
+    this.props.actions
+      .signupUser({ email, password, name, formData })
+      .then(this.signupUserSuccess());
   }
 
   /**
@@ -135,9 +132,9 @@ class Signup extends Component {
     return (
       <div className="cardContainer">
         <div className="card">
+          <MainHeading text="Sign up" />
           {isFetching ? <Spinner>Signing up</Spinner> : null}
           <div className={isFetching ? almostHidden : ''}>
-            <MainHeading text="Sign up" />
             {this.renderError(errorMessage)}
             <form
               onSubmit={handleSubmit(this.handleFormSubmit)}
