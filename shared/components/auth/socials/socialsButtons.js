@@ -8,23 +8,34 @@ import TwitterIcon from '../../../assets/images//twitter.svg';
 import GoogleIcon from '../../../assets/images/google.svg';
 import styles from './socialsButtons.scss';
 
-const SocialsButtons = ({ onClick }) => {
+const SocialsButtons = ({ clickHandler, toggleView }) => {
   const { icon, iconArrowForward } = styles;
+
+  /**
+   * ButtonLink click handler. It calls parent
+   * clickHandler and passes it buttons href
+   * @param {e} e - Element event
+   * @returns {undefined}
+   */
+  const signInHandler = (e) => {
+    clickHandler(e, e.target.pathname);
+  };
 
   return (
     <div>
       <MainHeading text="Sign in with a social network" className="medium" />
       <ButtonLink
-        href="/admin/auth/facebook"
+        href="/api/auth/facebook"
         text="Continue with facebook"
         title="Facebook login"
         color="facebook"
         className="fullWidth"
+        onClick={signInHandler}
       >
         <FacebookIcon className={icon} />
       </ButtonLink>
       <ButtonLink
-        href="/admin/auth/twitter"
+        href="/api/auth/twitter"
         text="Continue with Twitter"
         title="Twitter login"
         color="twitter"
@@ -33,7 +44,7 @@ const SocialsButtons = ({ onClick }) => {
         <TwitterIcon className={icon} />
       </ButtonLink>
       <ButtonLink
-        href="/admin/auth/google"
+        href="/api/auth/google"
         text="Continue with Google"
         title="Google login"
         color="google"
@@ -43,7 +54,7 @@ const SocialsButtons = ({ onClick }) => {
       </ButtonLink>
       <ButtonLink
         href="/"
-        onClick={onClick}
+        onClick={toggleView}
         text="Sign in with email"
         title="Sign in with email"
         className="fullWidth"
@@ -55,7 +66,8 @@ const SocialsButtons = ({ onClick }) => {
 };
 
 SocialsButtons.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  clickHandler: PropTypes.func.isRequired,
+  toggleView: PropTypes.func.isRequired,
 };
 
 export default SocialsButtons;

@@ -43,6 +43,7 @@ describe('POST /userimage', () => {
 
   test('Upload image and save image to filesystem', (done) => {
     request(app)
+      .type('form')
       .post('/userimage')
       .field('user', reqParams.toString())
       .attach('image', path.resolve(__dirname, 'user.jpg'))

@@ -39,7 +39,7 @@ class Profile extends Component {
 
   render() {
     if (!this.props.user) {
-      return <div>User is missing!</div>;
+      return <Container className="mt25">User is missing!</Container>;
     }
 
     const { name, imageUrl, thumbnailUrl, email } = this.props.user;

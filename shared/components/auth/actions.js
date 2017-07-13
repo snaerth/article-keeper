@@ -94,15 +94,16 @@ export function signinUser({ email, password }) {
 }
 
 /**
- * Facebook sign in
+ * Socials sign in
  *
+ * @param {path} Path for request
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export function signinFacebook() {
+export function signinFacebook(path) {
   return async (dispatch) => {
     try {
-      const response = await axios.get('/api/facebook');
+      const response = await axios.get(path);
       const payload = response.data; // eslint-disable-line
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
@@ -160,6 +161,7 @@ export function signupUser({ email, password, name, formData }) {
       return Promise.resolve();
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
+      return Promise.reject(error);
     }
   };
 }
