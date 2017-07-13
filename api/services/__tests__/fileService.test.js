@@ -3,8 +3,8 @@ import {
   fileExists,
   deleteFile,
   checkFileAndDelete,
-  createDefaultDirectorys,
-  deleteDefaultDirectorys,
+  createDirectorys,
+  deleteDirectorys,
 } from '../fileService';
 
 const createFilePath1 = './api/services/__tests__/test.txt';
@@ -17,6 +17,7 @@ beforeAll(async () => {
 });
 
 describe('Test all methods in fileService', () => {
+  // FileExists
   test(`Check if ${createFilePath1} exist in file system`, async () => {
     try {
       const res = await fileExists(createFilePath1);
@@ -26,6 +27,7 @@ describe('Test all methods in fileService', () => {
     }
   });
 
+  // Delete file
   test(`Delete file ${createFilePath1} in file system`, async () => {
     try {
       const res = await deleteFile(createFilePath1);
@@ -35,6 +37,7 @@ describe('Test all methods in fileService', () => {
     }
   });
 
+  // Check if file exist and delete
   test(`Check file ${createFilePath1} and then delete in file system`, async () => {
     try {
       const res = await checkFileAndDelete(createFilePath2);
@@ -44,23 +47,18 @@ describe('Test all methods in fileService', () => {
     }
   });
 
-  test('Create directorys', () => {
+  // Create directorys and then delete them
+  test('Create directorys and then delete them', async () => {
     try {
-      const res = createDefaultDirectorys([
+      const createResponse = await createDirectorys([
         'api/services/__tests__/testFolder',
       ]);
-      expect(res).toBe(undefined);
-    } catch (error) {
-      expect(error).toThrowErrorMatchingSnapshot();
-    }
-  });
+      expect(createResponse).toBe(undefined);
 
-  test('Delete directorys', () => {
-    try {
-      const res = deleteDefaultDirectorys([
+      const deleteResponse = await deleteDirectorys([
         'api/services/__tests__/testFolder',
       ]);
-      expect(res).toBe(undefined);
+      expect(deleteResponse).toBe(undefined);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
     }

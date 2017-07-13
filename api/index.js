@@ -8,13 +8,13 @@ import errorHandlers from './middleware/errorHandlers';
 import middleware from './middleware';
 import config from './config';
 import db from './database/db';
-import { createDefaultDirectorys } from './services/fileService';
+import { createDirectorys } from './services/fileService';
 
 // VARIABLES
 const { API_PORT, DB_URL, SESSION_SECRET } = config;
 
 // Create default directorys if not exist
-createDefaultDirectorys();
+createDirectorys();
 
 // Intialize and setup server
 const app = express();

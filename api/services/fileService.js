@@ -7,7 +7,7 @@ import fs from 'fs';
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export function createDefaultDirectorys(
+export function createDirectorys(
   directorys = ['public', 'public/images', 'public/images/users'],
 ) {
   for (let i = 0, len = directorys.length; i < len; i++) {
@@ -31,7 +31,7 @@ export function createDefaultDirectorys(
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export function deleteDefaultDirectorys(directorys) {
+export function deleteDirectorys(directorys) {
   for (let i = 0, len = directorys.length; i < len; i++) {
     const dir = directorys[i];
     fs.exists(dir, (exists) => {
