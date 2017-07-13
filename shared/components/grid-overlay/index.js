@@ -1,1 +1,1 @@
-export default from './GridOverlay';
+export { default } from './gridOverlay';
