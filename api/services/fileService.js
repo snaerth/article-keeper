@@ -1,14 +1,15 @@
 import fs from 'fs';
 
-const directorys = ['public', 'public/images', 'public/images/users'];
-
 /**
- * Creates default directorys for project if they dont exist
+ * Creates default directorys
  *
+ * @param {Array} directorys
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export function createDefaultDirectorys() {
+export function createDefaultDirectorys(
+  directorys = ['public', 'public/images', 'public/images/users'],
+) {
   for (let i = 0, len = directorys.length; i < len; i++) {
     const dir = directorys[i];
     fs.exists(dir, (exists) => {
@@ -16,6 +17,28 @@ export function createDefaultDirectorys() {
         fs.mkdir(dir, (error) => {
           if (error) {
             throw new Error(`Failed to create directory ${dir}`);
+          }
+        });
+      }
+    });
+  }
+}
+
+/**
+ * Delete directorys
+ *
+  * @param {Array} directorys
+ * @returns {undefined}
+ * @author Snær Seljan Þóroddsson
+ */
+export function deleteDefaultDirectorys(directorys) {
+  for (let i = 0, len = directorys.length; i < len; i++) {
+    const dir = directorys[i];
+    fs.exists(dir, (exists) => {
+      if (exists) {
+        fs.rmdir(dir, (error) => {
+          if (error) {
+            throw new Error(`Failed to delete directory ${dir}`);
           }
         });
       }
@@ -33,6 +56,27 @@ export function createDefaultDirectorys() {
 export function deleteFile(filePath) {
   return new Promise((resolve, reject) => {
     fs.unlink(filePath, (error) => {
+      if (error) {
+        return reject(error);
+      }
+
+      return resolve();
+    });
+  });
+}
+
+/**
+ * Create file in file system
+ *
+ * @param {string | Buffer | integer} filePath
+ * @param {string | Buffer | Uint8Array} data
+ * @param {Object | string} options
+ * @returns {Promise}
+ * @author Snær Seljan Þóroddsson
+ */
+export function createFile(filePath, data, options = '') {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, data, options, (error) => {
       if (error) {
         return reject(error);
       }

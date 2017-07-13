@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
+import { checkFileAndDelete } from '../../services/fileService';
 import User from '../../models/user';
 import { uploadUserImage, saveUser } from '../users';
 import config from '../../config';
@@ -35,27 +36,38 @@ afterAll(async (done) => {
 
 // POST request /userimage
 describe('POST /userimage', () => {
-  app.post('/userimage', uploadUserImage);
-
-  const reqParams = {
-    email: user.email,
-  };
+  const uploadDir = './api/controllers/__tests__/';
+  app.post(
+    '/userimage',
+    (req, res, next) => {
+      req.uploadDir = uploadDir;
+      next();
+    },
+    uploadUserImage,
+  );
 
   test('Upload image and save image to filesystem', (done) => {
     request(app)
-      .type('form')
       .post('/userimage')
-      .field('user', reqParams.toString())
+      .field('email', 'john@doe.com')
+      .type('form')
       .attach('image', path.resolve(__dirname, 'user.jpg'))
       .set('Accept', 'application/json')
       .expect(200)
       .expect('Content-Type', 'application/json')
       .end((err, res) => {
-        console.log(res.body);
-        if (err) {
-          console.error(res.error);
-        }
-        done(err);
+        const { name, email, roles, imageUrl, thumbnailUrl } = res.body;
+        // Run tests on response
+        expect(name).toEqual(user.name);
+        expect(email).toEqual(user.email);
+        expect(roles).toEqual(['user']);
+        expect(imageUrl).toMatch(/.jpg/);
+        expect(thumbnailUrl).toMatch(/thumbnail.jpg/);
+        // Delete uploaded images
+        checkFileAndDelete(uploadDir + imageUrl);
+        checkFileAndDelete(uploadDir + thumbnailUrl);
+
+        if (err) return done(err);
       });
   });
 });

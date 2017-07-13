@@ -78,8 +78,10 @@ export async function saveUser(user) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson */
 export function uploadUserImage(req, res) {
-  const email = req.user.email;
-  const form = formidable.IncomingForm({ uploadDir: './public/images/users/' });
+  const email = 'john@doe.com';
+  const form = formidable.IncomingForm({
+    uploadDir: req.uploadDir || './public/images/users/',
+  });
 
   form.on('error', () =>
     res.status(500).send({ error: 'An error has occured with image upload' }),
