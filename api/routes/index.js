@@ -2,6 +2,7 @@ import passport from 'passport';
 import authentication from './authentication';
 import news from './news';
 import users from './users';
+import uploads from './uploads';
 
 // Initialize require authentication helpers
 const requireAuth = passport.authenticate('jwt');
@@ -15,4 +16,5 @@ export default function (app) {
   authentication(app);
   news(app, requireAuth);
   users(app, requireAuth);
+  uploads(app, requireAuth);
 }

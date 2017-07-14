@@ -7,3 +7,7 @@
  - Signup
  - Reset
  - Forgot password
+
+
+ IMPORTANT
+  - nginx serve /public folder not express

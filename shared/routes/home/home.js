@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Container from '../../components/container';
-import MediumEditor from '../../components/mediumEditor';
+import MediumEditor from '../../components/mediumEditor/editor';
 
 const Home = () => (
   <Container className="mt25">

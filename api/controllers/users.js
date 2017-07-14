@@ -39,7 +39,7 @@ export async function findUserByEmail(email) {
 
     // If a user does exist, return error
     if (!user) {
-      throw new Error('No user found');
+      return Promise.reject('No user found');
     }
 
     return Promise.resolve(user);

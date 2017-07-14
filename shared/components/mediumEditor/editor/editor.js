@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Editor, createEditorState } from 'medium-draft';
 import 'medium-draft/lib/index.css';
+import customImageButton from '../customImageButton';
 
 class MediumEditor extends Component {
   constructor(props) {
@@ -88,6 +90,13 @@ class MediumEditor extends Component {
       },
     ];
 
+    this.sideButtons = [
+      {
+        title: 'Image',
+        component: customImageButton,
+      },
+    ];
+
     this.state = {
       editorState: createEditorState(), // for empty content
     };
@@ -110,6 +119,7 @@ class MediumEditor extends Component {
         <Editor
           ref={ref => this.editor = ref}
           editorState={editorState}
+          sideButtons={this.sideButtons}
           onChange={this.onChange}
           inlineButtons={this.inlineButtons}
           blockButtons={this.blockButtons}
@@ -119,4 +129,4 @@ class MediumEditor extends Component {
   }
 }
 
-export default MediumEditor;
+export default connect(null, null)(MediumEditor);

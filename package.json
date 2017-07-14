@@ -120,7 +120,7 @@
     "md5": "^2.2.1",
     "medium-draft": "^0.5.2",
     "mongodb": "^2.2.29",
-    "mongoose": "4.11.1",
+    "mongoose": "^4.11.2",
     "morgan": "^1.8.2",
     "node-fetch": "^1.7.1",
     "node-sass": "^4.5.3",

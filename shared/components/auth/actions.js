@@ -15,34 +15,7 @@ import {
   MODAL_CLOSE,
   CLEAN,
 } from './types';
-
-/**
- * Handles error from server
- *
- * @returns {Object} action
- * @author Snær Seljan Þóroddsson
- */
-export function authError(type, error) {
-  const errorMessage = error.response.data.error
-    ? error.response.data.error
-    : error.response.data;
-
-  let payload = errorMessage;
-
-  if (error.response.status === 401) {
-    payload = 'Bad login credentials';
-  }
-
-  if (
-    errorMessage &&
-    typeof errorMessage === 'string' &&
-    errorMessage.toLowerCase() === 'proxy_error'
-  ) {
-    payload = 'Error connecting to server';
-  }
-
-  return { type, payload };
-}
+import { authError } from '../../common/actions';
 
 /**
  * Is fetching data state

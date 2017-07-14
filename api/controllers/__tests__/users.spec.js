@@ -58,7 +58,7 @@ describe('POST /userimage', () => {
   test('Upload image and save image to filesystem', (done) => {
     request(app)
       .post('/userimage')
-      .field('email', 'john@doe.com')
+      .field('user', JSON.stringify({ email: user.email }))
       .type('form')
       .attach('image', path.resolve(__dirname, 'user.jpg'))
       .set('Accept', 'application/json')

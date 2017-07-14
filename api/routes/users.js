@@ -7,9 +7,11 @@ import { uploadUserImage, updateUser } from '../controllers/users';
  * @param {Object} next - callback
  * @returns {undefined}
  */
-function addUploadDir(req, res, next) {
-  req.uploadDir = './public/images/users/';
-  next();
+function addUploadDir(dir) {
+  return (req, res, next) => {
+    req.uploadDir = dir;
+    next();
+  };
 }
 
 /**
@@ -20,7 +22,11 @@ function addUploadDir(req, res, next) {
  */
 export default function (app, requireAuth) {
   // Upload images
-  app.post('/userimage', [requireAuth, addUploadDir], uploadUserImage);
+  app.post(
+    '/userimage',
+    [requireAuth, addUploadDir('./public/images/users/')],
+    uploadUserImage,
+  );
   // Update user
   app.put('/user', requireAuth, updateUser);
 }

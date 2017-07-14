@@ -9,7 +9,15 @@ import rimraf from 'rimraf';
  * @author Snær Seljan Þóroddsson
  */
 export function createDirectorys(
-  directorys = ['public', 'public/images', 'public/images/users'],
+  directorys = [
+    'public',
+    'public/images',
+    'public/images/users',
+    'api/uploads',
+    'api/uploads/images',
+    'api/uploads/images/users',
+    'api/uploads/images/news',
+  ],
 ) {
   for (let i = 0, len = directorys.length; i < len; i++) {
     const dir = directorys[i];
