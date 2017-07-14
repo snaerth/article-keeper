@@ -17,7 +17,7 @@ export function resizeImage(orginalPath, newPath, width, height) {
         image
           .resize(width || Jimp.AUTO, height || Jimp.AUTO) // resize
           .quality(100) // set JPEG quality
-          .write(newPath, resolve(image)); // save
+          .write(newPath, resolve(newPath)); // save
       })
       .catch(error => reject(error));
   });

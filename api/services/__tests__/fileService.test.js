@@ -24,6 +24,7 @@ describe('Test all methods in fileService', () => {
       expect(res).toBe(undefined);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
+      throw new Error(error);
     }
   });
 
@@ -34,6 +35,7 @@ describe('Test all methods in fileService', () => {
       expect(res).toBe(undefined);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
+      throw new Error(error);
     }
   });
 
@@ -44,6 +46,7 @@ describe('Test all methods in fileService', () => {
       expect(res).toBe(createFilePath2);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
+      throw new Error(error);
     }
   });
 
@@ -61,6 +64,7 @@ describe('Test all methods in fileService', () => {
       expect(deleteResponse).toBe(undefined);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
+      throw new Error(error);
     }
   });
 });
