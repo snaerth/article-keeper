@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Test all methods in fileService Check file ./api/services/__tests__/test.txt and then delete in file system 1`] = `"received is not a function"`;

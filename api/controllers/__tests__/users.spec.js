@@ -23,15 +23,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Db connect
 beforeAll(async (done) => {
   window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
-  await mongoose.connect(TEST_DB_URL);
-  await saveUser(user);
-  done();
+
+  try {
+    await mongoose.connect(TEST_DB_URL);
+    await saveUser(user);
+    done();
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 // Remove user from db and disconnect from db
 afterAll(async (done) => {
-  await User.remove(user);
-  await mongoose.disconnect(done);
+  try {
+    await User.remove(user);
+    await mongoose.disconnect(done);
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 // POST request /userimage

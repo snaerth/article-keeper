@@ -1,4 +1,5 @@
 import fs from 'fs';
+import rimraf from 'rimraf';
 
 /**
  * Creates default directorys
@@ -36,7 +37,7 @@ export function deleteDirectorys(directorys) {
     const dir = directorys[i];
     fs.exists(dir, (exists) => {
       if (exists) {
-        fs.rmdir(dir, (error) => {
+        rimraf(dir, (error) => {
           if (error) {
             throw new Error(`Failed to delete directory ${dir}`);
           }
@@ -113,11 +114,13 @@ export function fileExists(filePath) {
  * @author Snær Seljan Þóroddsson
  */
 export async function checkFileAndDelete(filePath) {
-  try {
-    await fileExists(filePath);
-    await deleteFile(filePath);
-    return filePath;
-  } catch (error) {
-    return error;
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      await fileExists(filePath);
+      await deleteFile(filePath);
+      return resolve(filePath);
+    } catch (error) {
+      return reject(error);
+    }
+  });
 }
