@@ -36,7 +36,7 @@ exports.deepTrim = function deepTrim(obj) {
  * For example splitToChunks([1,2,3,4,5,6,7,8,9], 3)
  * @param {Array} arr - Array
  * @param {Int} chunk - Integer number
- * @returns a new array divided into chunks size[[1,2.3],[4,5,6],[7,8,9]]
+ * @returns a new array divided into chunks size[[1,2,3],[4,5,6],[7,8,9]]
  */
 exports.splitToChunks = (arr, chunk) => {
   const newarr = [];
