@@ -5,9 +5,11 @@ import {
   checkFileAndDelete,
   createDirectorys,
   deleteDirectorys,
+  renameFile,
 } from '../fileService';
 
 const createFilePath1 = './api/services/__tests__/test.txt';
+const renameFilePath = './api/services/__tests__/testRenamed.txt';
 const createFilePath2 = './api/services/__tests__/test2.txt';
 
 beforeAll(async (done) => {
@@ -38,6 +40,19 @@ describe('Test all methods in fileService', () => {
     try {
       const res = await deleteFile(createFilePath1);
       expect(res).toBe(undefined);
+    } catch (error) {
+      expect(error).toThrowErrorMatchingSnapshot();
+      throw new Error(error);
+    }
+  });
+
+  // Rename file
+  test(`Rename file ${createFilePath1} in file system`, async () => {
+    try {
+      const renameResponse = await renameFile(renameFilePath);
+      expect(renameResponse).toBe(undefined);
+      const deleteResponse = await deleteFile(renameFilePath);
+      expect(deleteResponse).toBe(undefined);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
       throw new Error(error);

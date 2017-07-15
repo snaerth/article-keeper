@@ -13,10 +13,10 @@ export function createDirectorys(
     'public',
     'public/images',
     'public/images/users',
-    'api/uploads',
-    'api/uploads/images',
-    'api/uploads/images/users',
-    'api/uploads/images/news',
+    'uploads',
+    'uploads/images',
+    'uploads/images/users',
+    'uploads/images/news',
   ],
 ) {
   for (let i = 0, len = directorys.length; i < len; i++) {
@@ -86,6 +86,26 @@ export function deleteFile(filePath) {
 export function createFile(filePath, data, options = '') {
   return new Promise((resolve, reject) => {
     fs.writeFile(filePath, data, options, (error) => {
+      if (error) {
+        return reject(error);
+      }
+
+      return resolve();
+    });
+  });
+}
+
+/**
+ * Rename file in file system
+ *
+ * @param {string} filePath
+ * @param {string} newFilePath
+ * @returns {Promise}
+ * @author Snær Seljan Þóroddsson
+ */
+export function renameFile(filePath, newFilePath) {
+  return new Promise((resolve, reject) => {
+    fs.rename(filePath, newFilePath, (error) => {
       if (error) {
         return reject(error);
       }

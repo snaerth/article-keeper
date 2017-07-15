@@ -1,5 +1,5 @@
-import { isAdmin } from '../controllers/upload';
-import { deleteFiles, uploadFiles } from '../controllers/news';
+import { isAdmin } from '../controllers/users';
+import uploadFiles from '../controllers/uploads';
 
 /**
  * Adds uploadDir property to request object
@@ -23,15 +23,14 @@ function addUploadDir(dir) {
  */
 export default function (app, requireAuth) {
   // Images
-  app.delete('/upload/images', [requireAuth, isAdmin], deleteFiles);
   app.post(
     '/upload/images',
-    [requireAuth, isAdmin, addUploadDir('./api/images/')],
+    [requireAuth, isAdmin, addUploadDir('./uploads/images/')],
     uploadFiles,
   );
   app.post(
     '/upload/images/news',
-    [requireAuth, isAdmin, addUploadDir('./api/images/news')],
+    [requireAuth, isAdmin, addUploadDir('./uploads/images/news/')],
     uploadFiles,
   );
 }

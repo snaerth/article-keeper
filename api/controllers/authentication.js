@@ -120,9 +120,9 @@ export async function signup(req, res) {
 
   const { email, password, name } = req.body;
   // Validate post request inputs
-  const error = validateSignup({ email, password, name });
+  const validateError = validateSignup({ email, password, name });
 
-  if (!error) {
+  if (!validateError) {
     try {
       // Check for if user exists by email
       await checkUserByEmail(email);
@@ -136,11 +136,11 @@ export async function signup(req, res) {
         token: tokenForUser(data),
         ...newUser,
       });
-    } catch (err) {
-      return res.status(422).send({ error: err });
+    } catch (error) {
+      return res.status(422).send({ error });
     }
   } else {
-    return res.status(422).send({ error });
+    return res.status(422).send({ error: validateError });
   }
 }
 

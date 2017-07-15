@@ -2,8 +2,7 @@ import formidable from 'formidable';
 import path from 'path';
 import uuid from 'uuid/v1';
 import { resizeImage } from '../services/imageService';
-import { checkFileAndDelete } from '../services/fileService';
-import { findUserByEmail } from '../controllers/users';
+import { checkFileAndDelete, renameFile } from '../services/fileService';
 
 export function deleteFiles(req, res) {
   res.send('Delete files');
@@ -16,8 +15,6 @@ export function deleteFiles(req, res) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson */
 export default function uploadFiles(req, res) {
-  const { email } = req.user;
-
   if (!req.uploadDir) {
     return res.status(500).send({ error: 'Upload directory missing' });
   }
@@ -36,12 +33,13 @@ export default function uploadFiles(req, res) {
     if (image) {
       const ext = path.extname(image.name);
       const fileName = uuid();
+      const imgPath = form.uploadDir + fileName + ext;
       const thumbnailPath = `${form.uploadDir}${`${fileName}-thumbnail${ext}`}`;
 
       try {
-        await findUserByEmail(email);
         const imageUrl = fileName + ext;
         await resizeImage(image.path, thumbnailPath, 27);
+        await renameFile(image.path, imgPath);
         const thumbnailUrl = `${fileName}-thumbnail${ext}`;
         return res.status(200).json({ url: imageUrl, thumbnail: thumbnailUrl });
       } catch (error) {
