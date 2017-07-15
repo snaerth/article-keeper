@@ -1,5 +1,5 @@
 import { isAdmin } from '../controllers/users';
-import uploadFiles from '../controllers/uploads';
+import uploadFiles, { deleteFiles } from '../controllers/uploads';
 
 /**
  * Adds uploadDir property to request object
@@ -10,7 +10,7 @@ import uploadFiles from '../controllers/uploads';
  */
 function addUploadDir(dir) {
   return (req, res, next) => {
-    req.uploadDir = dir;
+    req.uploadDir = `./uploads/${dir || ''}`;
     next();
   };
 }
@@ -23,14 +23,12 @@ function addUploadDir(dir) {
  */
 export default function (app, requireAuth) {
   // Images
-  app.post(
-    '/upload/images',
-    [requireAuth, isAdmin, addUploadDir('./uploads/images/')],
-    uploadFiles,
-  );
+  app.post('/upload/images', [requireAuth, isAdmin, addUploadDir], uploadFiles);
   app.post(
     '/upload/images/news',
-    [requireAuth, isAdmin, addUploadDir('./uploads/images/news/')],
+    [requireAuth, isAdmin, addUploadDir('images/news/')],
     uploadFiles,
   );
+
+  app.delete('/upload/images/news', [requireAuth, isAdmin], deleteFiles);
 }

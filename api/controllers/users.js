@@ -78,9 +78,9 @@ export async function saveUser(user) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson */
 export function uploadUserImage(req, res) {
-  const email = 'john@doe.com';
+  const { email } = req.user;
   const form = formidable.IncomingForm({
-    uploadDir: req.uploadDir || './public/images/users/',
+    uploadDir: req.uploadDir || './uploads/images/users/',
   });
 
   form.on('error', () =>

@@ -24,7 +24,7 @@ export default function (app, requireAuth) {
   // Upload images
   app.post(
     '/userimage',
-    [requireAuth, addUploadDir('./public/images/users/')],
+    [requireAuth, addUploadDir('./uploads/images/users/')],
     uploadUserImage,
   );
   // Update user

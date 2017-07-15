@@ -12,7 +12,6 @@ export function createDirectorys(
   directorys = [
     'public',
     'public/images',
-    'public/images/users',
     'uploads',
     'uploads/images',
     'uploads/images/users',

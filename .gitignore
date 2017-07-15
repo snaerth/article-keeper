@@ -43,3 +43,6 @@ flow-coverage/
 
 # OSX Files
 .DS_Store
+
+# File uploads
+uploads
