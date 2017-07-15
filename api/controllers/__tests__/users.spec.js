@@ -65,7 +65,7 @@ describe('POST /userimage', () => {
       .expect(200)
       .expect('Content-Type', 'application/json')
       .end((err, res) => {
-        const { name, email, roles, imageUrl, thumbnailUrl } = res.body;
+        const { name, email, roles, imageUrl, thumbnailUrl } = res.user;
         // Run tests on response
         expect(name).toEqual(user.name);
         expect(email).toEqual(user.email);

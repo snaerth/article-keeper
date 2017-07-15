@@ -64,7 +64,7 @@ describe('POST /userimage', () => {
       .expect(200)
       .expect('Content-Type', 'application/json')
       .end((err, res) => {
-        const { url, thumbnail } = res.body;
+        const { url, thumbnail } = res;
         // Run tests on response
         expect(url).toMatch(/.jpg/);
         expect(thumbnail).toMatch(/thumbnail.jpg/);

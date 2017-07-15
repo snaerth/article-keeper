@@ -15,8 +15,9 @@ const createFilePath2 = './api/services/__tests__/test2.txt';
 beforeAll(async (done) => {
   try {
     // Create fake files
-    await createFile(createFilePath1, 'This is a test');
-    await createFile(createFilePath2, 'This is a test number 2');
+    await createFile(createFilePath1, 'Test 1');
+    await createFile(createFilePath2, 'Test 2');
+    await createFile(renameFilePath, 'Test 3');
     done();
   } catch (error) {
     throw new Error(error);
@@ -49,7 +50,7 @@ describe('Test all methods in fileService', () => {
   // Rename file
   test(`Rename file ${createFilePath1} in file system`, async () => {
     try {
-      const renameResponse = await renameFile(renameFilePath);
+      const renameResponse = await renameFile(renameFilePath, renameFilePath);
       expect(renameResponse).toBe(undefined);
       const deleteResponse = await deleteFile(renameFilePath);
       expect(deleteResponse).toBe(undefined);
