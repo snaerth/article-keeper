@@ -4,7 +4,7 @@ import path from 'path';
 import uuid from 'uuid/v1';
 import User from '../models/user';
 import { resizeImage } from '../services/imageService';
-import { checkFileAndDelete } from '../services/fileService';
+import { checkFileAndDelete, renameFile } from '../services/fileService';
 import { removeUserProps, validateSignup } from './authentication';
 
 /**
@@ -109,8 +109,8 @@ export function uploadUserImage(req, res) {
         }
 
         user.imageUrl = fileName + ext;
-        await resizeImage(image.path, imgPath, 400);
         await resizeImage(image.path, thumbnailPath, 27);
+        await renameFile(image.path, imgPath);
 
         user.thumbnailUrl = `${fileName}-thumbnail${ext}`;
         await checkFileAndDelete(image.path);
