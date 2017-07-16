@@ -1,8 +1,10 @@
-import formidable from 'formidable';
 import path from 'path';
 import uuid from 'uuid/v1';
 import { resizeImage } from '../services/imageService';
 import { renameFile, checkFileAndDelete } from '../services/fileService';
+import config from '../config';
+
+const { UPLOADS_ROOT } = config;
 
 /**
  * Delete files in file system
@@ -22,10 +24,10 @@ export function deleteFiles(req, res) {
 
   try {
     images.forEach(async (imagePath) => {
-      await checkFileAndDelete(`./uploads/${imagePath}`);
+      await checkFileAndDelete(UPLOADS_ROOT + imagePath);
     });
 
-    res.status(200).send({ success: 'Images deleted' });
+    return res.status(200).send({ success: 'Images deleted' });
   } catch (error) {
     return res.status(422).send({ error: "Couldn't delete images" });
   }
@@ -39,48 +41,30 @@ export function deleteFiles(req, res) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
-export default function uploadFiles(req, res) {
-  const uploadDir = req.uploadDir;
+export default async function uploadFiles(req, res) {
+  const image = req.files.image;
 
-  if (!uploadDir) {
-    return res.status(500).send({ error: 'Upload directory missing' });
-  }
+  if (image) {
+    const uploadDir = 'images/news/';
+    const ext = path.extname(image.name);
+    const fileName = uuid();
+    const imgPath = UPLOADS_ROOT + uploadDir + fileName + ext;
+    const thumbnailPath = `${UPLOADS_ROOT + uploadDir}${`${fileName}-thumbnail${ext}`}`;
 
-  const form = formidable.IncomingForm({
-    uploadDir,
-  });
-
-  const outDir = uploadDir.indexOf('./uploads/') > -1
-    ? uploadDir.replace('./uploads/', '')
-    : uploadDir;
-
-  form.on('error', () =>
-    res.status(500).send({ error: 'An error has occured with image upload' }),
-  );
-
-  form.parse(req, async (err, fields, files) => {
-    const image = files.image;
-
-    if (image) {
-      const ext = path.extname(image.name);
-      const fileName = uuid();
-      const imgPath = form.uploadDir + fileName + ext;
-      const thumbnailPath = `${form.uploadDir}${`${fileName}-thumbnail${ext}`}`;
-
-      try {
-        const imageUrl = fileName + ext;
-        await resizeImage(image.path, thumbnailPath, 27);
-        await renameFile(image.path, imgPath);
-        const thumbnailUrl = `${fileName}-thumbnail${ext}`;
-        return res.status(200).json({
-          url: outDir + imageUrl,
-          thumbnail: outDir + thumbnailUrl,
-        });
-      } catch (error) {
-        return res.status(422).send({ error });
-      }
-    } else {
-      return res.status(422).send({ error: 'Image required' });
+    try {
+      const imageUrl = fileName + ext;
+      await resizeImage(image.path, thumbnailPath, 27);
+      await renameFile(image.path, imgPath);
+      const thumbnailUrl = `${fileName}-thumbnail${ext}`;
+      // Send images url to client
+      return res.status(200).json({
+        url: uploadDir + imageUrl,
+        thumbnail: uploadDir + thumbnailUrl,
+      });
+    } catch (error) {
+      return res.status(422).send({ error });
     }
-  });
+  } else {
+    return res.status(422).send({ error: 'Image required' });
+  }
 }

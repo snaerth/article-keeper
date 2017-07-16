@@ -122,13 +122,13 @@ export function renameFile(filePath, newFilePath) {
  * @author Snær Seljan Þóroddsson
  */
 export function fileExists(filePath) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     fs.exists(filePath, (exists) => {
       if (!exists) {
-        return reject('File does not exist.');
+        return resolve(false);
       }
 
-      return resolve();
+      return resolve(true);
     });
   });
 }
@@ -143,9 +143,13 @@ export function fileExists(filePath) {
 export async function checkFileAndDelete(filePath) {
   return new Promise(async (resolve, reject) => {
     try {
-      await fileExists(filePath);
-      await deleteFile(filePath);
-      return resolve(filePath);
+      const exist = await fileExists(filePath);
+      if (exist) {
+        await deleteFile(filePath);
+        return resolve(filePath);
+      }
+
+      return resolve(false);
     } catch (error) {
       return reject(error);
     }

@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
+  // Uploads root folder
+  UPLOADS_ROOT: process.env.UPLOADS_ROOT || './uploads/',
+
   // Defaults
   NODE_ENV: process.env.NODE_ENV || 'development',
 

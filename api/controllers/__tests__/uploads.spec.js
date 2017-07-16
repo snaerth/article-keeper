@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Db connect
 beforeAll(async (done) => {
-  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
   try {
     await mongoose.connect(TEST_DB_URL);
@@ -47,7 +47,7 @@ afterAll(async (done) => {
 describe('POST /userimage', () => {
   const uploadDir = './api/controllers/__tests__/';
   app.post(
-    '/userimage',
+    '/upload/images/news',
     (req, res, next) => {
       req.uploadDir = uploadDir;
       next();
@@ -64,13 +64,12 @@ describe('POST /userimage', () => {
       .expect(200)
       .expect('Content-Type', 'application/json')
       .end((err, res) => {
-        const { url, thumbnail } = res;
         // Run tests on response
-        expect(url).toMatch(/.jpg/);
-        expect(thumbnail).toMatch(/thumbnail.jpg/);
+        expect(res.url).toMatch(/.jpg/);
+        expect(res.thumbnail).toMatch(/thumbnail.jpg/);
         // Delete uploaded images
-        checkFileAndDelete(uploadDir + url);
-        checkFileAndDelete(uploadDir + thumbnail);
+        checkFileAndDelete(uploadDir + res.url);
+        checkFileAndDelete(uploadDir + res.thumbnail);
 
         if (err) return done(err);
       });

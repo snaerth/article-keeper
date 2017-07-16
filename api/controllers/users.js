@@ -1,11 +1,13 @@
 import jwt from 'jwt-simple';
-import formidable from 'formidable';
 import path from 'path';
 import uuid from 'uuid/v1';
 import User from '../models/user';
 import { resizeImage } from '../services/imageService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
 import { removeUserProps, validateSignup } from './authentication';
+import config from '../config';
+
+const { UPLOADS_ROOT } = config;
 
 /**
  * Gets token for user
@@ -77,58 +79,50 @@ export async function saveUser(user) {
  * @param {Object} res
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson */
-export function uploadUserImage(req, res) {
-  const { email } = req.user;
-  const form = formidable.IncomingForm({
-    uploadDir: req.uploadDir || './uploads/images/users/',
-  });
+export async function uploadUserImage(req, res) {
+  const image = req.files.image;
 
-  form.on('error', () =>
-    res.status(500).send({ error: 'An error has occured with image upload' }),
-  );
-
-  form.parse(req, async (err, fields, files) => {
-    const image = files.image;
-
-    if (image) {
+  if (image) {
+    try {
+      const { email } = req.user;
+      const user = await findUserByEmail(email);
+      const uploadDir = 'images/users/';
       const ext = path.extname(image.name);
       const fileName = uuid();
-      const imgPath = form.uploadDir + fileName + ext;
-      const thumbnailPath = `${form.uploadDir}${`${fileName}-thumbnail${ext}`}`;
+      // File system path to image
+      const imgPath = UPLOADS_ROOT + uploadDir + fileName + ext;
+      // File system path to thumbnail image
+      const thumbnailPath = `${UPLOADS_ROOT + uploadDir}${`${fileName}-thumbnail${ext}`}`;
+      const { imageUrl, thumbnailUrl } = user;
 
-      try {
-        const user = await findUserByEmail(email);
-        const { imageUrl, thumbnailUrl } = user;
-
-        if (imageUrl) {
-          await checkFileAndDelete(form.uploadDir + imageUrl);
-        }
-
-        if (thumbnailUrl) {
-          await checkFileAndDelete(form.uploadDir + thumbnailUrl);
-        }
-
-        user.imageUrl = fileName + ext;
-        await resizeImage(image.path, thumbnailPath, 27);
-        await renameFile(image.path, imgPath);
-
-        user.thumbnailUrl = `${fileName}-thumbnail${ext}`;
-        await checkFileAndDelete(image.path);
-        const updatedUser = await saveUser(user);
-        // Remove unwanted props for client
-        const newUser = removeUserProps(user);
-        // Send response object with user token and user information
-        return res.status(200).json({
-          token: tokenForUser(updatedUser),
-          ...newUser,
-        });
-      } catch (error) {
-        return res.status(422).send({ error });
+      if (imageUrl) {
+        await checkFileAndDelete(UPLOADS_ROOT + imageUrl);
       }
-    } else {
-      return res.status(422).send({ error: 'Image required' });
+
+      if (thumbnailUrl) {
+        await checkFileAndDelete(UPLOADS_ROOT + thumbnailUrl);
+      }
+
+      await resizeImage(image.path, thumbnailPath, 27);
+      await renameFile(image.path, imgPath);
+
+      user.imageUrl = uploadDir + fileName + ext;
+      user.thumbnailUrl = `${uploadDir + fileName}-thumbnail${ext}`;
+      // Update user
+      const updatedUser = await saveUser(user);
+      // Remove unwanted props for client
+      const newUser = removeUserProps(user);
+      // Send response object with user token and user information
+      return res.status(200).json({
+        token: tokenForUser(updatedUser),
+        ...newUser,
+      });
+    } catch (error) {
+      return res.status(422).send({ error });
     }
-  });
+  } else {
+    return res.status(422).send({ error: 'Image required' });
+  }
 }
 
 /**

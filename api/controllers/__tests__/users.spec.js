@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Db connect
 beforeAll(async (done) => {
-  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
   try {
     await mongoose.connect(TEST_DB_URL);

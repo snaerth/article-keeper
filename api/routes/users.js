@@ -1,20 +1,6 @@
 import { uploadUserImage, updateUser } from '../controllers/users';
 
 /**
- * Adds uploadDir property to request object
- * @param {Object} req
- * @param {Object} res
- * @param {Object} next - callback
- * @returns {undefined}
- */
-function addUploadDir(dir) {
-  return (req, res, next) => {
-    req.uploadDir = dir;
-    next();
-  };
-}
-
-/**
  * Default Admin routes
  * @param {Object} app - Express app referece
  * @param {Func} requireAuth - authentication helper function
@@ -22,11 +8,7 @@ function addUploadDir(dir) {
  */
 export default function (app, requireAuth) {
   // Upload images
-  app.post(
-    '/userimage',
-    [requireAuth, addUploadDir('./uploads/images/users/')],
-    uploadUserImage,
-  );
+  app.post('/userimage', [requireAuth], uploadUserImage);
   // Update user
   app.put('/user', requireAuth, updateUser);
 }

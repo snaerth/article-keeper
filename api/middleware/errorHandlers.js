@@ -8,8 +8,7 @@
 * @returns {undefined}
 */
 function notFoundMiddlware(req, res) {
-  res.status(404);
-  res.send({
+  return res.status(404).send({
     status: 404,
     message: 'Page not found',
   });
@@ -26,11 +25,12 @@ function notFoundMiddlware(req, res) {
 * @returns {undefined}
 */
 function unhandledErrorMiddleware(err, req, res, next) {
-  res.set('content-type', 'text/html');
-  res.status(500);
-  res.send(`</head><body><h1>500 Server Error</h1><p>${err}</p></body></html>`);
-  res.end();
-  next(err);
+  res
+    .set('content-type', 'text/html')
+    .status(500)
+    .send(`</head><body><h1>500 Server Error</h1><p>${err}</p></body></html>`)
+    .end();
+  return next(err);
 }
 
 export default [notFoundMiddlware, unhandledErrorMiddleware];
