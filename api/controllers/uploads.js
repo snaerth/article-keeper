@@ -57,7 +57,7 @@ export default async function uploadFiles(req, res) {
       await renameFile(image.path, imgPath);
       const thumbnailUrl = `${fileName}-thumbnail${ext}`;
       // Send images url to client
-      return res.status(200).json({
+      return res.status(200).send({
         url: uploadDir + imageUrl,
         thumbnail: uploadDir + thumbnailUrl,
       });

@@ -113,7 +113,7 @@ export async function uploadUserImage(req, res) {
       // Remove unwanted props for client
       const newUser = removeUserProps(user);
       // Send response object with user token and user information
-      return res.status(200).json({
+      return res.status(200).send({
         token: tokenForUser(updatedUser),
         ...newUser,
       });

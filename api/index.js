@@ -53,11 +53,8 @@ db(DB_URL, () => {
   // Hide all software information
   app.disable('x-powered-by');
 
-  // Apply middleware to app
-  app.use(middleware([limiter, session(sessionOptions)]));
-
+  // File upload
   app.use(
-    // File upload
     formidableMiddleware({
       encoding: 'utf-8',
       uploadDir: UPLOADS_ROOT,
@@ -65,6 +62,9 @@ db(DB_URL, () => {
       keepExtensions: true,
     }),
   );
+
+  // Apply middleware to app
+  app.use(middleware([limiter, session(sessionOptions)]));
 
   // Admin routes
   routes(app);

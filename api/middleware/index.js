@@ -11,7 +11,7 @@ const defaultMiddlewares = [
   // Let app use compression
   compression(),
   // use application/json parser
-  bodyParser.json(bodyParser.json()),
+  bodyParser.json(),
   // Use application/x-www-form-urlencoded parser
   bodyParser.urlencoded({
     extended: true,
