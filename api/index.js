@@ -5,14 +5,13 @@ import RateLimit from 'express-rate-limit';
 import session from 'express-session';
 import routes from './routes';
 import errorHandlers from './middleware/errorHandlers';
-import formidableMiddleware from './middleware/uploadHandlers';
 import middleware from './middleware';
 import config from './config';
 import db from './database/db';
 import { createDirectorys } from './services/fileService';
 
 // VARIABLES
-const { API_PORT, DB_URL, SESSION_SECRET, UPLOADS_ROOT } = config;
+const { API_PORT, DB_URL, SESSION_SECRET } = config;
 
 // Create default directorys if not exist
 createDirectorys();
@@ -52,16 +51,6 @@ if (process.env.NODE_ENV === 'production') {
 db(DB_URL, () => {
   // Hide all software information
   app.disable('x-powered-by');
-
-  // File upload
-  app.use(
-    formidableMiddleware({
-      encoding: 'utf-8',
-      uploadDir: UPLOADS_ROOT,
-      multiples: true, // req.files to be arrays of files
-      keepExtensions: true,
-    }),
-  );
 
   // Apply middleware to app
   app.use(middleware([limiter, session(sessionOptions)]));

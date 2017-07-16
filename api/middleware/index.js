@@ -4,12 +4,25 @@ import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import passport from 'passport';
+import formidableMiddleware from './uploadHandlers';
 import parallel from '../utils/parallel';
+import config from '../config';
+
+// VARIABLES
+const { UPLOADS_ROOT } = config;
 
 // Default middlewares
 const defaultMiddlewares = [
   // Let app use compression
   compression(),
+
+  formidableMiddleware({
+    encoding: 'utf-8',
+    uploadDir: UPLOADS_ROOT,
+    multiples: true, // req.files to be arrays of files
+    keepExtensions: true,
+  }),
+
   // use application/json parser
   bodyParser.json(),
   // Use application/x-www-form-urlencoded parser

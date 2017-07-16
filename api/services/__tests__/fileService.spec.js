@@ -29,7 +29,7 @@ describe('Test all methods in fileService', () => {
   test(`Check if ${createFilePath1} exist in file system`, async () => {
     try {
       const res = await fileExists(createFilePath1);
-      expect(res).toBe(undefined);
+      expect(res).toBe(true);
     } catch (error) {
       expect(error).toThrowErrorMatchingSnapshot();
       throw new Error(error);

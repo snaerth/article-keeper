@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Db connect
 beforeAll(async (done) => {
-  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+  window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
   try {
     await mongoose.connect(TEST_DB_URL);
@@ -46,23 +46,20 @@ afterAll(async (done) => {
 // POST request /userimage
 describe('POST /userimage', () => {
   const uploadDir = './api/controllers/__tests__/';
-  app.post(
-    '/upload/images/news',
-    (req, res, next) => {
-      req.uploadDir = uploadDir;
-      next();
-    },
-    uploadUserImage,
-  );
+  app.post('/uploads/images/news', uploadUserImage);
+  // app.post('/userimage', uploadUserImage);
 
   test('Upload image and save image to filesystem', (done) => {
     request(app)
-      .post('/upload/images/news')
+      .post('/uploads/images/news')
       .type('form')
       .attach('image', path.resolve(__dirname, 'user.jpg'))
       .set('Accept', 'application/json')
+      .set(
+        'Content-Type',
+        'multipart/form-data; boundary=----WebKitFormBoundarya0ZcT8RMUIC59Iyv',
+      )
       .expect(200)
-      .expect('Content-Type', 'application/json')
       .end((err, res) => {
         // Run tests on response
         expect(res.url).toMatch(/.jpg/);
@@ -74,4 +71,58 @@ describe('POST /userimage', () => {
         if (err) return done(err);
       });
   });
+
+  // test('Upload image and save image to filesystem', (done) => {
+
+  //   request(app)
+
+  //     .post('/userimage')
+
+  //     .field('user', JSON.stringify({ email: user.email }))
+
+  //     .type('form')
+
+  //     .attach('image', path.resolve(__dirname, 'user.jpg'))
+
+  //     .set('Accept', 'application/json')
+
+  //     .set(
+
+  //       'Content-Type',
+
+  //       'multipart/form-data; boundary=----WebKitFormBoundarya0ZcT8RMUIC59Iyv',
+
+  //     )
+
+  //     .expect(200)
+
+  //     .expect('Content-Type', 'application/json')
+
+  //     .end((err, res) => {
+
+  //       const { name, email, roles, imageUrl, thumbnailUrl } = res.data;
+
+  //       // Run tests on response
+
+  //       expect(name).toEqual(user.name);
+
+  //       expect(email).toEqual(user.email);
+
+  //       expect(roles).toEqual(['user']);
+
+  //       expect(imageUrl).toMatch(/.jpg/);
+
+  //       expect(thumbnailUrl).toMatch(/thumbnail.jpg/);
+
+  //       // Delete uploaded images
+
+  //       checkFileAndDelete(uploadDir + imageUrl);
+
+  //       checkFileAndDelete(uploadDir + thumbnailUrl);
+
+  //       if (err) return done(err);
+
+  //     });
+
+  // });
 });
