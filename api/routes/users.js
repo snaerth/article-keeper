@@ -1,5 +1,4 @@
 import { uploadUserImage, updateUser } from '../controllers/users';
-import formidableMiddleware from '../middleware/uploadHandlers';
 
 /**
  * Default Admin routes
@@ -9,7 +8,7 @@ import formidableMiddleware from '../middleware/uploadHandlers';
  */
 export default function (app, requireAuth) {
   // Upload images
-  app.post('/userimage', [requireAuth, formidableMiddleware], uploadUserImage);
+  app.post('/userimage', [requireAuth], uploadUserImage);
   // Update user
   app.put('/user', requireAuth, updateUser);
 }
