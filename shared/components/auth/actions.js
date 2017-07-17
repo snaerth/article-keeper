@@ -39,7 +39,7 @@ export function setPreviewUserImage(image) {
 }
 
 /**
- * Post request made to admin with email and passwod
+ * Post request made to api with email and passwod
  * Stores token in localStorage if response success and dispatches action AUTH_USER
  * if auth error dispatch error auth
  *
@@ -50,12 +50,12 @@ export function setPreviewUserImage(image) {
 export function signinUser({ email, password }) {
   return async (dispatch) => {
     try {
-      // Post email/password to admin server for sign in Get token back from server
+      // Post email/password to api server for sign in Get token back from server
       const response = await axios.post('/api/signin', { email, password });
       const payload = {
         user: response.data.user,
       };
-      // Dispatch admin action to authReducer
+      // Dispatch api action to authReducer
       dispatch({ type: AUTH_USER, payload });
       // Save token to localStorage
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -98,7 +98,7 @@ export function signinFacebook(path) {
 export function signupUser({ email, password, name, formData }) {
   return async (dispatch) => {
     try {
-      // Post email/password to admin server to register user Get token back from server
+      // Post email/password to api server to register user Get token back from server
       const response = await axios.post('/api/signup', {
         email,
         password,
@@ -110,7 +110,7 @@ export function signupUser({ email, password, name, formData }) {
 
       // Save token to localStorage
       localStorage.setItem('user', JSON.stringify(response.data));
-      // Dispatch admin action to authReducer
+      // Dispatch api action to authReducer
       dispatch({ type: SIGNUP_USER, payload });
       // Reroute user to home page
       if (!formData) {
@@ -223,7 +223,7 @@ export function signoutUser() {
 export function forgotPassword({ email }) {
   return async (dispatch) => {
     try {
-      // Post email to admin server to retreive new password
+      // Post email to api server to retreive new password
       const response = await axios.post('/api/forgot', { email });
       dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: response.data });
     } catch (error) {
@@ -242,7 +242,7 @@ export function forgotPassword({ email }) {
 export function resetPassword({ password, token }) {
   return async (dispatch) => {
     try {
-      // Post email to admin server to retreive new password
+      // Post email to api server to retreive new password
       const response = await axios.post(`/api/reset/${token}`, { password });
 
       if (!response.data.error) {

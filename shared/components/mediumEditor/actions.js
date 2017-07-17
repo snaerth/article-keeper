@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UPLOAD_IMAGE } from './types';
+import { UPLOAD_IMAGE, STORE_IMAGE_FORM_DATA } from './types';
 import { authError } from '../../common/actions';
 
 /**
@@ -9,13 +9,19 @@ import { authError } from '../../common/actions';
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export default function uploadImage({ email, password }) {
+export default function uploadImages({ formData, token }) {
   return async (dispatch) => {
+    const config = {
+      headers: {
+        authorization: token,
+      },
+    };
+
     try {
-      // Post email/password to admin server for sign in Get token back from server
-      const response = await axios.post('/api/signin', { email, password });
+      // Post images to server to upload images to server
+      const response = await axios.post('/api/signin', formData, config);
       const payload = {
-        user: response.data.user,
+        images: response.data,
       };
       // Dispatch admin action to authReducer
       dispatch({ type: UPLOAD_IMAGE, payload });
@@ -24,4 +30,8 @@ export default function uploadImage({ email, password }) {
       dispatch(authError(UPLOAD_IMAGE, error));
     }
   };
+}
+
+export function storeImageFormData(formData) {
+  return { type: STORE_IMAGE_FORM_DATA, payload: formData };
 }

@@ -50,4 +50,15 @@ class MediumEditor extends Component {
   }
 }
 
-export default connect(null, null)(MediumEditor);
+/**
+ * Maps state to components props
+ *
+ * @param {Object} state - Application state
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+function mapStateToProps(state) {
+  return { imagesFormData: state.editor.imagesFormData };
+}
+
+export default connect(mapStateToProps, null)(MediumEditor);

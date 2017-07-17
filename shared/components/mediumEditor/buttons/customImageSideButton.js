@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Block, addNewBlock } from 'medium-draft';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions';
 import CameraIcon from '../../../assets/images/camera.svg';
 
 class CustomImageSideButton extends Component {
@@ -8,6 +11,7 @@ class CustomImageSideButton extends Component {
     setEditorState: PropTypes.func,
     getEditorState: PropTypes.func,
     close: PropTypes.func,
+    actions: PropTypes.object,
   };
 
   constructor(props) {
@@ -35,6 +39,8 @@ class CustomImageSideButton extends Component {
     if (file.type.indexOf('image/') === 0) {
       // console.log(this.props.getEditorState());
       // eslint-disable-next-line no-undef
+      // Store formdata in redux state
+      this.props.actions.storeImageFormData(e.target.files[0]);
       const src = URL.createObjectURL(file);
       this.props.setEditorState(
         addNewBlock(this.props.getEditorState(), Block.IMAGE, {
@@ -63,4 +69,17 @@ class CustomImageSideButton extends Component {
   }
 }
 
-export default CustomImageSideButton;
+/**
+ * Maps dispatch to components props
+ *
+ * @param {Object} dispatch - Redux dispatch medhod
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actionCreators, dispatch),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(CustomImageSideButton);
