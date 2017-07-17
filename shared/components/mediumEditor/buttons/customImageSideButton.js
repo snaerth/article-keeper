@@ -37,19 +37,38 @@ class CustomImageSideButton extends Component {
     // e.preventDefault();
     const file = e.target.files[0];
     if (file.type.indexOf('image/') === 0) {
-      // console.log(this.props.getEditorState());
-      // eslint-disable-next-line no-undef
-      // Store formdata in redux state
-      this.props.actions.storeImageFormData(e.target.files[0]);
-      const src = URL.createObjectURL(file);
-      this.props.setEditorState(
-        addNewBlock(this.props.getEditorState(), Block.IMAGE, {
-          src,
-        }),
-      );
+      const formData = new FormData();
+      formData.append('image', file);
+      this.uploadImage(formData);
     }
     this.props.close();
   }
+
+  /**
+   * Calls redux action uploadImages witch uploads image to server
+   * Updates editors state on successful upload
+   * @param {Object} formData
+   * @returns {undefined}
+   */
+  uploadImage = async (formData) => {
+    const { actions, token, getEditorState, setEditorState } = this.props;
+
+    try {
+      const data = await actions.uploadImages({
+        formData,
+        token,
+      });
+
+      setEditorState(
+        addNewBlock(getEditorState(), Block.IMAGE, {
+          src: data.url,
+        }),
+      );
+    } catch (error) {
+      // TODO Error handling
+      throw new Error(error);
+    }
+  };
 
   render() {
     return (
@@ -70,6 +89,17 @@ class CustomImageSideButton extends Component {
 }
 
 /**
+ * Maps state to components props
+ *
+ * @param {Object} state - Application state
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+function mapStateToProps(state) {
+  return { token: state.auth.token, ...state };
+}
+
+/**
  * Maps dispatch to components props
  *
  * @param {Object} dispatch - Redux dispatch medhod
@@ -82,4 +112,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(CustomImageSideButton);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  CustomImageSideButton,
+);

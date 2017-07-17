@@ -19,13 +19,18 @@ export default function uploadImages({ formData, token }) {
 
     try {
       // Post images to server to upload images to server
-      const response = await axios.post('/api/signin', formData, config);
+      const response = await axios.post(
+        '/api/uploads/images/news',
+        formData,
+        config,
+      );
+
       const payload = {
         images: response.data,
       };
       // Dispatch admin action to authReducer
       dispatch({ type: UPLOAD_IMAGE, payload });
-      return Promise.resolve();
+      return Promise.resolve(payload);
     } catch (error) {
       dispatch(authError(UPLOAD_IMAGE, error));
     }

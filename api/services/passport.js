@@ -42,6 +42,7 @@ export const localLogin = new LocalStrategy(
 
         // Compare password to encrypted password
         return user.comparePassword(password, (err, isMatch) => {
+          // eslint-disable-line
           if (err) {
             return done(err);
           }

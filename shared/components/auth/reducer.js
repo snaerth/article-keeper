@@ -18,6 +18,7 @@ import {
 
 let user = null;
 
+// Check if localStorage exist in browser
 if (localStorageChecker()) {
   try {
     user = JSON.parse(localStorage.getItem('user'));

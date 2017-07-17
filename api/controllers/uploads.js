@@ -43,7 +43,6 @@ export function deleteFiles(req, res) {
  */
 export default async function uploadFiles(req, res) {
   const image = req.files.image;
-
   if (image) {
     const uploadDir = 'images/news/';
     const ext = path.extname(image.name);

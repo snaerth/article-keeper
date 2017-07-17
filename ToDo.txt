@@ -1,3 +1,5 @@
+- FIX USER LOGIN PASSWORD COMPARE ASAP
+
 - Setup tests in api and client
 
 - Refactor Header component

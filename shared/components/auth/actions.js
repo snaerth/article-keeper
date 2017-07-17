@@ -108,12 +108,12 @@ export function signupUser({ email, password, name, formData }) {
         user: response.data,
       };
 
-      // Save token to localStorage
-      localStorage.setItem('user', JSON.stringify(response.data));
       // Dispatch api action to authReducer
       dispatch({ type: SIGNUP_USER, payload });
       // Reroute user to home page
       if (!formData) {
+        // Save token to localStorage
+        localStorage.setItem('user', JSON.stringify(response.data));
         return Promise.resolve();
       }
 
