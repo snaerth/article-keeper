@@ -9,7 +9,7 @@ import { authError } from '../../common/actions';
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export default function uploadImages({ formData, token }) {
+export function uploadImages({ formData, token }) {
   return async (dispatch) => {
     const config = {
       headers: {
