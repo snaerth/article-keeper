@@ -4,21 +4,32 @@ import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { checkFileAndDelete } from '../../services/fileService';
+import formidableMiddleware from '../../middleware/uploadHandlers';
 import User from '../../models/user';
-import { uploadUserImage, saveUser } from '../users';
+import { saveUser } from '../users';
+import uploadFiles from '../uploads';
 import config from '../../config';
 
-const { TEST_DB_URL } = config;
+const { TEST_DB_URL, UPLOADS_ROOT } = config;
 const user = new User({
   name: 'John Doe',
   email: 'john@doe.com',
   password: 'Password1',
 });
+const uploadDir = './api/controllers/__tests__/';
 
 // Initialize app
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  formidableMiddleware({
+    encoding: 'utf-8',
+    uploadDir: UPLOADS_ROOT,
+    multiples: true, // req.files to be arrays of files
+    keepExtensions: true,
+  }),
+);
 
 // Db connect
 beforeAll(async (done) => {
@@ -43,22 +54,15 @@ afterAll(async (done) => {
   }
 });
 
-// POST request /userimage
+// POST request /uploads/images/news/
 describe('POST /userimage', () => {
-  const uploadDir = './api/controllers/__tests__/';
-  app.post('/uploads/images/news', uploadUserImage);
+  app.post('/uploads/images/news/', uploadFiles);
   // app.post('/userimage', uploadUserImage);
 
   test('Upload image and save image to filesystem', (done) => {
     request(app)
       .post('/uploads/images/news')
-      .type('form')
-      .attach('image', path.resolve(__dirname, 'user.jpg'))
-      .set('Accept', 'application/json')
-      .set(
-        'Content-Type',
-        'multipart/form-data; boundary=----WebKitFormBoundarya0ZcT8RMUIC59Iyv',
-      )
+      .attach('images', path.resolve(__dirname, 'user.jpg'))
       .expect(200)
       .end((err, res) => {
         // Run tests on response
@@ -71,58 +75,4 @@ describe('POST /userimage', () => {
         if (err) return done(err);
       });
   });
-
-  // test('Upload image and save image to filesystem', (done) => {
-
-  //   request(app)
-
-  //     .post('/userimage')
-
-  //     .field('user', JSON.stringify({ email: user.email }))
-
-  //     .type('form')
-
-  //     .attach('image', path.resolve(__dirname, 'user.jpg'))
-
-  //     .set('Accept', 'application/json')
-
-  //     .set(
-
-  //       'Content-Type',
-
-  //       'multipart/form-data; boundary=----WebKitFormBoundarya0ZcT8RMUIC59Iyv',
-
-  //     )
-
-  //     .expect(200)
-
-  //     .expect('Content-Type', 'application/json')
-
-  //     .end((err, res) => {
-
-  //       const { name, email, roles, imageUrl, thumbnailUrl } = res.data;
-
-  //       // Run tests on response
-
-  //       expect(name).toEqual(user.name);
-
-  //       expect(email).toEqual(user.email);
-
-  //       expect(roles).toEqual(['user']);
-
-  //       expect(imageUrl).toMatch(/.jpg/);
-
-  //       expect(thumbnailUrl).toMatch(/thumbnail.jpg/);
-
-  //       // Delete uploaded images
-
-  //       checkFileAndDelete(uploadDir + imageUrl);
-
-  //       checkFileAndDelete(uploadDir + thumbnailUrl);
-
-  //       if (err) return done(err);
-
-  //     });
-
-  // });
 });

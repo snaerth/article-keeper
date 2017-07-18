@@ -1,7 +1,7 @@
 import { STORE_IMAGE_FORM_DATA } from './types';
 
 const initialState = {
-  imagesFormData: [],
+  formData: null,
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +9,7 @@ export default function (state = initialState, action) {
     case STORE_IMAGE_FORM_DATA:
       return {
         ...state,
-        imagesFormData: [...state.imagesFormData, action.payload],
+        formData: action.payload,
       };
     default:
       return { ...state };

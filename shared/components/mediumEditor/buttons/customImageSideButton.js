@@ -12,6 +12,7 @@ class CustomImageSideButton extends Component {
     getEditorState: PropTypes.func,
     close: PropTypes.func,
     actions: PropTypes.object,
+    formData: PropTypes.object,
   };
 
   constructor(props) {
@@ -34,18 +35,23 @@ class CustomImageSideButton extends Component {
   add to the editor.
   */
   onChange(e) {
-    // e.preventDefault();
     const file = e.target.files[0];
     if (file.type.indexOf('image/') === 0) {
-      const src = URL.createObjectURL(file);
-      this.props.setEditorState(
-        addNewBlock(this.props.getEditorState(), Block.IMAGE, {
-          src,
-        }),
-      );
-      // const formData = new FormData();
-      // formData.append('image', file);
-      // this.uploadImage(formData);
+      let formData = null;
+      if (this.props.formData === null) {
+        formData = new FormData();
+      } else {
+        formData = this.props.formData;
+      }
+
+      formData.append('image', file);
+      this.props.actions.storeImageFormData(formData);
+      // const src = URL.createObjectURL(file);
+      // this.props.setEditorState(
+      //   addNewBlock(this.props.getEditorState(), Block.IMAGE, {
+      //     src,
+      //   }),
+      // );
     }
     this.props.close();
   }
@@ -102,7 +108,7 @@ class CustomImageSideButton extends Component {
  * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
-  return { token: state.auth.user.token };
+  return { token: state.auth.user.token, formData: state.editor.formData };
 }
 
 /**
