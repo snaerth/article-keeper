@@ -12,7 +12,7 @@ const { UPLOADS_ROOT } = config;
  * @param {Object} req
  * @param {Object} res
  * @returns {Object} res
- * @author Snær Seljan Þóroddsson +
+ * @author Snær Seljan Þóroddsson
  */
 export function deleteFiles(req, res) {
   let { images } = req.body;
@@ -34,17 +34,15 @@ export function deleteFiles(req, res) {
 }
 
 /**
- * Upload image to file system
+ * Saves image to file system
  *
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} res
+ * @param {Object} image
+ * @param {String} uploadDir
+ * @return {Promise}
  * @author Snær Seljan Þóroddsson
  */
-export default async function uploadFiles(req, res) {
-  const image = req.files.image;
-  if (image) {
-    const uploadDir = 'images/news/';
+async function saveImage(image, uploadDir) {
+  return new Promise(async (resolve, reject) => {
     const ext = path.extname(image.name);
     const fileName = uuid();
     const imgPath = UPLOADS_ROOT + uploadDir + fileName + ext;
@@ -55,15 +53,40 @@ export default async function uploadFiles(req, res) {
       await resizeImage(image.path, thumbnailPath, 27);
       await renameFile(image.path, imgPath);
       const thumbnailUrl = `${fileName}-thumbnail${ext}`;
-      // Send images url to client
-      return res.status(200).send({
+      resolve({
         url: uploadDir + imageUrl,
         thumbnail: uploadDir + thumbnailUrl,
       });
     } catch (error) {
-      return res.status(422).send({ error });
+      return reject(error);
     }
+  });
+}
+
+/**
+ * Upload image to file system
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export default async function uploadFiles(req, res) {
+  const images = req.files.images;
+  if (Array.isArray(images)) {
+    const promises = [];
+
+    images.forEach((image) => {
+      promises.push(saveImage(image, 'images/news/'));
+    });
+
+    // Wait for all promises to resolve
+    // Send array of imagesObj = [{url: '', thumbnail}, ...]
+    Promise.all(promises).then(imagesArr => res.status(200).send(imagesArr));
+  } else if (images !== undefined) {
+    const imageObj = await saveImage(images, 'images/news/');
+    return res.status(200).send([imageObj]);
   } else {
-    return res.status(422).send({ error: 'Image required' });
+    return res.status(422).send({ error: 'Images required' });
   }
 }
