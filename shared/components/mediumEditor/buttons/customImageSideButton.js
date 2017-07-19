@@ -27,60 +27,40 @@ class CustomImageSideButton extends Component {
     this.input.click();
   }
 
-  /*
-  This is an example of how an image button can be added
-  on the side control. This Button handles the image addition locally
-  by creating an object url. You can override this method to upload
-  images to your server first, then get the image url in return and then
-  add to the editor.
-  */
-  onChange(e) {
-    const file = e.target.files[0];
-    if (file.type.indexOf('image/') === 0) {
-      let formData = null;
-      if (this.props.formData === null) {
-        formData = new FormData();
-      } else {
-        formData = this.props.formData;
-      }
-
-      formData.append('image', file);
-      this.props.actions.storeImageFormData(formData);
-      // const src = URL.createObjectURL(file);
-      // this.props.setEditorState(
-      //   addNewBlock(this.props.getEditorState(), Block.IMAGE, {
-      //     src,
-      //   }),
-      // );
-    }
-    this.props.close();
-  }
-
   /**
-   * Calls redux action uploadImages witch uploads image to server
-   * Updates editors state on successful upload
-   * @param {Object} formData
+   * Updates redux store formData object,
+   * also adds new image block to editor state
+   * @param {Object} e
    * @returns {undefined}
    */
-  uploadImage = async (formData) => {
-    const { actions, token, getEditorState, setEditorState } = this.props;
+  onChange(e) {
+    const file = e.target.files[0];
 
-    try {
-      const data = await actions.uploadImages({
+    if (file.type.indexOf('image/') === 0) {
+      const {
         formData,
-        token,
-      });
-
+        getEditorState,
+        setEditorState,
+        actions: { storeImageFormData },
+      } = this.props;
+      // Create new FormData object if it doesen't exist in store
+      const newFormData = formData || new FormData();
+      // Add file to formdata
+      newFormData.append('image', file);
+      // Store form data in redux store
+      storeImageFormData(newFormData);
+      // Create blob source from file object
+      const src = URL.createObjectURL(file);
+      // Add new image block to editor state
       setEditorState(
         addNewBlock(getEditorState(), Block.IMAGE, {
-          src: data.images.url,
+          src,
         }),
       );
-    } catch (error) {
-      // TODO Error handling
-      throw new Error(error);
     }
-  };
+
+    this.props.close();
+  }
 
   render() {
     return (
@@ -108,7 +88,7 @@ class CustomImageSideButton extends Component {
  * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
-  return { token: state.auth.user.token, formData: state.editor.formData };
+  return { formData: state.editor.formData };
 }
 
 /**

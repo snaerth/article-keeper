@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import { Modifier, SelectionState } from 'draft-js';
 import { Editor, createEditorState } from 'medium-draft';
 import 'medium-draft/lib/index.css';
+import * as actionCreators from '../actions';
 import ButtonLink from '../../buttonLink';
 import inlineButtons from '../buttons/inlineButtons';
 import blockButtons from '../buttons/blockButtons';
@@ -10,6 +14,11 @@ import customImageSideButton from '../buttons/customImageSideButton';
 import s from './editor.scss';
 
 class MediumEditor extends Component {
+  static propTypes = {
+    actions: PropTypes.object,
+    formData: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.blockButtons = blockButtons;
@@ -36,17 +45,24 @@ class MediumEditor extends Component {
 
   onSave(e) {
     e.preventDefault();
+    this.uploadImages();
+    /*
     const { editorState } = this.state;
     const contentState = editorState.getCurrentContent();
-    let rangeToReplace = null;
+
     editorState.getCurrentContent().getBlockMap().map((block) => {
       const type = block.getType();
 
       if (type === 'atomic:image') {
         console.log(block);
+        console.log(block.getKey());
         console.log(block.getData());
-        console.log(block.getEntityAt('src'));
-        rangeToReplace = new SelectionState({
+
+        console.log(block.getData().get('src'));
+        console.log(Modifier);
+
+        // Do stuff
+        const rangeToReplace = new SelectionState({
           anchorKey: block.getKey(),
           focusKey: block.getKey(),
         });
@@ -57,7 +73,28 @@ class MediumEditor extends Component {
 
       return true;
     });
+    */
   }
+
+  /**
+   * Calls redux action uploadImages witch uploads image to server
+   * Updates editors state on successful upload
+   * @param {Object} formData
+   * @returns {undefined}
+   */
+  uploadImages = async () => {
+    const { actions, token, formData } = this.props;
+    try {
+      const data = await actions.uploadImages({
+        formData,
+        token,
+      });
+      console.log(data);
+    } catch (error) {
+      // TODO Error handling
+      throw new Error(error);
+    }
+  };
 
   componentDidMount() {
     this.editor.focus();
@@ -100,7 +137,24 @@ class MediumEditor extends Component {
  * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
-  return { imagesFormData: state.editor.imagesFormData };
+  let token = '';
+  if (state.auth.user && state.auth.user.token) {
+    token = state.auth.user.token;
+  }
+  return { token, formData: state.editor.formData };
 }
 
-export default connect(mapStateToProps, null)(MediumEditor);
+/**
+ * Maps dispatch to components props
+ *
+ * @param {Object} dispatch - Redux dispatch medhod
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actionCreators, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MediumEditor);
