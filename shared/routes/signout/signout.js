@@ -18,7 +18,7 @@ class Signout extends Component {
   };
 
   componentWillMount() {
-    // this.props.actions.signoutUser();
+    this.props.actions.signoutUser();
   }
 
   render() {
@@ -29,7 +29,11 @@ class Signout extends Component {
         <Helmet title="Sign out" />
         <div className={signoutContainer}>
           <h2>
-            You have successfully been signed out. <br /> You can sign in again at any
+            You have successfully been signed out.
+            {' '}
+            <br />
+            {' '}
+            You can sign in again at any
             time.
           </h2>
           <br />

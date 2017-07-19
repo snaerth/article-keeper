@@ -16,6 +16,7 @@ passport.use(facebookLogin);
 const requireSignin = passport.authenticate('local');
 const facebookAuth = passport.authenticate('facebook', { scope: 'email' });
 const facebookAuthCallback = passport.authenticate('facebook', {
+  callbackURL: '/auth/facebook/callback',
   successRedirect: '/auth/facebook/callback',
   failureRedirect: '/',
 });
@@ -33,6 +34,7 @@ export default function (app) {
   app.post('/reset/:token', resetPassword);
   // Facebook authentication
   app.get('/auth/facebook', facebookAuth);
+
   // handle the callback after facebook has authenticated the user
   app.get(
     '/auth/facebook/callback',

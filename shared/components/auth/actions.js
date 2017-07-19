@@ -73,7 +73,7 @@ export function signinUser({ email, password }) {
  * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
-export function signinFacebook(path) {
+export function signinSocial(path) {
   return async (dispatch) => {
     try {
       const response = await axios.get(path);

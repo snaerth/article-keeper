@@ -30,7 +30,6 @@ const SocialsButtons = ({ clickHandler, toggleView }) => {
         title="Facebook login"
         color="facebook"
         className="fullWidth"
-        onClick={signInHandler}
       >
         <FacebookIcon className={icon} />
       </ButtonLink>

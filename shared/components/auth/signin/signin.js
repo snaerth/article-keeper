@@ -38,6 +38,7 @@ class Signin extends Component {
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.toggleView = this.toggleView.bind(this);
+    this.signInSocialClickHandler = this.signInSocialClickHandler.bind(this);
 
     this.state = {
       currentSlide: 0,
@@ -66,7 +67,7 @@ class Signin extends Component {
    */
   signInSocialClickHandler(e, path) {
     e.preventDefault();
-    this.props.actions.signinSocials(path);
+    this.props.actions.signinSocial(path);
     // TODO call actions socials login
   }
 
