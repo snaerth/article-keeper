@@ -1,5 +1,9 @@
 import fs from 'fs';
 import Jimp from 'jimp';
+import fetch from 'node-fetch';
+import fileType from 'file-type';
+import uuid from 'uuid/v1';
+
 /**
  * Resizes image and saves to file system
  *
@@ -59,4 +63,36 @@ export function saveImageToDisk(data, path) {
       return resolve();
     });
   });
+}
+
+
+/**
+ * Fetches images by photoUrl,
+ * Converts to buffer and saves image and creates thumbnail image
+ *
+ * @param {string} photoUrl
+ * @param {string} uploadDir
+ * @returns {Object} paths to image and thumbnail image on file system
+ */
+export async function saveImageFromUrl(photoUrl, uploadDir) {
+  // Fetch image from facebook
+  const res = await fetch(photoUrl);
+  // Change response into buffer
+  const buffer = await res.buffer();
+  // Get buffer extension
+  const ext = fileType(buffer).ext;
+  // Create uniqe id
+  const fileName = uuid();
+  const imageName = fileName + ext;
+  const imagePath = `${uploadDir}${`${imageName}.${ext}`}`;
+  const thumbnailPath = `${uploadDir}${`${imageName}-thumbnail.${ext}`}`;
+  // Save image to filesystem
+  await saveImageToDisk(buffer, `./${imagePath}`);
+  // Resize image for thumbnail
+  await resizeImage(imagePath, `./${thumbnailPath}`, 27);
+
+  return {
+    imageUrl: imagePath,
+    thumbnailUrl: thumbnailPath,
+  };
 }

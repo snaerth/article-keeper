@@ -18,8 +18,7 @@ passport.use(facebookLogin);
 const requireSignin = passport.authenticate('local');
 const facebookAuth = passport.authenticate('facebook', { scope: 'email' });
 const facebookAuthCallback = passport.authenticate('facebook', {
-  callbackURL,
-  successRedirect: callbackURL,
+  successRedirect: `http://localhost:3030${callbackURL}`,
   failureRedirect: '/',
 });
 
