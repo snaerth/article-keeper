@@ -2,18 +2,53 @@ import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import LocalStrategy from 'passport-local';
+import fetch from 'node-fetch';
+import fileType from 'file-type';
+import uuid from 'uuid/v1';
 import config from '../config';
 import User from '../models/user';
+import { saveImageToDisk, resizeImage } from '../services/imageService';
 
 // VARIABLES
 const {
   JWT_SECRET,
   FACEBOOK_CLIENT_ID,
   FACEBOOK_CLIENT_SECRET,
-  ADMIN_PROTOCOL,
-  ADMIN_HOST,
-  ADMIN_PORT,
+  API_PROTOCOL,
+  API_HOST,
+  API_PORT,
 } = config;
+
+/**
+ * Fetches images by photoUrl,
+ * Converts to buffer and saves image and creates thumbnail image
+ *
+ * @param {string} photoUrl
+ * @returns {Object} paths to image and thumbnail image on file system
+ */
+async function saveImages(photoUrl) {
+  // Fetch image from facebook
+  const res = await fetch(photoUrl);
+  // Change response into buffer
+  const buffer = await res.buffer();
+  // Get buffer extension
+  const ext = fileType(buffer).ext;
+  // Create uniqe id
+  const fileName = uuid();
+  const uploadDir = 'images/users/';
+  const imageName = fileName + ext;
+  const imagePath = `${uploadDir}${`${imageName}.${ext}`}`;
+  const thumbnailPath = `${uploadDir}${`${imageName}-thumbnail.${ext}`}`;
+  // Save image to filesystem
+  await saveImageToDisk(buffer, `./${imagePath}`);
+  // Resize image for thumbnail
+  await resizeImage(imagePath, `./${thumbnailPath}`, 27);
+
+  return {
+    imageUrl: imagePath,
+    thumbnailUrl: thumbnailPath,
+  };
+}
 
 // Setup options for local strategy
 const localOptions = {
@@ -88,47 +123,63 @@ export const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
 const facebookOptions = {
   clientID: FACEBOOK_CLIENT_ID,
   clientSecret: FACEBOOK_CLIENT_SECRET,
-  callbackURL: `${ADMIN_PROTOCOL}://${ADMIN_HOST}:${ADMIN_PORT}/auth/facebook/callback`,
-  profileFields: ['id', 'displayName', 'photos', 'email', 'birthday', 'cover'],
+  callbackURL: `${API_PROTOCOL}://${API_HOST}:${API_PORT}/auth/facebook/callback`,
+  profileFields: [
+    'id',
+    'displayName',
+    'picture.type(large)',
+    'email',
+    'birthday',
+    'cover',
+  ],
   enableProof: true,
 };
 
 export const facebookLogin = new FacebookStrategy(
   facebookOptions,
   (accessToken, refreshToken, profile, done) => {
+    const { emails, photos, id, displayName } = profile;
+
     process.nextTick(() => {
       // Find the user in the database based on their facebook id
-      User.findOne({ 'facebook.id': profile.id }, (err, user) => {
-        if (err) {
-          return done(err);
-        }
-
-        if (user) {
-          return done(null, user);
-        }
-        // if there is no user found with that facebook id, create them
-        const newUser = new User();
-
-        const { emails, photos, id, displayName } = profile;
-        newUser.email = emails[0].value;
-        newUser.name = displayName;
-        newUser.imageUrl = photos[0].value;
-        // TODO búa til tumbnail imageUrl
-
-        // set all of the facebook information in our user model
-        newUser.facebook.id = id;
-        newUser.facebook.token = accessToken;
-        newUser.facebook.name = displayName;
-        newUser.facebook.email = emails[0].value;
-        // save our user to the database
-        return newUser.save((error) => {
-          if (error) {
-            return done(error);
+      User.findOne(
+        { 'facebook.id': id, email: emails[0].value },
+        async (err, user) => {
+          if (err) {
+            return done(err);
           }
-          // if successful, return the new user
-          return done(null, newUser);
-        });
-      });
+
+          if (user) {
+            return done(null, user);
+          }
+
+          try {
+            const { imageUrl, thumbnailUrl } = await saveImages(
+              photos[0].value,
+            );
+            // if there is no user found with that facebook id, create them
+            const newUser = new User();
+            newUser.email = emails[0].value;
+            newUser.name = displayName;
+            newUser.imageUrl = imageUrl; // images.url;
+            newUser.thumbnailUrl = thumbnailUrl; // images.thumbnail;
+            newUser.facebook.id = id;
+            newUser.facebook.token = accessToken;
+            newUser.facebook.name = displayName;
+            newUser.facebook.email = emails[0].value;
+            // save our user to the database
+            return newUser.save((error) => {
+              if (error) {
+                return done(error);
+              }
+              // if successful, return the new user
+              return done(null, newUser);
+            });
+          } catch (error) {
+            return done(err);
+          }
+        },
+      );
     });
   },
 );

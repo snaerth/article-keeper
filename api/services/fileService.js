@@ -89,7 +89,7 @@ export function createFile(filePath, data, options = '') {
         return reject(error);
       }
 
-      return resolve();
+      return resolve(filePath);
     });
   });
 }

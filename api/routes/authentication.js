@@ -7,6 +7,8 @@ import {
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
 
+const callbackURL = '/auth/facebook/callback';
+
 // Tell passport to use strategys
 passport.use(jwtLogin);
 passport.use(localLogin);
@@ -16,8 +18,8 @@ passport.use(facebookLogin);
 const requireSignin = passport.authenticate('local');
 const facebookAuth = passport.authenticate('facebook', { scope: 'email' });
 const facebookAuthCallback = passport.authenticate('facebook', {
-  callbackURL: '/auth/facebook/callback',
-  successRedirect: '/auth/facebook/callback',
+  callbackURL,
+  successRedirect: callbackURL,
   failureRedirect: '/',
 });
 

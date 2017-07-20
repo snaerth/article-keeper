@@ -41,7 +41,7 @@ export function deleteFiles(req, res) {
  * @return {Promise}
  * @author Snær Seljan Þóroddsson
  */
-async function saveImage(image, uploadDir) {
+export async function saveImage(image, uploadDir) {
   return new Promise(async (resolve, reject) => {
     const ext = path.extname(image.name);
     const fileName = uuid();
