@@ -104,7 +104,6 @@ export const facebookLogin = new FacebookStrategy(
   facebookOptions,
   (accessToken, refreshToken, profile, done) => {
     const { emails, photos, id, displayName } = profile;
-
     process.nextTick(() => {
       // Find the user in the database based on their facebook id
       User.findOne({ 'facebook.id': id }, async (err, user) => {
@@ -112,9 +111,15 @@ export const facebookLogin = new FacebookStrategy(
           return done(err);
         }
 
+        const emailFacebook = emails[0].value;
+
         if (user) {
           return done(null, user);
+          // if (user.email === emailFacebook) {
+          //   return done('User with same email already exist');
+          // }
         }
+
         try {
           const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
             photos[0].value,
@@ -123,14 +128,14 @@ export const facebookLogin = new FacebookStrategy(
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
           const newUser = new User();
-          newUser.email = emails[0].value;
+          newUser.email = emailFacebook;
           newUser.name = displayName;
           newUser.imageUrl = imageUrl;
           newUser.thumbnailUrl = thumbnailUrl;
           newUser.facebook.id = id;
           newUser.facebook.token = accessToken;
           newUser.facebook.name = displayName;
-          newUser.facebook.email = emails[0].value;
+          newUser.facebook.email = emailFacebook;
 
           // save our user to the database
           return newUser.save((error) => {

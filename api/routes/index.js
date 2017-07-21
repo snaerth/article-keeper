@@ -13,7 +13,7 @@ const requireAuth = passport.authenticate('jwt');
  * @returns {undefined}
  */
 export default function (app) {
-  authentication(app);
+  authentication(app, requireAuth);
   news(app, requireAuth);
   users(app, requireAuth);
   uploads(app, requireAuth);

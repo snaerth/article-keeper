@@ -7,8 +7,6 @@ import {
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
 
-const callbackURL = '/auth/facebook/callback';
-
 // Tell passport to use strategys
 passport.use(jwtLogin);
 passport.use(localLogin);
@@ -16,10 +14,10 @@ passport.use(facebookLogin);
 
 // Initialize require authentication helpers
 const requireSignin = passport.authenticate('local');
-const facebookAuth = passport.authenticate('facebook', { scope: 'email' });
+const facebookAuth = passport.authenticate('facebook', { scope: ['email'] });
 const facebookAuthCallback = passport.authenticate('facebook', {
-  successRedirect: `http://localhost:3030${callbackURL}`,
-  failureRedirect: '/',
+  successRedirect: 'http://localhost:30030/auth/success',
+  failureRedirect: 'http://localhost:3000/signin',
 });
 
 /**
@@ -37,23 +35,9 @@ export default function (app) {
   app.get('/auth/facebook', facebookAuth);
 
   // handle the callback after facebook has authenticated the user
-  app.get(
-    '/auth/facebook/callback',
-    facebookAuthCallback,
-    // On success
-    (req, res) => {
-      // return the token or you would wish otherwise give eg. a succes message
-      res.render('json', { data: JSON.stringify(req.user.access_token) });
-    },
-    // on error; likely to be something FacebookTokenError token invalid or already used token,
-    // these errors occur when the user logs in twice with the same token
-    (err, req, res) => {
-      // You could put your own behavior in here, fx: you could force auth again...
-      // res.redirect('/auth/facebook/');
-      if (err) {
-        res.status(400);
-        res.render('error', { message: err.message });
-      }
-    },
-  );
+  app.get('/auth/facebook/callback', facebookAuthCallback);
+  /* GET Twitter View Page */
+  app.get('/auth/success', (req, res) => {
+    res.render('twitter', { user: req.user });
+  });
 }
