@@ -62,6 +62,11 @@ app.use(config('bundles.client.webPath'), clientBundle);
 app.use(
   express.static(pathResolve(appRootDir.get(), config('publicAssetsPath'))),
 );
+app.use(
+  express.static(
+    pathResolve(appRootDir.get(), config('secondPublicAssetsPath')),
+  ),
+);
 
 // The React application middleware.
 app.get('*', reactApplication);

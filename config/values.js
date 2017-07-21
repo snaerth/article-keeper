@@ -270,6 +270,7 @@ const values = {
   // Path to the public assets that will be served off the root of the
   // HTTP server.
   publicAssetsPath: './public',
+  secondPublicAssetsPath: './images',
 
   // Where does our build output live?
   buildOutputPath: './build',

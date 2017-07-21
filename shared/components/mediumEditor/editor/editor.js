@@ -46,34 +46,30 @@ class MediumEditor extends Component {
   onSave(e) {
     e.preventDefault();
     this.uploadImages();
-    /*
+
     const { editorState } = this.state;
     const contentState = editorState.getCurrentContent();
 
-    editorState.getCurrentContent().getBlockMap().map((block) => {
+    editorState.getCurrentContent().getBlockMap().map((block, i) => {
       const type = block.getType();
 
       if (type === 'atomic:image') {
-        console.log(block);
-        console.log(block.getKey());
+        block.getData()._root.entries[0][1] = 'user.jpg';
         console.log(block.getData());
-
-        console.log(block.getData().get('src'));
-        console.log(Modifier);
+        block.getData().get('src');
 
         // Do stuff
-        const rangeToReplace = new SelectionState({
-          anchorKey: block.getKey(),
-          focusKey: block.getKey(),
-        });
-        Modifier.replaceText(contentState, rangeToReplace, 'test.png');
-        const newContentState = editorState.getCurrentContent();
-        this.setState({ editorState });
+        // const rangeToReplace = new SelectionState({
+        //   anchorKey: block.getKey(),
+        //   focusKey: block.getKey(),
+        // });
+        // Modifier.replaceText(contentState, rangeToReplace, 'test.png');
+        // const newContentState = editorState.getCurrentContent();
+        // this.setState({ editorState });
       }
 
       return true;
     });
-    */
   }
 
   /**
