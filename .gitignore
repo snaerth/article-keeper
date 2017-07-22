@@ -46,7 +46,7 @@ flow-coverage/
 
 # File uploads
 uploads
-images
+media
 
 # Chrome
 .chrome

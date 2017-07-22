@@ -63,6 +63,9 @@ const values = {
   // Enable node-notifier?
   notifier: EnvVars.string('NOTIFIER', 'warn'),
 
+  // Session secret
+  sessionSecret: EnvVars.string('SESSION_SECRET', 'secret'),
+
   // Disable server side rendering?
   disableSSR: false,
 
@@ -270,7 +273,7 @@ const values = {
   // Path to the public assets that will be served off the root of the
   // HTTP server.
   publicAssetsPath: './public',
-  secondPublicAssetsPath: './images',
+  secondPublicAssetsPath: './media',
 
   // Where does our build output live?
   buildOutputPath: './build',

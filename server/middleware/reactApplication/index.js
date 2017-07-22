@@ -55,8 +55,20 @@ export default function reactApplicationMiddleware(req, res) {
 
   // Compile an initial state
   const preloadedState = {};
-  if (req.cookies.user) {
-    preloadedState.user = req.cookies.user;
+  if (req.cookies.user && req.cookies.userExpires) {
+    preloadedState.auth = {
+      user: req.cookies.user,
+      authenticated: true,
+    };
+
+    // Check if session has expired
+    if (
+      req.cookies.userExpires &&
+      new Date(req.cookies.userExpires).getTime() < new Date().getTime()
+    ) {
+      res.clearCookie('user');
+      res.clearCookie('userExpires');
+    }
   }
 
   // Create a new Redux store instance

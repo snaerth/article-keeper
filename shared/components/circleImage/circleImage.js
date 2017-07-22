@@ -23,18 +23,18 @@ class CircleImage extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const src = this.props.src;
-    if (!src) {
-      this.setState({ imageBroken: true });
-    }
+    // if (!src) {
+    //   this.setState({ imageBroken: true });
+    // }
 
-    const image = new Image();
-    image.src = src;
+    // const image = new Image();
+    // image.src = src;
 
-    image.onerror = () => {
-      this.setState({ imageBroken: true });
-    };
+    // image.onerror = () => {
+    //   this.setState({ imageBroken: true });
+    // };
   }
 
   render() {

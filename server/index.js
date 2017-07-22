@@ -67,6 +67,7 @@ app.use(
   express.static(pathResolve(appRootDir.get(), config('publicAssetsPath'))),
 );
 app.use(
+  '/media',
   express.static(
     pathResolve(appRootDir.get(), config('secondPublicAssetsPath')),
   ),

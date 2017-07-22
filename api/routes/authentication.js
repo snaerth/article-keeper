@@ -46,10 +46,14 @@ export default function (app) {
       if (user) {
         let newUser = new User(user);
         newUser = removeUserProps(newUser);
+        // Store user and jwt token in a cookie
         res.cookie('user', {
           token: tokenForUser(newUser),
           ...newUser,
         });
+
+        const expireTime = 30 * 24 * 60 * 1000; // 30 days
+        res.cookie('userExpires', new Date(Date.now() + expireTime));
 
         return res.status(200).redirect('http://localhost:3000/profile');
       }

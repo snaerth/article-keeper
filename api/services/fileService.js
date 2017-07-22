@@ -13,9 +13,9 @@ export function createDirectorys(
     'public',
     'public/images',
     'uploads',
-    'images',
-    'images/users',
-    'images/news',
+    'media',
+    'media/users',
+    'media/news',
   ],
 ) {
   for (let i = 0, len = directorys.length; i < len; i++) {

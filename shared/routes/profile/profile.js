@@ -46,12 +46,13 @@ class Profile extends Component {
 
     return (
       <Container className="mt25">
+        <img src="media/user.jpg" alt="test" />
         <Helmet title="Profile" />
         <div className={styles.grid}>
           <div className={classnames(styles.card, styles.cardLeft)}>
             {imageUrl
               ? <CircleImage
-                src={`images/users/${imageUrl}`}
+                src={imageUrl}
                 alt={name}
                 className={styles.profileImage}
                 onClick={this.openModal}

@@ -83,7 +83,7 @@ export async function uploadUserImage(req, res) {
     try {
       const { email } = req.user;
       const user = await findUserByEmail(email);
-      const uploadDir = './images/users/';
+      const uploadDir = './media/users/';
       const ext = path.extname(image.name);
       const fileName = uuid();
       // File system path to image
