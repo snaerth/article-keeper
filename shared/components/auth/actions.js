@@ -67,24 +67,6 @@ export function signinUser({ email, password }) {
 }
 
 /**
- * Socials sign in
- *
- * @param {path} Path for request
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
- */
-export function signinSocial(path) {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get(path);
-      const payload = response.data; // eslint-disable-line
-    } catch (error) {
-      dispatch(authError(AUTH_ERROR, error));
-    }
-  };
-}
-
-/**
  * Signup Post request
  * Post request to /api/signup to signup user
  * Post request to /api/userimage to save user image

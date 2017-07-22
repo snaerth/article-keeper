@@ -55,6 +55,9 @@ export default function reactApplicationMiddleware(req, res) {
 
   // Compile an initial state
   const preloadedState = {};
+  if (req.cookies.user) {
+    preloadedState.user = req.cookies.user;
+  }
 
   // Create a new Redux store instance
   const store = configureStore(preloadedState);
@@ -88,6 +91,7 @@ export default function reactApplicationMiddleware(req, res) {
         nonce={nonce}
         helmet={Helmet.rewind()}
         routerState={reactRouterContext}
+        preloadedState={preloadedState}
         jobsState={jobContext.getState()}
         asyncComponentsState={asyncComponentsContext.getState()}
       />,

@@ -67,8 +67,6 @@ class Signin extends Component {
    */
   signInSocialClickHandler(e, path) {
     e.preventDefault();
-    this.props.actions.signinSocial(path);
-    // TODO call actions socials login
   }
 
   /**

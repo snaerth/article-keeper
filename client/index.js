@@ -24,7 +24,7 @@ if (gaId) {
 const container = document.querySelector('#app');
 
 // Compile an initial state
-const preloadedState = {};
+const preloadedState = window.__PRELOADED_STATE__ || {}; // eslint-disable-line no-underscore-dangle
 
 // Create an enhanced history that syncs navigation events with the store
 const store = configureStore(preloadedState);

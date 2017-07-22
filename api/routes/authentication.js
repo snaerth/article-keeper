@@ -4,9 +4,11 @@ import {
   signup,
   forgotPassword,
   resetPassword,
+  removeUserProps,
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
-import { tokenForUser } from './users';
+import { tokenForUser } from '../controllers/users';
+import User from '../models/user';
 
 // Tell passport to use strategys
 passport.use(jwtLogin);
@@ -17,7 +19,6 @@ passport.use(facebookLogin);
 const requireSignin = passport.authenticate('local');
 const facebookAuth = passport.authenticate('facebook', {
   scope: ['email'],
-  authType: 'rerequest',
 });
 
 /**
@@ -43,10 +44,17 @@ export default function (app) {
     (req, res) => {
       const { user } = req;
       if (user) {
-        res.redirect('http://localhost:3000/profile/?id=');
+        let newUser = new User(user);
+        newUser = removeUserProps(newUser);
+        res.cookie('user', {
+          token: tokenForUser(newUser),
+          ...newUser,
+        });
+
+        return res.status(200).redirect('http://localhost:3000/profile');
       }
-      // TODO: not logged in
-      res.send('Access denied');
+
+      return res.status(401).send('Access denied');
     },
   );
 }

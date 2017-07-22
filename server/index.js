@@ -4,6 +4,7 @@ import express from 'express';
 import compression from 'compression';
 import { resolve as pathResolve } from 'path';
 import appRootDir from 'app-root-dir';
+import cookieParser from 'cookie-parser';
 import Proxy from './middleware/proxy';
 import reactApplication from './middleware/reactApplication';
 import security from './middleware/security';
@@ -19,6 +20,9 @@ const target = `${config('apiProtocol')}://${config('apiHost')}:${config('apiPor
 
 // Create our express based server.
 const app = express();
+
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+app.use(cookieParser());
 
 // Don't expose any software information to potential hackers.
 app.disable('x-powered-by');

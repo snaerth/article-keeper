@@ -37,7 +37,9 @@ const sessionOptions = {
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  proxy: true,
   cookie: {
+    secure: true,
     maxAge: 86400,
   }, // 24 Hours
 };
