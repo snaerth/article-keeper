@@ -5,9 +5,6 @@ import User from '../models/user';
 import { resizeImage } from '../services/imageService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
 import { removeUserProps, validateSignup } from './authentication';
-import config from '../config';
-
-const { UPLOADS_ROOT } = config;
 
 /**
  * Gets token for user
@@ -86,21 +83,21 @@ export async function uploadUserImage(req, res) {
     try {
       const { email } = req.user;
       const user = await findUserByEmail(email);
-      const uploadDir = 'images/users/';
+      const uploadDir = './images/users/';
       const ext = path.extname(image.name);
       const fileName = uuid();
       // File system path to image
-      const imgPath = UPLOADS_ROOT + uploadDir + fileName + ext;
+      const imgPath = uploadDir + fileName + ext;
       // File system path to thumbnail image
-      const thumbnailPath = `${UPLOADS_ROOT + uploadDir}${`${fileName}-thumbnail${ext}`}`;
+      const thumbnailPath = `${uploadDir}${`${fileName}-thumbnail${ext}`}`;
       const { imageUrl, thumbnailUrl } = user;
 
       if (imageUrl) {
-        await checkFileAndDelete(UPLOADS_ROOT + imageUrl);
+        await checkFileAndDelete(imageUrl);
       }
 
       if (thumbnailUrl) {
-        await checkFileAndDelete(UPLOADS_ROOT + thumbnailUrl);
+        await checkFileAndDelete(thumbnailUrl);
       }
 
       await resizeImage(image.path, thumbnailPath, 27);

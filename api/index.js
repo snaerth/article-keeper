@@ -10,7 +10,7 @@ import config from './config';
 import db from './database/db';
 import { createDirectorys } from './services/fileService';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // VARIABLES
 const { API_PORT, DB_URL, SESSION_SECRET } = config;

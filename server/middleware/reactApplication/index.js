@@ -18,13 +18,13 @@ import ServerHTML from './ServerHTML';
 /**
  * React application middleware, supports server side rendering.
  */
-export default function reactApplicationMiddleware(request, response) {
+export default function reactApplicationMiddleware(req, res) {
   // Ensure a nonce has been provided to us.
   // See the server/middleware/security.js for more info.
-  if (typeof response.locals.nonce !== 'string') {
-    throw new Error('A "nonce" value has not been attached to the response');
+  if (typeof res.locals.nonce !== 'string') {
+    throw new Error('A "nonce" value has not been attached to the res');
   }
-  const nonce = response.locals.nonce;
+  const nonce = res.locals.nonce;
 
   // It's possible to disable SSR, which can be useful in development mode.
   // In this case traditional client side only rendering will occur.
@@ -38,7 +38,7 @@ export default function reactApplicationMiddleware(request, response) {
     const html = renderToStaticMarkup(
       <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />,
     );
-    response.status(200).send(`<!DOCTYPE html>${html}`);
+    res.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
 
@@ -64,7 +64,7 @@ export default function reactApplicationMiddleware(request, response) {
     <AsyncComponentProvider asyncContext={asyncComponentsContext}>
       <JobProvider jobContext={jobContext}>
         <Provider store={store} key="provider">
-          <StaticRouter location={request.url} context={reactRouterContext}>
+          <StaticRouter location={req.url} context={reactRouterContext}>
             <App />
           </StaticRouter>
         </Provider>
@@ -94,10 +94,10 @@ export default function reactApplicationMiddleware(request, response) {
     );
 
     // Check if the router context contains a redirect, if so we need to set
-    // the specific status and redirect header and end the response.
+    // the specific status and redirect header and end the res.
     if (reactRouterContext.url) {
-      response.status(302).setHeader('Location', reactRouterContext.url);
-      response.end();
+      res.status(302).setHeader('Location', reactRouterContext.url);
+      res.end();
       return;
     }
 
@@ -105,10 +105,8 @@ export default function reactApplicationMiddleware(request, response) {
     endRuntimeTiming();
 
     // Set server timings header for Chrome network tab timings.
-    response.set('Server-Timing', timing.toString());
+    res.set('Server-Timing', timing.toString());
 
-    response
-      .status(reactRouterContext.status || 200)
-      .send(`<!DOCTYPE html>${html}`);
+    res.status(reactRouterContext.status || 200).send(`<!DOCTYPE html>${html}`);
   });
 }

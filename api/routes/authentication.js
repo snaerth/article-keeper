@@ -6,6 +6,7 @@ import {
   resetPassword,
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
+import { tokenForUser } from './users';
 
 // Tell passport to use strategys
 passport.use(jwtLogin);
@@ -14,10 +15,9 @@ passport.use(facebookLogin);
 
 // Initialize require authentication helpers
 const requireSignin = passport.authenticate('local');
-const facebookAuth = passport.authenticate('facebook', { scope: ['email'] });
-const facebookAuthCallback = passport.authenticate('facebook', {
-  successRedirect: 'http://localhost:30030/auth/success',
-  failureRedirect: 'http://localhost:3000/signin',
+const facebookAuth = passport.authenticate('facebook', {
+  scope: ['email'],
+  authType: 'rerequest',
 });
 
 /**
@@ -34,10 +34,19 @@ export default function (app) {
   // Facebook authentication
   app.get('/auth/facebook', facebookAuth);
 
-  // handle the callback after facebook has authenticated the user
-  app.get('/auth/facebook/callback', facebookAuthCallback);
-  /* GET Twitter View Page */
-  app.get('/auth/success', (req, res) => {
-    res.render('twitter', { user: req.user });
-  });
+  app.get(
+    '/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      session: false,
+      failureRedirect: 'http://localhost:3000/signin',
+    }),
+    (req, res) => {
+      const { user } = req;
+      if (user) {
+        res.redirect('http://localhost:3000/profile/?id=');
+      }
+      // TODO: not logged in
+      res.send('Access denied');
+    },
+  );
 }

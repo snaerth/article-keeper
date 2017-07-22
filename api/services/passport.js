@@ -115,8 +115,11 @@ export const facebookLogin = new FacebookStrategy(
 
         if (user) {
           return done(null, user);
+
           // if (user.email === emailFacebook) {
+
           //   return done('User with same email already exist');
+
           // }
         }
 

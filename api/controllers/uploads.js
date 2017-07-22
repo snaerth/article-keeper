@@ -2,9 +2,6 @@ import path from 'path';
 import uuid from 'uuid/v1';
 import { resizeImage } from '../services/imageService';
 import { renameFile, checkFileAndDelete } from '../services/fileService';
-import config from '../config';
-
-const { UPLOADS_ROOT } = config;
 
 /**
  * Delete files in file system
@@ -24,7 +21,7 @@ export function deleteFiles(req, res) {
 
   try {
     images.forEach(async (imagePath) => {
-      await checkFileAndDelete(UPLOADS_ROOT + imagePath);
+      await checkFileAndDelete(`./${imagePath}`);
     });
 
     return res.status(200).send({ success: 'Images deleted' });
@@ -45,8 +42,8 @@ export async function saveImage(image, uploadDir) {
   return new Promise(async (resolve, reject) => {
     const ext = path.extname(image.name);
     const fileName = uuid();
-    const imgPath = UPLOADS_ROOT + uploadDir + fileName + ext;
-    const thumbnailPath = `${UPLOADS_ROOT + uploadDir}${`${fileName}-thumbnail${ext}`}`;
+    const imgPath = uploadDir + fileName + ext;
+    const thumbnailPath = `${uploadDir}${`${fileName}-thumbnail${ext}`}`;
 
     try {
       const imageUrl = fileName + ext;
@@ -77,14 +74,14 @@ export default async function uploadFiles(req, res) {
     const promises = [];
 
     images.forEach((image) => {
-      promises.push(saveImage(image, 'images/news/'));
+      promises.push(saveImage(image, './images/news/'));
     });
 
     // Wait for all promises to resolve
     // Send array of imagesObj = [{url: '', thumbnail}, ...]
     Promise.all(promises).then(imagesArr => res.status(200).send(imagesArr));
   } else if (images !== undefined) {
-    const imageObj = await saveImage(images, 'images/news/');
+    const imageObj = await saveImage(images, './images/news/');
     return res.status(200).send([imageObj]);
   } else {
     return res.status(422).send({ error: 'Images required' });
