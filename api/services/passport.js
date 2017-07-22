@@ -126,7 +126,7 @@ export const facebookLogin = new FacebookStrategy(
         try {
           const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
             photos[0].value,
-            'images/users/',
+            'media/users/',
           );
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
