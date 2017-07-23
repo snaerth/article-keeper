@@ -68,7 +68,8 @@ class Signup extends Component {
 
     this.props.actions
       .signupUser({ email, password, name, formData })
-      .then(this.signupUserSuccess());
+      .then(this.signupUserSuccess())
+      .catch();
   }
 
   /**

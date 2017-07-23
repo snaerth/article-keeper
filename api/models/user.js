@@ -27,7 +27,8 @@ const schema = {
   roles: {
     type: Array,
     required: true,
-    default: ['user'],
+    enum: ['user', 'admin'],
+    default: 'user',
   },
   imageUrl: {
     type: String,

@@ -15,6 +15,5 @@
   - nginx serve /public folder not express
 
   23.07.2017
-  - Út færa twitter og google
   - Facebook gera public
   - Búa til sysadmin notanda í upphafi með role-i admin

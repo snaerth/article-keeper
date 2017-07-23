@@ -117,7 +117,6 @@ export function signupUser({ email, password, name, formData }) {
       return Promise.resolve();
     } catch (error) {
       dispatch(authError(AUTH_ERROR, error));
-      return Promise.reject(error);
     }
   };
 }

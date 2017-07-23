@@ -147,21 +147,23 @@ export function isAdmin(req, res, next) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-export async function checkUserByEmail(email) {
-  try {
-    // See if user with given email exists
-    const user = await User.findOne({
-      email,
-    });
-    // If a user does exist, return error
-    if (user) {
-      throw new Error('Email is in use');
-    }
+export function checkUserByEmail(email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // See if user with given email exists
+      const user = await User.findOne({
+        email,
+      });
+      // If a user does exist, return error
+      if (user) {
+        return reject('Email is in use');
+      }
 
-    return Promise.resolve();
-  } catch (error) {
-    throw new Error(error);
-  }
+      return resolve();
+    } catch (error) {
+      return reject(error);
+    }
+  });
 }
 
 /**
