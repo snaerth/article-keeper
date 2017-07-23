@@ -61,15 +61,6 @@ class Signin extends Component {
   }
 
   /**
-   *
-   * @param {e} Event handler
-   * @param {path} Path for api
-   */
-  signInSocialClickHandler(e, path) {
-    e.preventDefault();
-  }
-
-  /**
      * Renders error message box
      * @returns {JSX}
      * @author Snær Seljan Þóroddsson
@@ -272,7 +263,6 @@ class Signin extends Component {
               <div className={socialsContainer} ref={c => this.el0 = c}>
                 <SocialsButtons
                   toggleView={e => this.toggleView(e, 1)}
-                  clickHandler={this.signInSocialClickHandler}
                 />
               </div>
               {this.renderForm(handleSubmit)}

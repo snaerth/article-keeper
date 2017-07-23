@@ -1,6 +1,8 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { Strategy as GoogleStrategy } from 'passport-google';
 import LocalStrategy from 'passport-local';
 import config from '../config';
 import User from '../models/user';
@@ -104,6 +106,8 @@ export const facebookLogin = new FacebookStrategy(
   facebookOptions,
   (accessToken, refreshToken, profile, done) => {
     const { emails, photos, id, displayName } = profile;
+    const email = emails[0].value;
+
     process.nextTick(() => {
       // Find the user in the database based on their facebook id
       User.findOne({ 'facebook.id': id }, async (err, user) => {
@@ -111,16 +115,8 @@ export const facebookLogin = new FacebookStrategy(
           return done(err);
         }
 
-        const emailFacebook = emails[0].value;
-
         if (user) {
           return done(null, user);
-
-          // if (user.email === emailFacebook) {
-
-          //   return done('User with same email already exist');
-
-          // }
         }
 
         try {
@@ -131,14 +127,15 @@ export const facebookLogin = new FacebookStrategy(
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
           const newUser = new User();
-          newUser.email = emailFacebook;
+          newUser.email = email;
           newUser.name = displayName;
           newUser.imageUrl = imageUrl;
           newUser.thumbnailUrl = thumbnailUrl;
           newUser.facebook.id = id;
           newUser.facebook.token = accessToken;
           newUser.facebook.name = displayName;
-          newUser.facebook.email = emailFacebook;
+          newUser.facebook.email = email;
+          newUser.facebook.image = photos[0].value;
 
           // save our user to the database
           return newUser.save((error) => {

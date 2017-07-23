@@ -8,18 +8,8 @@ import TwitterIcon from '../../../assets/images//twitter.svg';
 import GoogleIcon from '../../../assets/images/google.svg';
 import styles from './socialsButtons.scss';
 
-const SocialsButtons = ({ clickHandler, toggleView }) => {
+const SocialsButtons = ({ toggleView }) => {
   const { icon, iconArrowForward } = styles;
-
-  /**
-   * ButtonLink click handler. It calls parent
-   * clickHandler and passes it buttons href
-   * @param {e} e - Element event
-   * @returns {undefined}
-   */
-  const signInHandler = (e) => {
-    clickHandler(e, e.target.pathname);
-  };
 
   return (
     <div>
@@ -65,7 +55,6 @@ const SocialsButtons = ({ clickHandler, toggleView }) => {
 };
 
 SocialsButtons.propTypes = {
-  clickHandler: PropTypes.func.isRequired,
   toggleView: PropTypes.func.isRequired,
 };
 

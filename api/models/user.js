@@ -9,8 +9,8 @@ mongoose.Promise = Promise;
 const schema = {
   email: {
     type: String,
-    unique: true,
     lowercase: true,
+    unique: true,
     required: true,
   },
   password: {
@@ -62,6 +62,21 @@ const schema = {
     token: String,
     email: String,
     name: String,
+    image: String,
+  },
+  twitter: {
+    id: String,
+    token: String,
+    email: String,
+    name: String,
+    image: String,
+  },
+  google: {
+    id: String,
+    token: String,
+    email: String,
+    name: String,
+    image: String,
   },
 };
 

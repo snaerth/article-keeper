@@ -5,6 +5,7 @@ import {
   forgotPassword,
   resetPassword,
   successFacebookCallback,
+  errorFacebookCallback,
   signOut,
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
@@ -59,5 +60,6 @@ export default function (app) {
     '/auth/facebook/callback',
     facebookCallbackSetup,
     successFacebookCallback,
+    errorFacebookCallback,
   );
 }

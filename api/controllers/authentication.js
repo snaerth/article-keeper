@@ -73,6 +73,24 @@ export function successFacebookCallback(req, res) {
 }
 
 /**
+ * Error signin with facebook handler
+ *
+ * @param {Object} err
+ * @param {Object} req
+ * @param {Object} res
+ * @returns res
+ */
+// eslint-disable-next-line
+export function errorFacebookCallback(err, req, res, next) {
+  let error = "Couldn't create user";
+  if (err.code === 11000) {
+    error = 'Email already in use';
+  }
+
+  return res.status(401).redirect(`${signinUrl}?error=${error}`);
+}
+
+/**
  * Signs user out, destorys session and clear cookies
  *
  * @param {Object} req
