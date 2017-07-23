@@ -65,7 +65,7 @@ export default function (state = initialState, action) {
         ...state,
         authenticated: true,
         isFetching: false,
-        user: action.payload,
+        user: action.payload.user,
       };
 
     case SIGNUP_USER:

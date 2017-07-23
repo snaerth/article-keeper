@@ -48,23 +48,29 @@ class MediumEditor extends Component {
     this.uploadImages();
 
     const { editorState } = this.state;
-    const contentState = editorState.getCurrentContent();
+    // const contentState = editorState.getCurrentContent();
 
-    editorState.getCurrentContent().getBlockMap().map((block, i) => {
+    editorState.getCurrentContent().getBlockMap().map((block) => {
       const type = block.getType();
 
       if (type === 'atomic:image') {
-        block.getData()._root.entries[0][1] = 'user.jpg';
-        console.log(block.getData());
+        block.getData()._root.entries[0][1] = 'user.jpg'; // eslint-disable-line
         block.getData().get('src');
 
         // Do stuff
+
         // const rangeToReplace = new SelectionState({
+
         //   anchorKey: block.getKey(),
+
         //   focusKey: block.getKey(),
+
         // });
+
         // Modifier.replaceText(contentState, rangeToReplace, 'test.png');
+
         // const newContentState = editorState.getCurrentContent();
+
         // this.setState({ editorState });
       }
 
@@ -85,7 +91,6 @@ class MediumEditor extends Component {
         formData,
         token,
       });
-      console.log(data);
     } catch (error) {
       // TODO Error handling
       throw new Error(error);

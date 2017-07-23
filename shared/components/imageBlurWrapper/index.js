@@ -1,3 +1,1 @@
-import ImageBlurWrapper from './imageBlurWrapper';
-
-export default ImageBlurWrapper;
+export { default } from './imageBlurWrapper';

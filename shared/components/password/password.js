@@ -53,14 +53,6 @@ class Password extends Component {
             : null}
         </CSSTransitionGroup>
         <span className={styles.input}>
-          <span
-            className={styles.icon}
-            onClick={this.toggleVisibility}
-            role="button"
-            tabIndex={0}
-          >
-            {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
-          </span>
           <input
             {...input}
             type={type}
@@ -69,7 +61,16 @@ class Password extends Component {
             name={id}
             placeholder={placeholder}
             autoComplete={autocomplete || 'off'}
+            tabIndex={0}
           />
+          <span
+            className={styles.icon}
+            onClick={this.toggleVisibility}
+            role="button"
+            tabIndex={0}
+          >
+            {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
+          </span>
           <label className={styles.inputLabel} htmlFor={id}>
             <span className={styles.inputLabelContent}>{label}</span>
           </label>

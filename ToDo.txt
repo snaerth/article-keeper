@@ -15,8 +15,6 @@
   - nginx serve /public folder not express
 
   23.07.2017
-  - Laga user model þannig að facebook, twitter, google, verði með photo
-  - Ef email til signin Laga
   - Út færa twitter og google
   - Facebook gera public
   - Búa til sysadmin notanda í upphafi með role-i admin

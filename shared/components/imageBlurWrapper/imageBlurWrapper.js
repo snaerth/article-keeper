@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import styles from './imageBlurWrapper.scss';
 import { processImage } from '../../utils/stackBlur';
+import s from './imageBlurWrapper.scss';
 
 /**
  * Image blur wrapper component
@@ -11,60 +10,70 @@ import { processImage } from '../../utils/stackBlur';
  * it hides canvas and shows bigger image
  */
 class ImageBlurWrapper extends Component {
-  constructor() {
-    super();
+  static propTypes = {
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    visible: PropTypes.bool,
+    blur: PropTypes.string,
+  };
+
+  constructor(props) {
+    super(props);
 
     this.state = {
-      loaded: false,
+      visible: true,
     };
   }
 
   componentDidMount() {
-    const { blur, thumbnail, src, id } = this.props;
+    const { blur, thumbnail } = this.props;
     const img = new Image();
-    img.src = thumbnail || 'images/public/person-placeholder-thumbnail.png';
+    img.src = thumbnail || 'images/thumbnails/placeholder.png';
     img.onload = () => {
-      const canvas = document.getElementById(`canvas-blur-${id}`);
+      const canvas = this.canvas;
       processImage(img, canvas, blur || 10);
     };
+  }
 
-    const imgBig = new Image();
-    imgBig.src = src;
-    imgBig.onload = () => {
-      this.setState({ loaded: true });
+  loadBigImage(src) {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      this.canvas.parentNode.classList.add('heightAuto');
+      setTimeout(() => {
+        this.canvas.classList.add(s.hide);
+        this.image.classList.add(s.show);
+      }, 1000);
+
+      this.setState({ visible: false });
     };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.visible === true;
   }
 
   render() {
-    const { src, alt, id } = this.props;
+    const { src, alt } = this.props;
+    const { visible } = this.state;
+
+    if (visible) {
+      this.loadBigImage(src);
+    }
+
     return (
-      <div className={styles.container}>
+      <figure>
         <img
-          src={src}
+          src={visible ? src : ''}
           alt={alt}
-          className={classnames(
-            styles.image,
-            this.state.loaded ? styles.show : '',
-          )}
+          className={s.image}
+          ref={c => this.image = c}
         />
-        <canvas
-          id={`canvas-blur-${id}`}
-          className={classnames(
-            styles.canvas,
-            this.state.loaded ? styles.hide : '',
-          )}
-        />
-      </div>
+        <canvas ref={c => this.canvas = c} className={s.canvas} />
+      </figure>
     );
   }
 }
-
-ImageBlurWrapper.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  blur: PropTypes.string,
-  id: PropTypes.string.isRequired,
-};
 
 export default ImageBlurWrapper;

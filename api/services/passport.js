@@ -13,10 +13,13 @@ const {
   JWT_SECRET,
   FACEBOOK_CLIENT_ID,
   FACEBOOK_CLIENT_SECRET,
+  TWITTER_CONSUMER_KEY,
+  TWITTER_CONSUMER_SECRET,
   API_PROTOCOL,
   API_HOST,
   API_PORT,
 } = config;
+
 // Setup options for local strategy
 const localOptions = {
   usernameField: 'email',
@@ -81,12 +84,6 @@ export const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
 });
 
 // Configure the Facebook strategy for use by Passport.
-//
-// OAuth 2.0-based strategies require a `verify` function which receives the
-// credential (`accessToken`) for accessing the Facebook API on the user's
-// behalf, along with the user's profile.  The function must invoke `cb`
-// with a user object, which will be set at `req.user` in route handlers after
-// authentication.
 const facebookOptions = {
   clientID: FACEBOOK_CLIENT_ID,
   clientSecret: FACEBOOK_CLIENT_SECRET,
@@ -102,6 +99,7 @@ const facebookOptions = {
   enableProof: true,
 };
 
+// Create facebook strategy
 export const facebookLogin = new FacebookStrategy(
   facebookOptions,
   (accessToken, refreshToken, profile, done) => {
@@ -127,15 +125,75 @@ export const facebookLogin = new FacebookStrategy(
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
           const newUser = new User();
-          newUser.email = email;
           newUser.name = displayName;
           newUser.imageUrl = imageUrl;
           newUser.thumbnailUrl = thumbnailUrl;
+          newUser.profile = 'FACEBOOK';
           newUser.facebook.id = id;
           newUser.facebook.token = accessToken;
           newUser.facebook.name = displayName;
           newUser.facebook.email = email;
           newUser.facebook.image = photos[0].value;
+
+          // save our user to the database
+          return newUser.save((error) => {
+            if (error) {
+              return done(error);
+            }
+            // if successful, return the new user
+            return done(null, newUser);
+          });
+        } catch (error) {
+          return done(err);
+        }
+      });
+    });
+  },
+);
+
+// Configure the Twitter strategy for use by Passport.
+const twitterOptions = {
+  consumerKey: TWITTER_CONSUMER_KEY,
+  consumerSecret: TWITTER_CONSUMER_SECRET,
+  callbackURL: `${API_PROTOCOL}://${API_HOST}:${API_PORT}/auth/twitter/callback`,
+  enableProof: true,
+  includeEmail: true,
+};
+
+// Create facebook strategy
+export const twitterLogin = new TwitterStrategy(
+  twitterOptions,
+  (token, tokenSecret, profile, done) => {
+    const { photos, id, displayName } = profile;
+
+    process.nextTick(() => {
+      // Find the user in the database based on their facebook id
+      User.findOne({ 'twitter.id': id }, async (err, user) => {
+        if (err) {
+          return done(err);
+        }
+
+        if (user) {
+          return done(null, user);
+        }
+
+        try {
+          const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
+            photos[0].value.replace('_normal', ''),
+            'media/users/',
+          );
+          // If no user found with that facebook id or email create new user
+          // Map facebook response to mongoose user object
+          const newUser = new User();
+          newUser.name = displayName;
+          newUser.imageUrl = imageUrl;
+          newUser.thumbnailUrl = thumbnailUrl;
+          newUser.profile = 'TWITTER';
+          newUser.twitter.id = id;
+          newUser.twitter.token = token;
+          newUser.twitter.name = displayName;
+          newUser.twitter.email = '';
+          newUser.twitter.image = photos[0].value;
 
           // save our user to the database
           return newUser.save((error) => {

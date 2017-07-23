@@ -53,8 +53,9 @@ export function signinUser({ email, password }) {
       // Post email/password to api server for sign in Get token back from server
       const response = await axios.post('/api/signin', { email, password });
       const payload = {
-        user: response.data.user,
+        user: response.data,
       };
+
       // Dispatch api action to authReducer
       dispatch({ type: AUTH_USER, payload });
       // Save token to localStorage

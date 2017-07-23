@@ -57,6 +57,12 @@ const config = {
 
   // Facebook client secret
   FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || '',
+
+  // Twitter consumer key
+  TWITTER_CONSUMER_KEY: process.env.TWITTER_CONSUMER_KEY || '',
+
+  // Twitter consumer secret
+  TWITTER_CONSUMER_SECRET: process.env.TWITTER_CONSUMER_SECRET || '',
 };
 
 export default config;

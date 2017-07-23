@@ -14,6 +14,7 @@ import NotifyBox from '../../notifyBox';
 import MainHeading from '../../mainheading';
 import ForgotPassword from '../forgotPassword';
 import validateEmail from './../../../utils/validate';
+import getParameterByName from './../../../utils/queryParams';
 import Spinner from '../../spinner';
 import * as actionCreators from '../actions';
 import Email from '../../../assets/images//email.svg';
@@ -38,7 +39,6 @@ class Signin extends Component {
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.toggleView = this.toggleView.bind(this);
-    this.signInSocialClickHandler = this.signInSocialClickHandler.bind(this);
 
     this.state = {
       currentSlide: 0,
@@ -47,6 +47,13 @@ class Signin extends Component {
 
   componentWillMount() {
     this.props.actions.clean();
+  }
+
+  componentDidMount() {
+    const error = getParameterByName('error');
+    if (error) {
+      this.renderError(error);
+    }
   }
 
   /**
@@ -62,19 +69,22 @@ class Signin extends Component {
 
   /**
      * Renders error message box
+     *
+     * @param {String} error
      * @returns {JSX}
      * @author Snær Seljan Þóroddsson
      */
-  renderError() {
+  renderError(error) {
     const { errorMessage } = this.props;
+    const msg = errorMessage || error;
     const { noMarginBottom } = styles;
 
-    if (!errorMessage) return null;
+    if (!msg) return null;
     return (
       <fieldset>
         <NotifyBox
           strongText="Error: "
-          text={errorMessage}
+          text={msg}
           type="error"
           className={noMarginBottom}
         />

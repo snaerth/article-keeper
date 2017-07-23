@@ -11,7 +11,6 @@ const schema = {
     type: String,
     lowercase: true,
     unique: true,
-    required: true,
   },
   password: {
     type: String,
@@ -53,10 +52,13 @@ const schema = {
   resetPasswordExpires: {
     type: Date,
   },
-  oauthID: {
-    type: Number,
-    required: false,
+  profile: {
+    type: String,
+    required: true,
+    enum: ['FACEBOOK', 'TWITTER', 'GOOGLE', 'LOCAL'],
+    default: 'LOCAL',
   },
+
   facebook: {
     id: String,
     token: String,
@@ -84,7 +86,7 @@ const schema = {
 const userSchema = new Schema(schema);
 
 // On save, encrypt password Before saving user model, run this function
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function preSave(next) {
   const user = this;
 
   // Encrypt our password using the salt above

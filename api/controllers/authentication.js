@@ -13,7 +13,7 @@ import config from '../config';
 
 // VARIABLES
 const { PORT, HOST, PROTOCOL } = config;
-const signinUrl = `${PROTOCOL}://${HOST}:${PORT}/signin`;
+const applicationUrl = `${PROTOCOL}://${HOST}:${PORT}`;
 
 /**
  * Removes properties from mongoose user schema object
@@ -44,7 +44,7 @@ export function removeUserProps(user, moreProps) {
 }
 
 /**
- * Success signin with facebook handler
+ * Success social handler
  * Sets user cookie and expire time and then redirects to
  * Application profile page
  *
@@ -52,7 +52,7 @@ export function removeUserProps(user, moreProps) {
  * @param {Object} res
  * @returns res
  */
-export function successFacebookCallback(req, res) {
+export function successSocialCallback(req, res) {
   const { user } = req;
   if (user) {
     let newUser = new User(user);
@@ -66,14 +66,14 @@ export function successFacebookCallback(req, res) {
     const expireTime = 30 * 24 * 60 * 1000; // 30 days
     res.cookie('userExpires', new Date(Date.now() + expireTime));
 
-    return res.status(200).redirect('http://localhost:3000/profile');
+    return res.status(200).redirect(`${applicationUrl}/profile`);
   }
 
   return res.status(401).send('Access denied');
 }
 
 /**
- * Error signin with facebook handler
+ * Error social handler
  *
  * @param {Object} err
  * @param {Object} req
@@ -81,13 +81,13 @@ export function successFacebookCallback(req, res) {
  * @returns res
  */
 // eslint-disable-next-line
-export function errorFacebookCallback(err, req, res, next) {
+export function errorSocialCallback(err, req, res, next) {
   let error = "Couldn't create user";
   if (err.code === 11000) {
     error = 'Email already in use';
   }
 
-  return res.status(401).redirect(`${signinUrl}?error=${error}`);
+  return res.status(401).redirect(`${applicationUrl}/signin?error=${error}`);
 }
 
 /**
@@ -238,7 +238,7 @@ export function signin(req, res) {
     }
   }
 
-  res.send(data);
+  return res.status(200).json(data);
 }
 
 /**

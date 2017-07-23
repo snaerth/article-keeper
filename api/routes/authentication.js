@@ -4,11 +4,16 @@ import {
   signup,
   forgotPassword,
   resetPassword,
-  successFacebookCallback,
-  errorFacebookCallback,
+  successSocialCallback,
+  errorSocialCallback,
   signOut,
 } from '../controllers/authentication';
-import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
+import {
+  jwtLogin,
+  localLogin,
+  facebookLogin,
+  twitterLogin,
+} from '../services/passport';
 import config from '../config';
 
 // VARIABLES
@@ -19,13 +24,36 @@ const signinUrl = `${PROTOCOL}://${HOST}:${PORT}/signin`;
 passport.use(jwtLogin);
 passport.use(localLogin);
 passport.use(facebookLogin);
+passport.use(twitterLogin);
 
 // Initialize require authentication helpers
+
+// Local passport
 const requireSigninSetup = passport.authenticate('local');
+
+// Facebook passport
 const facebookAuthSetup = passport.authenticate('facebook', {
   scope: ['email'],
 });
 const facebookCallbackSetup = passport.authenticate('facebook', {
+  session: false,
+  failureRedirect: signinUrl,
+});
+
+// Twitter passport
+const twitterAuthSetup = passport.authenticate('twitter', {
+  scope: ['include_email=true'],
+});
+const twitterCallbackSetup = passport.authenticate('twitter', {
+  session: false,
+  failureRedirect: signinUrl,
+});
+
+// Google passport
+const googleAuthSetup = passport.authenticate('google', {
+  scope: ['include_email=true'],
+});
+const googleCallbackSetup = passport.authenticate('google', {
   session: false,
   failureRedirect: signinUrl,
 });
@@ -59,7 +87,29 @@ export default function (app) {
   app.get(
     '/auth/facebook/callback',
     facebookCallbackSetup,
-    successFacebookCallback,
-    errorFacebookCallback,
+    successSocialCallback,
+    errorSocialCallback,
+  );
+
+  // Twitter authentication
+  app.get('/auth/twitter', twitterAuthSetup);
+
+  // Twitter auth callback
+  app.get(
+    '/auth/twitter/callback',
+    twitterCallbackSetup,
+    successSocialCallback,
+    errorSocialCallback,
+  );
+
+  // Google authentication
+  app.get('/auth/google', googleAuthSetup);
+
+  // Google auth callback
+  app.get(
+    '/auth/google/return',
+    googleCallbackSetup,
+    successSocialCallback,
+    errorSocialCallback,
   );
 }
