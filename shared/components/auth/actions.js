@@ -183,16 +183,23 @@ export function clean() {
 }
 
 /**
- * Signs out user
- * Removes token key from localStorage
+ * Signs out user and removes token key from localStorage
  *
  * @returns {Object} action
  * @author Snær Seljan Þóroddsson
  */
 export function signoutUser() {
-  localStorage.removeItem('user');
-
-  return { type: UNAUTH_USER };
+  return async (dispatch) => {
+    try {
+      // Post email to api server to retreive new password
+      const response = await axios.get('/api/signout');
+      await axios.get('/signout');
+      localStorage.removeItem('user');
+      dispatch({ type: UNAUTH_USER, payload: response.data });
+    } catch (error) {
+      dispatch(authError(AUTH_ERROR, error));
+    }
+  };
 }
 
 /**

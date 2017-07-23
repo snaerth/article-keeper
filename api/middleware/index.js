@@ -2,6 +2,7 @@ import compression from 'compression';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import passport from 'passport';
 import formidableMiddleware from './uploadHandlers';
@@ -16,6 +17,10 @@ const defaultMiddlewares = [
   // Let app use compression
   compression(),
 
+  // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+  cookieParser(),
+
+  // Formidable for file uploads
   formidableMiddleware({
     encoding: 'utf-8',
     uploadDir: UPLOADS_ROOT,

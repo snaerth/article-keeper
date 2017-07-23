@@ -1,13 +1,11 @@
 /* eslint-disable no-console */
 
 import express from 'express';
-import compression from 'compression';
 import { resolve as pathResolve } from 'path';
 import appRootDir from 'app-root-dir';
-import cookieParser from 'cookie-parser';
 import Proxy from './middleware/proxy';
+import middleware from './middleware';
 import reactApplication from './middleware/reactApplication';
-import security from './middleware/security';
 import clientBundle from './middleware/clientBundle';
 import serviceWorker from './middleware/serviceWorker';
 import offlinePage from './middleware/offlinePage';
@@ -21,17 +19,11 @@ const target = `${config('apiProtocol')}://${config('apiHost')}:${config('apiPor
 // Create our express based server.
 const app = express();
 
-// Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
-app.use(cookieParser());
+// Apply middleware to app
+app.use(middleware());
 
 // Don't expose any software information to potential hackers.
 app.disable('x-powered-by');
-
-// Security middlewares.
-app.use(...security);
-
-// Gzip compress the responses.
-app.use(compression());
 
 // Initialize proxy server
 Proxy({ app, target });

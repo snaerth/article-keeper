@@ -4,11 +4,15 @@ import {
   signup,
   forgotPassword,
   resetPassword,
-  removeUserProps,
+  successFacebookCallback,
+  signOut,
 } from '../controllers/authentication';
 import { jwtLogin, localLogin, facebookLogin } from '../services/passport';
-import { tokenForUser } from '../controllers/users';
-import User from '../models/user';
+import config from '../config';
+
+// VARIABLES
+const { PORT, HOST, PROTOCOL } = config;
+const signinUrl = `${PROTOCOL}://${HOST}:${PORT}/signin`;
 
 // Tell passport to use strategys
 passport.use(jwtLogin);
@@ -16,9 +20,13 @@ passport.use(localLogin);
 passport.use(facebookLogin);
 
 // Initialize require authentication helpers
-const requireSignin = passport.authenticate('local');
-const facebookAuth = passport.authenticate('facebook', {
+const requireSigninSetup = passport.authenticate('local');
+const facebookAuthSetup = passport.authenticate('facebook', {
   scope: ['email'],
+});
+const facebookCallbackSetup = passport.authenticate('facebook', {
+  session: false,
+  failureRedirect: signinUrl,
 });
 
 /**
@@ -28,37 +36,28 @@ const facebookAuth = passport.authenticate('facebook', {
  */
 export default function (app) {
   // Authentication
+  // Signup
   app.post('/signup', signup);
-  app.post('/signin', requireSignin, signin);
-  app.post('/forgot', forgotPassword);
-  app.post('/reset/:token', resetPassword);
-  // Facebook authentication
-  app.get('/auth/facebook', facebookAuth);
 
+  // Signin
+  app.post('/signin', requireSigninSetup, signin);
+
+  // Signout
+  app.get('/signout', signOut);
+
+  // Forgot password
+  app.post('/forgot', forgotPassword);
+
+  // Reset password
+  app.post('/reset/:token', resetPassword);
+
+  // Facebook authentication
+  app.get('/auth/facebook', facebookAuthSetup);
+
+  // Facebook auth callback
   app.get(
     '/auth/facebook/callback',
-    passport.authenticate('facebook', {
-      session: false,
-      failureRedirect: 'http://localhost:3000/signin',
-    }),
-    (req, res) => {
-      const { user } = req;
-      if (user) {
-        let newUser = new User(user);
-        newUser = removeUserProps(newUser);
-        // Store user and jwt token in a cookie
-        res.cookie('user', {
-          token: tokenForUser(newUser),
-          ...newUser,
-        });
-
-        const expireTime = 30 * 24 * 60 * 1000; // 30 days
-        res.cookie('userExpires', new Date(Date.now() + expireTime));
-
-        return res.status(200).redirect('http://localhost:3000/profile');
-      }
-
-      return res.status(401).send('Access denied');
-    },
+    facebookCallbackSetup,
+    successFacebookCallback,
   );
 }

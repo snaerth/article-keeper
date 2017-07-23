@@ -10,14 +10,23 @@ const config = {
   // Defaults
   NODE_ENV: process.env.NODE_ENV || 'development',
 
-  // Protocol
+  // Api Protocol
   API_PROTOCOL: process.env.API_PROTOCOL || 'http',
 
-  // Port
+  // Api Port
   API_PORT: process.env.API_PORT || 3030,
 
-  // Host
+  // Api Host
   API_HOST: process.env.API_HOST || 'localhost',
+
+  // Protocol
+  PROTOCOL: process.env.PROTOCOL || 'http',
+
+  // Port
+  PORT: process.env.PORT || 3000,
+
+  // Host
+  HOST: process.env.HOST || 'localhost',
 
   // Database url
   DB_URL: process.env.DB_URL || 'mongodb://localhost/application',

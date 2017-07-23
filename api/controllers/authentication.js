@@ -12,7 +12,85 @@ import User from '../models/user';
 import config from '../config';
 
 // VARIABLES
-const { PORT, HOST } = config;
+const { PORT, HOST, PROTOCOL } = config;
+const signinUrl = `${PROTOCOL}://${HOST}:${PORT}/signin`;
+
+/**
+ * Removes properties from mongoose user schema object
+ *
+ * @param {Object} user - Mongoose user schema object
+ * @param {Array} moreProps - Array of strings to remove from user object
+ * @returns {Object} newUser
+ */
+export function removeUserProps(user, moreProps) {
+  let delProps = ['__v', '_id', 'createdAt', 'password'];
+  delProps = moreProps && moreProps.length
+    ? delProps.concat(moreProps)
+    : delProps;
+  const newUser = user.toObject();
+
+  for (let i = 0; i < delProps.length; i++) {
+    const hasBarProperty = Object.prototype.hasOwnProperty.call(
+      newUser,
+      delProps[i],
+    );
+
+    if (hasBarProperty) {
+      delete newUser[delProps[i]];
+    }
+  }
+
+  return newUser;
+}
+
+/**
+ * Success signin with facebook handler
+ * Sets user cookie and expire time and then redirects to
+ * Application profile page
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns res
+ */
+export function successFacebookCallback(req, res) {
+  const { user } = req;
+  if (user) {
+    let newUser = new User(user);
+    newUser = removeUserProps(newUser);
+    // Store user and jwt token in a cookie
+    res.cookie('user', {
+      token: tokenForUser(newUser),
+      ...newUser,
+    });
+
+    const expireTime = 30 * 24 * 60 * 1000; // 30 days
+    res.cookie('userExpires', new Date(Date.now() + expireTime));
+
+    return res.status(200).redirect('http://localhost:3000/profile');
+  }
+
+  return res.status(401).send('Access denied');
+}
+
+/**
+ * Signs user out, destorys session and clear cookies
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns res
+ */
+export function signOut(req, res) {
+  req.logout();
+  res.clearCookie('user');
+  res.clearCookie('userExpires');
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).send({ error });
+    }
+
+    return res.status(200).send('User signed out');
+  });
+}
 
 /**
  * Validates email, password name, etc. from post request
@@ -73,34 +151,6 @@ export function validateSignup({
   }
 
   return null;
-}
-
-/**
- * Removes properties from mongoose user schema object
- *
- * @param {Object} user - Mongoose user schema object
- * @param {Array} moreProps - Array of strings to remove from user object
- * @returns {Object} newUser
- */
-export function removeUserProps(user, moreProps) {
-  let delProps = ['__v', '_id', 'createdAt', 'password'];
-  delProps = moreProps && moreProps.length
-    ? delProps.concat(moreProps)
-    : delProps;
-  const newUser = user.toObject();
-
-  for (let i = 0; i < delProps.length; i++) {
-    const hasBarProperty = Object.prototype.hasOwnProperty.call(
-      newUser,
-      delProps[i],
-    );
-
-    if (hasBarProperty) {
-      delete newUser[delProps[i]];
-    }
-  }
-
-  return newUser;
 }
 
 /**
