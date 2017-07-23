@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
-import { Strategy as GoogleStrategy } from 'passport-google';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import LocalStrategy from 'passport-local';
 import config from '../config';
 import User from '../models/user';
@@ -15,10 +15,30 @@ const {
   FACEBOOK_CLIENT_SECRET,
   TWITTER_CONSUMER_KEY,
   TWITTER_CONSUMER_SECRET,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
   API_PROTOCOL,
   API_HOST,
   API_PORT,
 } = config;
+
+/**
+ * Saves new user to db
+ *
+ * @param {Object} newUser - Mongoose user model
+ * @param {Func} done
+ * @returns {Func} callback function
+ */
+function saveUser(newUser, done) {
+  // save our user to the database
+  return newUser.save((error) => {
+    if (error) {
+      return done(error);
+    }
+    // if successful, return the new user
+    return done(null, newUser);
+  });
+}
 
 // Setup options for local strategy
 const localOptions = {
@@ -135,14 +155,7 @@ export const facebookLogin = new FacebookStrategy(
           newUser.facebook.email = email;
           newUser.facebook.image = photos[0].value;
 
-          // save our user to the database
-          return newUser.save((error) => {
-            if (error) {
-              return done(error);
-            }
-            // if successful, return the new user
-            return done(null, newUser);
-          });
+          return saveUser(newUser, done);
         } catch (error) {
           return done(err);
         }
@@ -195,14 +208,58 @@ export const twitterLogin = new TwitterStrategy(
           newUser.twitter.email = '';
           newUser.twitter.image = photos[0].value;
 
-          // save our user to the database
-          return newUser.save((error) => {
-            if (error) {
-              return done(error);
-            }
-            // if successful, return the new user
-            return done(null, newUser);
-          });
+          return saveUser(newUser, done);
+        } catch (error) {
+          return done(err);
+        }
+      });
+    });
+  },
+);
+
+// Configure the Twitter strategy for use by Passport.
+const googleOptions = {
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: `${API_PROTOCOL}://${API_HOST}:${API_PORT}/auth/google/callback`,
+};
+
+// Create google strategy
+export const googleLogin = new GoogleStrategy(
+  googleOptions,
+  (accessToken, refreshToken, profile, done) => {
+    const { email, photos, id, displayName } = profile;
+
+    process.nextTick(() => {
+      // Find the user in the database based on their facebook id
+      User.findOne({ 'google.id': id }, async (err, user) => {
+        if (err) {
+          return done(err);
+        }
+
+        if (user) {
+          return done(null, user);
+        }
+
+        try {
+          const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
+            photos[0].value.replace(/^(.+?\.(png|jpe?g)).*$/i, '$1'),
+            'media/users/',
+          );
+          // If no user found with that facebook id or email create new user
+          // Map facebook response to mongoose user object
+          const newUser = new User();
+          newUser.name = displayName;
+          newUser.imageUrl = imageUrl;
+          newUser.thumbnailUrl = thumbnailUrl;
+          newUser.profile = 'GOOGLE';
+          newUser.google.id = id;
+          newUser.google.token = accessToken;
+          newUser.google.name = displayName;
+          newUser.google.email = email;
+          newUser.google.image = photos[0].value;
+
+          return saveUser(newUser, done);
         } catch (error) {
           return done(err);
         }

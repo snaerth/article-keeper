@@ -86,6 +86,7 @@ export function errorSocialCallback(err, req, res, next) {
   if (err.code === 11000) {
     error = 'Email already in use';
   }
+  // TODO - log error
 
   return res.status(401).redirect(`${applicationUrl}/signin?error=${error}`);
 }

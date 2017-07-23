@@ -63,6 +63,12 @@ const config = {
 
   // Twitter consumer secret
   TWITTER_CONSUMER_SECRET: process.env.TWITTER_CONSUMER_SECRET || '',
+
+  // Google client id
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+
+  // Google client secret
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
 };
 
 export default config;

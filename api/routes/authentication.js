@@ -13,6 +13,7 @@ import {
   localLogin,
   facebookLogin,
   twitterLogin,
+  googleLogin,
 } from '../services/passport';
 import config from '../config';
 
@@ -25,6 +26,7 @@ passport.use(jwtLogin);
 passport.use(localLogin);
 passport.use(facebookLogin);
 passport.use(twitterLogin);
+passport.use(googleLogin);
 
 // Initialize require authentication helpers
 
@@ -51,7 +53,7 @@ const twitterCallbackSetup = passport.authenticate('twitter', {
 
 // Google passport
 const googleAuthSetup = passport.authenticate('google', {
-  scope: ['include_email=true'],
+  scope: ['email'],
 });
 const googleCallbackSetup = passport.authenticate('google', {
   session: false,
@@ -107,7 +109,7 @@ export default function (app) {
 
   // Google auth callback
   app.get(
-    '/auth/google/return',
+    '/auth/google/callback',
     googleCallbackSetup,
     successSocialCallback,
     errorSocialCallback,
