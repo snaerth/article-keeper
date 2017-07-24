@@ -1,19 +1,12 @@
-- FIX USER LOGIN PASSWORD COMPARE ASAP
-
 - Setup tests in api and client
-
-- Refactor Header component
-
-- Api and client authentication
- - Signin
- - Signup
- - Reset
- - Forgot password
 
 
  IMPORTANT
   - nginx serve /public folder not express
 
   23.07.2017
+  - Klára db.spec.js
   - Facebook gera public
-  - Búa til sysadmin notanda í upphafi með role-i admin
+  - Búa til update user í client og server
+  - Búa til edit, delete, create and view users fyrir admin notendur
+  - Búa til news edit, delete, create, view fyrir news

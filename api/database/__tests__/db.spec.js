@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { createAdminUser } from '../db';
 import config from '../../config';
 
 const { TEST_DB_URL } = config;
@@ -17,5 +18,11 @@ afterAll((done) => {
 describe('Connect to MongoDB database', () => {
   test('Connecion to database', () => {
     expect(1).toBe(1);
+  });
+
+  test('Create admin user', async () => {
+    createAdminUser((error) => {
+      expect(1).toBe(1);
+    });
   });
 });

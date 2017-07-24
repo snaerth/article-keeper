@@ -6,7 +6,7 @@ import User from '../models/user';
  * @param {Func} cb
  * @returns {Func} callback
  */
-function createAdminUser(cb) {
+export function createAdminUser(cb) {
   const email = 'admin@admin.com';
 
   User.findOne(
