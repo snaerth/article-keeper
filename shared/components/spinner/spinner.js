@@ -4,7 +4,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './spinner.scss';
 
 /**
- * Signup component
+ * Spinner component
  */
 const Spinner = props => (
   <CSSTransitionGroup

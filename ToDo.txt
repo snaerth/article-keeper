@@ -1,12 +1,14 @@
-- Setup tests in api and client
-
-
- IMPORTANT
+- IMPORTANT
   - nginx serve /public folder not express
+  - Https - Let's encrypt nota https://letsencrypt.org fyrir cert
+  - Setja upp cert fyrir localhost og server
 
-  23.07.2017
+TODO
   - Klára db.spec.js
   - Facebook gera public
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
   - Búa til news edit, delete, create, view fyrir news
+  - Muna að búa til test fyrir allt
+
+

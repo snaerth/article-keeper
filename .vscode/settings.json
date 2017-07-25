@@ -1,0 +1,25 @@
+// Place your settings in this file to overwrite the default settings
+{
+  "vsicons.projectDetection.autoReload": true,
+  "workbench.colorTheme": "Material",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.sideBar.location": "left",
+  "editor.wrappingIndent": "none",
+  "editor.wordWrap": "off",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.lastDownload": "",
+  "sync.forceDownload": false,
+  "sync.anonymousGist": false,
+  "sync.host": "",
+  "sync.pathPrefix": "",
+  "prettier.singleQuote": true,
+  "prettier.useTabs": false,
+  "prettier.jsxBracketSameLine": true,
+  "prettier.trailingComma": "es5",
+  "sync.gist": "042e4fca6ab90df12184683e2fb7debc",
+  "sync.lastUpload": "",
+  "sync.quietSync": false
+}
