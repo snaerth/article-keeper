@@ -25,18 +25,14 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "Run Tests",
-        "program": "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
-        "args": [
-          "--runInBand"
-        ],
-        "runtimeArgs": [
-          "--nolazy"
-        ],
-        "stopOnEntry": false,
+        "name": "Debug Tests",
+        "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
         "cwd": "${workspaceRoot}",
-        "sourceMaps": true,
-        "console": "internalConsole"
+        "args": [
+          "--i",
+          "--config",
+          "jest.json"
+        ]
       }
     ]
   }

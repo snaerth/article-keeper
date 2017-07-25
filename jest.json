@@ -1,0 +1,7 @@
+{
+  "automock": true,
+  "moduleFileExtensions": [
+    "js",
+    "json"
+  ]
+}
