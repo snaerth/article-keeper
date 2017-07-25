@@ -58,6 +58,7 @@
 .button:hover .icon {
   animation: forwardBackInfinite 1.2s infinite;
 }
+
 @keyframes forwardBackInfinite {
   0% {
     transform: translate3d(0, 0, 0);

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import { Modifier, SelectionState } from 'draft-js';
 import { Editor, createEditorState } from 'medium-draft';
 import 'medium-draft/lib/index.css';
 import * as actionCreators from '../actions';
@@ -87,7 +85,7 @@ class MediumEditor extends Component {
   uploadImages = async () => {
     const { actions, token, formData } = this.props;
     try {
-      const data = await actions.uploadImages({
+      const data = await actions.uploadImages({// eslint-disable-line
         formData,
         token,
       });

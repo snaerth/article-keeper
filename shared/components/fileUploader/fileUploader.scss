@@ -67,6 +67,7 @@
   border: 1px solid $border-color;
   align-content: center;
 }
+
 @media screen and (max-width: $max-768) {
   .uploadPhotoContainer {
     grid-template-columns: 1fr;

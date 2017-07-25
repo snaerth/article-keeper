@@ -7,9 +7,11 @@
 @-ms-viewport {
   width: device-width;
 }
+
 @-o-viewport {
   width: device-width;
 }
+
 @viewport {
   width: device-width;
 }
@@ -38,6 +40,7 @@ html {
 
 body {
   @include responsive-font(1.5vw, 16px, 16px);
+
   position: relative;
   margin: 0;
   font-family: 'Open Sans', arial, sans-serif;
@@ -58,6 +61,7 @@ img {
 
 h1 {
   @include responsive-font(10vw, 40px, 60px);
+
   line-height: 1.2;
   color: $text-dark;
 }
@@ -131,6 +135,7 @@ fieldset {
   padding: 3em 1em 1em;
   background: $primary-card;
   overflow-x: hidden;
+
   @include viewport(handset) {
     padding: 3em 0 1em;
   }

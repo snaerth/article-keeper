@@ -13,9 +13,11 @@
 .row > .cell {
   flex: 1;
   margin: 0 $gutter;
+
   &:first-child {
     margin-left: 0;
   }
+
   &:last-child {
     margin-right: 0;
   }

@@ -18,7 +18,6 @@
   "prettier.singleQuote": true,
   "prettier.useTabs": false,
   "prettier.jsxBracketSameLine": true,
-  "prettier.trailingComma": "es5",
   "sync.gist": "042e4fca6ab90df12184683e2fb7debc",
   "sync.lastUpload": "",
   "sync.quietSync": false

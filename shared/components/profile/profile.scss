@@ -39,11 +39,13 @@
   height: 200px;
   fill: $primary-grey;
 }
+
 @media screen and (max-width: $max-960) {
   .grid {
     grid-template-columns: 40% 60%;
   }
 }
+
 @media screen and (max-width: $max-768) {
   .grid {
     grid-template-columns: 100%;

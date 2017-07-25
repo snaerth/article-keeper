@@ -10,6 +10,7 @@
 .medium {
   @include responsive-font(10vw, 25px, 40px);
 }
+
 @media only screen and (min-width: $min-360) {
   .heading {
     padding: 0 0 1em;

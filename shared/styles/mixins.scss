@@ -51,18 +51,23 @@ Usage
   $responsive-unitless: $responsive / ($responsive - $responsive + 1);
   $dimension: if(unit($responsive) =='vh', 'height', 'width');
   $min-breakpoint: $min / $responsive-unitless * 100;
+
   @media (max-#{$dimension}: #{$min-breakpoint}) {
     font-size: $min;
   }
+
   @if $max {
     $max-breakpoint: $max / $responsive-unitless * 100;
+
     @media (min-#{$dimension}: #{$max-breakpoint}) {
       font-size: $max;
     }
   }
+
   @if $fallback {
     font-size: $fallback;
   }
+
   font-size: $responsive;
 }
 
@@ -78,6 +83,7 @@ Usage
   bottom: 0;
   left: 0;
 }
+
 @function strip-unit($number) {
   @if type-of($number) == 'number' and not unitless($number) {
     @return $number / ($number * 0 + 1);
@@ -85,17 +91,20 @@ Usage
 
   @return $number;
 }
+
 @mixin viewport($media) {
   @if $media == handset {
     @media only screen and (max-width: $min-600) {
       @content;
     }
   }
+
   @else if $media==tablet {
     @media only screen and (min-width: $min-tablet) {
       @content;
     }
   }
+
   @else if $media==desktop {
     @media only screen and (min-width: $min-desktop) {
       @content;

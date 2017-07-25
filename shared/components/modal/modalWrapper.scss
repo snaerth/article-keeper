@@ -27,28 +27,33 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 @media screen and (max-width: $max-768) {
   .modalInner {
     padding: 20px 0;
     max-height: 560px;
   }
 }
+
 @media screen and (max-width: $max-768) and (min-height: $min-768) {
   .modalInner {
     padding: 20px 0;
     max-height: $max-768;
   }
 }
+
 @media screen and (max-height: 600px) {
   .modalInner {
     max-height: $max-480;
   }
 }
+
 @media screen and (max-height: 480px) {
   .modalInner {
     max-height: 400px;
   }
 }
+
 @media screen and (max-height: 400px) {
   .modalInner {
     max-height: 320px;

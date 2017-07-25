@@ -77,16 +77,12 @@
   cursor: pointer;
   fill: $text-dark;
   transition: fill $hover-transition;
+
   &:hover {
     fill: $primary-black;
   }
 }
-@-webkit-keyframes anim-shadow {
-  to {
-    opacity: 0;
-    box-shadow: 0 0 100px 50px;
-  }
-}
+
 @keyframes anim-shadow {
   to {
     opacity: 0;

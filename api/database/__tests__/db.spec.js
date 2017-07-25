@@ -21,7 +21,7 @@ describe('Connect to MongoDB database', () => {
   });
 
   test('Create admin user', async () => {
-    createAdminUser((error) => {
+    createAdminUser(() => {
       expect(1).toBe(1);
     });
   });
