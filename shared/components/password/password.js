@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
 import styles from './password.scss';
 import ErrorText from '../errorText';
 import VisibilitySvg from '../../assets/images/visibility.svg';
@@ -42,16 +41,9 @@ class Password extends Component {
 
     return (
       <div>
-        <CSSTransitionGroup
-          component="div"
-          transitionName="fadeIn"
-          transitionEnterTimeout={700}
-          transitionLeaveTimeout={350}
-        >
-          {meta.error && meta.touched
-            ? <ErrorText key={id} id={id} error={meta.error} />
-            : null}
-        </CSSTransitionGroup>
+        {meta.error && meta.touched
+          ? <ErrorText key={id} id={id} error={meta.error} />
+          : null}
         <span className={styles.input}>
           <input
             {...input}

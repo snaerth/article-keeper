@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
-import { CSSTransitionGroup } from 'react-transition-group';
-import styles from './header.scss';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from '../common/transitions';
+import s from './header.scss';
 import ModalWrapper from '../modal';
 import Signup from '../auth/signup';
 import Signin from '../auth/signin';
@@ -71,17 +72,17 @@ class Header extends Component {
   renderAuthLinks() {
     if (this.props.authenticated) {
       const links = [
-        <NavLink to="/profile" key="profile" activeClassName={styles.active}>
+        <NavLink to="/profile" key="profile" activeClassName={s.active}>
           Profile
         </NavLink>,
-        <NavLink to="/signout" key="signout" activeClassName={styles.active}>
+        <NavLink to="/signout" key="signout" activeClassName={s.active}>
           Sign out
         </NavLink>,
       ];
 
       if (this.props.roles && this.props.roles.indexOf('admin') > -1) {
         links.unshift(
-          <NavLink to="/admin" key="admin" activeClassName={styles.active}>
+          <NavLink to="/admin" key="admin" activeClassName={s.active}>
             Admin
           </NavLink>,
         );
@@ -111,21 +112,23 @@ class Header extends Component {
 
   render() {
     return (
-      <div className={styles.background}>
+      <div className={s.background}>
         <Container>
           <Navigation>
             <NavLink to="/">Home</NavLink>
             {this.renderAuthLinks()}
           </Navigation>
-          <CSSTransitionGroup
-            transitionName="slideInOut"
-            transitionEnterTimeout={700}
-            transitionLeaveTimeout={100}
-          >
-            <h1 className={styles.bannerText} key={this.props.name}>
-              {this.props.name}
-            </h1>
-          </CSSTransitionGroup>
+          <TransitionGroup>
+            <Transition
+              classNames="slideInOut"
+              timeout={{ enter: 700, exit: 100 }}
+              key={this.props.name}
+            >
+              <h1 className={s.bannerText}>
+                {this.props.name}
+              </h1>
+            </Transition>
+          </TransitionGroup>
         </Container>
 
         <ModalWrapper

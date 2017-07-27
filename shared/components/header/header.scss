@@ -2,11 +2,15 @@
 @import '~styles/mixins';
 
 .background {
+  min-height: 170px;
   background: $linear-background-primary;
   background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
   background-repeat: no-repeat;
   background-size: 100% 1000px;
-  overflow: hidden;
+}
+
+.relative {
+  position: relative;
 }
 
 .home_link {
@@ -18,6 +22,7 @@
 }
 
 .bannerText {
+  position: absolute;
   margin-top: 15px;
   color: lighten($primary-pink, 18%);
 }

@@ -9,12 +9,12 @@
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 }
 
-.slideInOut-leave {
+.slideInOut-exit {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
-.slideInOut-leave.slideInOut-leave-active {
+.slideInOut-exit.slideInOut-exit-active {
   opacity: 0.01;
   transform: translate3d(100px, 0, 0);
   transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
@@ -30,11 +30,11 @@
   transition: opacity 700ms ease-in-out;
 }
 
-.fadeIn-leave {
+.fadeIn-exit {
   opacity: 1;
 }
 
-.fadeIn-leave.fadeIn-leave-active {
+.fadeIn-exit.fadeIn-exit-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in-out;
 }

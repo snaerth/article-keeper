@@ -2,20 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { CSSTransitionGroup } from 'react-transition-group';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from '../components/common/transitions';
+
 // Components
 import Header from '../components/header';
 
 const RouteContainer = ({ children, name }) => (
   <div>
     <Header name={name} />
-    <CSSTransitionGroup
-      transitionName="fadeIn"
-      transitionLeave={false}
-      transitionEnterTimeout={700}
-    >
-      {React.cloneElement(children, { key: name })}
-    </CSSTransitionGroup>
+    <TransitionGroup>
+      <Transition
+        classNames="fadeIn"
+        timeout={{ enter: 700, exit: 100 }}
+        key={name}
+      >
+        {React.cloneElement(children, { key: name })}
+      </Transition>
+    </TransitionGroup>
   </div>
 );
 
