@@ -8,6 +8,15 @@
   "editor.wordWrap": "off",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  // Configure glob patterns for excluding files and folders.
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/build": true
+  },
   "sync.autoDownload": false,
   "sync.autoUpload": false,
   "sync.lastDownload": "",

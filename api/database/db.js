@@ -3,41 +3,42 @@ import User from '../models/user';
 
 /**
  * Creates initial admin user in db
- * @param {Func} cb
- * @returns {Func} callback
+ * @returns {Promise}
  */
-export function createAdminUser(cb) {
-  const email = 'admin@admin.com';
+export async function createAdminUser() {
+  return new Promise((resolve, reject) => {
+    const email = 'admin@admin.com';
 
-  User.findOne(
-    {
-      email,
-    },
-    (error, user) => {
-      if (error) {
-        return cb(error);
-      }
-
-      if (user) {
-        return cb();
-      }
-
-      const adminUser = new User();
-      adminUser.email = email;
-      adminUser.name = 'Admin';
-      adminUser.password = 'Admin123';
-      adminUser.roles = ['admin', 'user'];
-
-      // save default admin user to the database
-      return adminUser.save((err) => {
-        if (err) {
-          return cb(err);
+    User.findOne(
+      {
+        email,
+      },
+      (error, user) => {
+        if (error) {
+          return reject(error);
         }
 
-        return cb();
-      });
-    },
-  );
+        if (user) {
+          return resolve(user);
+        }
+
+        const adminUser = new User();
+        adminUser.email = email;
+        adminUser.name = 'Admin';
+        adminUser.password = 'Admin123';
+        adminUser.roles = ['admin', 'user'];
+
+        // save default admin user to the database
+        return adminUser.save((err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(adminUser);
+        });
+      },
+    );
+  });
 }
 
 export default (mongoUri, callback) => {
@@ -59,13 +60,12 @@ export default (mongoUri, callback) => {
     throw new Error(`Unable to connect to database: ${mongoUri}`, error);
   });
 
-  mongoose.connection.on('open', () => {
-    createAdminUser((error) => {
-      if (error) {
-        throw new Error('Error creating admin user', error);
-      }
-
+  mongoose.connection.on('open', async () => {
+    try {
+      await createAdminUser();
       callback();
-    });
+    } catch (error) {
+      throw new Error('Error creating admin user', error);
+    }
   });
 };

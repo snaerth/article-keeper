@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "type": "node",
+        "request": "launch",
+        "name": "nodemon",
+        "runtimeExecutable": "nodemon",
+        "program": "${workspaceRoot}/app.js",
+        "restart": true,
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      },
+      {
         "name": "Launch",
         "type": "node",
         "protocol": "inspector",
@@ -25,14 +35,20 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "Debug Tests",
-        "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-        "cwd": "${workspaceRoot}",
+        "name": "Run Tests",
+        "program": "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
         "args": [
-          "--i",
-          "--config",
-          "jest.json"
-        ]
+          "--runInBand",
+          "--u"
+        ],
+        "runtimeArgs": [
+          "--inspect-brk"
+        ],
+        "stopOnEntry": false,
+        "cwd": "${workspaceRoot}",
+        "sourceMaps": true,
+        "console": "externalTerminal",
+        "protocol": "auto"
       }
     ]
   }

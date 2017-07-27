@@ -1,11 +1,9 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Route } from 'react-router-dom';
-import config from 'utils/config';
-
-// Layout
 import AppLayout, { Content } from 'components/app-layout';
 import Analytics from 'components/analytics';
+import config from './utils/config';
 
 // Routes
 import routes from './routes';

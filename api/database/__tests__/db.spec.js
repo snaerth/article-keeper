@@ -3,7 +3,6 @@ import { createAdminUser } from '../db';
 import config from '../../config';
 
 const { TEST_DB_URL } = config;
-
 // Connect to database
 beforeAll(() => {
   mongoose.connect(TEST_DB_URL);
@@ -21,8 +20,9 @@ describe('Connect to MongoDB database', () => {
   });
 
   test('Create admin user', async () => {
-    createAdminUser(() => {
-      expect(1).toBe(1);
-    });
+    const user = await createAdminUser();
+    expect(user.email).toBe('admin@admin.com');
+    const expected = ['admin', 'user'];
+    expect(user.roles).toEqual(expect.arrayContaining(expected));
   });
 });

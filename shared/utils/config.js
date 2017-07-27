@@ -1,1 +1,1 @@
-export default from '../../config/index';
+export { default } from '../../config';
