@@ -1,5 +1,8 @@
-@import '~styles/config';
 // stylelint-disable
+@import '~styles/reset';
+@import '~styles/variables';
+@import '~styles/mixins';
+
 :global {
   @import '~styles/base';
   @import '~styles/animate.scss';
