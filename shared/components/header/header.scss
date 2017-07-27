@@ -1,6 +1,5 @@
 @import '~styles/variables';
 @import '~styles/mixins';
-
 .background {
   background: $linear-background-primary;
   background-image: radial-gradient(50% top, circle, $primary-pink 0%, $primary-pink-darker 75%), radial-gradient(right top, circle, $primary-pink 0%, $primary-pink-darker 57%);
