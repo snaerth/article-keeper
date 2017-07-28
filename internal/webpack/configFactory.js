@@ -540,7 +540,7 @@ export default function webpackConfigFactory(buildOptions) {
                   fallback: 'style-loader',
                   use: [
                     `css-loader?modules=1&importLoaders=1&localIdentName=${localIdentName}`,
-                    'postcss-loader',
+                    'postcss-loader?sourceMap',
                     'sass-loader?outputStyle=expanded',
                   ],
                 }),
@@ -552,7 +552,7 @@ export default function webpackConfigFactory(buildOptions) {
               use: [
                 'classnames-loader',
                 `css-loader/locals?modules=1&sourceMap&importLoaders=1&localIdentName=${localIdentName}`,
-                'postcss-loader',
+                'postcss-loader?sourceMap',
                 'sass-loader?outputStyle=expanded&sourceMap',
               ],
             }),

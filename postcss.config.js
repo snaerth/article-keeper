@@ -5,4 +5,5 @@ module.exports = {
     require('autoprefixer'),
     require('postcss-csso')({ restructure: false }),
   ],
+  sourceMap: true,
 };
