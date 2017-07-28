@@ -355,7 +355,7 @@ export default function webpackConfigFactory(buildOptions) {
         () =>
           new CompressionPlugin({
             asset: '[path].gz[query]',
-            algorithm: 'zopfli',
+            algorithm: 'gzip',
             test: /\.(js|jsx|css|html|svg)$/,
             threshold: 10240,
             minRatio: 0.8,
