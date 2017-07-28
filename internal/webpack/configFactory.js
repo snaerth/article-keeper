@@ -238,6 +238,11 @@ export default function webpackConfigFactory(buildOptions) {
           }),
       ),
 
+      // Implement webpack 3 scope hoisting that will remove function wrappers
+      // around your modules you may see some small size improvements. However,
+      // the significant improvement will be how fast the JavaScript loads in the browser.
+      ifProdClient(new webpack.optimize.ModuleConcatenationPlugin()),
+
       // We use this so that our generated [chunkhash]'s are only different if
       // the content for our respective chunks have changed.  This optimises
       // our long term browser caching strategy for our client bundle, avoiding
