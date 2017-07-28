@@ -1,7 +1,8 @@
 import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
-  resolve: () => System.import('./signin'),
+  // include signin main chunk
+  resolve: () => System.import(/* webpackChunkName: "main" */ './signin'),
   ssrMode: 'boundary',
   name: 'Signin',
 });

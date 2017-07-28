@@ -3,6 +3,7 @@
 
 # Build output folders
 build*
+debug*
 
 # Logs
 logs

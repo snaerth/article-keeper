@@ -15,7 +15,7 @@ import MainHeading from '../../mainheading';
 import ForgotPassword from '../forgotPassword';
 import validateEmail from './../../../utils/validate';
 import getParameterByName from './../../../utils/queryParams';
-import Spinner from '../../spinner';
+import Loader from '../../common/loader';
 import * as actionCreators from '../actions';
 import Email from '../../../assets/images//email.svg';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
@@ -266,14 +266,12 @@ class Signin extends Component {
               </button>
             </div>
             : null}
-          {isFetching ? <Spinner>Signing in</Spinner> : null}
+          {isFetching ? <Loader>Signing in...</Loader> : null}
           <div className={isFetching ? almostHidden : ''}>
             {this.renderError()}
             <div className={signinContainer}>
               <div className={socialsContainer} ref={c => this.el0 = c}>
-                <SocialsButtons
-                  toggleView={e => this.toggleView(e, 1)}
-                />
+                <SocialsButtons toggleView={e => this.toggleView(e, 1)} />
               </div>
               {this.renderForm(handleSubmit)}
               {this.renderForgotPassword()}

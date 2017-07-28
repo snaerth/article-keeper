@@ -2,7 +2,7 @@
 
 .container {
   position: relative;
-  padding: 2em 0;
+  padding: 5em 0;
   background-color: $primary-white;
 }
 
@@ -27,9 +27,8 @@
 $size: 100px;
 $borderWidth: 4px;
 $totalTime: 1.5s;
-$redWidth: 100%;
-$orangeHeight: 52%;
-$whiteWidth: 23%;
+$bigWidth: 100%;
+$mediumHeight: 52%;
 
 .logo {
   position: relative;
@@ -70,17 +69,7 @@ $whiteWidth: 23%;
     opacity: 0;
   }
 
-  .white {
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 0;
-    border-left: $borderWidth solid $primary-black;
-    animation: $primary-white $totalTime infinite;
-    animation-direction: alternate;
-  }
-
-  .orange {
+  .medium {
     left: 0;
     bottom: 0;
     right: 0;
@@ -88,19 +77,20 @@ $whiteWidth: 23%;
     height: 0;
     border-top: $borderWidth solid $primary-black;
     border-right: $borderWidth solid $primary-black;
-    background-color: $primary-yellow;
-    animation: orange $totalTime infinite;
+    background-color: $primary-white;
+    animation: medium $totalTime infinite;
     animation-direction: alternate;
   }
 
-  .red {
+  .big {
     top: 0;
     bottom: 0;
     left: 0;
     width: 0;
     border-right: $borderWidth solid $primary-black;
-    background-color: $primary-red;
-    animation: red $totalTime infinite;
+    border-left: $borderWidth solid $primary-black;
+    background-color: $primary-pink;
+    animation: big $totalTime infinite;
     animation-direction: alternate;
   }
 }
@@ -170,7 +160,7 @@ $whiteWidth: 23%;
   }
 }
 
-@keyframes red {
+@keyframes big {
   0%,
   50% {
     opacity: 0;
@@ -184,11 +174,11 @@ $whiteWidth: 23%;
   65%,
   100% {
     opacity: 1;
-    width: $redWidth;
+    width: $bigWidth;
   }
 }
 
-@keyframes orange {
+@keyframes medium {
   0%,
   65% {
     opacity: 0;
@@ -202,24 +192,6 @@ $whiteWidth: 23%;
   80%,
   100% {
     opacity: 1;
-    height: $orangeHeight;
-  }
-}
-
-@keyframes white {
-  0%,
-  75% {
-    opacity: 0;
-    width: 0;
-  }
-
-  75.01% {
-    opacity: 1;
-  }
-
-  90%,
-  100% {
-    opacity: 1;
-    width: $whiteWidth;
+    height: $mediumHeight;
   }
 }

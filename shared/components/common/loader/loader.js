@@ -9,9 +9,8 @@ const Loader = props => (
   <div className={s.container}>
     <div className={s.loader}>
       <div className={s.logo}>
-        <div className={s.white} />
-        <div className={s.orange} />
-        <div className={s.red} />
+        <div className={s.medium} />
+        <div className={s.big} />
       </div>
       <p>{props.children}</p>
     </div>
