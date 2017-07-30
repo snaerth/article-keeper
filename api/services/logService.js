@@ -9,7 +9,7 @@ import fs from 'fs';
 export default function logError(message) {
   return new Promise(async (resolve) => {
     try {
-      await pino(fs.appendFile('./error-log').info(message));
+      await pino(fs.createWriteStream('./error.log')).info(message);
       return resolve();
     } catch (error) {
       throw new Error(error);

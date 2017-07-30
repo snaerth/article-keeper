@@ -4,6 +4,7 @@
   - Setja upp cert fyrir localhost og server
 
 TODO
+  - Setja upp http2 locally
   - Klára Pino loggerinn
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
