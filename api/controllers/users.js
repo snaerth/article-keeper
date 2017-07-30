@@ -4,6 +4,7 @@ import uuid from 'uuid/v1';
 import User from '../models/user';
 import { resizeImage } from '../services/imageService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
+import logError from '../services/logService';
 import { removeUserProps, validateSignup } from './authentication';
 
 /**
@@ -43,7 +44,7 @@ export async function findUserByEmail(email) {
 
     return Promise.resolve(user);
   } catch (error) {
-    throw new Error(error);
+    await logError(error);
   }
 }
 
@@ -186,6 +187,7 @@ export async function updateUser(req, res) {
     newPassword,
     name,
     dateOfBirth,
+    phone,
   });
 
   if (!error) {
@@ -213,7 +215,7 @@ export async function updateUser(req, res) {
         // Save new user to databases
         const updatedUser = await saveUser(user);
         // Remove unwanted props for client
-        const newUser = removeUserProps(user);
+        const newUser = removeUserProps(updatedUser);
         // Send response object with user token and user information
         return res.status(200).json({
           token: tokenForUser(updatedUser),

@@ -402,7 +402,6 @@ const values = {
           'redux',
           'react-redux',
           'redux-thunk',
-          'react-transition-group',
           'react-modal',
           'gsap',
           'axios',

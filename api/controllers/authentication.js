@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { validateEmail } from '../services/utils';
+import { validateEmail, isIcelandicPhoneNumber } from '../utils/validate';
 import sendMail from '../services/mailService';
 import {
   tokenForUser,
@@ -112,7 +112,7 @@ export function signOut(req, res) {
 }
 
 /**
- * Validates email, password name, etc. from post request
+ * Validates email, password, name, dateOfBirth or phone
  * If error then return error string
  *
  * @param {String} email
@@ -120,7 +120,7 @@ export function signOut(req, res) {
  * @param {String} newPassword
  * @param {String} name
  * @param {String} dateOfBirth
- * @param {Object} res
+ * @param {String} phone
  * @returns {String} error
  * @author Snær Seljan Þóroddsson
  */
@@ -130,6 +130,7 @@ export function validateSignup({
   newPassword,
   name,
   dateOfBirth,
+  phone,
 }) {
   // Check if email, password or message exist in request
   if (!email || !password || !name) {
@@ -166,6 +167,11 @@ export function validateSignup({
   }
 
   if (dateOfBirth && !Date.parse(dateOfBirth)) {
+    return 'Date is not in valid format. Try DD.MM.YYYY';
+  }
+
+  // Check if string is Icelandic phone number
+  if (phone && !isIcelandicPhoneNumber(phone)) {
     return 'Date is not in valid format. Try DD.MM.YYYY';
   }
 

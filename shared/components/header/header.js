@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
-import { TransitionGroup } from 'react-transition-group';
-import Transition from '../common/transitions';
 import s from './header.scss';
 import ModalWrapper from '../modal';
 import Signup from '../auth/signup';
@@ -118,17 +116,9 @@ class Header extends Component {
             <NavLink to="/">Home</NavLink>
             {this.renderAuthLinks()}
           </Navigation>
-          <TransitionGroup>
-            <Transition
-              classNames="slideInOut"
-              timeout={{ enter: 700, exit: 100 }}
-              key={this.props.name}
-            >
-              <h1 className={s.bannerText}>
-                {this.props.name}
-              </h1>
-            </Transition>
-          </TransitionGroup>
+          <h1 className={s.bannerText} key={this.props.name}>
+            {this.props.name}
+          </h1>
         </Container>
 
         <ModalWrapper

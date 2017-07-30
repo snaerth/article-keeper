@@ -4,8 +4,7 @@
   - Setja upp cert fyrir localhost og server
 
 TODO
-  - Klára db.spec.js
-  - Facebook gera public
+  - Klára Pino loggerinn
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
   - Búa til news edit, delete, create, view fyrir news

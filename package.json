@@ -26,8 +26,8 @@
     "eslint": "eslint client server shared config internal api",
     "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:watch": "jest -- --watch",
+    "test:coverage": "jest -- --coverage"
   },
   "repository": {
     "type": "git",
@@ -136,6 +136,7 @@
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "pino": "^4.7.1",
     "postcss": "6.0.8",
     "postcss-csso": "2.0.0",
     "postcss-loader": "2.0.6",

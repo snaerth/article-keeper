@@ -1,14 +1,4 @@
 /**
- * Validates email string
- * @param {String} email - Email string
- * @returns true if valid, false otherwise
- */
-exports.validateEmail = (email) => {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-/**
  * Deep trims every property in object
  * @param {Object} obj - incoming argument to trim
  */
