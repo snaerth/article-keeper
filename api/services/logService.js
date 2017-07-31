@@ -1,5 +1,5 @@
 import pino from 'pino';
-import fs from 'fs';
+import ErrorLog from '../models/log';
 
 /**
  * Logs error messages to error error-log file
@@ -7,10 +7,16 @@ import fs from 'fs';
  * @returns {Promise}
  */
 export default function logError(message) {
-  return new Promise(async (resolve) => {
+  return new Promise((resolve, reject) => {
     try {
-      await pino(fs.createWriteStream('./error.log')).info(message);
-      return resolve();
+      const errorLog = new ErrorLog(pino().info(message));
+      errorLog.save((error) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve();
+      });
     } catch (error) {
       throw new Error(error);
     }
