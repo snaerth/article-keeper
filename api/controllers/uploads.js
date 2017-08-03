@@ -2,6 +2,7 @@ import path from 'path';
 import uuid from 'uuid/v1';
 import { resizeImage } from '../services/imageService';
 import { renameFile, checkFileAndDelete } from '../services/fileService';
+import log from '../services/logService';
 
 /**
  * Delete files in file system
@@ -26,6 +27,7 @@ export function deleteFiles(req, res) {
 
     return res.status(200).send({ success: 'Images deleted' });
   } catch (error) {
+    log.error({ req, res, err: new Error(error) }, 'Error deleting files');
     return res.status(422).send({ error: "Couldn't delete images" });
   }
 }
@@ -55,6 +57,7 @@ export async function saveImage(image, uploadDir) {
         thumbnail: uploadDir + thumbnailUrl,
       });
     } catch (error) {
+      log.error({ err: new Error(error) }, 'Error saving image');
       return reject(error);
     }
   });

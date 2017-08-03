@@ -4,7 +4,7 @@ import uuid from 'uuid/v1';
 import User from '../models/user';
 import { resizeImage } from '../services/imageService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
-import logError from '../services/logService';
+import log from '../services/logService';
 import { removeUserProps, validateSignup } from './authentication';
 
 /**
@@ -31,21 +31,24 @@ export function tokenForUser(user) {
  * @author Snær Seljan Þóroddsson
  */
 export async function findUserByEmail(email) {
-  try {
-    // See if user with given email exists
-    const user = await User.findOne({
-      email,
-    });
+  return Promise(async (resolve, reject) => {
+    try {
+      // See if user with given email exists
+      const user = await User.findOne({
+        email,
+      });
 
-    // If a user does exist, return error
-    if (!user) {
-      return Promise.reject('No user found');
+      // If a user does exist, return error
+      if (!user) {
+        return reject('No user found');
+      }
+
+      return resolve(user);
+    } catch (error) {
+      log.error({ err: new Error(error) }, 'Error finding user by email');
+      return reject(error);
     }
-
-    return Promise.resolve(user);
-  } catch (error) {
-    await logError(error);
-  }
+  });
 }
 
 /**
@@ -57,17 +60,24 @@ export async function findUserByEmail(email) {
  * @author Snær Seljan Þóroddsson
  */
 export async function saveUser(user) {
-  if (user.constructor.name === 'model') {
-    try {
-      // Save user to database
-      await user.save();
-      return Promise.resolve(user);
-    } catch (error) {
-      throw new Error(error);
+  return Promise(async (resolve, reject) => {
+    if (user.constructor.name === 'model') {
+      try {
+        // Save user to database
+        await user.save();
+        return resolve(user);
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      log.error(
+        { err: new Error('Object is not a mongoose object') },
+        'Object is not a mongoose object',
+      );
+
+      return reject('Object is not a mongoose object');
     }
-  } else {
-    throw new Error('Object is not a mongoose object');
-  }
+  });
 }
 
 /**
@@ -116,6 +126,11 @@ export async function uploadUserImage(req, res) {
         ...newUser,
       });
     } catch (error) {
+      log.error(
+        { req, res, err: new Error(error) },
+        'Error uploading user image',
+      );
+
       return res.status(422).send({ error });
     }
   } else {
@@ -162,6 +177,11 @@ export function checkUserByEmail(email) {
 
       return resolve();
     } catch (error) {
+      log.error(
+        { err: new Error(error) },
+        'Error checking if user exist by email',
+      );
+
       return reject(error);
     }
   });
@@ -223,6 +243,8 @@ export async function updateUser(req, res) {
         });
       });
     } catch (err) {
+      log.error({ req, res, err: new Error(err) }, 'Error updating user');
+
       return res.status(422).send({ error: err });
     }
   } else {
@@ -240,23 +262,27 @@ export async function updateUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function attachTokenToUser({ token, email }) {
-  const hourInSeconds = 60 * 60 * 1000; // 1 hour
+  return new Promise(async (resolve, reject) => {
+    const hourInSeconds = 60 * 60 * 1000; // 1 hour
 
-  try {
-    const user = User.findOne({
-      email,
-    });
+    try {
+      const user = await findUserByEmail(email);
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + hourInSeconds;
 
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + hourInSeconds;
+      // Save user to databases
+      await saveUser(user);
+      // Remove unwanted props for client
+      return resolve(removeUserProps(user));
+    } catch (error) {
+      log.error(
+        { err: new Error(error) },
+        'Error attaching token to user object',
+      );
 
-    // Save user to databases
-    await saveUser(user);
-    // Remove unwanted props for client
-    return removeUserProps(user);
-  } catch (error) {
-    throw new Error(error);
-  }
+      return reject(error);
+    }
+  });
 }
 
 /**
@@ -265,34 +291,38 @@ export async function attachTokenToUser({ token, email }) {
  *
  * @param {String} token
  * @param {String} password
- * @returns {undefined}
+ * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
 export async function updateUserPassword({ token, password }) {
-  const hourInSeconds = 60 * 60 * 1000;
+  return new Promise(async (resolve, reject) => {
+    const hourInSeconds = 60 * 60 * 1000;
 
-  try {
-    const user = User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: {
-        $gt: Date.now() - hourInSeconds,
-      },
-    });
-
-    if (!user) {
-      return Promise.reject({
-        error: 'Password reset token is invalid or has expired.',
+    try {
+      const user = User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: {
+          $gt: Date.now() - hourInSeconds,
+        },
       });
+
+      if (!user) {
+        return reject({
+          error: 'Password reset token is invalid or has expired.',
+        });
+      }
+
+      user.password = password;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+
+      // Save user to databases
+      await user.save();
+      return resolve(user);
+    } catch (error) {
+      log.error({ err: new Error(error) }, 'Error updating user password');
+
+      return reject(error);
     }
-
-    user.password = password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-
-    // Save user to databases
-    await user.save();
-    return Promise.resolve(user);
-  } catch (error) {
-    throw new Error(error);
-  }
+  });
 }

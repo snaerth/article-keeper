@@ -5,7 +5,7 @@
 
 TODO
   - Setja upp http2 locally
-  - Klára Pino loggerinn
+  - Klára loggun
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
   - Búa til news edit, delete, create, view fyrir news

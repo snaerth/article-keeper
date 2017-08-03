@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
+  // Application name
+  APPLICATION_NAME: process.env.APPLICATION_NAME || 'Application name',
+
   // Uploads root folder
   UPLOADS_ROOT: process.env.UPLOADS_ROOT || './uploads/',
 

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Test for log service Log error to mongodb 1`] = `"received is not a function"`;

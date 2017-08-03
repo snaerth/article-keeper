@@ -1,39 +1,34 @@
 import mongoose, { Schema } from 'mongoose';
 
 const schema = {
-  pid: {
-    type: String,
-    required: true,
-  },
-  hostname: {
+  msg: {
     type: String,
     required: true,
   },
   level: {
+    type: Number,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
   time: {
-    type: String,
+    type: Date,
     required: true,
   },
-  msg: {
-    type: String,
-    required: false,
+  res: {
+    type: Object,
   },
-  type: {
-    type: String,
+  req: {
+    type: Object,
   },
-  stack: {
-    type: String,
-  },
-  v: {
-    type: String,
-    required: false,
+  err: {
+    type: Object,
   },
 };
 
 // Define log model
 const errorLogSchema = new Schema(schema);
 
-export default mongoose.model('errorLog', errorLogSchema);
+export default mongoose.model('Log', errorLogSchema);

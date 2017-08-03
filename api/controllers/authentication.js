@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { validateEmail, isIcelandicPhoneNumber } from '../utils/validate';
 import sendMail from '../services/mailService';
+import log from '../services/logService';
 import {
   tokenForUser,
   updateUserPassword,
@@ -84,6 +85,7 @@ export function successSocialCallback(req, res) {
 export function errorSocialCallback(err, req, res, next) {
   let error = "Couldn't create user";
   if (err.code === 11000) {
+    log.error({ req, res, err: new Error(error) }, 'Email already in use');
     error = 'Email already in use';
   }
   // TODO - log error
@@ -104,6 +106,11 @@ export function signOut(req, res) {
   res.clearCookie('userExpires');
   req.session.destroy((error) => {
     if (error) {
+      log.error(
+        { req, res, err: new Error(error) },
+        'Error destroying request session',
+      );
+
       return res.status(500).send({ error });
     }
 
@@ -212,6 +219,8 @@ export async function signup(req, res) {
         ...newUser,
       });
     } catch (error) {
+      log.error({ req, res, err: new Error(error) }, 'Error signup user');
+
       return res.status(422).send({ error });
     }
   } else {
@@ -255,14 +264,18 @@ export function signin(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 async function createRandomToken() {
-  try {
-    // Create buffer
-    const buffer = await crypto.randomBytes(20);
-    const token = buffer.toString('hex');
-    return Promise.resolve(token);
-  } catch (error) {
-    throw new Error(error);
-  }
+  return Promise(async (resolve, reject) => {
+    try {
+      // Create buffer
+      const buffer = await crypto.randomBytes(20);
+      const token = buffer.toString('hex');
+      return resolve(token);
+    } catch (error) {
+      log.error({ err: new Error(error) }, 'Error creating random token');
+
+      return reject(error);
+    }
+  });
 }
 
 /**
@@ -272,29 +285,36 @@ async function createRandomToken() {
  * @author Snær Seljan Þóroddsson
  */
 async function sendResetPasswordEmail({ url, email, name }) {
-  const mailOptions = {
-    to: email,
-    subject: 'Password reset',
-    text: 'Password reset',
-    html: `
+  return Promise(async (resolve, reject) => {
+    const mailOptions = {
+      to: email,
+      subject: 'Password reset',
+      text: 'Password reset',
+      html: `
           <p>Hi ${name}</p>
           <p>We've received a request to reset your password. If you didn't make the request</p>
           <p>just ignore this email. Otherwise you can reset your password using this link:</p>
           <a href="http://${url}">Click here to reset your password</a>
           <p>Thank you.</p>
       `,
-  };
+    };
 
-  const { to, subject, text, html } = mailOptions;
+    const { to, subject, text, html } = mailOptions;
 
-  try {
-    // Send email
-    const info = await sendMail(to, subject, text, html);
-    // Return info and email
-    return Promise.resolve({ info, email });
-  } catch (error) {
-    throw new Error(error);
-  }
+    try {
+      // Send email
+      const info = await sendMail(to, subject, text, html);
+      // Return info and email
+      return resolve({ info, email });
+    } catch (error) {
+      log.error(
+        { err: new Error(error) },
+        'Error sending reset password to email',
+      );
+
+      return reject(error);
+    }
+  });
 }
 
 /**
@@ -317,10 +337,13 @@ export async function forgotPassword(req, res) {
     const url = `${HOST}:${PORT}/reset/${token}`;
     const { name } = user;
     const data = await sendResetPasswordEmail({ url, email, name });
-    return res.send(
-      `An e-mail has been sent to ${data.email} with further instructions.`,
-    );
+    return res
+      .status(200)
+      .send(
+        `An e-mail has been sent to ${data.email} with further instructions.`,
+      );
   } catch (error) {
+    log.error({ req, res, err: new Error(error) }, 'Error in forgot password');
     return res
       .status(550)
       .send({ error: "Coundn't reset password at this time.", err: error });
@@ -347,9 +370,16 @@ export async function resetPassword(req, res) {
         `Success! Your password has been changed for ${user.email}.`,
       );
     } catch (error) {
-      return res.send({ error: 'Password is invalid or token has expired.' });
+      log.error(
+        { req, res, err: new Error(error) },
+        'Password is invalid or token has expired.',
+      );
+
+      return res
+        .status(200)
+        .send({ error: 'Password is invalid or token has expired.' });
     }
   } else {
-    return res.send({ error: 'Token and password are required' });
+    return res.status(200).send({ error: 'Token and password are required' });
   }
 }
