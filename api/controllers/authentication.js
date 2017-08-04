@@ -85,10 +85,10 @@ export function successSocialCallback(req, res) {
 export function errorSocialCallback(err, req, res, next) {
   let error = "Couldn't create user";
   if (err.code === 11000) {
-    log.error({ req, res, err: new Error(error) }, 'Email already in use');
     error = 'Email already in use';
   }
-  // TODO - log error
+
+  log.error({ req, res, err }, 'Error in social callback');
 
   return res.status(401).redirect(`${applicationUrl}/signin?error=${error}`);
 }
@@ -104,14 +104,11 @@ export function signOut(req, res) {
   req.logout();
   res.clearCookie('user');
   res.clearCookie('userExpires');
-  req.session.destroy((error) => {
-    if (error) {
-      log.error(
-        { req, res, err: new Error(error) },
-        'Error destroying request session',
-      );
+  req.session.destroy((err) => {
+    if (err) {
+      log.error({ req, res, err }, 'Error destroying request session');
 
-      return res.status(500).send({ error });
+      return res.status(500).send({ error: err });
     }
 
     return res.status(200).send('User signed out');
@@ -218,10 +215,10 @@ export async function signup(req, res) {
         token: tokenForUser(data),
         ...newUser,
       });
-    } catch (error) {
-      log.error({ req, res, err: new Error(error) }, 'Error signup user');
+    } catch (err) {
+      log.error({ req, res, err }, 'Error signup user');
 
-      return res.status(422).send({ error });
+      return res.status(422).send({ error: err });
     }
   } else {
     return res.status(422).send({ error: validateError });
@@ -270,10 +267,10 @@ async function createRandomToken() {
       const buffer = await crypto.randomBytes(20);
       const token = buffer.toString('hex');
       return resolve(token);
-    } catch (error) {
-      log.error({ err: new Error(error) }, 'Error creating random token');
+    } catch (err) {
+      log.error({ err }, 'Error creating random token');
 
-      return reject(error);
+      return reject(err);
     }
   });
 }
@@ -306,13 +303,10 @@ async function sendResetPasswordEmail({ url, email, name }) {
       const info = await sendMail(to, subject, text, html);
       // Return info and email
       return resolve({ info, email });
-    } catch (error) {
-      log.error(
-        { err: new Error(error) },
-        'Error sending reset password to email',
-      );
+    } catch (err) {
+      log.error({ err }, 'Error sending reset password to email');
 
-      return reject(error);
+      return reject(err);
     }
   });
 }
@@ -342,11 +336,11 @@ export async function forgotPassword(req, res) {
       .send(
         `An e-mail has been sent to ${data.email} with further instructions.`,
       );
-  } catch (error) {
-    log.error({ req, res, err: new Error(error) }, 'Error in forgot password');
+  } catch (err) {
+    log.error({ req, res, err }, 'Error in forgot password');
     return res
       .status(550)
-      .send({ error: "Coundn't reset password at this time.", err: error });
+      .send({ error: "Coundn't reset password at this time.", err });
   }
 }
 
@@ -369,11 +363,8 @@ export async function resetPassword(req, res) {
       return res.send(
         `Success! Your password has been changed for ${user.email}.`,
       );
-    } catch (error) {
-      log.error(
-        { req, res, err: new Error(error) },
-        'Password is invalid or token has expired.',
-      );
+    } catch (err) {
+      log.error({ req, res, err }, 'Password is invalid or token has expired.');
 
       return res
         .status(200)

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import rimraf from 'rimraf';
+import log from '../services/logService';
 
 /**
  * Creates default directorys
@@ -22,8 +23,9 @@ export function createDirectorys(
     const dir = directorys[i];
     fs.exists(dir, (exists) => {
       if (!exists) {
-        fs.mkdir(dir, (error) => {
-          if (error) {
+        fs.mkdir(dir, (err) => {
+          if (err) {
+            log.error({ err }, 'Error creating directorys');
             throw new Error(`Failed to create directory ${dir}`);
           }
         });
@@ -44,8 +46,9 @@ export function deleteDirectorys(directorys) {
     const dir = directorys[i];
     fs.exists(dir, (exists) => {
       if (exists) {
-        rimraf(dir, (error) => {
-          if (error) {
+        rimraf(dir, (err) => {
+          if (err) {
+            log.error({ err }, 'Error deleteing directorys');
             throw new Error(`Failed to delete directory ${dir}`);
           }
         });
@@ -68,7 +71,7 @@ export function deleteFile(filePath) {
         return reject(error);
       }
 
-      return resolve();
+      return resolve(filePath);
     });
   });
 }
@@ -109,7 +112,7 @@ export function renameFile(filePath, newFilePath) {
         return reject(error);
       }
 
-      return resolve();
+      return resolve(filePath);
     });
   });
 }
@@ -150,8 +153,9 @@ export async function checkFileAndDelete(filePath) {
       }
 
       return resolve(false);
-    } catch (error) {
-      return reject(error);
+    } catch (err) {
+      log.error({ err }, 'Error in check if file exist and then delete');
+      return reject(err);
     }
   });
 }

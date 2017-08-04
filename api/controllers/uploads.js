@@ -26,8 +26,8 @@ export function deleteFiles(req, res) {
     });
 
     return res.status(200).send({ success: 'Images deleted' });
-  } catch (error) {
-    log.error({ req, res, err: new Error(error) }, 'Error deleting files');
+  } catch (err) {
+    log.error({ req, res, err }, 'Error deleting files');
     return res.status(422).send({ error: "Couldn't delete images" });
   }
 }
@@ -56,9 +56,9 @@ export async function saveImage(image, uploadDir) {
         url: uploadDir + imageUrl,
         thumbnail: uploadDir + thumbnailUrl,
       });
-    } catch (error) {
-      log.error({ err: new Error(error) }, 'Error saving image');
-      return reject(error);
+    } catch (err) {
+      log.error({ err }, 'Error saving image');
+      return reject(err);
     }
   });
 }

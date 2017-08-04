@@ -1,3 +1,5 @@
+import log from '../services/logService';
+
 /**
 * Handle 404 errors.
 * Note: the react application middleware hands 404 paths, but it is good to
@@ -25,6 +27,8 @@ function notFoundMiddlware(req, res) {
 * @returns {undefined}
 */
 function unhandledErrorMiddleware(err, req, res, next) {
+  log.error({ req, res, err }, 'Unhandled error middleware');
+
   res
     .set('content-type', 'text/html')
     .status(500)

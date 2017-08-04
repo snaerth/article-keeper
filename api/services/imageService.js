@@ -3,6 +3,7 @@ import Jimp from 'jimp';
 import fetch from 'node-fetch';
 import fileType from 'file-type';
 import uuid from 'uuid/v1';
+import log from '../services/logService';
 
 /**
  * Resizes image and saves to file system
@@ -23,7 +24,10 @@ export function resizeImage(orginalPath, newPath, width, height) {
           .quality(100) // set JPEG quality
           .write(newPath, resolve(newPath)); // save
       })
-      .catch(error => reject(error));
+      .catch((err) => {
+        log.error({ err }, 'Error resizing image');
+        return reject(err);
+      });
   });
 }
 
@@ -55,8 +59,9 @@ export function isImage(file) {
  */
 export function saveImageToDisk(data, path) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(path, data, 'binary', (error) => {
-      if (error) {
+    fs.writeFile(path, data, 'binary', (err) => {
+      if (err) {
+        log.error({ err }, 'Error saving image to disk');
         return reject('Cound not save image');
       }
 
@@ -64,7 +69,6 @@ export function saveImageToDisk(data, path) {
     });
   });
 }
-
 
 /**
  * Fetches images by photoUrl,

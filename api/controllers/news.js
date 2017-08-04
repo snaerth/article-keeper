@@ -1,5 +1,6 @@
 import News from '../models/news';
 import { validateEmail } from '../services/utils';
+import log from '../services/logService';
 
 /**
  * Create new news and save to database
@@ -102,8 +103,9 @@ export async function createNews(req, res) {
     const newNews = await saveNews(news);
 
     return res.status(200).send(newNews);
-  } catch (error) {
-    return res.status(422).send({ error });
+  } catch (err) {
+    log.error({ req, res, err }, 'Error creating news');
+    return res.status(422).send({ error: err });
   }
 }
 

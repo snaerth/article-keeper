@@ -7,6 +7,7 @@ import LocalStrategy from 'passport-local';
 import config from '../config';
 import User from '../models/user';
 import { saveImageFromUrl } from '../services/imageService';
+import log from '../services/logService';
 
 // VARIABLES
 const {
@@ -157,7 +158,8 @@ export const facebookLogin = new FacebookStrategy(
 
           return saveUser(newUser, done);
         } catch (error) {
-          return done(err);
+          log.error({ err: error }, 'Error facebook login.');
+          return done(error);
         }
       });
     });
@@ -210,6 +212,7 @@ export const twitterLogin = new TwitterStrategy(
 
           return saveUser(newUser, done);
         } catch (error) {
+          log.error({ err: error }, 'Error twitter login.');
           return done(err);
         }
       });
@@ -261,6 +264,7 @@ export const googleLogin = new GoogleStrategy(
 
           return saveUser(newUser, done);
         } catch (error) {
+          log.error({ err: error }, 'Error google login.');
           return done(err);
         }
       });

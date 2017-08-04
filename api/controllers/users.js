@@ -44,9 +44,9 @@ export async function findUserByEmail(email) {
       }
 
       return resolve(user);
-    } catch (error) {
-      log.error({ err: new Error(error) }, 'Error finding user by email');
-      return reject(error);
+    } catch (err) {
+      log.error({ err }, 'Error finding user by email');
+      return reject(err);
     }
   });
 }
@@ -66,8 +66,10 @@ export async function saveUser(user) {
         // Save user to database
         await user.save();
         return resolve(user);
-      } catch (error) {
-        throw new Error(error);
+      } catch (err) {
+        log.error({ err }, 'Error saving user');
+
+        return reject(err);
       }
     } else {
       log.error(
@@ -125,13 +127,10 @@ export async function uploadUserImage(req, res) {
         token: tokenForUser(updatedUser),
         ...newUser,
       });
-    } catch (error) {
-      log.error(
-        { req, res, err: new Error(error) },
-        'Error uploading user image',
-      );
+    } catch (err) {
+      log.error({ req, res, err }, 'Error uploading user image');
 
-      return res.status(422).send({ error });
+      return res.status(422).send({ error: err });
     }
   } else {
     return res.status(422).send({ error: 'Image required' });
@@ -176,13 +175,10 @@ export function checkUserByEmail(email) {
       }
 
       return resolve();
-    } catch (error) {
-      log.error(
-        { err: new Error(error) },
-        'Error checking if user exist by email',
-      );
+    } catch (err) {
+      log.error({ err }, 'Error checking if user exist by email');
 
-      return reject(error);
+      return reject(err);
     }
   });
 }
@@ -220,30 +216,32 @@ export async function updateUser(req, res) {
       user.dateOfBirth = dateOfBirth;
       user.phone = phone;
 
-      return user.comparePassword(password, async (err, isMatch) => {
-        if (err) {
-          return Promise.reject({ error: err });
-        }
+      return user.comparePassword(
+        password,
+        (err, isMatch) =>
+          new Promise(async (resolve, reject) => {
+            if (err) {
+              return reject(err);
+            }
 
-        if (!isMatch) {
-          return Promise.reject({
-            error: 'Password does not match old password',
-          });
-        }
+            if (!isMatch) {
+              return reject('Password does not match old password');
+            }
 
-        user.password = newPassword;
-        // Save new user to databases
-        const updatedUser = await saveUser(user);
-        // Remove unwanted props for client
-        const newUser = removeUserProps(updatedUser);
-        // Send response object with user token and user information
-        return res.status(200).json({
-          token: tokenForUser(updatedUser),
-          ...newUser,
-        });
-      });
+            user.password = newPassword;
+            // Save new user to databases
+            const updatedUser = await saveUser(user);
+            // Remove unwanted props for client
+            const newUser = removeUserProps(updatedUser);
+            // Send response object with user token and user information
+            return res.status(200).json({
+              token: tokenForUser(updatedUser),
+              ...newUser,
+            });
+          }),
+      );
     } catch (err) {
-      log.error({ req, res, err: new Error(err) }, 'Error updating user');
+      log.error({ req, res, err }, 'Error updating user');
 
       return res.status(422).send({ error: err });
     }
@@ -274,13 +272,10 @@ export async function attachTokenToUser({ token, email }) {
       await saveUser(user);
       // Remove unwanted props for client
       return resolve(removeUserProps(user));
-    } catch (error) {
-      log.error(
-        { err: new Error(error) },
-        'Error attaching token to user object',
-      );
+    } catch (err) {
+      log.error({ err }, 'Error attaching token to user object');
 
-      return reject(error);
+      return reject(err);
     }
   });
 }
@@ -319,10 +314,10 @@ export async function updateUserPassword({ token, password }) {
       // Save user to databases
       await user.save();
       return resolve(user);
-    } catch (error) {
-      log.error({ err: new Error(error) }, 'Error updating user password');
+    } catch (err) {
+      log.error({ err }, 'Error updating user password');
 
-      return reject(error);
+      return reject(err);
     }
   });
 }

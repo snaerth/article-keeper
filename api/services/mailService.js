@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import config from '../config';
+import log from '../services/logService';
 
 const { EMAIL_USERNAME, EMAIL_PASSWORD } = config;
 
@@ -35,7 +36,7 @@ export default async function sendMail(to, subject, text, html) {
     // Send mail
     const info = await transporter.sendMail(mailOptions);
     return Promise.resolve(info);
-  } catch (error) {
-    throw new Error(error);
+  } catch (err) {
+    log.error({ err }, 'Error sending email');
   }
 }
