@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate';
 
 const schema = {
   msg: {
@@ -30,12 +29,6 @@ const schema = {
 };
 
 // Define log model
-const logSchema = new Schema(schema);
-// Add mongoose pagination plugin to schema
-// https://github.com/edwardhotchkiss/mongoose-paginate
-mongoosePaginate.paginate.options = {
-  limit: 20,
-};
-logSchema.plugin(mongoosePaginate);
+const errorLogSchema = new Schema(schema);
 
-export default mongoose.model('Log', logSchema);
+export default mongoose.model('Pagination', errorLogSchema);
