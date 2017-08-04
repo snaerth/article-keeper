@@ -23,21 +23,28 @@ export function deleteLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
-  let { page, limit } = req.query;
-  if (!page && !limit) {
-    return res
-      .status(422)
-      .send({
-        error: 'Page and limit pagination params are required in query string',
-      });
+  let { offset, limit, sort } = req.query;
+  if (!limit) {
+    return res.status(422).send({
+      error: 'Limit param is required in query string',
+    });
   }
 
   try {
     // Pagination
-    page = parseInt(page, 10);
+    offset = parseInt(offset, 10);
     limit = parseInt(limit > 50 ? 50 : limit, 10);
+    const pagination = {
+      offset,
+      limit,
+    };
+
+    if (sort) {
+      pagination.sort = { sort };
+    }
+
     // Fetch logs from database
-    const result = await Log.paginate({}, { page, limit });
+    const result = await Log.paginate({}, pagination);
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error getting logs from mongodb');
