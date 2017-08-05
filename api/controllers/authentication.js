@@ -7,7 +7,7 @@ import {
   updateUserPassword,
   checkUserByEmail,
   saveUser,
-  attachTokenToUser,
+  attachTokenToUser
 } from './users';
 import User from '../models/user';
 import config from '../config';
@@ -33,7 +33,7 @@ export function removeUserProps(user, moreProps) {
   for (let i = 0; i < delProps.length; i++) {
     const hasBarProperty = Object.prototype.hasOwnProperty.call(
       newUser,
-      delProps[i],
+      delProps[i]
     );
 
     if (hasBarProperty) {
@@ -61,7 +61,7 @@ export function successSocialCallback(req, res) {
     // Store user and jwt token in a cookie
     res.cookie('user', {
       token: tokenForUser(newUser),
-      ...newUser,
+      ...newUser
     });
 
     const expireTime = 30 * 24 * 60 * 1000; // 30 days
@@ -104,7 +104,7 @@ export function signOut(req, res) {
   req.logout();
   res.clearCookie('user');
   res.clearCookie('userExpires');
-  req.session.destroy((err) => {
+  req.session.destroy(err => {
     if (err) {
       log.error({ req, res, err }, 'Error destroying request session');
 
@@ -134,7 +134,7 @@ export function validateSignup({
   newPassword,
   name,
   dateOfBirth,
-  phone,
+  phone
 }) {
   // Check if email, password or message exist in request
   if (!email || !password || !name) {
@@ -213,7 +213,7 @@ export async function signup(req, res) {
       // Send response object with user token and user information
       return res.status(200).json({
         token: tokenForUser(data),
-        ...newUser,
+        ...newUser
       });
     } catch (err) {
       log.error({ req, res, err }, 'Error signup user');
@@ -243,7 +243,7 @@ export function signin(req, res) {
 
     data = {
       token: tokenForUser(user),
-      ...userObject,
+      ...userObject
     };
 
     if (user.roles.includes('admin')) {
@@ -261,7 +261,7 @@ export function signin(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 async function createRandomToken() {
-  return Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       // Create buffer
       const buffer = await crypto.randomBytes(20);
@@ -282,7 +282,7 @@ async function createRandomToken() {
  * @author Snær Seljan Þóroddsson
  */
 async function sendResetPasswordEmail({ url, email, name }) {
-  return Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const mailOptions = {
       to: email,
       subject: 'Password reset',
@@ -293,7 +293,7 @@ async function sendResetPasswordEmail({ url, email, name }) {
           <p>just ignore this email. Otherwise you can reset your password using this link:</p>
           <a href="http://${url}">Click here to reset your password</a>
           <p>Thank you.</p>
-      `,
+      `
     };
 
     const { to, subject, text, html } = mailOptions;
@@ -334,7 +334,7 @@ export async function forgotPassword(req, res) {
     return res
       .status(200)
       .send(
-        `An e-mail has been sent to ${data.email} with further instructions.`,
+        `An e-mail has been sent to ${data.email} with further instructions.`
       );
   } catch (err) {
     log.error({ req, res, err }, 'Error in forgot password');
@@ -361,7 +361,7 @@ export async function resetPassword(req, res) {
     try {
       const user = await updateUserPassword({ token, password });
       return res.send(
-        `Success! Your password has been changed for ${user.email}.`,
+        `Success! Your password has been changed for ${user.email}.`
       );
     } catch (err) {
       log.error({ req, res, err }, 'Password is invalid or token has expired.');

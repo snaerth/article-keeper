@@ -31,7 +31,7 @@ export function tokenForUser(user) {
  * @author Snær Seljan Þóroddsson
  */
 export async function findUserByEmail(email) {
-  return Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       // See if user with given email exists
       const user = await User.findOne({
