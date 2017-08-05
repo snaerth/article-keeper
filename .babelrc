@@ -7,11 +7,20 @@
 // is supported for each context.
 {
   "presets": [
-    ["env", { "targets": { "node": true } }],
+    [
+      "env",
+      {
+        "targets": {
+          "node": true
+        }
+      }
+    ],
     "stage-0",
     "react"
   ],
   "plugins": [
     "transform-decorators-legacy"
-  ]
+  ],
+  "sourceMaps": "inline",
+  "retainLines": true
 }

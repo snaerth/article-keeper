@@ -39,6 +39,20 @@
         "sourceMaps": true,
         "console": "externalTerminal",
         "protocol": "auto"
+      },
+      {
+        "name": "Jest Debugger",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
+          "-i",
+          "--env",
+          "jest-environment-node-debug",
+          "--runInBand"
+        ],
+        "console": "integratedTerminal"
       }
     ]
   }
