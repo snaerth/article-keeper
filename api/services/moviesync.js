@@ -469,7 +469,7 @@ function extendMoviesObjects(
     propsToDelete.map(deleteItem);
 
     // Deep trims every property and its children
-    /* eslint-disable no-param-reassign*/
+    /* eslint-disable no-param-reassign */
     movie = deepTrim(movie);
   });
 

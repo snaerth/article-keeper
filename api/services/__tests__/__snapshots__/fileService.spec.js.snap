@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test all methods in fileService Delete file ./api/services/__tests__/test.txt in file system 1`] = `"received is not a function"`;
+
+exports[`Test all methods in fileService Rename file ./api/services/__tests__/test.txt in file system 1`] = `"received is not a function"`;

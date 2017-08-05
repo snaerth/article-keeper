@@ -1,5 +1,6 @@
 import Log from '../models/log';
 import log from '../services/logService';
+import getPagination from '../services/paginationService';
 
 /**
  * Deletes logs
@@ -23,26 +24,21 @@ export function deleteLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
-  let { offset, limit, sort } = req.query;
-  if (!limit) {
-    return res.status(422).send({
-      error: 'Limit param is required in query string',
-    });
+  // Get default pagination object
+  const pagination = getPagination(req);
+  // Check if sort params exist in query string
+  // If exist add them to pagination sort prop
+  const { msg, level, name, time } = req.query;
+  const sort = {};
+  if (msg) sort.msg = msg;
+  if (level) sort.level = level;
+  if (name) sort.name = name;
+  if (time) sort.time = time;
+  if (Object.keys(sort).length !== 0) {
+    pagination.sort = sort;
   }
 
   try {
-    // Pagination
-    offset = parseInt(offset, 10);
-    limit = parseInt(limit > 50 ? 50 : limit, 10);
-    const pagination = {
-      offset,
-      limit,
-    };
-
-    if (sort) {
-      pagination.sort = { sort };
-    }
-
     // Fetch logs from database
     const result = await Log.paginate({}, pagination);
     return res.status(200).send(result);

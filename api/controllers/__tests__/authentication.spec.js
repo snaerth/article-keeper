@@ -11,37 +11,8 @@ const user = new User({
   password: 'Password1',
 });
 
-// Validate signup form fields
-describe('Validate signup form fields from post request', () => {
-  test('Validates signup fields', () => {
-    const isValid = validateSignup({
-      email: 'snaerth@gmail.com',
-      password: 'ThisIsAPassword1',
-      newPassword: 'ThisIsAPassword2',
-      name: 'John Smith',
-      dateOfBirth: new Date(),
-    });
-
-    expect(isValid).toBe(null);
-  });
-});
-
-// Remove props from mongoose user model
-describe('Remove props from mongoose user model', () => {
-  const userObj = {
-    name: 'John Doe',
-    email: 'john@doe.com',
-    password: 'Password1',
-  };
-  const user1 = new User(userObj);
-  const user2 = new User(userObj);
-
-  test('Remove props from object', () => {
-    expect(user2.toObject()).toHaveProperty('password', 'Password1');
-    const newUser = removeUserProps(user1);
-    expect(newUser).not.toHaveProperty('password');
-  });
-});
+const user1 = new User(user);
+const user2 = new User(user);
 
 // Db connect
 beforeAll(async (done) => {
@@ -55,8 +26,28 @@ afterAll(async (done) => {
   await mongoose.disconnect(done);
 });
 
-// Save user to database
-describe('Save mongoose user model to database', async () => {
+// Validate signup form fields
+describe('Statrt authentication tests', () => {
+  // Validate signup
+  test('Validates signup fields', () => {
+    const isValid = validateSignup({
+      email: 'snaerth@gmail.com',
+      password: 'ThisIsAPassword1',
+      newPassword: 'ThisIsAPassword2',
+      name: 'John Smith',
+      dateOfBirth: new Date(),
+    });
+
+    expect(isValid).toBe(null);
+  });
+
+  // Remove props from mongoose user model
+  test('Remove props from mongoose user model', () => {
+    expect(user2.toObject()).toHaveProperty('password', 'Password1');
+    const newUser = removeUserProps(user1);
+    expect(newUser).not.toHaveProperty('password');
+  });
+
   // Save user to db
   test('Save user to db', async () => {
     try {
@@ -69,12 +60,10 @@ describe('Save mongoose user model to database', async () => {
       expect(error.message).toContain('E11000 duplicate');
     }
   });
-});
 
-// Check if user exist in db
-describe('Check if user exist', async () => {
+  // Check if user exist in db
   // Save user to db
-  test('Find user in db', async () => {
+  test('Check if user exist and find user in db', async () => {
     try {
       // Check if user exist
       const checkUser = await checkUserByEmail(user.email);

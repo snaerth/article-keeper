@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Check if user exist Find user in db 1`] = `"received is not a function"`;
+exports[`Statrt authentication tests Check if user exist and find user in db 1`] = `"received is not a function"`;

@@ -1,10 +1,10 @@
 {
-  "name": "react-universally",
+  "name": "starter-kit-universally",
   "version": "13.0.0",
   "description": "A starter kit for universal react applications.",
   "main": "build/server/index.js",
   "engines": {
-    "node": ">=7.5 <8"
+    "node": ">=7.6"
   },
   "scripts": {
     "analyze:client": "babel-node internal/scripts/analyze --client",
@@ -18,10 +18,8 @@
     "dev-remote": "cross-env DEPLOYMENT=development babel-node internal/scripts/ngrok",
     "fix-sass": "npm rebuild node-sass",
     "preinstall": "node internal/scripts/preinstall",
-    "postinstall": "if [ \"x$NODE_ENV\" != \"x\" ] && [ \"$NODE_ENV\" != \"development\" ]; then (npm run fix-sass && npm run build); fi;",
     "start": "cross-env NODE_ENV=production node build/server",
     "lint": "npm run eslint && npm run stylelint",
-    "lint:watch": "npm run eslint -- --watch && npm run stylelint -- --watch",
     "precommit": "npm run lint && npm run test",
     "eslint": "eslint client server shared config internal api",
     "stylelint": "stylelint \"shared/**/*.scss\" --syntax scss",

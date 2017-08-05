@@ -29,12 +29,5 @@
     "web": {
       "quantity": 1
     }
-  },
-  "addons": [],
-  "image": "heroku/nodejs",
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ]
+  }
 }

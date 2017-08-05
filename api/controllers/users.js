@@ -59,13 +59,13 @@ export async function findUserByEmail(email) {
  * @returns {Promise}
  * @author Snær Seljan Þóroddsson
  */
-export async function saveUser(user) {
+export function saveUser(user) {
   return Promise(async (resolve, reject) => {
     if (user.constructor.name === 'model') {
       try {
         // Save user to database
-        await user.save();
-        return resolve(user);
+        const newUser = await user.save();
+        return resolve(newUser);
       } catch (err) {
         log.error({ err }, 'Error saving user');
 
