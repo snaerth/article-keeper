@@ -52,7 +52,7 @@
           "jest-environment-node-debug",
           "--runInBand"
         ],
-        "console": "integratedTerminal"
+        "console": "externalTerminal"
       }
     ]
   }

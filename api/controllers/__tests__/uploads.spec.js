@@ -14,7 +14,7 @@
 // const user = new User({
 //   name: 'John Doe',
 //   email: 'john@doe.com',
-//   password: 'Password1',
+//   password: 'Password1'
 // });
 // const uploadDir = './api/controllers/__tests__/';
 
@@ -27,12 +27,12 @@
 //     encoding: 'utf-8',
 //     uploadDir: UPLOADS_ROOT,
 //     multiples: true, // req.files to be arrays of files
-//     keepExtensions: true,
-//   }),
+//     keepExtensions: true
+//   })
 // );
 
 // // Db connect
-// beforeAll(async (done) => {
+// beforeAll(async done => {
 //   window.jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
 //   try {
@@ -45,7 +45,7 @@
 // });
 
 // // Remove user from db and disconnect from db
-// afterAll(async (done) => {
+// afterAll(async done => {
 //   try {
 //     await User.remove(user);
 //     await mongoose.disconnect(done);
@@ -54,28 +54,28 @@
 //   }
 // });
 
-// POST request /uploads/images/news/
-describe('POST /userimage', () => {
-  // app.post('/uploads/images/news/', uploadFiles);
-  // // app.post('/userimage', uploadUserImage);
+// // POST request /uploads/images/news/
+// describe('POST /userimage', () => {
+//   app.post('/uploads/images/news/', uploadFiles);
+//   // app.post('/userimage', uploadUserImage);
 
-  // test('Upload image and save image to filesystem', (done) => {
-  //   request(app)
-  //     .post('/uploads/images/news')
-  //     .attach('images', path.resolve(__dirname, 'user.jpg'))
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       // Run tests on response
-  //       expect(res.url).toMatch(/.jpg/);
-  //       expect(res.thumbnail).toMatch(/thumbnail.jpg/);
-  //       // Delete uploaded images
-  //       checkFileAndDelete(uploadDir + res.url);
-  //       checkFileAndDelete(uploadDir + res.thumbnail);
+//   test('Upload image and save image to filesystem', done => {
+//     request(app)
+//       .post('/uploads/images/news')
+//       .attach('images', path.resolve(__dirname, 'user.jpg'))
+//       .expect(200)
+//       .end((err, res) => {
+//         // Run tests on response
+//         expect(res.url).toMatch(/.jpg/);
+//         expect(res.thumbnail).toMatch(/thumbnail.jpg/);
+//         // Delete uploaded images
+//         checkFileAndDelete(uploadDir + res.url);
+//         checkFileAndDelete(uploadDir + res.thumbnail);
 
-  //       if (err) return done(err);
-  //     });
-  // });
-  test('Uploads test not finished', () => {
-    expect(1).toBe(1);
-  });
-});
+//         if (err) return done(err);
+//       });
+//   });
+//   test('Uploads test not finished', () => {
+//     expect(1).toBe(1);
+//   });
+// });

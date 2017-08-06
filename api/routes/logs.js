@@ -7,7 +7,7 @@ import { getLogs, deleteLogs } from '../controllers/logs';
  * @param {Func} requireAuth - authentication helper function
  * @returns {*}
  */
-export default function (app, requireAuth) {
+export default function(app, requireAuth) {
   app.post('/logs', [requireAuth, isAdmin], getLogs);
   app.delete('/logs', [requireAuth, isAdmin], deleteLogs);
 }

@@ -6,7 +6,7 @@
  */
 export default async function getPagination(req) {
   return new Promise((resolve, reject) => {
-    let { offset, limit } = req.query;
+    let { offset, limit } = req.body;
 
     if (!limit) {
       return reject('Limit param is required in query string');
@@ -18,7 +18,7 @@ export default async function getPagination(req) {
       limit = parseInt(limit > 50 ? 50 : limit, 10);
       return {
         offset,
-        limit,
+        limit
       };
     } catch (err) {
       return reject(err);

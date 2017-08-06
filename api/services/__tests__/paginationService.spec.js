@@ -1,33 +1,41 @@
-// import mongoose from 'mongoose';
-// import request from 'supertest';
-// import config from '../../config';
-// import log from '../logService';
-// import Log from '../../models/log';
+import request from 'supertest';
+import express from 'express';
+import bodyParser from 'body-parser';
+import getPagination from '../paginationService';
 
-// const { TEST_DB_URL } = config;
+// Initialize app
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// // Db connect
-// beforeAll(async (done) => {
-//   await mongoose.connect(TEST_DB_URL);
-//   done();
-// });
+describe('Test for pagination service', () => {
+  app.post('/paginationTest/', (req, res, next) => {
+    const pagination = getPagination(req);
+    return res.send(pagination);
+  });
 
-// // Remove user from db and disconnect from db
-// afterAll(async (done) => {
-//   await Log.collection.remove();
-//   await mongoose.disconnect(done);
-// });
+  // FileExists
+  test('Log error to mongodb', () => {
+    try {
+      request(app)
+        .post('/paginationTest/')
+        .send({
+          limit: 10,
+          offset: 10
+        })
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          if (err || !res.ok) {
+            throw new Error(err);
+          }
 
-// describe('Test for log service', () => {
-//   // FileExists
-//   test('Log error to mongodb', () => {
-//     try {
-//       request('')
-//       log.info({ err: new Error('Þetta er villa') });
-//       expect(1).toBe(1);
-//     } catch (error) {
-//       expect(error).toThrowErrorMatchingSnapshot();
-//       throw new Error(error);
-//     }
-//   });
-// });
+          const { level, limit } = res;
+          expect(limit).toEqual(10);
+          expect(level).toEqual(10);
+        });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
+});

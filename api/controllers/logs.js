@@ -28,7 +28,7 @@ export async function getLogs(req, res) {
   const pagination = getPagination(req);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
-  const { msg, level, name, time } = req.query;
+  const { msg, level, name, time } = req.body;
   const sort = {};
   if (msg) sort.msg = msg;
   if (level) sort.level = level;
