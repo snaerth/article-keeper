@@ -16,9 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Db connect
 beforeAll(async done => {
   try {
-    await mongoose.connect(TEST_DB_URL);
+    mongoose.Promise = global.Promise;
+    await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
     await Log.collection.remove();
-
     log.error({ err: new Error('This is a error') }, 'Error message');
     done();
   } catch (error) {
@@ -42,8 +42,6 @@ describe('Run tests for log service', () => {
 
   // GET logs from
   test('Get logs from route /logs ', () => {
-    expect(1).toBe(1);
-
     try {
       request(app)
         .post('/logs')
@@ -53,13 +51,18 @@ describe('Run tests for log service', () => {
         })
         .set('Accept', 'application/json')
         .end((err, res) => {
-          if (err || !res.ok) {
+          if (err) {
             throw new Error(err);
           }
 
-          const { msg, level } = res.body.docs[0];
-          expect(msg).toEqual('Error message');
-          expect(level).toEqual(50);
+          const log = res.body.docs[0];
+          expect(log.msg).toEqual('Error message');
+          expect(log.level).toEqual(50);
+          expect(log).toHaveProperty('name');
+          expect(log).toHaveProperty('time');
+          expect(log).toHaveProperty('res');
+          expect(log).toHaveProperty('req');
+          expect(log).toHaveProperty('err');
         });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();

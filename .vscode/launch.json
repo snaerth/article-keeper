@@ -44,6 +44,9 @@
         "name": "Jest Debugger",
         "type": "node",
         "request": "launch",
+        "args": [
+          "--u"
+        ],
         "runtimeArgs": [
           "--inspect-brk",
           "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",

@@ -5,11 +5,11 @@ import config from '../../config';
 const { TEST_DB_URL } = config;
 // Connect to database
 beforeAll(() => {
-  mongoose.connect(TEST_DB_URL);
+  mongoose.connect(TEST_DB_URL, { useMongoClient: true });
 });
 
 // Disconnect from database
-afterAll((done) => {
+afterAll(done => {
   mongoose.disconnect(done);
 });
 

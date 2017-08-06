@@ -8,20 +8,20 @@ const { TEST_DB_URL } = config;
 const user = new User({
   name: 'John Doe',
   email: 'john@doe.com',
-  password: 'Password1',
+  password: 'Password1'
 });
 
 const user1 = new User(user);
 const user2 = new User(user);
 
 // Db connect
-beforeAll(async (done) => {
-  await mongoose.connect(TEST_DB_URL);
+beforeAll(async done => {
+  await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
   done();
 });
 
 // Remove user from db and disconnect from db
-afterAll(async (done) => {
+afterAll(async done => {
   await User.collection.remove();
   await mongoose.disconnect(done);
 });
@@ -35,7 +35,7 @@ describe('Statrt authentication tests', () => {
       password: 'ThisIsAPassword1',
       newPassword: 'ThisIsAPassword2',
       name: 'John Smith',
-      dateOfBirth: new Date(),
+      dateOfBirth: new Date()
     });
 
     expect(isValid).toBe(null);

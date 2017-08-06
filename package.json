@@ -64,7 +64,7 @@
       "^mongoose$": "<rootDir>/node_modules/mongoose"
     },
     "testPathIgnorePatterns": [
-      "<rootDir>/(build|internal|node_modules|flow-typed|public)/"
+      "<rootDir>/(build|internal|node_modules|flow-typed|public|debug)/"
     ]
   },
   "dependencies": {

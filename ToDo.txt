@@ -1,11 +1,12 @@
 - IMPORTANT
-  - nginx serve /public folder not express
+  - nginx serve /public folder not express - skoða project react-boilerplate
   - Https - Let's encrypt nota https://letsencrypt.org fyrir cert
   - Setja upp cert fyrir localhost og server
 
 TODO
   - Setja upp http2 locally
   - Klára loggun
+  - Klára uploads test
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
   - Búa til news edit, delete, create, view fyrir news
