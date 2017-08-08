@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Db connect
-beforeAll(async done => {
+beforeAll(async (done) => {
   try {
     mongoose.Promise = global.Promise;
     await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
@@ -27,7 +27,7 @@ beforeAll(async done => {
 });
 
 // Remove docs from log collections
-afterAll(async done => {
+afterAll(async (done) => {
   try {
     await Log.collection.remove();
     await mongoose.disconnect(done);
@@ -47,7 +47,7 @@ describe('Run tests for log service', () => {
         .post('/logs')
         .send({
           limit: 10,
-          offset: 10
+          offset: 10,
         })
         .set('Accept', 'application/json')
         .end((err, res) => {
@@ -55,14 +55,12 @@ describe('Run tests for log service', () => {
             throw new Error(err);
           }
 
-          const log = res.body.docs[0];
-          expect(log.msg).toEqual('Error message');
-          expect(log.level).toEqual(50);
-          expect(log).toHaveProperty('name');
-          expect(log).toHaveProperty('time');
-          expect(log).toHaveProperty('res');
-          expect(log).toHaveProperty('req');
-          expect(log).toHaveProperty('err');
+          const doc = res.body.docs[0];
+          expect(doc.msg).toEqual('Error message');
+          expect(doc.level).toEqual(50);
+          expect(doc).toHaveProperty('name');
+          expect(doc).toHaveProperty('time');
+          expect(doc).toHaveProperty('err');
         });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();

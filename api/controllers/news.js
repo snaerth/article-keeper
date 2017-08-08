@@ -1,6 +1,7 @@
 import News from '../models/news';
-import { validateEmail } from '../services/utils';
+import { validateEmail, validateSeoUrl } from '../services/utils';
 import log from '../services/logService';
+import convertToFriendlyUrl from '../utils/friendlyUrl';
 
 /**
  * Create new news and save to database
@@ -39,6 +40,7 @@ function validateNewsProps({
   description,
   author,
   authorEmail,
+  seoUrl,
 }) {
   return new Promise((resolve, reject) => {
     // Validate email
@@ -52,15 +54,23 @@ function validateNewsProps({
     }
 
     if (!title) {
-      return reject('Yout must provide news title');
+      return reject('You must provide news title');
     }
 
     if (!shortDescription) {
-      return reject('Yout must provide news short description');
+      return reject('You must provide news short description');
     }
 
     if (!description) {
-      return reject('Yout must provide news description');
+      return reject('You must provide news description');
+    }
+
+    if (!seoUrl) {
+      return reject('No SEO url provided or created');
+    }
+
+    if (!validateSeoUrl(seoUrl)) {
+      return reject('SEO url could not be validated');
     }
 
     return resolve();
@@ -85,12 +95,14 @@ export async function createNews(req, res) {
   } = req.body;
 
   try {
+    const seoUrl = convertToFriendlyUrl(title);
     await validateNewsProps({
       title,
       shortDescription,
       description,
       author,
       authorEmail,
+      seoUrl,
     });
     const news = new News({
       title,
@@ -98,6 +110,7 @@ export async function createNews(req, res) {
       description,
       author,
       authorEmail,
+      seoUrl,
     });
 
     const newNews = await saveNews(news);

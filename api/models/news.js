@@ -6,6 +6,11 @@ const schema = {
     type: String,
     required: true,
   },
+  seoUrl: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   shortDescription: {
     type: String,
     required: true,

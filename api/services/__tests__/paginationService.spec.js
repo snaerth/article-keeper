@@ -21,7 +21,7 @@ describe('Run pagination service tests', () => {
         .post('/paginationTest/')
         .send({
           limit: 10,
-          offset: 10
+          offset: 10,
         })
         .set('Accept', 'application/json')
         .end((err, res) => {
