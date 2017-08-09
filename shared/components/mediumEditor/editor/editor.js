@@ -85,7 +85,7 @@ class MediumEditor extends Component {
   uploadImages = async () => {
     const { actions, token, formData } = this.props;
     try {
-      const data = await actions.uploadImages({// eslint-disable-line
+      await actions.uploadImages({
         formData,
         token,
       });
@@ -104,7 +104,7 @@ class MediumEditor extends Component {
     return (
       <div>
         <Editor
-          ref={ref => this.editor = ref}
+          ref={(ref) => this.editor = ref}
           editorState={editorState}
           sideButtons={this.sideButtons}
           onChange={this.onChange}
@@ -118,7 +118,7 @@ class MediumEditor extends Component {
                 href="/"
                 text="Save"
                 title="Save"
-                onClick={e => this.onSave(e)}
+                onClick={(e) => this.onSave(e)}
               />
             </div>
           </div>

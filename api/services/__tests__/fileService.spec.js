@@ -12,7 +12,7 @@ const createFilePath1 = './api/services/__tests__/test.txt';
 const renameFilePath = './api/services/__tests__/testRenamed.txt';
 const createFilePath2 = './api/services/__tests__/test2.txt';
 
-beforeAll(async done => {
+beforeAll(async (done) => {
   try {
     // Create fake files
     await createFile(createFilePath1, 'Test 1');

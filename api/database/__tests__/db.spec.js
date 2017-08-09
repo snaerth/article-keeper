@@ -9,7 +9,7 @@ beforeAll(() => {
 });
 
 // Disconnect from database
-afterAll(done => {
+afterAll((done) => {
   mongoose.disconnect(done);
 });
 

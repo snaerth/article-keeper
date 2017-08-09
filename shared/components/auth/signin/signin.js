@@ -179,7 +179,7 @@ class Signin extends Component {
       <form
         onSubmit={handleSubmit(this.handleFormSubmit)}
         noValidate
-        ref={c => this.el1 = c}
+        ref={(c) => this.el1 = c}
         className={container}
       >
         <MainHeading text="Sign in with email" className="medium" />
@@ -217,7 +217,7 @@ class Signin extends Component {
             role="button"
             to="/forgotpassword"
             className="link-slideright"
-            onClick={e => this.toggleView(e, 2)}
+            onClick={(e) => this.toggleView(e, 2)}
           >
             Forgot password?
           </Link>
@@ -235,7 +235,7 @@ class Signin extends Component {
     const { container } = styles;
 
     return (
-      <div ref={c => this.el2 = c} className={container}>
+      <div ref={(c) => this.el2 = c} className={container}>
         <MainHeading text="Reset password" className="medium" />
         <ForgotPassword hideHeading />
       </div>
@@ -260,7 +260,7 @@ class Signin extends Component {
             ? <div className={back}>
               <button
                 className="link-slideright"
-                onClick={e => this.toggleView(e, null, true)}
+                onClick={(e) => this.toggleView(e, null, true)}
               >
                 <ArrowBackward className={iconArrowBackward} />
               </button>
@@ -270,8 +270,8 @@ class Signin extends Component {
           <div className={isFetching ? almostHidden : ''}>
             {this.renderError()}
             <div className={signinContainer}>
-              <div className={socialsContainer} ref={c => this.el0 = c}>
-                <SocialsButtons toggleView={e => this.toggleView(e, 1)} />
+              <div className={socialsContainer} ref={(c) => this.el0 = c}>
+                <SocialsButtons toggleView={(e) => this.toggleView(e, 1)} />
               </div>
               {this.renderForm(handleSubmit)}
               {this.renderForgotPassword()}

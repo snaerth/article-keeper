@@ -105,7 +105,7 @@ userSchema.pre('save', function preSave(next) {
 // Compare password to encrypted password
 userSchema.methods.comparePassword = function comparePassword(
   candidatePassword,
-  callback
+  callback,
 ) {
   bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
     if (error) {

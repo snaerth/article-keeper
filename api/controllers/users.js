@@ -19,7 +19,7 @@ export function tokenForUser(user) {
       sub: user.id,
       iat: timestamp,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
   );
 }
 
@@ -74,7 +74,7 @@ export function saveUser(user) {
     } else {
       log.error(
         { err: new Error('Object is not a mongoose object') },
-        'Object is not a mongoose object'
+        'Object is not a mongoose object',
       );
 
       return reject('Object is not a mongoose object');
@@ -238,7 +238,7 @@ export async function updateUser(req, res) {
               token: tokenForUser(updatedUser),
               ...newUser,
             });
-          })
+          }),
       );
     } catch (err) {
       log.error({ req, res, err }, 'Error updating user');

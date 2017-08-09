@@ -82,7 +82,7 @@ export default async function uploadFiles(req, res) {
 
     // Wait for all promises to resolve
     // Send array of imagesObj = [{url: '', thumbnail}, ...]
-    Promise.all(promises).then(imagesArr => res.status(200).send(imagesArr));
+    Promise.all(promises).then((imagesArr) => res.status(200).send(imagesArr));
   } else if (images !== undefined) {
     const imageObj = await saveImage(images, './media/news/');
     return res.status(200).send([imageObj]);

@@ -61,7 +61,7 @@ function ServerHTML(props) {
   } = props;
 
   // Creates an inline script definition that is protected by the nonce.
-  const inlineScript = body => (
+  const inlineScript = (body) => (
     <script
       nonce={nonce}
       type="text/javascript"

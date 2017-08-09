@@ -93,7 +93,7 @@ class Header extends Component {
         to="/signin"
         role="button"
         key="signin"
-        onClick={e => this.changeModalComponent(e, 'signin')}
+        onClick={(e) => this.changeModalComponent(e, 'signin')}
       >
         Sign in
       </NavLink>,
@@ -101,7 +101,7 @@ class Header extends Component {
         to="/signup"
         role="button"
         key="signup"
-        onClick={e => this.changeModalComponent(e, 'signup')}
+        onClick={(e) => this.changeModalComponent(e, 'signup')}
       >
         Sign up
       </NavLink>,

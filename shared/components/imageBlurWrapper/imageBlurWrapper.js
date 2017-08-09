@@ -68,9 +68,9 @@ class ImageBlurWrapper extends Component {
           src={visible ? src : ''}
           alt={alt}
           className={s.image}
-          ref={c => this.image = c}
+          ref={(c) => this.image = c}
         />
-        <canvas ref={c => this.canvas = c} className={s.canvas} />
+        <canvas ref={(c) => this.canvas = c} className={s.canvas} />
       </figure>
     );
   }

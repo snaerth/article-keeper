@@ -5,7 +5,7 @@ import s from './loader.scss';
 /**
  * Loader component
  */
-const Loader = props => (
+const Loader = (props) => (
   <div className={s.container}>
     <div className={s.loader}>
       <div className={s.logo}>

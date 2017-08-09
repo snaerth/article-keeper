@@ -39,4 +39,7 @@ watcher.on('ready', () => {
 });
 
 // If we receive a kill cmd then we will first try to dispose our listeners.
-process.on('SIGTERM', () => devServer && devServer.dispose().then(() => process.exit(0)));
+process.on(
+  'SIGTERM',
+  () => devServer && devServer.dispose().then(() => process.exit(0)),
+);

@@ -8,7 +8,7 @@ import createVendorDLL from './createVendorDLL';
 import webpackConfigFactory from '../webpack/configFactory';
 import config from '../../config';
 
-const usesDevVendorDLL = bundleConfig =>
+const usesDevVendorDLL = (bundleConfig) =>
   bundleConfig.devVendorDLL != null && bundleConfig.devVendorDLL.enabled;
 
 const vendorDLLsFailed = (err) => {
@@ -67,8 +67,10 @@ class HotDevelopment {
 
     const clientBundle = initializeBundle('client', config('bundles.client'));
 
-    const nodeBundles = [initializeBundle('server', config('bundles.server'))].concat(
-      Object.keys(config('additionalNodeBundles')).map(name =>
+    const nodeBundles = [
+      initializeBundle('server', config('bundles.server')),
+    ].concat(
+      Object.keys(config('additionalNodeBundles')).map((name) =>
         initializeBundle(name, config('additionalNodeBundles')[name]),
       ),
     );
@@ -105,7 +107,8 @@ class HotDevelopment {
   }
 
   dispose() {
-    const safeDisposer = server => (server ? server.dispose() : Promise.resolve());
+    const safeDisposer = (server) =>
+      (server ? server.dispose() : Promise.resolve());
 
     // First the hot client server.
     return (

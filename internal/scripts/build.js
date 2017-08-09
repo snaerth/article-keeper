@@ -9,7 +9,7 @@ import config from '../../config';
 // eslint-disable-next-line no-unused-vars
 const [x, y, ...args] = process.argv;
 
-const optimize = args.findIndex(arg => arg === '--optimize') !== -1;
+const optimize = args.findIndex((arg) => arg === '--optimize') !== -1;
 
 // UENO: removed! We do this in build script.
 // First clear the build output dir.
@@ -21,7 +21,9 @@ Object.keys(config('bundles'))
   .concat(Object.keys(config('additionalNodeBundles')))
   // And then build them all.
   .forEach((bundleName) => {
-    const compiler = webpack(webpackConfigFactory({ target: bundleName, optimize }));
+    const compiler = webpack(
+      webpackConfigFactory({ target: bundleName, optimize }),
+    );
     compiler.run((err, stats) => {
       if (err) {
         console.error(err);

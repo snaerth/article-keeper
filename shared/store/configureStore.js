@@ -11,7 +11,7 @@ export default function configureStore(initialState) {
       typeof window === 'object' &&
         typeof window.devToolsExtension !== 'undefined'
         ? window.devToolsExtension()
-        : f => f,
+        : (f) => f,
     ),
   );
 

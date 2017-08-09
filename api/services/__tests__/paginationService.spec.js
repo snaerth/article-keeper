@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 describe('Run pagination service tests', () => {
-  app.post('/paginationTest/', async (req, res, next) => {
+  app.post('/paginationTest/', async (req, res) => {
     const pagination = await getPagination(req);
     return res.send(pagination);
   });

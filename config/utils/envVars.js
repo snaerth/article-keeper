@@ -38,7 +38,7 @@ function registerEnvFile() {
   ]);
 
   // Find the first env file path match.
-  const envFilePath = envFileResolutionOrder.find(filePath =>
+  const envFilePath = envFileResolutionOrder.find((filePath) =>
     fs.existsSync(filePath),
   );
 

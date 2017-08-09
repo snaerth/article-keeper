@@ -8,7 +8,6 @@ import nodeExternals from 'webpack-node-externals';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackMd5Hash from 'webpack-md5-hash';
-
 import { happyPackPlugin } from '../utils';
 import { ifElse } from '../utils/logic';
 import { mergeDeep } from '../utils/objects';
@@ -184,7 +183,7 @@ export default function webpackConfigFactory(buildOptions) {
 
     resolve: {
       // These extensions are tried when resolving a file.
-      extensions: config('bundleSrcTypes').map(ext => `.${ext}`),
+      extensions: config('bundleSrcTypes').map((ext) => `.${ext}`),
 
       // Empty alias object for easier extendability
       alias: {},
@@ -429,7 +428,7 @@ export default function webpackConfigFactory(buildOptions) {
                   // babel-preset-env so that only the unsupported features of
                   // our target node version gets transpiled.
                   ifNode(['env', { targets: { node: true } }]),
-                ].filter(x => x != null),
+                ].filter((x) => x != null),
 
                 plugins: [
                   // Required to support react hot loader.
@@ -451,7 +450,7 @@ export default function webpackConfigFactory(buildOptions) {
                   // React that the subtree hasn’t changed so React can completely
                   // skip it when reconciling.
                   ifProd('transform-react-constant-elements'),
-                ].filter(x => x != null),
+                ].filter((x) => x != null),
               },
               buildOptions,
             ),
@@ -507,7 +506,7 @@ export default function webpackConfigFactory(buildOptions) {
           // details on what loader is being implemented.
           use: 'happypack/loader?id=happypack-javascript',
           include: removeNil([
-            ...bundleConfig.srcPaths.map(srcPath =>
+            ...bundleConfig.srcPaths.map((srcPath) =>
               path.resolve(appRootDir.get(), srcPath),
             ),
             ifProdClient(path.resolve(appRootDir.get(), 'src/html')),

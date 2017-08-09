@@ -40,7 +40,7 @@ const ModalStyles = {
 /**
  * Modal component
  */
-const ModalWrapper = props => (
+const ModalWrapper = (props) => (
   <Modal {...props} closeTimeoutMS={300} style={ModalStyles}>
     <div className={styles.modalInner}>
       <ExitIcon className={styles.exit} onClick={props.onRequestClose} />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from '../input/input.scss';
 import ErrorText from '../errorText';
 
-const Input = props => (
+const Input = (props) => (
   <span className={styles.input}>
     {props.meta.error && props.meta.touched
       ? <ErrorText key={props.id} id={props.id} error={props.meta.error} />

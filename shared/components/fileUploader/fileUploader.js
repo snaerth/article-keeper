@@ -8,7 +8,7 @@ import Face from '../../assets/images/face.svg';
 /**
  * Signup component
  */
-const FileLoader = props => (
+const FileLoader = (props) => (
   <div className={styles.uploadPhotoContainer}>
     <Dropzone
       onDrop={props.onDrop}
