@@ -18,13 +18,13 @@ import log from '../services/logService';
 export function resizeImage(orginalPath, newPath, width, height) {
   return new Promise((resolve, reject) => {
     Jimp.read(orginalPath)
-      .then(image => {
+      .then((image) => {
         image
           .resize(width || Jimp.AUTO, height || Jimp.AUTO) // resize
           .quality(100) // set JPEG quality
           .write(newPath, resolve(newPath)); // save
       })
-      .catch(err => {
+      .catch((err) => {
         log.error({ err }, 'Error resizing image');
         return reject(err);
       });
@@ -40,12 +40,12 @@ export function resizeImage(orginalPath, newPath, width, height) {
  */
 export function isImage(file) {
   return new Promise((resolve, reject) => {
-    file = file.originalname || file;
-    if (!file) {
+    const filePath = file.originalname || file;
+    if (!filePath) {
       return reject('Parameter file is undefined');
     }
     // accept image only
-    if (!file.match(/\.(jpg|jpeg|png|gif)$/)) {
+    if (!filePath.match(/\.(jpg|jpeg|png|gif)$/)) {
       return reject('Only image files are allowed!');
     }
 
@@ -63,7 +63,7 @@ export function isImage(file) {
  */
 export function saveImageToDisk(data, path) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(path, data, 'binary', err => {
+    fs.writeFile(path, data, 'binary', (err) => {
       if (err) {
         log.error({ err }, 'Error saving image to disk');
         return reject('Cound not save image');
@@ -101,6 +101,6 @@ export async function saveImageFromUrl(photoUrl, uploadDir) {
 
   return {
     imageUrl: imagePath,
-    thumbnailUrl: thumbnailPath
+    thumbnailUrl: thumbnailPath,
   };
 }

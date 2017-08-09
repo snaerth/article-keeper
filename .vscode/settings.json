@@ -18,6 +18,12 @@
     "**/build": true,
     "**/debug": true
   },
+  "prettier.singleQuote": true,
+  "prettier.useTabs": false,
+  "prettier.jsxBracketSameLine": true,
+  "prettier.trailingComma": "es5",
+  "sync.gist": "042e4fca6ab90df12184683e2fb7debc",
+  "sync.lastUpload": "2017-08-09T08:09:40.455Z",
   "sync.autoDownload": false,
   "sync.autoUpload": false,
   "sync.lastDownload": "",
@@ -25,10 +31,6 @@
   "sync.anonymousGist": false,
   "sync.host": "",
   "sync.pathPrefix": "",
-  "prettier.singleQuote": true,
-  "prettier.useTabs": false,
-  "prettier.jsxBracketSameLine": true,
-  "sync.gist": "042e4fca6ab90df12184683e2fb7debc",
-  "sync.lastUpload": "",
-  "sync.quietSync": false
+  "sync.quietSync": false,
+  "sync.askGistName": false
 }

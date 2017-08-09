@@ -30,7 +30,7 @@ function getKvikmyndir() {
       const url = `http://kvikmyndir.is/api/showtimes_by_date/?key=${API_KEY_KVIKMYNDIR}&dagur=${i}`;
 
       const request = fetch(url)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((data) => {
           movieArr.push({
             day: i,
@@ -39,14 +39,14 @@ function getKvikmyndir() {
             data,
           });
         })
-        .catch(error => reject(error));
+        .catch((error) => reject(error));
 
       promises.push(request);
     }
 
     Promise.all(promises)
       .then(() => resolve(movieArr))
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 }
 
@@ -59,9 +59,9 @@ function getUpcoming() {
     const url = `http://kvikmyndir.is/api/movie_list_upcoming/?key=${API_KEY_KVIKMYNDIR}&count=100`;
 
     fetch(url)
-      .then(res => res.json())
-      .then(data => resolve(data))
-      .catch(error => reject(error));
+      .then((res) => res.json())
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
   });
 }
 
@@ -80,7 +80,7 @@ function getPlotForMovies(movies) {
       if (movie.ids && movie.ids.imdb) {
         const url = `http://kvikmyndir.is/api/movie/?imdb=${movie.ids.imdb}&key=${API_KEY_KVIKMYNDIR}`;
         const request = fetch(url)
-          .then(res => res.json())
+          .then((res) => res.json())
           .then((data) => {
             if (data.plot && data.imdb) {
               moviesWithPlot.push({
@@ -89,7 +89,7 @@ function getPlotForMovies(movies) {
               });
             }
           })
-          .catch(error => reject(error));
+          .catch((error) => reject(error));
 
         promises.push(request);
       }
@@ -97,7 +97,7 @@ function getPlotForMovies(movies) {
 
     Promise.all(promises)
       .then(() => resolve(moviesWithPlot))
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 }
 
@@ -127,14 +127,14 @@ function getTmdbData(movies, fn, type) {
               dataArr.push(data);
             }
           })
-          .catch(error => reject(error));
+          .catch((error) => reject(error));
         promises.push(request);
       }
     }
 
     Promise.all(promises)
       .then(() => resolve(dataArr))
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 }
 
@@ -150,7 +150,7 @@ function createTrailerObject(imdbId, trailers) {
     data: [],
   };
 
-  const trailer = t => ({
+  const trailer = (t) => ({
     id: t.id,
     url: `https://www.youtube.com/embed/${t.key}?rel=0`,
     size: t.size,
@@ -178,17 +178,17 @@ function createImagesObject(imdbId, images) {
   const sizes = [300, 1920]; // also avaliable 500 and 1000
 
   if (images.backdrops && images.backdrops.length > 0) {
-    imagesObj.backdrops = sizes.map(size =>
+    imagesObj.backdrops = sizes.map((size) =>
       images.backdrops.map(
-        backdrop => `http://image.tmdb.org/t/p/w${size}${backdrop.file_path}`,
+        (backdrop) => `http://image.tmdb.org/t/p/w${size}${backdrop.file_path}`,
       ),
     );
   }
 
   if (images.posters && images.posters.length > 0) {
-    imagesObj.posters = sizes.map(size =>
+    imagesObj.posters = sizes.map((size) =>
       images.posters.map(
-        poster => `http://image.tmdb.org/t/p/w${size}${poster.file_path}`,
+        (poster) => `http://image.tmdb.org/t/p/w${size}${poster.file_path}`,
       ),
     );
   }
@@ -207,7 +207,7 @@ function getTrailersRequest(url, imdbId, delay) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       fetch(url)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((data) => {
           if (data.status_code && data.status_code === 34 && !data.results) {
             // Status code for resource not be found.
@@ -217,7 +217,7 @@ function getTrailersRequest(url, imdbId, delay) {
           const trailersObj = createTrailerObject(imdbId, data.results);
           return resolve(trailersObj);
         })
-        .catch(error => reject(error));
+        .catch((error) => reject(error));
     }, delay);
   });
 }
@@ -233,7 +233,7 @@ function getImagesRequest(url, imdbId, delay) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       fetch(url)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((data) => {
           if (data.status_code && data.status_code === 34 && !data.results) {
             // Status code for resource not be found.
@@ -243,7 +243,7 @@ function getImagesRequest(url, imdbId, delay) {
           const imagesObj = createImagesObject(imdbId, data);
           return resolve(imagesObj);
         })
-        .catch(error => reject(error));
+        .catch((error) => reject(error));
     }, delay);
   });
 }
@@ -267,11 +267,11 @@ function getOmdbData(movies) {
         const url = `http://www.omdbapi.com/?i=${imdbId}&plot=true&tomatoes=true&r=json`;
 
         const request = fetch(url)
-          .then(res => res.json())
+          .then((res) => res.json())
           .then((data) => {
             omdbArr.push({ imdb: data.imdbID, data });
           })
-          .catch(error => reject(error));
+          .catch((error) => reject(error));
 
         promises.push(request);
       }
@@ -279,7 +279,7 @@ function getOmdbData(movies) {
 
     Promise.all(promises)
       .then(() => resolve(omdbArr))
-      .catch(error => reject(error));
+      .catch((error) => reject(error));
   });
 }
 
@@ -344,7 +344,7 @@ function extendMoviesObjects(
 
     // OMDB
     if (omdb && omdb.length > 0) {
-      const omdbObj = _.find(omdb, o => o.imdb === imdbId);
+      const omdbObj = _.find(omdb, (o) => o.imdb === imdbId);
       const omdbProps = ['Country', 'Awards', 'Website'];
 
       if (omdbObj && omdbObj.data) {
@@ -409,7 +409,7 @@ function extendMoviesObjects(
       };
 
       _.forEach(movie.genres, (genreId) => {
-        const genreObj = _.find(genres, o => o.ID === genreId);
+        const genreObj = _.find(genres, (o) => o.ID === genreId);
         tempGenres.is.push(genreObj.Name);
         tempGenres.en.push(genreObj.NameEN);
       });
@@ -419,7 +419,7 @@ function extendMoviesObjects(
 
     // PLOTS
     if (plots && plots.length > 0) {
-      const matchedPlot = _.find(plots, p => p.imdb === imdbId);
+      const matchedPlot = _.find(plots, (p) => p.imdb === imdbId);
       movie.plot = {
         is: matchedPlot && matchedPlot.text ? matchedPlot.text : '',
         en: omdb && omdb.data && omdb.data.Plot ? omdb.data.Plot : '',
@@ -430,7 +430,7 @@ function extendMoviesObjects(
     if (trailers && trailers.length > 0) {
       const matchedTrailer = _.find(
         trailers,
-        trailer => trailer.imdb === imdbId,
+        (trailer) => trailer.imdb === imdbId,
       );
       if (matchedTrailer && matchedTrailer.data) {
         movie.trailers = matchedTrailer.data;
@@ -439,7 +439,7 @@ function extendMoviesObjects(
 
     // IMAGES
     if (images && images.length > 0) {
-      const matchedImages = _.find(images, image => image.imdb === imdbId);
+      const matchedImages = _.find(images, (image) => image.imdb === imdbId);
 
       if (matchedImages && matchedImages.backdrops && matchedImages.posters) {
         movie.images = {
@@ -451,13 +451,13 @@ function extendMoviesObjects(
 
     // ACTORS
     if (movie.actors_abridged && movie.actors_abridged.length > 0) {
-      const getActorName = d => d.name;
+      const getActorName = (d) => d.name;
       movie.actors = movie.actors_abridged.map(getActorName);
     }
 
     // DIRECTORS
     if (movie.directors_abridged && movie.directors_abridged.length > 0) {
-      const getDirectorName = d => d.name;
+      const getDirectorName = (d) => d.name;
       movie.directors = movie.directors_abridged.map(getDirectorName);
     }
 
@@ -565,5 +565,5 @@ export default (callback) => {
         propsToDelete,
       );
     })
-    .catch(error => callback(error));
+    .catch((error) => callback(error));
 };

@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import randombytes from 'randombytes';
 import { validateEmail, isIcelandicPhoneNumber } from '../utils/validate';
 import sendMail from '../services/mailService';
 import log from '../services/logService';
@@ -7,7 +7,7 @@ import {
   updateUserPassword,
   checkUserByEmail,
   saveUser,
-  attachTokenToUser
+  attachTokenToUser,
 } from './users';
 import User from '../models/user';
 import config from '../config';
@@ -61,7 +61,7 @@ export function successSocialCallback(req, res) {
     // Store user and jwt token in a cookie
     res.cookie('user', {
       token: tokenForUser(newUser),
-      ...newUser
+      ...newUser,
     });
 
     const expireTime = 30 * 24 * 60 * 1000; // 30 days
@@ -134,7 +134,7 @@ export function validateSignup({
   newPassword,
   name,
   dateOfBirth,
-  phone
+  phone,
 }) {
   // Check if email, password or message exist in request
   if (!email || !password || !name) {
@@ -213,7 +213,7 @@ export async function signup(req, res) {
       // Send response object with user token and user information
       return res.status(200).json({
         token: tokenForUser(data),
-        ...newUser
+        ...newUser,
       });
     } catch (err) {
       log.error({ req, res, err }, 'Error signup user');
@@ -243,7 +243,7 @@ export function signin(req, res) {
 
     data = {
       token: tokenForUser(user),
-      ...userObject
+      ...userObject,
     };
 
     if (user.roles.includes('admin')) {
@@ -264,7 +264,7 @@ async function createRandomToken() {
   return new Promise(async (resolve, reject) => {
     try {
       // Create buffer
-      const buffer = await crypto.randomBytes(20);
+      const buffer = await randomBytes(20);
       const token = buffer.toString('hex');
       return resolve(token);
     } catch (err) {
@@ -293,7 +293,7 @@ async function sendResetPasswordEmail({ url, email, name }) {
           <p>just ignore this email. Otherwise you can reset your password using this link:</p>
           <a href="http://${url}">Click here to reset your password</a>
           <p>Thank you.</p>
-      `
+      `,
     };
 
     const { to, subject, text, html } = mailOptions;

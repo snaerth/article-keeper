@@ -32,7 +32,7 @@ const {
  */
 function saveUser(newUser, done) {
   // save our user to the database
-  return newUser.save((error) => {
+  return newUser.save(error => {
     if (error) {
       return done(error);
     }
@@ -79,9 +79,9 @@ export const localLogin = new LocalStrategy(
 
           return done(null, user);
         });
-      },
+      }
     );
-  },
+  }
 );
 
 // Setup options for JWT Strategy
@@ -141,7 +141,7 @@ export const facebookLogin = new FacebookStrategy(
         try {
           const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
             photos[0].value,
-            'media/users/',
+            'media/users/'
           );
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
@@ -163,7 +163,7 @@ export const facebookLogin = new FacebookStrategy(
         }
       });
     });
-  },
+  }
 );
 
 // Configure the Twitter strategy for use by Passport.
@@ -195,7 +195,7 @@ export const twitterLogin = new TwitterStrategy(
         try {
           const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
             photos[0].value.replace('_normal', ''),
-            'media/users/',
+            'media/users/'
           );
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
@@ -217,7 +217,7 @@ export const twitterLogin = new TwitterStrategy(
         }
       });
     });
-  },
+  }
 );
 
 // Configure the Twitter strategy for use by Passport.
@@ -247,7 +247,7 @@ export const googleLogin = new GoogleStrategy(
         try {
           const { imageUrl, thumbnailUrl } = await saveImageFromUrl(
             photos[0].value.replace(/^(.+?\.(png|jpe?g)).*$/i, '$1'),
-            'media/users/',
+            'media/users/'
           );
           // If no user found with that facebook id or email create new user
           // Map facebook response to mongoose user object
@@ -269,7 +269,7 @@ export const googleLogin = new GoogleStrategy(
         }
       });
     });
-  },
+  }
 );
 
 // Only the user ID is serialized to the session, keeping the amount of data

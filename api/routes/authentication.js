@@ -65,7 +65,7 @@ const googleCallbackSetup = passport.authenticate('google', {
  * @param {Object} app - Express app referece
  * @returns {undefined}
  */
-export default function (app) {
+export default function(app) {
   // Authentication
   // Signup
   app.post('/signup', signup);
@@ -90,7 +90,7 @@ export default function (app) {
     '/auth/facebook/callback',
     facebookCallbackSetup,
     successSocialCallback,
-    errorSocialCallback,
+    errorSocialCallback
   );
 
   // Twitter authentication
@@ -101,7 +101,7 @@ export default function (app) {
     '/auth/twitter/callback',
     twitterCallbackSetup,
     successSocialCallback,
-    errorSocialCallback,
+    errorSocialCallback
   );
 
   // Google authentication
@@ -112,6 +112,6 @@ export default function (app) {
     '/auth/google/callback',
     googleCallbackSetup,
     successSocialCallback,
-    errorSocialCallback,
+    errorSocialCallback
   );
 }

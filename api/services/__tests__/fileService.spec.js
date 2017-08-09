@@ -5,7 +5,7 @@ import {
   checkFileAndDelete,
   createDirectorys,
   deleteDirectorys,
-  renameFile
+  renameFile,
 } from '../fileService';
 
 const createFilePath1 = './api/services/__tests__/test.txt';

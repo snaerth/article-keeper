@@ -18,7 +18,7 @@ export default async function getPagination(req) {
       limit = parseInt(limit > 50 ? 50 : limit, 10);
       return {
         offset,
-        limit
+        limit,
       };
     } catch (err) {
       return reject(err);

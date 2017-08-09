@@ -17,7 +17,7 @@ export function tokenForUser(user) {
   return jwt.encode(
     {
       sub: user.id,
-      iat: timestamp
+      iat: timestamp,
     },
     process.env.JWT_SECRET
   );
@@ -35,7 +35,7 @@ export async function findUserByEmail(email) {
     try {
       // See if user with given email exists
       const user = await User.findOne({
-        email
+        email,
       });
 
       // If a user does exist, return error
@@ -125,7 +125,7 @@ export async function uploadUserImage(req, res) {
       // Send response object with user token and user information
       return res.status(200).send({
         token: tokenForUser(updatedUser),
-        ...newUser
+        ...newUser,
       });
     } catch (err) {
       log.error({ req, res, err }, 'Error uploading user image');
@@ -167,7 +167,7 @@ export function checkUserByEmail(email) {
     try {
       // See if user with given email exists
       const user = await User.findOne({
-        email
+        email,
       });
       // If a user does exist, return error
       if (user) {
@@ -203,7 +203,7 @@ export async function updateUser(req, res) {
     newPassword,
     name,
     dateOfBirth,
-    phone
+    phone,
   });
 
   if (!error) {
@@ -236,7 +236,7 @@ export async function updateUser(req, res) {
             // Send response object with user token and user information
             return res.status(200).json({
               token: tokenForUser(updatedUser),
-              ...newUser
+              ...newUser,
             });
           })
       );
@@ -297,13 +297,13 @@ export async function updateUserPassword({ token, password }) {
       const user = User.findOne({
         resetPasswordToken: token,
         resetPasswordExpires: {
-          $gt: Date.now() - hourInSeconds
-        }
+          $gt: Date.now() - hourInSeconds,
+        },
       });
 
       if (!user) {
         return reject({
-          error: 'Password reset token is invalid or has expired.'
+          error: 'Password reset token is invalid or has expired.',
         });
       }
 

@@ -20,7 +20,7 @@ app.use(
     encoding: 'utf-8',
     uploadDir: UPLOADS_ROOT,
     multiples: true, // req.files to be arrays of files
-    keepExtensions: true
+    keepExtensions: true,
   })
 );
 
