@@ -6,7 +6,7 @@ describe('Run tests for friendly url', () => {
   it('Convert string to friendly url string', () => {
     const str = '# // This #is$% SEO friendly url for news ææ#';
     expect(convertToFriendlyUrl(str)).toEqual(
-      'this-is-seo-friendly-url-for-news',
+      'this-is-seo-friendly-url-for-news-aeae',
     );
   });
 

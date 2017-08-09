@@ -43,27 +43,26 @@ afterAll(async (done) => {
   }
 });
 
-// POST request /uploads/images/news/
 describe('POST /userimage', () => {
+  // POST request /uploads/images/news/
   app.post('/uploads/images/news/', uploadFiles);
 
-  test('Upload image and save image to filesystem', (done) => {
+  test('Upload image and save image to filesystem', () => {
     request(app)
       .post('/uploads/images/news')
       .attach('images', `${uploadDir}user.jpg`)
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          throw new Error(err);
+        }
+        const { url, thumbnail } = res.body[0];
         // Run tests on response
-        expect(res.url).toMatch(/.jpg/);
-        expect(res.thumbnail).toMatch(/thumbnail.jpg/);
+        expect(url).toMatch(/.jpg/);
+        expect(thumbnail).toMatch(/thumbnail.jpg/);
         // Delete uploaded images
-        checkFileAndDelete(uploadDir + res.url);
-        checkFileAndDelete(uploadDir + res.thumbnail);
-
-        if (err) return done(err);
+        checkFileAndDelete(uploadDir + url);
+        checkFileAndDelete(uploadDir + thumbnail);
       });
-  });
-  test('Uploads test not finished', () => {
-    expect(1).toBe(1);
   });
 });

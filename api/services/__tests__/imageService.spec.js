@@ -32,8 +32,8 @@ describe('Test all methods in image service', () => {
       const res = await saveImageToDisk(base64String, `${imagePath}test.jpg`);
       checkFileAndDelete(`${imagePath}test.jpg`);
       expect(res).toBe(undefined);
-    } catch (error) {
-      throw new Error(error);
+    } catch (err) {
+      throw new Error(err);
     }
   });
 });
