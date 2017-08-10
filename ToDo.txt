@@ -5,7 +5,6 @@
 
 TODO
   - Setja upp http2 locally
-  - Klára uploads test
   - Klára loggun - Er næsta verkefni
   - Klára uploads test og önnur test
   - Búa til update user í client og server

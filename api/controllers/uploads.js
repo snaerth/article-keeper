@@ -13,22 +13,22 @@ import log from '../services/logService';
  * @author Snær Seljan Þóroddsson
  */
 export function deleteFiles(req, res) {
-  let { images } = req.body;
-  images = images.split(',');
+  let { files } = req.body;
+  files = files.split(',');
 
-  if (!images[0]) {
-    return res.status(422).send({ error: 'No images found in request' });
+  if (!files[0]) {
+    return res.status(422).send({ error: 'No files found in request' });
   }
 
   try {
-    images.forEach(async (imagePath) => {
-      await checkFileAndDelete(`./${imagePath}`);
+    files.forEach(async (filePath) => {
+      await checkFileAndDelete(`./${filePath}`);
     });
 
-    return res.status(200).send({ success: 'Images deleted' });
+    return res.status(200).send({ success: 'Files deleted' });
   } catch (err) {
     log.error({ req, res, err }, 'Error deleting files');
-    return res.status(422).send({ error: "Couldn't delete images" });
+    return res.status(422).send({ error: "Couldn't delete files" });
   }
 }
 

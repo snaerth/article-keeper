@@ -48,6 +48,17 @@ describe('POST /userimage', () => {
   // POST request /uploads/images/news/
   app.post('/uploads/images/news/', uploadFiles);
 
+  // POST save image fake route
+  app.post('/saveimage/', async (req, res) => {
+    const images = req.files.images;
+    try {
+      const imageObj = await saveImage(images, './media/news/');
+      return res.status(200).send(imageObj);
+    } catch (err) {
+      return res.status(500).send(err);
+    }
+  });
+
   test('Upload image and save image to filesystem', () => {
     request(app)
       .post('/uploads/images/news')
@@ -68,4 +79,23 @@ describe('POST /userimage', () => {
   });
 
   // TODO saveImage and deleteFiles tests
+  // Save image
+  test('Save image to disk', () => {
+    request(app)
+      .post('/saveimage')
+      .attach('images', `${uploadDir}user.jpg`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          throw new Error(err);
+        }
+        const { url, thumbnail } = res.body;
+        // Run tests on response
+        expect(url).toMatch(/.jpg/);
+        expect(thumbnail).toMatch(/thumbnail.jpg/);
+        // Delete uploaded images
+        checkFileAndDelete(url);
+        checkFileAndDelete(thumbnail);
+      });
+  });
 });
