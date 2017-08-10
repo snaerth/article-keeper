@@ -4,7 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { checkFileAndDelete } from '../../services/fileService';
 import formidableMiddleware from '../../middleware/uploadHandlers';
-import uploadFiles from '../uploads';
+import uploadFiles, { deleteFiles, saveImage } from '../uploads';
 import config from '../../config';
 
 const { TEST_DB_URL, UPLOADS_ROOT } = config;
@@ -23,10 +23,11 @@ app.use(
   }),
 );
 
+mongoose.Promise = global.Promise;
+
 // Db connect
 beforeAll(async (done) => {
   try {
-    mongoose.Promise = global.Promise;
     await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
     done();
   } catch (err) {
@@ -61,8 +62,10 @@ describe('POST /userimage', () => {
         expect(url).toMatch(/.jpg/);
         expect(thumbnail).toMatch(/thumbnail.jpg/);
         // Delete uploaded images
-        checkFileAndDelete(uploadDir + url);
-        checkFileAndDelete(uploadDir + thumbnail);
+        checkFileAndDelete(url);
+        checkFileAndDelete(thumbnail);
       });
   });
+
+  // TODO saveImage and deleteFiles tests
 });

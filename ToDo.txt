@@ -5,8 +5,9 @@
 
 TODO
   - Setja upp http2 locally
-  - Klára loggun
   - Klára uploads test
+  - Klára loggun - Er næsta verkefni
+  - Klára uploads test og önnur test
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
   - Búa til news edit, delete, create, view fyrir news
