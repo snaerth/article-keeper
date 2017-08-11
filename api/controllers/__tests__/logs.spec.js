@@ -40,6 +40,8 @@ describe('Run tests for logs route handlers', () => {
   app.post('/logs/', getLogs);
   app.delete('/logs/', deleteLogs);
 
+  let logId;
+
   // GET logs from
   test('Get logs request', () => {
     try {
@@ -56,6 +58,7 @@ describe('Run tests for logs route handlers', () => {
           }
 
           const doc = res.body.docs[0];
+          logId = doc._id; // eslint-disable-line
           expect(doc.msg).toEqual('Error message');
           expect(doc.level).toEqual(50);
           expect(doc).toHaveProperty('name');
@@ -70,22 +73,16 @@ describe('Run tests for logs route handlers', () => {
 
   // Delete log
   test('Delete log from database', () => {
-    // TODO save log first
     try {
       request(app)
-        .delete('/logs')
+        .delete(`/logs?id${logId}`)
         .set('Accept', 'application/json')
         .end((err, res) => {
           if (err) {
             throw new Error(err);
           }
-
-          const doc = res.body.docs[0];
-          expect(doc.msg).toEqual('Error message');
-          expect(doc.level).toEqual(50);
-          expect(doc).toHaveProperty('name');
-          expect(doc).toHaveProperty('time');
-          expect(doc).toHaveProperty('err');
+          expect(res.body).toHaveProperty('success');
+          expect(res.body.success).toEqual(`Log ${logId} successfully deleted`);
         });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();
