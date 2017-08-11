@@ -12,11 +12,11 @@ const { TEST_DB_URL } = config;
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+mongoose.Promise = global.Promise;
 
 // Db connect
 beforeAll(async (done) => {
   try {
-    mongoose.Promise = global.Promise;
     await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
     await Log.collection.remove();
     log.error({ err: new Error('This is a error') }, 'Error message');

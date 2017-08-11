@@ -77,3 +77,29 @@ export async function getLogs(req, res) {
     return res.status(500).send({ error: err });
   }
 }
+
+/**
+ * Create fake error logs
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {*}
+ * @author Snær Seljan Þóroddsson
+ */
+export async function createFakeLogs(req, res) {
+  let { count } = req.body;
+  count = count || 10;
+
+  try {
+    const len = parseInt(count, 10);
+    for (let i = 0; i < len; i++) {
+      log.error(
+        { req, res, err: new Error(`Fake Error log ${i}`) },
+        `Fake Error log ${i}`,
+      );
+    }
+    return res.status(200).send({ success: 'Fake logs successfully created' });
+  } catch (err) {
+    return res.status(500).send({ error: err });
+  }
+}

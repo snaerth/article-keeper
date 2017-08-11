@@ -91,7 +91,7 @@ userSchema.pre('save', function preSave(next) {
   const user = this;
 
   // Encrypt our password using the salt above
-  bcrypt.hash(user.password, bcrypt.genSaltSync(10), null, (error, hash) => {
+  bcrypt.hash(user.password, bcrypt.genSaltSync(12), null, (error, hash) => {
     if (error) {
       return next(error);
     }
