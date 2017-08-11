@@ -16,5 +16,5 @@ export default function (app, requireAuth) {
   app.post('/logs', [requireAuth, isAdmin], getLogs);
   app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
   app.delete('/log', [requireAuth, isAdmin], deleteLogsById);
-  app.post('/createfakelogs', createFakeLogs);
+  app.post('/createfakelogs', [requireAuth, isAdmin], createFakeLogs);
 }
