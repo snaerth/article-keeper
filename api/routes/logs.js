@@ -1,5 +1,5 @@
 import { isAdmin } from '../controllers/users';
-import { getLogs, deleteLogs } from '../controllers/logs';
+import { getLogs, deleteLogsById, deleteAllLogs } from '../controllers/logs';
 
 /**
  * Default Logs routes
@@ -9,5 +9,6 @@ import { getLogs, deleteLogs } from '../controllers/logs';
  */
 export default function (app, requireAuth) {
   app.post('/logs', [requireAuth, isAdmin], getLogs);
-  app.delete('/logs', [requireAuth, isAdmin], deleteLogs);
+  app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
+  app.delete('/log', [requireAuth, isAdmin], deleteLogsById);
 }

@@ -4,7 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { checkFileAndDelete } from '../../services/fileService';
 import formidableMiddleware from '../../middleware/uploadHandlers';
-import uploadFiles, { deleteFiles, saveImage } from '../uploads';
+import uploadFiles, { saveImage } from '../uploads';
 import config from '../../config';
 
 const { TEST_DB_URL, UPLOADS_ROOT } = config;

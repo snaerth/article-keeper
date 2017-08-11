@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import config from '../../config';
 import log from '../../services/logService';
 import Log from '../../models/log';
-import { getLogs, deleteLogs } from '../../controllers/logs';
+import { getLogs, deleteLogsById, deleteAllLogs } from '../../controllers/logs';
 
 const { TEST_DB_URL } = config;
 // Initialize app
@@ -38,7 +38,8 @@ afterAll(async (done) => {
 
 describe('Run tests for logs route handlers', () => {
   app.post('/logs/', getLogs);
-  app.delete('/logs/', deleteLogs);
+  app.delete('/logs/', deleteLogsById);
+  app.delete('/deleteall/', deleteAllLogs);
 
   let logId;
 
@@ -71,8 +72,8 @@ describe('Run tests for logs route handlers', () => {
     }
   });
 
-  // Delete log
-  test('Delete log from database', () => {
+  // Delete log by id
+  test('Delete log by id from database', () => {
     try {
       request(app)
         .delete(`/logs?id${logId}`)
@@ -84,6 +85,22 @@ describe('Run tests for logs route handlers', () => {
           expect(res.body).toHaveProperty('success');
           expect(res.body.success).toEqual(`Log ${logId} successfully deleted`);
         });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
+
+  // Delete all logs
+  test('Delete all logs from collection', () => {
+    try {
+      request(app).delete('/deleteall').end((err, res) => {
+        if (err) {
+          throw new Error(err);
+        }
+        expect(res.body).toHaveProperty('success');
+        expect(res.body.success).toEqual('All logs successfully deleted');
+      });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();
       throw new Error(err);

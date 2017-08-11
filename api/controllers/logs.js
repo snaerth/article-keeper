@@ -3,15 +3,18 @@ import log from '../services/logService';
 import getPagination from '../services/paginationService';
 
 /**
- * Deletes logs
+ * Delete log by id
  *
  * @param {Object} req
  * @param {Object} res
  * @returns {*}
  * @author Snær Seljan Þóroddsson
  */
-export async function deleteLogs(req, res) {
+export async function deleteLogsById(req, res) {
   const { id } = req.params;
+  if (!id) {
+    return res.status(400).send({ error: 'No id found in query string' });
+  }
 
   try {
     const logId = await Log.findByIdAndRemove(id);
@@ -20,6 +23,24 @@ export async function deleteLogs(req, res) {
       .send({ success: `Log ${logId} successfully deleted` });
   } catch (err) {
     log.error({ req, res, err }, 'Error deleting log from database');
+    return res.status(500).send({ error: err });
+  }
+}
+
+/**
+ * Delete all logs
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {*}
+ * @author Snær Seljan Þóroddsson
+ */
+export async function deleteAllLogs(req, res) {
+  try {
+    await Log.collection.remove();
+    return res.status(200).send({ success: 'All logs successfully deleted' });
+  } catch (err) {
+    log.error({ req, res, err }, 'Error deleting all logs from database');
     return res.status(500).send({ error: err });
   }
 }
