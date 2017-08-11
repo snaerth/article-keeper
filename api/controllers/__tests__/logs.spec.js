@@ -67,4 +67,29 @@ describe('Run tests for logs route handlers', () => {
       throw new Error(err);
     }
   });
+
+  // Delete log
+  test('Delete log from database', () => {
+    // TODO save log first
+    try {
+      request(app)
+        .delete('/logs')
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            throw new Error(err);
+          }
+
+          const doc = res.body.docs[0];
+          expect(doc.msg).toEqual('Error message');
+          expect(doc.level).toEqual(50);
+          expect(doc).toHaveProperty('name');
+          expect(doc).toHaveProperty('time');
+          expect(doc).toHaveProperty('err');
+        });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
 });

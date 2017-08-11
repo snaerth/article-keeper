@@ -7,12 +7,21 @@ import getPagination from '../services/paginationService';
  *
  * @param {Object} req
  * @param {Object} res
- * @returns {undefined}
+ * @returns {*}
  * @author Snær Seljan Þóroddsson
  */
-export function deleteLogs(req, res) {
-  // TODO implement
-  res.status(200).send('Deleting logs');
+export async function deleteLogs(req, res) {
+  const { id } = req.params;
+
+  try {
+    const logId = await Log.findByIdAndRemove(id);
+    return res
+      .status(200)
+      .send({ success: `Log ${logId} successfully deleted` });
+  } catch (err) {
+    log.error({ req, res, err }, 'Error deleting log from database');
+    return res.status(500).send({ error: err });
+  }
 }
 
 /**
@@ -43,7 +52,7 @@ export async function getLogs(req, res) {
     const result = await Log.paginate({}, pagination);
     return res.status(200).send(result);
   } catch (err) {
-    log.error({ req, res, err }, 'Error getting logs from mongodb');
+    log.error({ req, res, err }, 'Error getting logs from database');
     return res.status(500).send({ error: err });
   }
 }
