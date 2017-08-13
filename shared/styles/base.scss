@@ -39,11 +39,10 @@ html {
 }
 
 body {
-  @include responsive-font(1.5vw, 16px, 16px);
-
   position: relative;
   margin: 0;
   font-family: 'Open Sans', arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   letter-spacing: 0.5px;
   color: $text-dark; // iOS on orientation change

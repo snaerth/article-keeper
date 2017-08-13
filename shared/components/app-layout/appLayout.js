@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import 'styles/fonts.scss';
+import 'react-virtualized/styles.css'; // only needs to be imported once
 import s from './appLayout.scss';
 
 export default class AppLayout extends Component {
-
   static propTypes = {
     children: PropTypes.node,
   };

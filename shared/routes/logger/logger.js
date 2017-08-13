@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { Column, Table } from 'react-virtualized';
-import 'react-virtualized/styles.css'; // only needs to be imported once
+import Table from 'react-virtualized/dist/commonjs/Table';
+import Column from 'react-virtualized/dist/commonjs/Table/Column';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Container from '../../components/container';
 
 class Logger extends Component {
@@ -130,22 +131,25 @@ class Logger extends Component {
     return (
       <Container className="mt25">
         <Helmet title="Log" />
-        Log
-        <Table
-          width={300}
-          height={300}
-          headerHeight={20}
-          rowHeight={30}
-          rowCount={list.length}
-          rowGetter={({ index }) => list[index]}
-        >
-          <Column label="Id" dataKey="_id" width={100} />
-          <Column label="Time" dataKey="time" width={100} />
-          <Column label="Message" dataKey="message" width={100} />
-          <Column label="Name" dataKey="name" width={100} />
-          <Column label="Level" dataKey="level" width={100} />
-          <Column label="Error" dataKey="error" width={100} />
-        </Table>
+        <AutoSizer disableHeight>
+          {({ width }) => (
+            <Table
+              width={width}
+              height={300}
+              headerHeight={20}
+              rowHeight={30}
+              rowCount={list.length}
+              rowGetter={({ index }) => list[index]}
+            >
+              <Column label="Id" dataKey="_id" width={200} />
+              <Column label="Time" dataKey="time" width={200} />
+              <Column label="Message" dataKey="message" width={200} />
+              <Column label="Name" dataKey="name" width={200} />
+              <Column label="Level" dataKey="level" width={200} />
+              <Column label="Error" dataKey="err" width={200} />
+            </Table>
+          )}
+        </AutoSizer>
       </Container>
     );
   }
