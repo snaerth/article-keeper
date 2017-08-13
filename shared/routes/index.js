@@ -9,6 +9,7 @@ import NotFound from './not-found';
 import Profile from './profile';
 import Admin from './admin';
 import Signin from './signin';
+import Logger from './logger';
 
 // Components
 import Signup from '../components/auth/signup';
@@ -36,6 +37,7 @@ export default (
       component={ResetPassword}
     />
     <Route path="/profile" name="Profile" component={Profile} />
+    <Route path="/logs" name="Logs" component={Logger} />
     <Route path="/admin" name="Admin" component={requireAuth(Admin, 'admin')} />
     <Route name="404 Page not found" component={NotFound} />
   </Switch>
