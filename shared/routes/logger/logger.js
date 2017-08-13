@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import * as actionCreators from './actions';
 import Container from '../../components/container';
+import s from '../../styles/table.css';
 
 class Logger extends Component {
   constructor(props) {
     super(props);
+    this.rowClassName = this.rowClassName.bind(this);
 
     this.state = {
       list: [
@@ -125,6 +131,27 @@ class Logger extends Component {
       ],
     };
   }
+
+  static propTypes = {
+    token: PropTypes.string.isRequired,
+  };
+
+  /**
+   * Fetch logs
+   */
+  componentDidMount() {
+    const { token } = this.props;
+    const pagination = { limit: 10, offset: 10 };
+    this.props.actions.getLogs({ token, pagination });
+  }
+
+  rowClassName({ index }) {
+    if (index < 0) {
+      return s.headerRow;
+    }
+    return index % 2 === 0 ? s.tableEvenRow : s.tableOddRow;
+  }
+
   render() {
     const { list } = this.state;
 
@@ -136,17 +163,49 @@ class Logger extends Component {
             <Table
               width={width}
               height={300}
-              headerHeight={20}
+              headerHeight={30}
               rowHeight={30}
+              headerClassName={s.tableHeader}
+              rowClassName={this.rowClassName}
               rowCount={list.length}
               rowGetter={({ index }) => list[index]}
             >
-              <Column label="Id" dataKey="_id" width={200} />
-              <Column label="Time" dataKey="time" width={200} />
-              <Column label="Message" dataKey="message" width={200} />
-              <Column label="Name" dataKey="name" width={200} />
-              <Column label="Level" dataKey="level" width={200} />
-              <Column label="Error" dataKey="err" width={200} />
+              <Column
+                className={s.tableColumn}
+                label="Id"
+                dataKey="_id"
+                width={210}
+              />
+              <Column
+                className={s.tableColumn}
+                label="Time"
+                dataKey="time"
+                width={210}
+              />
+              <Column
+                className={s.tableColumn}
+                label="Message"
+                dataKey="msg"
+                width={210}
+              />
+              <Column
+                className={s.tableColumn}
+                label="Name"
+                dataKey="name"
+                width={210}
+              />
+              <Column
+                className={s.tableColumn}
+                label="Level"
+                dataKey="level"
+                width={210}
+              />
+              <Column
+                className={s.tableColumn}
+                label="Error"
+                dataKey="err"
+                width={210}
+              />
             </Table>
           )}
         </AutoSizer>
@@ -155,4 +214,28 @@ class Logger extends Component {
   }
 }
 
-export default Logger;
+/**
+ * Maps state to components props
+ *
+ * @param {Object} state - Application state
+ * @returns {Object}
+ */
+function mapStateToProps(state) {
+  const { error, isFetching } = state.logs;
+  const { token } = state.auth.user;
+  return { errorMessage: error, isFetching, token };
+}
+
+/**
+ * Maps dispatch to components props
+ *
+ * @param {Object} dispatch - Redux dispatch medhod
+ * @returns {Object}
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actionCreators, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logger);

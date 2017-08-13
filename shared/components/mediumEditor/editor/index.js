@@ -1,9 +1,8 @@
 import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
-  resolve: () => System.import('./editor'),
-  ssrMode: 'boundary',
-  name: 'Editor',
+  // include home and about route in same chunk e.g main
+  resolve: () => System.import(/* webpackChunkName: "main" */ './editor'),
 });
 
 // export { default } from './editor';

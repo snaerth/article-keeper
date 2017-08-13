@@ -1,0 +1,33 @@
+.headerRow {
+  padding-left: 6px;
+  background: #000;
+  border-bottom: 1px solid #dfe2e5;
+}
+
+.tableHeader {
+  padding-top: 6px;
+  color: #fff;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.tableEvenRow,
+.tableOddRow {
+  padding-left: 6px;
+  border-bottom: 1px solid #dfe2e5;
+}
+
+.tableOddRow {
+  background-color: #fff;
+}
+
+.tableOddRow {
+  background-color: #e9e9e9;
+}
+
+.tableColumn {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

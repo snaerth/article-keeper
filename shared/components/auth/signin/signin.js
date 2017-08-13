@@ -325,7 +325,6 @@ function validate({ email, password }) {
  *
  * @param {Object} state - Application state
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
   return { errorMessage: state.auth.error, isFetching: state.auth.isFetching };
@@ -336,7 +335,6 @@ function mapStateToProps(state) {
  *
  * @param {Object} dispatch - Redux dispatch medhod
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapDispatchToProps(dispatch) {
   return {
