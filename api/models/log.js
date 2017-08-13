@@ -29,13 +29,15 @@ const schema = {
   },
 };
 
-// Define log model
+// Create new log schema
 const logSchema = new Schema(schema);
+
+mongoosePaginate.paginate.options = {
+  limit: 50,
+};
+
 // Add mongoose pagination plugin to schema
 // https://github.com/edwardhotchkiss/mongoose-paginate
-mongoosePaginate.paginate.options = {
-  limit: 20,
-};
 logSchema.plugin(mongoosePaginate);
 
 export default mongoose.model('Log', logSchema);

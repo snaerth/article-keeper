@@ -14,26 +14,40 @@ export default function (ComposedComponent, userRole) {
     };
 
     componentWillMount() {
-      if (!this.props.authenticated) {
-        this.context.router.push('/signin');
+      const { authenticated, roles } = this.props;
+
+      // If not authenticated push to signin route
+      if (authenticated === false) {
+        this.context.router.history.push('/signin');
       } else if (
+        authenticated === true &&
         userRole === 'admin' &&
-        this.props.roles &&
-        this.props.roles.indexOf('admin') > -1
+        roles &&
+        roles.includes('admin')
       ) {
-        this.context.router.push('/');
+        // If authenticated and user is admin
+        this.context.router.history.push(
+          this.context.router.route.location.pathname,
+        );
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
-        this.context.router.push('/signin');
+      const { authenticated, roles } = nextProps;
+
+      // If not authenticated push to signin route
+      if (authenticated === false) {
+        this.context.router.history.push('/signin');
       } else if (
+        authenticated === true &&
         userRole === 'admin' &&
-        nextProps.roles &&
-        nextProps.roles.indexOf('admin') > -1
+        roles &&
+        roles.includes('admin')
       ) {
-        this.context.router.push('/');
+        // If authenticated and user is admin
+        this.context.router.history.push(
+          this.context.router.route.location.pathname,
+        );
       }
     }
 

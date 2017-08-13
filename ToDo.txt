@@ -5,6 +5,8 @@
 
 TODO
   - Setja upp http2 locally
+  - Fix requireAuth admin
+  - Fix loggun leit í apa
   - Klára loggun client - Er næsta verkefni
   - Klára önnur test
   - Búa til update user í client og server

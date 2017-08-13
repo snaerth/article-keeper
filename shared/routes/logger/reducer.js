@@ -6,7 +6,7 @@ export default function (state = {}, action) {
       return {
         ...state,
         isFetching: true,
-        logs: action.payload,
+        data: action.payload,
       };
 
     case GET_LOGS_ERROR:

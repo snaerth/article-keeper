@@ -1,12 +1,12 @@
 .headerRow {
   padding-left: 6px;
-  background: #000;
   border-bottom: 1px solid #dfe2e5;
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
 .tableHeader {
   padding-top: 6px;
-  color: #fff;
+  color: #000;
   font-weight: 600;
   text-transform: none;
 }

@@ -55,7 +55,7 @@ export async function deleteAllLogs(req, res) {
  */
 export async function getLogs(req, res) {
   // Get default pagination object
-  const pagination = getPagination(req);
+  const pagination = await getPagination(req);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
   const { msg, level, name, time } = req.body;

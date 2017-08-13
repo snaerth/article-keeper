@@ -83,6 +83,9 @@ class Header extends Component {
           <NavLink to="/admin" key="admin" activeClassName={s.active}>
             Admin
           </NavLink>,
+          <NavLink to="/logs" key="logs" activeClassName={s.active}>
+            Logs
+          </NavLink>,
         );
       }
 
