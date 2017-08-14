@@ -1,11 +1,15 @@
 import { GET_LOGS_SUCCESS, GET_LOGS_ERROR } from './types';
 
-export default function (state = {}, action) {
+const initialState = {
+  isFetching: true,
+};
+
+export default function (state = initialState, action) {
   switch (action.type) {
     case GET_LOGS_SUCCESS:
       return {
         ...state,
-        isFetching: true,
+        isFetching: false,
         data: action.payload,
       };
 

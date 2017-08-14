@@ -3,7 +3,6 @@
 .container {
   position: relative;
   padding: 5em 0;
-  background-color: $primary-white;
 }
 
 .loader {
@@ -17,7 +16,6 @@
   right: 0;
   bottom: 0;
   z-index: 100;
-  background-color: $primary-white;
 
   p {
     margin: 1em 0 0;
@@ -35,7 +33,7 @@ $mediumHeight: 52%;
   width: $size;
   height: $size;
   box-sizing: border-box;
-  background-color: $primary-white;
+  background-color: transparent;
 
   &::before,
   &::after {

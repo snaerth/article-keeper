@@ -9,6 +9,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import getLogs from './actions';
 import Container from '../../components/container';
 import Loader from '../../components/common/loader';
+import NotifyBox from '../../components/notifyBox';
 import s from '../../styles/table.css';
 
 class Logger extends Component {
@@ -21,6 +22,8 @@ class Logger extends Component {
     token: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired,
     data: PropTypes.object,
+    isFetching: PropTypes.bool.isRequired,
+    error: PropTypes.string,
   };
 
   /**
@@ -39,69 +42,92 @@ class Logger extends Component {
     return index % 2 === 0 ? s.tableEvenRow : s.tableOddRow;
   }
 
+  /**
+     * Renders error message box
+     *
+     * @param {String} error
+     * @returns {JSX}
+     */
+  renderError(error) {
+    if (!error) return null;
+
+    return (
+      <fieldset>
+        <NotifyBox strongText="Error: " text={error} type="error" />
+      </fieldset>
+    );
+  }
+
+  /**
+   * Renders Table with logs
+   * @param {Array} list
+   * @returns {JSX}
+   */
+  renderTable(list) {
+    return (
+      <AutoSizer disableHeight>
+        {({ width }) => (
+          <Table
+            width={width}
+            height={600}
+            headerHeight={30}
+            rowHeight={30}
+            headerClassName={s.tableHeader}
+            rowClassName={this.rowClassName}
+            rowCount={list.length}
+            rowGetter={({ index }) => list[index]}
+          >
+            <Column
+              className={s.tableColumn}
+              label="Id"
+              dataKey="_id"
+              width={210}
+            />
+            <Column
+              className={s.tableColumn}
+              label="Time"
+              dataKey="time"
+              width={210}
+            />
+            <Column
+              className={s.tableColumn}
+              label="Message"
+              dataKey="msg"
+              width={210}
+            />
+            <Column
+              className={s.tableColumn}
+              label="Name"
+              dataKey="name"
+              width={210}
+            />
+            <Column
+              className={s.tableColumn}
+              label="Level"
+              dataKey="level"
+              width={210}
+            />
+            <Column
+              className={s.tableColumn}
+              label="Error"
+              dataKey="err"
+              width={210}
+            />
+          </Table>
+        )}
+      </AutoSizer>
+    );
+  }
+
   render() {
-    const { data } = this.props;
-
-    if (!data) {
-      return <Loader>Loading...</Loader>;
-    }
-
-    const list = data.docs;
+    const { data, isFetching, error } = this.props;
 
     return (
       <Container className="mt25">
         <Helmet title="Log" />
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <Table
-              width={width}
-              height={600}
-              headerHeight={30}
-              rowHeight={30}
-              headerClassName={s.tableHeader}
-              rowClassName={this.rowClassName}
-              rowCount={list.length}
-              rowGetter={({ index }) => list[index]}
-            >
-              <Column
-                className={s.tableColumn}
-                label="Id"
-                dataKey="_id"
-                width={210}
-              />
-              <Column
-                className={s.tableColumn}
-                label="Time"
-                dataKey="time"
-                width={210}
-              />
-              <Column
-                className={s.tableColumn}
-                label="Message"
-                dataKey="msg"
-                width={210}
-              />
-              <Column
-                className={s.tableColumn}
-                label="Name"
-                dataKey="name"
-                width={210}
-              />
-              <Column
-                className={s.tableColumn}
-                label="Level"
-                dataKey="level"
-                width={210}
-              />
-              <Column
-                className={s.tableColumn}
-                label="Error"
-                dataKey="err"
-                width={210}
-              />
-            </Table>
-          )}
-        </AutoSizer>
+        {this.renderError(error)}
+        {isFetching ? <Loader>Signing in...</Loader> : null}
+        {!isFetching ? this.renderTable(data.docs) : null}
       </Container>
     );
   }
@@ -116,7 +142,7 @@ class Logger extends Component {
 function mapStateToProps(state) {
   const { error, isFetching, data } = state.logs;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
-  return { errorMessage: error, isFetching, token, data };
+  return { error, isFetching, token, data };
 }
 
 /**

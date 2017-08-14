@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { TimelineLite, Power2 } from 'gsap';
+import { TimelineLite, Power2 } from 'gsap/TimelineLite';
 import classnames from 'classnames';
 import SocialsButtons from '../socials';
 import Input from '../../input';
@@ -60,7 +60,6 @@ class Signin extends Component {
      * Handles form submit event
      * @param {Object}
      * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
      */
   handleFormSubmit({ email, password }) {
     this.props.actions.isFetching();
@@ -72,7 +71,6 @@ class Signin extends Component {
      *
      * @param {String} error
      * @returns {JSX}
-     * @author Snær Seljan Þóroddsson
      */
   renderError(error) {
     const { errorMessage } = this.props;
@@ -98,7 +96,6 @@ class Signin extends Component {
      * @param {Int} slideNumber = Slide number index
      * @param {bool} back
      * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
      */
   toggleView(e, slideNumber, back) {
     e.preventDefault();
@@ -129,7 +126,6 @@ class Signin extends Component {
    * @param {bool} forward
    * @param {Int} slideNumber
    * @returns {undefined}
-   * @author Snær Seljan Þóroddsson
    */
   animateSlide(firstEl, secondEl, forward, slideNumber) {
     const tl = new TimelineLite();
@@ -289,7 +285,7 @@ class Signin extends Component {
  * @param {String} email
  * @param {String} password
  * @return {Object} errors
- * @author Snær Seljan Þóroddsson
+
  */
 function validate({ email, password }) {
   const errors = {};
