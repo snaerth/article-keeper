@@ -4,7 +4,7 @@ import s from './content.scss';
 
 export default function Content({ children }) {
   return (
-    <main className={s.content}>
+    <main role="main" className={s.content}>
       {children}
     </main>
   );

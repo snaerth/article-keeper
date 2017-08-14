@@ -119,9 +119,6 @@ class Header extends Component {
             <NavLink to="/">Home</NavLink>
             {this.renderAuthLinks()}
           </Navigation>
-          <h1 className={s.bannerText} key={this.props.name}>
-            {this.props.name}
-          </h1>
         </Container>
 
         <ModalWrapper

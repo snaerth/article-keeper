@@ -1,7 +1,7 @@
 import { GET_LOGS_SUCCESS, GET_LOGS_ERROR } from './types';
 
 const initialState = {
-  isFetching: true,
+  isFetching: false,
 };
 
 export default function (state = initialState, action) {

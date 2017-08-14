@@ -5,7 +5,8 @@
 
 TODO
   - Setja upp http2 locally
-  - Fix requireAuth admin
+  - Refactor header component
+  - Fix admin auth and user auth
   - Fix loggun leit í apa
   - Klára loggun client - Er næsta verkefni
   - Klára önnur test

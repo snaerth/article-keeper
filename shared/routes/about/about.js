@@ -5,7 +5,7 @@ import Container from '../../components/container';
 const About = () => (
   <Container className="mt25">
     <Helmet title="About" />
-    About
+    <h1>About</h1>
   </Container>
 );
 

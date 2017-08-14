@@ -1,11 +1,13 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Container from '../../components/container';
+import Loader from '../../components/common/loader';
 
 const Admin = () => (
   <Container className="mt25">
     <Helmet title="Admin Page" />
-    Admin
+    <h1>Admin</h1>
+    <Loader>Loading...</Loader>
   </Container>
 );
 

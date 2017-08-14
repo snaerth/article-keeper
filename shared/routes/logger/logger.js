@@ -125,6 +125,7 @@ class Logger extends Component {
     return (
       <Container className="mt25">
         <Helmet title="Log" />
+        <h1>Logs</h1>
         {this.renderError(error)}
         {isFetching ? <Loader>Signing in...</Loader> : null}
         {!isFetching ? this.renderTable(data.docs) : null}

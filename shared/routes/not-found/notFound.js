@@ -21,7 +21,7 @@ export default class NotFound extends Component {
     return (
       <Container className="mt25">
         <Helmet title="404 Not Found" />
-        <h1>Page was not found</h1>
+        <h1>404 Page was not found</h1>
       </Container>
     );
   }

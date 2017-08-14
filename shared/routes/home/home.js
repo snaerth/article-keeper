@@ -6,7 +6,7 @@ import MediumEditor from '../../components/mediumEditor/editor';
 const Home = () => (
   <Container className="mt25">
     <Helmet title="Home" />
-    Home
+    <h1>Home</h1>
     <MediumEditor />
   </Container>
 );

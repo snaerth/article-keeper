@@ -8,12 +8,11 @@ import s from './loader.scss';
 const Loader = (props) => (
   <div className={s.container}>
     <div className={s.loader}>
-      <div className={s.logo}>
-        <div className={s.medium} />
-        <div className={s.big} />
-      </div>
-      <p>{props.children}</p>
+      <i className={s.layer} />
+      <i className={s.layer} />
+      <i className={s.layer} />
     </div>
+    <p>{props.children}</p>
   </div>
 );
 

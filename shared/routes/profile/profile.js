@@ -8,8 +8,9 @@ import Profile from '../../components/profile';
 import Container from '../../components/container';
 
 const ProfileRoute = () => (
-  <Container className="mt25">
+  <Container className="mt25 max-1200">
     <Helmet title="Profile" />
+    <h1>Profile</h1>
     <Profile />
   </Container>
 );
