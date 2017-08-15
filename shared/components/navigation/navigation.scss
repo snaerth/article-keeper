@@ -3,6 +3,7 @@
 .nav {
   margin-right: -15px;
   margin-left: -15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .list {
@@ -26,13 +27,13 @@
 .link {
   padding: 5px 0;
   font-size: $font-size;
-  color: lighten($primary-pink, 18%);
+  color: $primary-black;
   text-decoration: none;
   outline: none;
   transition: border-color $hover-transition, color $hover-transition;
 
   &.active,
   &:hover {
-    color: $primary-white;
+    color: $primary-pink;
   }
 }

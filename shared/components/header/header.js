@@ -18,7 +18,6 @@ class Header extends Component {
   static propTypes = {
     authenticated: PropTypes.bool,
     roles: PropTypes.array,
-    name: PropTypes.string,
     modalOpen: PropTypes.bool,
     actions: PropTypes.object.isRequired,
   };
@@ -113,7 +112,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div className={s.background}>
+      <div>
         <Container>
           <Navigation>
             <NavLink to="/">Home</NavLink>
