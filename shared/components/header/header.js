@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
 import s from './header.scss';
 import ModalWrapper from '../modal';
-import Signup from '../auth/signup';
-import Signin from '../auth/signin';
+import AuthWrapper from '../auth/authWrapper';
 import Container from '../container';
 import Navigation from '../navigation';
 import * as actionCreators from '../auth/actions';
@@ -25,12 +24,8 @@ class Header extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      activeModal: 'signin',
-    };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.changeModalComponent = this.changeModalComponent.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -39,26 +34,13 @@ class Header extends Component {
     }
   }
 
-  openModal() {
+  openModal(e) {
+    e.preventDefault();
     this.props.actions.openModal();
   }
 
   closeModal() {
     this.props.actions.closeModal();
-  }
-
-  /**
-   * Changes state for modal component and opens modal
-   * @param {String} modalName
-   * @returns {undefined}
-   */
-  changeModalComponent(e, modalName) {
-    e.preventDefault();
-
-    this.setState({
-      activeModal: modalName === 'signup' ? 'signup' : 'signin',
-    });
-    this.openModal();
   }
 
   /**
@@ -95,17 +77,9 @@ class Header extends Component {
         to="/signin"
         role="button"
         key="signin"
-        onClick={(e) => this.changeModalComponent(e, 'signin')}
+        onClick={(e) => this.openModal(e)}
       >
-        Sign in
-      </NavLink>,
-      <NavLink
-        to="/signup"
-        role="button"
-        key="signup"
-        onClick={(e) => this.changeModalComponent(e, 'signup')}
-      >
-        Sign up
+        Sign in / Sign up
       </NavLink>,
     ];
   }
@@ -123,9 +97,9 @@ class Header extends Component {
         <ModalWrapper
           isOpen={this.props.modalOpen}
           onRequestClose={this.closeModal}
-          contentLabel={this.state.activeModal}
+          contentLabel={'Authentication'}
         >
-          {this.state.activeModal === 'signin' ? <Signin /> : <Signup />}
+          <AuthWrapper />
         </ModalWrapper>
       </div>
     );

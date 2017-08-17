@@ -83,6 +83,11 @@ if (process.env.BUILD_FLAG_IS_DEV === 'true' && module.hot) {
   module.hot.accept('./index.js');
   // Any changes to our App will cause a hotload re-render.
   module.hot.accept(() => renderApp(require('../shared').default));
+  // Enable Webpack hot module replacement for reducers
+  module.hot.accept('../shared/reducers', () => {
+    const nextRootReducer = require('../shared/reducers');
+    store.replaceReducer(nextRootReducer);
+  });
 
   const consoleWarn = console.warn;
 

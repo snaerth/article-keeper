@@ -1,26 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import styles from './buttonLink.scss';
+import s from './buttonLink.scss';
 
 /**
  * ButtonLink component
  */
 const ButtonLink = (props) => {
-  const { href, text, title, color, className, onClick } = props;
+  const { href, text, title, color, className = '', onClick } = props;
+  const classNamesArr = className.split(' ');
+  const cNames = classNamesArr.map((cName) => s[cName]).join(' ');
 
   return (
     <a
-      className={classnames(
-        styles.button,
-        styles[color || 'default'],
-        styles[className],
-      )}
+      className={classnames(s.button, s[color || 'default'], cNames)}
       href={href}
       title={title}
       onClick={onClick}
     >
-      <span className={styles.icon}>{props.children}</span>
+      <span className={s.icon}>{props.children}</span>
       {text}
     </a>
   );
