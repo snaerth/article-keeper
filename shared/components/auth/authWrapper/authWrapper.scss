@@ -1,17 +1,28 @@
 @import '~styles/mixins';
 @import '~styles/variables';
 
+.container {
+  margin: 0 auto;
+  max-width: $max-480;
+}
+
+.containerInner {
+  position: relative;
+  padding: 3em 1em 1em;
+  background: $primary-card;
+  overflow-x: hidden;
+
+  @include viewport(handset) {
+    padding: 3em 0 1em;
+  }
+}
+
 .fullWidth {
   width: 100%;
 }
 
 .centerLink {
   margin-top: 9px;
-}
-
-.signinContainer {
-  display: inline-flex;
-  width: 100%;
 }
 
 .textCenter {
@@ -26,6 +37,7 @@
   position: absolute;
   left: 10px;
   top: 10px;
+  z-index: 1;
   padding-bottom: 1em;
   text-align: center;
   cursor: pointer;
@@ -39,31 +51,16 @@
   fill: $primary-white;
 }
 
-.buttonContainer {
-  margin: 0 2px;
-  padding: 3em 0.625em 0.75em;
-}
-
-.container,
-.socialsContainer {
-  padding: 2em 1em 0;
+.containerAuth {
+  padding: 4em 2em 2em;
   width: 100%;
   min-width: 100%;
-  transform: translate3d(0, 0, 0);
 }
 
-.container {
+.containerAuth {
   @include viewport(handset) {
     padding: 2em 0;
   }
-}
-
-.almostHidden {
-  opacity: 0.1;
-}
-
-.noMarginBottom {
-  margin-bottom: 0;
 }
 
 .mb25 {

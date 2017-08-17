@@ -124,22 +124,6 @@ fieldset {
   border: 0;
 }
 
-.cardContainer {
-  margin: 0 auto;
-  max-width: $max-480;
-}
-
-.card {
-  position: relative;
-  padding: 3em 1em 1em;
-  background: $primary-card;
-  overflow-x: hidden;
-
-  @include viewport(handset) {
-    padding: 3em 0 1em;
-  }
-}
-
 /*
 Visually hide an element
 ------------------------------------------------------------------
