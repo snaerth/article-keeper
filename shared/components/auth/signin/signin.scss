@@ -1,38 +1,12 @@
 @import '~styles/mixins';
 @import '~styles/variables';
 
-.fullWidth {
-  width: 100%;
-}
-
-.centerLink {
-  margin-top: 9px;
-}
-
-.signinContainer {
-  display: inline-flex;
-  width: 100%;
-}
-
 .textCenter {
   text-align: center;
 }
 
 .pink {
   color: $primary-pink;
-}
-
-.back {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  padding-bottom: 1em;
-  text-align: center;
-  cursor: pointer;
-}
-
-.iconArrowBackward {
-  fill: $text-dark;
 }
 
 .iconArrowForward {
@@ -42,20 +16,6 @@
 .buttonContainer {
   margin: 0 2px;
   padding: 3em 0.625em 0.75em;
-}
-
-.container,
-.socialsContainer {
-  padding: 2em 1em 0;
-  width: 100%;
-  min-width: 100%;
-  transform: translate3d(0, 0, 0);
-}
-
-.container {
-  @include viewport(handset) {
-    padding: 2em 0;
-  }
 }
 
 .almostHidden {

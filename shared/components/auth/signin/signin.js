@@ -30,6 +30,7 @@ class Signin extends Component {
     errorMessage: PropTypes.string,
     isFetching: PropTypes.bool,
     onClick: PropTypes.func,
+    className: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -77,85 +78,68 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching, onClick } = this.props;
-    const {
-      container,
-      almostHidden,
-      signinContainer,
-      socialsContainer,
-      iconArrowForward,
-      textCenter,
-      mb25,
-    } = s;
+    const { handleSubmit, isFetching, onClick, className } = this.props;
+    const { almostHidden, iconArrowForward, textCenter, mb25 } = s;
 
     return (
-      <div>
+      <div className={className}>
         {isFetching ? <Loader>Signing in...</Loader> : null}
         <div className={isFetching ? almostHidden : ''}>
           {this.renderError()}
-          <div className={signinContainer}>
-            <div className={socialsContainer} ref={(c) => this.el0 = c}>
-              <form
-                onSubmit={handleSubmit(this.handleFormSubmit)}
-                noValidate
-                ref={(c) => this.el1 = c}
-                className={container}
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+            <MainHeading text="Sign in with email" className="medium" />
+            <fieldset>
+              <Field
+                component={Input}
+                name="email"
+                id="email"
+                type="email"
+                label="Email"
+                placeholder="someone@example.com"
               >
-                <MainHeading text="Sign in with email" className="medium" />
-                <fieldset>
-                  <Field
-                    component={Input}
-                    name="email"
-                    id="email"
-                    type="email"
-                    label="Email"
-                    placeholder="someone@example.com"
-                  >
-                    <Email />
-                  </Field>
-                </fieldset>
-                <fieldset>
-                  <Field
-                    component={Password}
-                    name="password"
-                    id="password"
-                    type="password"
-                    label="Password"
-                    placeholder="Must have at least 6 characters"
-                  />
-                </fieldset>
-                <fieldset>
-                  <div>
-                    <Button
-                      text="Sign in"
-                      ariaLabel="Sign in"
-                      className="fullWidth"
-                    >
-                      <ArrowForward className={iconArrowForward} />
-                    </Button>
-                  </div>
-                </fieldset>
-                <div className={classnames(textCenter, mb25)}>
-                  {onClick
-                    ? <Link
-                      role="button"
-                      to="/forgotpassword"
-                      className="link-slideright"
-                      onClick={onClick}
-                    >
-                        Forgot password?
-                      </Link>
-                    : <Link
-                      role="button"
-                      to="/forgotpassword"
-                      className="link-slideright"
-                    >
-                        Forgot password?
-                      </Link>}
-                </div>
-              </form>
+                <Email />
+              </Field>
+            </fieldset>
+            <fieldset>
+              <Field
+                component={Password}
+                name="password"
+                id="password"
+                type="password"
+                label="Password"
+                placeholder="Must have at least 6 characters"
+              />
+            </fieldset>
+            <fieldset>
+              <div>
+                <Button
+                  text="Sign in"
+                  ariaLabel="Sign in"
+                  className="fullWidth"
+                >
+                  <ArrowForward className={iconArrowForward} />
+                </Button>
+              </div>
+            </fieldset>
+            <div className={classnames(textCenter, mb25)}>
+              {onClick
+                ? <Link
+                  role="button"
+                  to="/forgotpassword"
+                  className="link-slideright"
+                  onClick={onClick}
+                >
+                    Forgot password?
+                  </Link>
+                : <Link
+                  role="button"
+                  to="/forgotpassword"
+                  className="link-slideright"
+                >
+                    Forgot password?
+                  </Link>}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );

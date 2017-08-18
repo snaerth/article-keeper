@@ -57,8 +57,7 @@ class AuthWrapper extends Component {
             </div>
             : null}
           {renderOrder[0]
-            ? <div className={s.containerAuth}>
-              <SocialsButtons />
+            ? <SocialsButtons className={s.containerAuth}>
               <p className={s.textCenter}>
                 <Link
                   role="button"
@@ -79,7 +78,7 @@ class AuthWrapper extends Component {
                   </Link>
                 <span /> with email
                 </p>
-            </div>
+            </SocialsButtons>
             : null}
           {renderOrder[1]
             ? <Signin

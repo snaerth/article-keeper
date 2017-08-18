@@ -9,7 +9,7 @@
 .containerInner {
   position: relative;
   padding: 3em 1em 1em;
-  background: #fff;
+  background: $primary-white;
   overflow-x: hidden;
 
   @include viewport(handset) {
@@ -30,7 +30,7 @@
 }
 
 .pink {
-  color: #f478dc;
+  color: $primary-pink;
 }
 
 .back {
@@ -44,11 +44,7 @@
 }
 
 .iconArrowBackward {
-  fill: #484848;
-}
-
-.iconArrowForward {
-  fill: #fff;
+  fill: $text-dark;
 }
 
 .containerAuth {
@@ -59,7 +55,7 @@
 
 .containerAuth {
   @include viewport(handset) {
-    padding: 2em 0;
+    padding: 1em;
   }
 }
 
