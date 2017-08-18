@@ -19,34 +19,44 @@ class AuthWrapper extends Component {
 
     this.changeAuthComp = this.changeAuthComp.bind(this);
     this.state = {
-      order: [true, false, false, false],
+      renderOrder: [true, false, false, false],
     };
   }
 
-  changeAuthComp(index) {
-    const { order } = this.state;
-    const newOrder = order.map(() => false);
+  /**
+   * Change render order state for active components
+   *
+   * @param {Object} e
+   * @param {Int} index
+   * @returns {undefined}
+   */
+  changeAuthComp(e, index) {
+    e.preventDefault();
+    const { renderOrder } = this.state;
+    // set all items in array to false
+    const newOrder = renderOrder.map(() => false);
+    // set active state by index
     newOrder[index] = !newOrder[index];
-    this.setState(() => ({ order: newOrder }));
+    this.setState(() => ({ renderOrder: newOrder }));
   }
 
   render() {
-    const { order } = this.state;
+    const { renderOrder } = this.state;
 
     return (
       <div className={s.container}>
         <div className={s.containerOuter}>
-          {!order[0]
+          {!renderOrder[0]
             ? <div className={s.back}>
               <button
                 className="link-slideright"
-                onClick={() => this.changeAuthComp(0)}
+                onClick={(e) => this.changeAuthComp(e, 0)}
               >
                 <ArrowBackward className={s.iconArrowBackward} />
               </button>
             </div>
             : null}
-          {order[0]
+          {renderOrder[0]
             ? <div className={s.containerAuth}>
               <SocialsButtons />
               <p className={s.textCenter}>
@@ -54,7 +64,7 @@ class AuthWrapper extends Component {
                   role="button"
                   to="/signin"
                   className={s.pink}
-                  onClick={() => this.changeAuthComp(1)}
+                  onClick={(e) => this.changeAuthComp(e, 1)}
                 >
                     Sign in
                   </Link>
@@ -63,7 +73,7 @@ class AuthWrapper extends Component {
                   role="button"
                   to="/signup"
                   className={s.pink}
-                  onClick={() => this.changeAuthComp(2)}
+                  onClick={(e) => this.changeAuthComp(e, 2)}
                 >
                     Sign up
                   </Link>
@@ -71,18 +81,15 @@ class AuthWrapper extends Component {
                 </p>
             </div>
             : null}
-          {order[1]
+          {renderOrder[1]
             ? <Signin
               className={s.containerAuth}
-              onClick={() => this.changeAuthComp(3)}
+              onClick={(e) => this.changeAuthComp(e, 3)}
             />
             : null}
-          {order[2] ? <Signup className={s.containerAuth} /> : null}
-          {order[3]
-            ? <div>
-              <MainHeading text="Reset password" className="medium" />
-              <ForgotPassword hideHeading />
-            </div>
+          {renderOrder[2] ? <Signup className={s.containerAuth} /> : null}
+          {renderOrder[3]
+            ? <ForgotPassword className={s.containerAuth} />
             : null}
         </div>
       </div>

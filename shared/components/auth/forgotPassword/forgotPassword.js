@@ -24,7 +24,7 @@ class Signin extends Component {
     errorMessage: PropTypes.string,
     message: PropTypes.string,
     isFetching: PropTypes.bool,
-    hideHeading: PropTypes.bool,
+    className: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -75,48 +75,44 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching, hideHeading } = this.props;
+    const { handleSubmit, isFetching, className } = this.props;
 
     return (
-      <div className="cardContainer">
-        <div className="card">
-          {!isFetching ? this.renderMessages() : null}
-          {isFetching
-            ? <Spinner>Loading</Spinner>
-            : <div>
-              {!hideHeading
-                  ? <MainHeading text="Lost password" className="medium" />
-                  : null}
-              <form
-                onSubmit={handleSubmit(this.handleFormSubmit)}
-                noValidate
-                autoComplete="off"
-              >
-                <fieldset>
-                  <Field
-                    component={Input}
-                    name="email"
-                    id="email"
-                    type="email"
-                    label="Email"
+      <div className={className}>
+        {!isFetching ? this.renderMessages() : null}
+        {isFetching
+          ? <Spinner>Loading</Spinner>
+          : <div>
+            <form
+              onSubmit={handleSubmit(this.handleFormSubmit)}
+              noValidate
+              autoComplete="off"
+            >
+              <MainHeading text="Forgot password" className="medium" />
+              <fieldset>
+                <Field
+                  component={Input}
+                  name="email"
+                  id="email"
+                  type="email"
+                  label="Email"
+                >
+                  <Email />
+                </Field>
+              </fieldset>
+              <fieldset>
+                <div>
+                  <Button
+                    text="Reset password"
+                    ariaLabel="Reset password"
+                    className="fullWidth"
                   >
-                    <Email />
-                  </Field>
-                </fieldset>
-                <fieldset>
-                  <div>
-                    <Button
-                      text="Reset password"
-                      ariaLabel="Reset password"
-                      className="fullWidth"
-                    >
-                      <ArrowForward className={styles.iconArrowForward} />
-                    </Button>
-                  </div>
-                </fieldset>
-              </form>
-            </div>}
-        </div>
+                    <ArrowForward className={styles.iconArrowForward} />
+                  </Button>
+                </div>
+              </fieldset>
+            </form>
+          </div>}
       </div>
     );
   }

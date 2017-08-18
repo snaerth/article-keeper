@@ -30,6 +30,7 @@ class Signup extends Component {
     errorMessage: PropTypes.string,
     image: PropTypes.object,
     isFetching: PropTypes.bool,
+    className: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -127,12 +128,12 @@ class Signup extends Component {
   }
 
   render() {
-    const { handleSubmit, errorMessage, isFetching } = this.props;
+    const { handleSubmit, errorMessage, isFetching, className } = this.props;
     const { almostHidden } = styles;
 
     return (
-      <div>
-        <MainHeading text="Sign up" />
+      <div className={className}>
+        <MainHeading text="Sign up with email" className="medium" />
         {isFetching ? <Spinner>Signing up</Spinner> : null}
         <div className={isFetching ? almostHidden : ''}>
           {this.renderError(errorMessage)}

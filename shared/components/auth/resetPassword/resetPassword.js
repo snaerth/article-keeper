@@ -63,7 +63,6 @@ class ResetPassword extends Component {
     } else if (message) {
       return (
         <div>
-          <MainHeading text="Reset password" className="medium" />
           <fieldset>
             <NotifyBox text={message} type="success" />
           </fieldset>
@@ -97,6 +96,7 @@ class ResetPassword extends Component {
         noValidate
         autoComplete="off"
       >
+        <MainHeading text="Reset password" className="medium" />
         <fieldset>
           <Field
             component={Password}
@@ -126,6 +126,7 @@ class ResetPassword extends Component {
     return (
       <div className="cardContainer">
         <div className="card">
+
           {!isFetching ? this.renderMessages() : null}
           {isFetching
             ? <Spinner>Resetting password</Spinner>
