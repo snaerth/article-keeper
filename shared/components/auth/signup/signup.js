@@ -4,14 +4,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { withRouter } from 'react-router';
+import * as actionCreators from '../actions';
+
+// Components
 import Input from '../../input';
 import Password from '../../password';
 import Button from '../../button';
 import MainHeading from '../../mainheading';
 import NotifyBox from '../../notifyBox';
 import FileUploader from '../../fileUploader';
-import Spinner from '../../spinner';
-import * as actionCreators from '../actions';
+import Loader from '../../common/loader';
 import validateEmail from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
@@ -56,7 +58,7 @@ class Signup extends Component {
      * @returns {undefined}
      * @author Snær Seljan Þóroddsson
      */
-  handleFormSubmit({ email, password, name }) {
+  async handleFormSubmit({ email, password, name }) {
     this.props.actions.isFetching();
 
     // TODO make async promise or something to wait for signup user
@@ -67,18 +69,17 @@ class Signup extends Component {
       formData.append('image', this.props.image);
     }
 
-    this.props.actions
-      .signupUser({ email, password, name, formData })
-      .then(this.signupUserSuccess())
-      .catch();
-  }
-
-  /**
-   * Reroute user to profile page
-   * @returns {undefined}
-   */
-  signupUserSuccess() {
-    this.props.history.push('/profile');
+    try {
+      await this.props.actions.signupUser({
+        email,
+        password,
+        name,
+        formData,
+      });
+      this.props.history.push('/profile');
+    } catch (error) {
+      // No need to do something with error because error is already handled
+    }
   }
 
   /**
@@ -133,10 +134,10 @@ class Signup extends Component {
 
     return (
       <div className={className}>
-        <MainHeading text="Sign up with email" className="medium" />
-        {isFetching ? <Spinner>Signing up</Spinner> : null}
+        {isFetching ? <Loader absolute>Signing up</Loader> : null}
         <div className={isFetching ? almostHidden : ''}>
           {this.renderError(errorMessage)}
+          <MainHeading text="Sign up with email" className="medium" />
           <form
             onSubmit={handleSubmit(this.handleFormSubmit)}
             noValidate
@@ -267,7 +268,6 @@ function validate({ email, password, name }) {
  *
  * @param {Object} state - Application state
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
   return {
@@ -282,7 +282,6 @@ function mapStateToProps(state) {
  *
  * @param {Object} dispatch - Redux dispatch medhod
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapDispatchToProps(dispatch) {
   return {

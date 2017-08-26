@@ -10,6 +10,7 @@ export const RESET_PASSWORD_ERROR = 'reset_password_error';
 export const SET_PREVIEW_USER_IMAGE = 'set_preview_user_image';
 export const USER_UPDATED = 'add_user_image_success';
 export const IS_FETCHING = 'is_fetching';
+export const IS_NOT_FETCHING = 'is_not_fetching';
 export const MODAL_OPEN = 'modal_open';
 export const MODAL_CLOSE = 'modal_close';
 export const CLEAN = 'clean';

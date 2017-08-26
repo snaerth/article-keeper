@@ -5,19 +5,22 @@ import s from './loader.scss';
 /**
  * Loader component
  */
-const Loader = (props) => (
-  <div className={s.container}>
-    <div className={s.loader}>
-      <i className={s.layer} />
-      <i className={s.layer} />
-      <i className={s.layer} />
+const Loader = ({ children, absolute }) => (
+  <div className={absolute ? s.absolute : ''}>
+    <div className={s.container}>
+      <div className={s.loader}>
+        <i className={s.layer} />
+        <i className={s.layer} />
+        <i className={s.layer} />
+      </div>
+      <p>{children}</p>
     </div>
-    <p>{props.children}</p>
   </div>
 );
 
 Loader.propTypes = {
   children: PropTypes.string,
+  absolute: PropTypes.bool,
 };
 
 export default Loader;

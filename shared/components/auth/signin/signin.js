@@ -62,17 +62,11 @@ class Signin extends Component {
   renderError(error) {
     const { errorMessage } = this.props;
     const msg = errorMessage || error;
-    const { noMarginBottom } = s;
 
     if (!msg) return null;
     return (
       <fieldset>
-        <NotifyBox
-          strongText="Error: "
-          text={msg}
-          type="error"
-          className={noMarginBottom}
-        />
+        <NotifyBox strongText="Error: " text={msg} type="error" />
       </fieldset>
     );
   }
@@ -83,7 +77,7 @@ class Signin extends Component {
 
     return (
       <div className={className}>
-        {isFetching ? <Loader>Signing in...</Loader> : null}
+        {isFetching ? <Loader absolute>Signing in...</Loader> : null}
         <div className={isFetching ? almostHidden : ''}>
           {this.renderError()}
           <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>

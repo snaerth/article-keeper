@@ -11,6 +11,7 @@ import {
   SET_PREVIEW_USER_IMAGE,
   USER_UPDATED,
   IS_FETCHING,
+  IS_NOT_FETCHING,
   MODAL_OPEN,
   MODAL_CLOSE,
   CLEAN,
@@ -40,6 +41,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+      };
+
+    case IS_NOT_FETCHING:
+      return {
+        ...state,
+        isFetching: false,
       };
 
     case AUTH_USER:

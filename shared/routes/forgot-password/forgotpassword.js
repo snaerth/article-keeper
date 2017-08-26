@@ -2,22 +2,22 @@ import React from 'react';
 import Helmet from 'react-helmet';
 
 // Components
-import Signin from '../../components/auth/signin';
+import ForgotPassword from '../../components/auth/forgotpassword';
 // Containers
 import Container from '../../components/container';
 // Styles
-import s from './signin.scss';
+import s from './forgotpassword.scss';
 
-const SigninRoute = () => (
+const ForgotPasswordRoute = () => (
   <Container className="mt25">
-    <Helmet title="Signin" />
-    <h1>Signin</h1>
+    <Helmet title="Forgot password" />
+    <h1>Forgot password</h1>
     <div className={s.container}>
       <div className={s.containerOuter}>
-        <Signin className={s.containerAuth} />
+        <ForgotPassword className={s.containerAuth} />
       </div>
     </div>
   </Container>
 );
 
-export default SigninRoute;
+export default ForgotPasswordRoute;

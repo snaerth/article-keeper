@@ -1,4 +1,3 @@
-@import '~styles/mixins';
 @import '~styles/variables';
 
 .textCenter {
@@ -20,10 +19,6 @@
 
 .almostHidden {
   opacity: 0.1;
-}
-
-.noMarginBottom {
-  margin-bottom: 0;
 }
 
 .mb25 {

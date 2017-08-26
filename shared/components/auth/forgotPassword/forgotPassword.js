@@ -81,7 +81,7 @@ class Signin extends Component {
       <div className={className}>
         {!isFetching ? this.renderMessages() : null}
         {isFetching
-          ? <Spinner>Loading</Spinner>
+          ? <Spinner absolute>Loading</Spinner>
           : <div>
             <form
               onSubmit={handleSubmit(this.handleFormSubmit)}

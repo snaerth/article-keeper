@@ -11,6 +11,7 @@ import {
   SET_PREVIEW_USER_IMAGE,
   USER_UPDATED,
   IS_FETCHING,
+  IS_NOT_FETCHING,
   MODAL_OPEN,
   MODAL_CLOSE,
   CLEAN,
@@ -25,6 +26,16 @@ import { authError } from '../../common/actions';
  */
 export function isFetching() {
   return { type: IS_FETCHING };
+}
+
+/**
+ * Is not fetching data state
+ *
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+export function isNotFetching() {
+  return { type: IS_NOT_FETCHING };
 }
 
 /**
@@ -79,46 +90,48 @@ export function signinUser({ email, password }) {
  * @author Snær Seljan Þóroddsson
  */
 export function signupUser({ email, password, name, formData }) {
-  return async (dispatch) => {
-    try {
-      // Post email/password to api server to register user Get token back from server
-      const response = await axios.post('/api/signup', {
-        email,
-        password,
-        name,
-      });
-      const payload = {
-        user: response.data,
-      };
+  return (dispatch) =>
+    new Promise(async (resolve, reject) => {
+      try {
+        // Post email/password to api server to register user Get token back from server
+        const response = await axios.post('/api/signup', {
+          email,
+          password,
+          name,
+        });
+        const payload = {
+          user: response.data,
+        };
 
-      // Dispatch api action to authReducer
-      dispatch({ type: SIGNUP_USER, payload });
-      // Reroute user to home page
-      if (!formData) {
+        // Dispatch api action to authReducer
+        dispatch({ type: SIGNUP_USER, payload });
+        // Reroute user to home page
+        if (!formData) {
+          // Save token to localStorage
+          localStorage.setItem('user', JSON.stringify(response.data));
+          return resolve();
+        }
+
+        const config = {
+          headers: {
+            authorization: response.data.token,
+          },
+        };
+
+        const res = await axios.post('/api/userimage', formData, config);
+        // Dispatch USER_UPDATED action to authReducer
+        dispatch({ type: USER_UPDATED, payload: res.data });
         // Save token to localStorage
-        localStorage.setItem('user', JSON.stringify(response.data));
-        return Promise.resolve();
+        localStorage.setItem('user', {
+          user: JSON.stringify(res.data),
+        });
+
+        return resolve();
+      } catch (error) {
+        dispatch(authError(AUTH_ERROR, error));
+        return reject(error);
       }
-
-      const config = {
-        headers: {
-          authorization: response.data.token,
-        },
-      };
-
-      const res = await axios.post('/api/userimage', formData, config);
-      // Dispatch USER_UPDATED action to authReducer
-      dispatch({ type: USER_UPDATED, payload: res.data });
-      // Save token to localStorage
-      localStorage.setItem('user', {
-        user: JSON.stringify(res.data),
-      });
-
-      return Promise.resolve();
-    } catch (error) {
-      dispatch(authError(AUTH_ERROR, error));
-    }
-  };
+    });
 }
 
 /**

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions';
 
 // Components
 import Signin from '../signin';
 import Signup from '../signup';
 import SocialsButtons from '../socials';
-import MainHeading from '../../mainheading';
 import ForgotPassword from '../forgotPassword';
 import ArrowBackward from '../../../assets/images/arrow_backward.svg';
 import s from './authWrapper.scss';
@@ -14,6 +17,10 @@ import s from './authWrapper.scss';
  * AuthWrapper component for sign in, sign up, Forgot password and social buttons
  */
 class AuthWrapper extends Component {
+  static propTypes = {
+    actions: PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -38,6 +45,11 @@ class AuthWrapper extends Component {
     // set active state by index
     newOrder[index] = !newOrder[index];
     this.setState(() => ({ renderOrder: newOrder }));
+
+    // Reset redux isFetching state
+    if (index === 0) {
+      this.props.actions.isNotFetching();
+    }
   }
 
   render() {
@@ -96,4 +108,28 @@ class AuthWrapper extends Component {
   }
 }
 
-export default AuthWrapper;
+/**
+ * Maps state to components props
+ *
+ * @param {Object} state - Application state
+ * @returns {Object}
+ */
+function mapStateToProps(state) {
+  return {
+    isFetching: state.auth.isFetching,
+  };
+}
+
+/**
+ * Maps dispatch to components props
+ *
+ * @param {Object} dispatch - Redux dispatch medhod
+ * @returns {Object}
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actionCreators, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthWrapper);

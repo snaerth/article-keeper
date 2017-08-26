@@ -122,7 +122,13 @@ a:hover {
 
 fieldset {
   border: 0;
+
+  @include viewport(handset) {
+    padding: 0;
+  }
 }
+
+
 
 /*
 Visually hide an element
