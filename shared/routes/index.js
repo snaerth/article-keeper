@@ -27,7 +27,11 @@ export default function Routes(authenticated) {
       <Route path="/signin" name="Sign in" component={Signin} />
       <Route path="/signup" name="Sign up" component={Signup} />
       <Route path="/signout" name="Sign out" component={Signout} />
-      <Route path="/forgotpassword" component={ForgotPassword} />
+      <Route
+        path="/forgotpassword"
+        name="Forgot password"
+        component={ForgotPassword}
+      />
       <Route
         path="/reset/:token"
         name="Reset password"

@@ -110,7 +110,6 @@ class Header extends Component {
  * Maps dispatch to components props
  * @param {Object} dispatch - Redux dispatch medhod
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapDispatchToProps(dispatch) {
   return {
@@ -122,7 +121,6 @@ function mapDispatchToProps(dispatch) {
  * Maps state to props
  * @param {Object} state - Application state
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
   const { authenticated } = state.auth;
