@@ -1,4 +1,9 @@
-import { GET_LOGS_SUCCESS, GET_LOGS_ERROR } from './types';
+import {
+  GET_LOGS_SUCCESS,
+  GET_LOGS_ERROR,
+  IS_FETCHING,
+  IS_NOT_FETCHING,
+} from './types';
 
 const initialState = {
   isFetching: false,
@@ -6,6 +11,18 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case IS_FETCHING:
+      return {
+        ...state,
+        isFetching: true,
+      };
+
+    case IS_NOT_FETCHING:
+      return {
+        ...state,
+        isFetching: false,
+      };
+
     case GET_LOGS_SUCCESS:
       return {
         ...state,

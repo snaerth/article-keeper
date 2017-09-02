@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import getLogs from './actions';
+import { getLogs, isFetchingData, isNotFetchingData } from './actions';
 import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
 import NotifyBox from '../../components/common/notifyBox';
@@ -32,6 +32,7 @@ class Logger extends Component {
   componentDidMount() {
     const { token } = this.props;
     const formData = { limit: 50, offset: 10 };
+    this.props.actions.isFetchingData();
     this.props.actions.getLogs({ token, formData });
   }
 
@@ -52,7 +53,7 @@ class Logger extends Component {
     if (!error) return null;
 
     return (
-      <fieldset>
+      <fieldset className="noPadding">
         <NotifyBox strongText="Error: " text={error} type="error" />
       </fieldset>
     );
@@ -121,13 +122,12 @@ class Logger extends Component {
 
   render() {
     const { data, isFetching, error } = this.props;
-
     return (
       <Container className="mtb50">
         <Helmet title="Log" />
         <h1>Logs</h1>
         {this.renderError(error)}
-        {isFetching ? <Loader>Signing in...</Loader> : null}
+        {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
         {!isFetching && data ? this.renderTable(data.docs) : null}
       </Container>
     );
@@ -154,7 +154,10 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ getLogs }, dispatch),
+    actions: bindActionCreators(
+      { getLogs, isFetchingData, isNotFetchingData },
+      dispatch,
+    ),
   };
 }
 
