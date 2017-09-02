@@ -29,7 +29,8 @@ class Header extends Component {
   }
 
   componentWillReceiveProps() {
-    if (this.props.modalOpen) {
+    const { authenticated, modalOpen } = this.props;
+    if (authenticated && modalOpen) {
       this.closeModal();
     }
   }
