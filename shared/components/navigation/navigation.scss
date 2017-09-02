@@ -1,7 +1,8 @@
 @import '~styles/variables';
 
 .nav {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
   &.normal {
     border-bottom: 0;
@@ -11,25 +12,23 @@
 .list {
   display: flex;
   align-items: stretch;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin: 0;
   list-style: none;
 }
 
-.nav.normal .list {
-  justify-content: flex-start;
-}
+.nav.normal {
+  padding: 0;
 
-
-
-.left {
-  margin-right: auto;
+  .list {
+    justify-content: flex-start;
+  }
 }
 
 .item {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 0 10px;
 
   &:first-child {
     padding-left: 0;
@@ -41,15 +40,15 @@
 }
 
 .link {
-  padding: 5px 0;
+  padding: 12px 0;
   font-size: 14px;
-  color: $primary-black;
+  color: $navbar-text;
+  border-bottom: 1px solid transparent;
   text-decoration: none;
   outline: none;
   transition: border-color $hover-transition, color $hover-transition;
 
-  &.active,
   &:hover {
-    color: $primary-pink;
+    color: $primary-black;
   }
 }

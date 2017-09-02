@@ -25,6 +25,7 @@ class AuthWrapper extends Component {
     super(props);
 
     this.changeAuthComp = this.changeAuthComp.bind(this);
+
     this.state = {
       renderOrder: [true, false, false, false],
     };

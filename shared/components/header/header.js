@@ -50,33 +50,36 @@ class Header extends Component {
    */
   renderAuthLinks() {
     const { roles } = this.props;
-    const links = [
-      <NavLink to="/profile" key="profile" activeClassName={s.active}>
-        Profile
-      </NavLink>,
-    ];
 
     if (roles && roles.includes('admin')) {
-      links.push(
+      return [
+        <NavLink to="/profile" key="profile" activeClassName={s.active}>
+          Profile
+        </NavLink>,
         <NavLink to="/admin" key="admin" activeClassName={s.active}>
           Admin
         </NavLink>,
         <NavLink to="/logs" key="logs" activeClassName={s.active}>
           Logs
         </NavLink>,
-      );
+      ];
     }
 
-    return links;
+    return [
+      <NavLink to="/profile" key="profile" activeClassName={s.active}>
+        Profile
+      </NavLink>,
+    ];
   }
 
   render() {
     const { authenticated } = this.props;
     return (
-      <div>
+      <div className={s.container}>
         <Container>
           <Navigation>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/" activeClassName={s.noActive}>Home</NavLink>
+            <div className={s.logo}>ADMIN SYSTEM</div>
             {!authenticated
               ? <NavLink
                 to="/signin"
@@ -138,4 +141,6 @@ function mapStateToProps(state) {
   return newStateToProps;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  pure: false,
+})(Header);

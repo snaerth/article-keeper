@@ -179,3 +179,9 @@ input:-webkit-autofill {
 .noPadding {
   padding: 0;
 }
+
+
+nav .active {
+  color: $primary-black;
+  border-bottom: 1px solid $primary-black;
+}

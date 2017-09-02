@@ -11,6 +11,7 @@ import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
 import NotifyBox from '../../components/common/notifyBox';
 import s from '../../styles/table.css';
+import styles from './logger.scss';
 
 class Logger extends Component {
   constructor(props) {
@@ -123,12 +124,14 @@ class Logger extends Component {
   render() {
     const { data, isFetching, error } = this.props;
     return (
-      <Container className="mtb50">
+      <Container className="mt25mb50">
         <Helmet title="Log" />
         <h1>Logs</h1>
         {this.renderError(error)}
-        {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-        {!isFetching && data ? this.renderTable(data.docs) : null}
+        <div className={styles.minHeight200}>
+          {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
+          {!isFetching && data ? this.renderTable(data.docs) : null}
+        </div>
       </Container>
     );
   }
