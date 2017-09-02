@@ -7,11 +7,11 @@ import { reduxForm, Field } from 'redux-form';
 import classnames from 'classnames';
 
 // Components
-import Input from '../../input';
-import Password from '../../password';
-import Button from '../../button';
-import NotifyBox from '../../notifyBox';
-import MainHeading from '../../mainheading';
+import Input from '../../common/input';
+import Password from '../../common/password';
+import Button from '../../common/button';
+import NotifyBox from '../../common/notifyBox';
+import MainHeading from '../../common/mainheading';
 import validateEmail from './../../../utils/validate';
 import Loader from '../../common/loader';
 import * as actionCreators from '../actions';

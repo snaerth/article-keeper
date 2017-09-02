@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { processImage } from '../../utils/stackBlur';
+import { processImage } from '../../../utils/stackBlur';
 import s from './imageBlurWrapper.scss';
 
 /**

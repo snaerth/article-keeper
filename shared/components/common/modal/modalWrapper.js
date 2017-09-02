@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import styles from './modalWrapper.scss';
-import ExitIcon from '../../assets/images/exit.svg';
+import ExitIcon from '../../../assets/images/exit.svg';
 
 const ModalStyles = {
   overlay: {

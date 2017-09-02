@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import s from './profile.scss';
-import ModalWrapper from '../modal';
-import ImageBlurWrapper from '../imageBlurWrapper';
+import ModalWrapper from '../common/modal';
+import ImageBlurWrapper from '../common/imageBlurWrapper';
 import Person from '../../assets/images/person.svg';
 
 /**
@@ -64,6 +64,19 @@ class Profile extends Component {
     return info;
   }
 
+  /**
+   * Renders additonal information
+   *
+   * @returns {JSX}
+   */
+  renderAdditonalInformation() {
+    return (
+      <div className={s.card}>
+        <h2 className={s.noMarginTop}>Additonal information</h2>
+      </div>
+    );
+  }
+
   render() {
     if (!this.props.user) {
       return <div>User is missing!</div>;
@@ -93,9 +106,7 @@ class Profile extends Component {
               </a>
               : 'Email missing'}
           </div>
-          <div className={s.card}>
-            <h2 className={s.noMarginTop}>Additonal information</h2>
-          </div>
+          {this.renderAdditonalInformation()}
         </div>
         {imageUrl
           ? <ModalWrapper

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ButtonLink from '../../buttonLink';
-import MainHeading from '../../mainheading';
-import FacebookIcon from '../../../assets/images//facebook.svg';
-import TwitterIcon from '../../../assets/images//twitter.svg';
+import ButtonLink from '../../common/buttonLink';
+import MainHeading from '../../common/mainheading';
+import FacebookIcon from '../../../assets/images/facebook.svg';
+import TwitterIcon from '../../../assets/images/twitter.svg';
 import GoogleIcon from '../../../assets/images/google.svg';
 import s from './socialsButtons.css';
 

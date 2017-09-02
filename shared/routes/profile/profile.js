@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import Profile from '../../components/profile';
 
 // Containers
-import Container from '../../components/container';
+import Container from '../../components/common/container';
 
 const ProfileRoute = () => (
   <Container className="mt25">

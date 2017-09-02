@@ -4,13 +4,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styles from './forgotPassword.scss';
-import MainHeading from '../../mainheading';
-import Input from '../../input';
-import Button from '../../button';
-import NotifyBox from '../../notifyBox';
+import MainHeading from '../../common/mainheading';
+import Input from '../../common/input';
+import Button from '../../common/button';
+import NotifyBox from '../../common/notifyBox';
 import validateEmail from './../../../utils/validate';
 import * as actionCreators from '../actions';
-import Spinner from '../../spinner';
+import Loader from '../../common/loader';
 import Email from '../../../assets/images/email.svg';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
 
@@ -81,7 +81,7 @@ class Signin extends Component {
       <div className={className}>
         {!isFetching ? this.renderMessages() : null}
         {isFetching
-          ? <Spinner absolute>Loading</Spinner>
+          ? <Loader absolute>Loading...</Loader>
           : <div>
             <form
               onSubmit={handleSubmit(this.handleFormSubmit)}

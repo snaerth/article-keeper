@@ -5,8 +5,8 @@ import Helmet from 'react-helmet';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styles from './signout.scss';
-import Button from '../../components/button';
-import Container from '../../components/container';
+import Button from '../../components/common/button';
+import Container from '../../components/common/container';
 import * as actionCreators from '../../components/auth/actions';
 
 /**

@@ -7,12 +7,12 @@ import { withRouter } from 'react-router';
 import * as actionCreators from '../actions';
 
 // Components
-import Input from '../../input';
-import Password from '../../password';
-import Button from '../../button';
-import MainHeading from '../../mainheading';
-import NotifyBox from '../../notifyBox';
-import FileUploader from '../../fileUploader';
+import Input from '../../common/input';
+import Password from '../../common/password';
+import Button from '../../common/button';
+import MainHeading from '../../common/mainheading';
+import NotifyBox from '../../common/notifyBox';
+import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
 import validateEmail from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';

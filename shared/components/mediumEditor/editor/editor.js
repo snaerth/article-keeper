@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Editor, createEditorState } from 'medium-draft';
 import 'medium-draft/lib/index.css';
 import * as actionCreators from '../actions';
-import ButtonLink from '../../buttonLink';
+import ButtonLink from '../../common/buttonLink';
 import inlineButtons from '../buttons/inlineButtons';
 import blockButtons from '../buttons/blockButtons';
 import customImageSideButton from '../buttons/customImageSideButton';

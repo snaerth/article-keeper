@@ -18,12 +18,9 @@ import Signout from './routes/signout';
 import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Admin from './routes/admin';
-import Signin from './routes/signin';
 import Logger from './routes/logger';
 
 // Components
-import Signup from './components/auth/signup';
-import ForgotPassword from './components/auth/forgotPassword';
 import ResetPassword from './components/auth/resetPassword';
 import * as actionCreators from './components/auth/actions';
 
@@ -50,7 +47,7 @@ class App extends Component {
 
   onRouteChanged(pathname) {
     const { history } = this.props;
-    if (pathname.contains('/signin') || pathname.contains('/signup')) {
+    if (pathname.includes('/signin') || pathname.includes('/signup')) {
       history.push('/');
       this.props.actions.openModal();
     }
@@ -67,10 +64,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
-            <Route path="/signin" component={Signin} />
-            <Route path="/signup" component={Signup} />
             <Route path="/signout" component={Signout} />
-            <Route path="/forgotpassword" component={ForgotPassword} />
             <Route path="/reset/:token" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
             <Route path="/logs" component={Logger} />

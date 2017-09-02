@@ -1,9 +1,11 @@
 @import '~styles/variables';
 
 .nav {
-  margin-right: -15px;
-  margin-left: -15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &.normal {
+    border-bottom: 0;
+  }
 }
 
 .list {
@@ -14,6 +16,12 @@
   list-style: none;
 }
 
+.nav.normal .list {
+  justify-content: flex-start;
+}
+
+
+
 .left {
   margin-right: auto;
 }
@@ -22,6 +30,14 @@
   display: flex;
   align-items: center;
   padding: 5px 15px;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
 }
 
 .link {

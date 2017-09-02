@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
 import styles from './fileUploader.scss';
-import UploadPhoto from '../../assets/images/uploadPhoto.svg';
-import Face from '../../assets/images/face.svg';
+import UploadPhoto from '../../../assets/images/uploadPhoto.svg';
+import Face from '../../../assets/images/face.svg';
 
 /**
- * Signup component
+ * FileLoader component
  */
 const FileLoader = (props) => (
   <div className={styles.uploadPhotoContainer}>

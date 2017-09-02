@@ -4,18 +4,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router';
-import MainHeading from '../../mainheading';
-import Password from '../../password';
-import Button from '../../button';
-import NotifyBox from '../../notifyBox';
+import MainHeading from '../../common/mainheading';
+import Password from '../../common/password';
+import Button from '../../common/button';
+import NotifyBox from '../../common/notifyBox';
 import * as actionCreators from '../actions';
-import Spinner from '../../spinner';
+import Loader from '../../common/loader';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
 import styles from './resetPassword.scss';
 
-/**
- * Signin component
- */
 class ResetPassword extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
@@ -37,7 +34,6 @@ class ResetPassword extends Component {
      *
      * @param {Object}
      * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
      */
   handleFormSubmit({ password }) {
     const token = this.props.params.token;
@@ -49,7 +45,6 @@ class ResetPassword extends Component {
      * Renders messages in a notifycation box
      *
      * @returns {JSX}
-     * @author Snær Seljan Þóroddsson
      */
   renderMessages() {
     const { errorMessage, message } = this.props;
@@ -85,7 +80,6 @@ class ResetPassword extends Component {
   /**
    * Renders form
    * @returns {JSX}
-   * @author Snær Seljan Þóroddsson
    */
   renderForm() {
     const { handleSubmit, message } = this.props;
@@ -122,15 +116,11 @@ class ResetPassword extends Component {
 
   render() {
     const { isFetching } = this.props;
-
     return (
       <div className="cardContainer">
         <div className="card">
-
           {!isFetching ? this.renderMessages() : null}
-          {isFetching
-            ? <Spinner>Resetting password</Spinner>
-            : this.renderForm()}
+          {isFetching ? <Loader>Resetting password</Loader> : this.renderForm()}
         </div>
       </div>
     );
@@ -142,7 +132,6 @@ class ResetPassword extends Component {
  *
  * @param {String} password
  * @return {Object} errors
- * @author Snær Seljan Þóroddsson
  */
 function validate({ password }) {
   const errors = {};
@@ -169,7 +158,6 @@ function validate({ password }) {
  *
  * @param {Object} state - Application state
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
   return {
@@ -184,7 +172,6 @@ function mapStateToProps(state) {
  *
  * @param {Object} dispatch - Redux dispatch medhod
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapDispatchToProps(dispatch) {
   return {

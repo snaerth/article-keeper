@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
 import s from './header.scss';
-import ModalWrapper from '../modal';
+import ModalWrapper from '../common/modal';
 import AuthWrapper from '../auth/authWrapper';
-import Container from '../container';
+import Container from '../common/container';
 import Navigation from '../navigation';
 import * as actionCreators from '../auth/actions';
 
@@ -44,53 +44,54 @@ class Header extends Component {
   }
 
   /**
-   * Renders auth links. If authenticated then signout link
-   * else signin and signup
+   * Renders links if authenticated
+   *
    * @returns {Component} Link
    */
   renderAuthLinks() {
-    if (this.props.authenticated) {
-      const links = [
-        <NavLink to="/profile" key="profile" activeClassName={s.active}>
-          Profile
-        </NavLink>,
-        <NavLink to="/signout" key="signout" activeClassName={s.active}>
-          Sign out
-        </NavLink>,
-      ];
-
-      if (this.props.roles && this.props.roles.indexOf('admin') > -1) {
-        links.unshift(
-          <NavLink to="/admin" key="admin" activeClassName={s.active}>
-            Admin
-          </NavLink>,
-          <NavLink to="/logs" key="logs" activeClassName={s.active}>
-            Logs
-          </NavLink>,
-        );
-      }
-
-      return links;
-    }
-    return [
-      <NavLink
-        to="/signin"
-        role="button"
-        key="signin"
-        onClick={(e) => this.openModal(e)}
-      >
-        Sign in / Sign up
+    const { roles } = this.props;
+    const links = [
+      <NavLink to="/profile" key="profile" activeClassName={s.active}>
+        Profile
       </NavLink>,
     ];
+
+    if (roles && roles.includes('admin')) {
+      links.push(
+        <NavLink to="/admin" key="admin" activeClassName={s.active}>
+          Admin
+        </NavLink>,
+        <NavLink to="/logs" key="logs" activeClassName={s.active}>
+          Logs
+        </NavLink>,
+      );
+    }
+
+    return links;
   }
 
   render() {
+    const { authenticated } = this.props;
     return (
       <div>
         <Container>
           <Navigation>
             <NavLink to="/">Home</NavLink>
-            {this.renderAuthLinks()}
+            {!authenticated
+              ? <NavLink
+                to="/signin"
+                role="button"
+                key="signin"
+                onClick={(e) => this.openModal(e)}
+              >
+                  Sign in / Sign up
+                </NavLink>
+              : <NavLink to="/signout" key="signout" activeClassName={s.active}>
+                  Sign out
+                </NavLink>}
+          </Navigation>
+          <Navigation className="normal">
+            {authenticated ? this.renderAuthLinks() : null}
           </Navigation>
         </Container>
 

@@ -7,9 +7,9 @@ import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import getLogs from './actions';
-import Container from '../../components/container';
+import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
-import NotifyBox from '../../components/notifyBox';
+import NotifyBox from '../../components/common/notifyBox';
 import s from '../../styles/table.css';
 
 class Logger extends Component {
@@ -123,12 +123,12 @@ class Logger extends Component {
     const { data, isFetching, error } = this.props;
 
     return (
-      <Container className="mt25">
+      <Container className="mtb50">
         <Helmet title="Log" />
         <h1>Logs</h1>
         {this.renderError(error)}
         {isFetching ? <Loader>Signing in...</Loader> : null}
-        {!isFetching ? this.renderTable(data.docs) : null}
+        {!isFetching && data ? this.renderTable(data.docs) : null}
       </Container>
     );
   }
