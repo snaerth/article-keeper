@@ -80,44 +80,12 @@ ul {
   list-style-type: none;
 }
 
-a:hover {
-  transition: color $hover-transition ease-out;
-}
-
-.link-slideright {
-  display: inline-block;
-  position: relative;
-  padding-bottom: 2px;
-  vertical-align: bottom;
-  white-space: nowrap;
+a {
   color: $primary-pink;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-  text-decoration: none;
-  overflow: hidden;
-  outline: none;
-}
 
-.link-slideright:hover {
-  color: darken($primary-pink, 20%);
-}
-
-.link-slideright::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 1px;
-  background: darken($primary-pink, 20%);
-  transition: transform 0.3s;
-  transform: scaleY(0.618) translateX(100%);
-}
-
-.link-slideright:focus::after,
-.link-slideright:hover::after {
-  transform: scaleY(0.618) translateX(0);
+  &:hover {
+    transition: color $hover-transition ease-out;
+  }
 }
 
 fieldset {
@@ -194,4 +162,14 @@ nav .active {
     margin: 0;
     color: $primary-white;
   }
+}
+
+/*
+  React-dates override
+*/
+.SingleDatePickerInput {
+  color: $text-dark;
+  font-size: $font-size;
+  border-radius: $border-radius;
+  border: $input-border-height solid $input-border-color;
 }

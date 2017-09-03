@@ -91,7 +91,7 @@ export async function saveImageFromUrl(photoUrl, uploadDir) {
   const ext = fileType(buffer).ext;
   // Create uniqe id
   const fileName = uuid();
-  const imageName = fileName + ext;
+  const imageName = fileName;
   const imagePath = `${uploadDir}${`${imageName}.${ext}`}`;
   const thumbnailPath = `${uploadDir}${`${imageName}-thumbnail.${ext}`}`;
   // Save image to filesystem

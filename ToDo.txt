@@ -5,9 +5,8 @@
 
 TODO
   - Setja upp http2 locally
-  - Refactor auth and fix signin / fixa modal open
-  - Refactor header component - Setja nav fyrir neðan og
-  - Fix admin auth and user auth
+  -----------------------------------------------------------------------------
+  - Refactor auth and fix signin
   - Fix loggun leit í apa
   - Klára loggun client - Er næsta verkefni
   - Klára önnur test

@@ -14,7 +14,7 @@ export function authError(type, error) {
   let payload = errorMessage;
 
   if (error.response.status === 401) {
-    payload = 'Bad login credentials';
+    payload = 'Unauthorized';
   }
 
   if (

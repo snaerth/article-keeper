@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { SingleDatePicker } from 'react-dates';
 import s from './profile.scss';
 import ModalWrapper from '../common/modal';
 import ImageBlurWrapper from '../common/imageBlurWrapper';
+import Button from '../common/button';
 import Person from '../../assets/images/person.svg';
 
 /**
@@ -20,6 +22,7 @@ class Profile extends Component {
 
     this.state = {
       modalIsOpen: false,
+      focused: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -65,26 +68,43 @@ class Profile extends Component {
   }
 
   /**
-   * Renders additonal information
+   * Renders additonal information about user
    *
+   * @param {Object} user
    * @returns {JSX}
    */
-  renderAdditonalInformation() {
+  renderAdditonalInformation(user) {
+    const { dateOfBirth, phone } = user;
+    const noAdditonalInfo = !!(!dateOfBirth && !phone);
+
     return (
       <div className={classnames(s.card, s.profileInformation)}>
         <h2 className={s.noMarginTop}>Additonal information</h2>
+        {!noAdditonalInfo
+          ? <SingleDatePicker
+            date={null} // momentPropTypes.momentObj or null
+            onDateChange={(date) => this.setState({ date })} // PropTypes.func.isRequired
+            focused={this.state.focused} // PropTypes.bool
+            onFocusChange={({ focused }) => this.setState({ focused })}
+          />
+          : <div>
+            <p>No additonal user information</p>
+
+            <Button text="Edit profile" ariaLabel="Edit profile" />
+          </div>}
       </div>
     );
   }
 
   render() {
-    if (!this.props.user) {
+    const { user } = this.props;
+    const { modalIsOpen } = this.state;
+
+    if (!user) {
       return <div>User is missing!</div>;
     }
 
-    const { name, imageUrl, thumbnailUrl, email } = this.informationSetup(
-      this.props.user,
-    );
+    const { name, imageUrl, thumbnailUrl, email } = this.informationSetup(user);
 
     return (
       <div>
@@ -106,21 +126,19 @@ class Profile extends Component {
               </a>
               : 'Email missing'}
           </div>
-          {this.renderAdditonalInformation()}
+          {this.renderAdditonalInformation(user)}
         </div>
-        {imageUrl
-          ? <ModalWrapper
-            isOpen={this.state.modalIsOpen}
-            onRequestClose={this.closeModal}
-            contentLabel="Image Modal"
-          >
-            <ImageBlurWrapper
-              src={imageUrl}
-              thumbnail={thumbnailUrl}
-              alt={name}
-            />
-          </ModalWrapper>
-          : null}
+        <ModalWrapper
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Image Modal"
+        >
+          <ImageBlurWrapper
+            src={imageUrl}
+            thumbnail={thumbnailUrl}
+            alt={name}
+          />
+        </ModalWrapper>
       </div>
     );
   }

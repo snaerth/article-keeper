@@ -32,6 +32,7 @@ class App extends Component {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -45,6 +46,13 @@ class App extends Component {
     }
   }
 
+  /**
+   * When route changes in router and pathname includes signin or signup,
+   * then redirect to home and open signin modal
+   *
+   * @param {String} pathname
+   * @returns {undefined}
+   */
   onRouteChanged(pathname) {
     const { history } = this.props;
     if (pathname.includes('/signin') || pathname.includes('/signup')) {
@@ -54,7 +62,7 @@ class App extends Component {
   }
 
   render() {
-    const { authenticated } = this.props;
+    const { isAdmin } = this.props;
     return (
       <AppLayout>
         <Helmet {...config('helmet')} />
@@ -71,7 +79,7 @@ class App extends Component {
             <PrivateRoute
               path="/admin"
               component={Admin}
-              authenticated={authenticated}
+              authenticated={isAdmin}
             />
             <Route component={NotFound} />
           </Switch>
@@ -87,7 +95,14 @@ class App extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  return { authenticated: state.auth.authenticated };
+  const { authenticated, user } = state.auth;
+  // Check if user is admin user
+  const isAdmin = !!(user &&
+    user.roles &&
+    user.roles.length > 0 &&
+    user.roles.includes('admin'));
+
+  return { authenticated, isAdmin };
 }
 
 /**
@@ -102,7 +117,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 App.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
