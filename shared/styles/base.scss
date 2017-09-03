@@ -185,3 +185,13 @@ nav .active {
   color: $primary-black;
   border-bottom: 1px solid $primary-black;
 }
+
+.banner {
+  padding: 40px 0;
+  background: $primary-pink;
+
+  h1 {
+    margin: 0;
+    color: $primary-white;
+  }
+}

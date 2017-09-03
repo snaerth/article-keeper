@@ -4,7 +4,7 @@
 .container {
   @include container();
 
-  .full {
+  &.full {
     max-width: none;
 
     @include viewport(tablet) {

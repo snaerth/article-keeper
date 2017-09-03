@@ -4,11 +4,17 @@ import Container from '../../components/common/container';
 import MediumEditor from '../../components/mediumEditor/editor';
 
 const Home = () => (
-  <Container className="mt25">
+  <div>
     <Helmet title="Home" />
-    <h1>Home</h1>
-    <MediumEditor />
-  </Container>
+    <div className="banner">
+      <Container>
+        <h1>Home</h1>
+      </Container>
+    </div>
+    <Container className="mt25">
+      <MediumEditor />
+    </Container>
+  </div>
 );
 
 export default Home;

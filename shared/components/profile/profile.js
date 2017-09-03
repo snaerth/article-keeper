@@ -71,7 +71,7 @@ class Profile extends Component {
    */
   renderAdditonalInformation() {
     return (
-      <div className={s.card}>
+      <div className={classnames(s.card, s.profileInformation)}>
         <h2 className={s.noMarginTop}>Additonal information</h2>
       </div>
     );

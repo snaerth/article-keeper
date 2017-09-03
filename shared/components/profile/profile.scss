@@ -12,6 +12,11 @@
   position: relative;
   padding: 2em;
   background: $primary-card;
+  border: $border solid $border-color;
+}
+
+.profileInformation {
+  margin-right: 16px;
 }
 
 .cardLeft {

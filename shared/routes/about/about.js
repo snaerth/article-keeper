@@ -3,10 +3,17 @@ import Helmet from 'react-helmet';
 import Container from '../../components/common/container';
 
 const About = () => (
-  <Container className="mt25">
+  <div>
     <Helmet title="About" />
-    <h1>About</h1>
-  </Container>
+    <div className="banner">
+      <Container>
+        <h1>About</h1>
+      </Container>
+    </div>
+    <Container className="mt25">
+      About text
+    </Container>
+  </div>
 );
 
 export default About;

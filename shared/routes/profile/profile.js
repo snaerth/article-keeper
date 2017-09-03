@@ -8,11 +8,17 @@ import Profile from '../../components/profile';
 import Container from '../../components/common/container';
 
 const ProfileRoute = () => (
-  <Container className="mt25">
+  <div>
     <Helmet title="Profile" />
-    <h1>Profile</h1>
-    <Profile />
-  </Container>
+    <div className="banner">
+      <Container>
+        <h1>Profile</h1>
+      </Container>
+    </div>
+    <Container className="mt25">
+      <Profile />
+    </Container>
+  </div>
 );
 
 export default ProfileRoute;

@@ -25,29 +25,35 @@ class Signout extends Component {
     const { signoutContainer, buttonContainer } = styles;
 
     return (
-      <Container className="mt25">
+      <div>
         <Helmet title="Sign out" />
-        <h1>Sign out</h1>
-        <div className={signoutContainer}>
-          <h2>
-            You have successfully been signed out.
-            {' '}
-            <br />
-            {' '}
-            You can sign in again at any
-            time.
-          </h2>
-          <br />
-          <div className={buttonContainer}>
-            <Link to="/">
-              <Button text="Back to home" ariaLabel="Back to home" />
-            </Link>
-            <Link to="/signin">
-              <Button text="Sign in" ariaLabel="Sign in" />
-            </Link>
-          </div>
+        <div className="banner">
+          <Container>
+            <h1>Sign out</h1>
+          </Container>
         </div>
-      </Container>
+        <Container className="mt25">
+          <div className={signoutContainer}>
+            <h2>
+              You have successfully been signed out.
+              {' '}
+              <br />
+              {' '}
+              You can sign in again at any
+              time.
+            </h2>
+            <br />
+            <div className={buttonContainer}>
+              <Link to="/">
+                <Button text="Back to home" ariaLabel="Back to home" />
+              </Link>
+              <Link to="/signin">
+                <Button text="Sign in" ariaLabel="Sign in" />
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </div>
     );
   }
 }

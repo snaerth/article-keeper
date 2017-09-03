@@ -124,15 +124,21 @@ class Logger extends Component {
   render() {
     const { data, isFetching, error } = this.props;
     return (
-      <Container className="mt25mb50">
+      <div>
         <Helmet title="Log" />
-        <h1>Logs</h1>
-        {this.renderError(error)}
-        <div className={styles.minHeight200}>
-          {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-          {!isFetching && data ? this.renderTable(data.docs) : null}
+        <div className="banner">
+          <Container>
+            <h1>Logs</h1>
+          </Container>
         </div>
-      </Container>
+        <Container className="mt25mb50">
+          {this.renderError(error)}
+          <div className={styles.minHeight200}>
+            {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
+            {!isFetching && data ? this.renderTable(data.docs) : null}
+          </div>
+        </Container>
+      </div>
     );
   }
 }
