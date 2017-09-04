@@ -129,7 +129,7 @@ class Profile extends Component {
           {this.renderAdditonalInformation(user)}
         </div>
         <ModalWrapper
-          isOpen={this.state.modalIsOpen}
+          isOpen={modalIsOpen}
           onRequestClose={this.closeModal}
           contentLabel="Image Modal"
         >
