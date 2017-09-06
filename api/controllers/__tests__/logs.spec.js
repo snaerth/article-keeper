@@ -76,7 +76,7 @@ describe('Run tests for logs route handlers', () => {
   test('Delete log by id from database', () => {
     try {
       request(app)
-        .delete(`/logs?id${logId}`)
+        .delete(`/logs?i=${logId}`)
         .set('Accept', 'application/json')
         .end((err, res) => {
           if (err) {
