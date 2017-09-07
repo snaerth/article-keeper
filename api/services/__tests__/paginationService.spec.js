@@ -25,13 +25,9 @@ describe('Run pagination service tests', () => {
         })
         .set('Accept', 'application/json')
         .end((err, res) => {
-          if (err) {
-            throw new Error(err);
-          }
-
-          const { level, limit } = res.body;
+          const { offset, limit } = res.body;
           expect(limit).toEqual(10);
-          expect(level).toEqual(10);
+          expect(offset).toEqual(10);
         });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();
