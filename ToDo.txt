@@ -6,7 +6,6 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Laga social signin í passport.js payload.sub kemur ekki með facebook login
   - Refactor auth and fix signin
   - Fix loggun leit í apa
   - Klára loggun client - Er næsta verkefni
