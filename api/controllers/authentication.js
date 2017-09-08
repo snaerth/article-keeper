@@ -24,10 +24,11 @@ const applicationUrl = `${PROTOCOL}://${HOST}:${PORT}`;
  * @returns {Object} newUser
  */
 export function removeUserProps(user, moreProps) {
-  let delProps = ['__v', '_id', 'createdAt', 'password'];
+  let delProps = ['__v', 'createdAt', 'password'];
   delProps = moreProps && moreProps.length
     ? delProps.concat(moreProps)
     : delProps;
+
   const newUser = user.toObject();
 
   for (let i = 0; i < delProps.length; i++) {
