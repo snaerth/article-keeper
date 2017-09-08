@@ -10,13 +10,22 @@ import { getLogs, isFetchingData, isNotFetchingData } from './actions';
 import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
 import NotifyBox from '../../components/common/notifyBox';
+import ModalWrapper from '../../components/common/modal';
 import s from '../../styles/table.css';
 import styles from './logger.scss';
 
 class Logger extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      modalOpen: false,
+    };
+
     this.rowClassName = this.rowClassName.bind(this);
+    this.onRowClickHandler = this.onRowClickHandler.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   static propTypes = {
@@ -37,11 +46,32 @@ class Logger extends Component {
     this.props.actions.getLogs({ token, formData });
   }
 
+  /**
+   * Sets style to even and odd rows
+   * @param {index} param0
+   * @returns {string} className
+   */
   rowClassName({ index }) {
     if (index < 0) {
       return s.headerRow;
     }
     return index % 2 === 0 ? s.tableEvenRow : s.tableOddRow;
+  }
+
+  onRowClickHandler(event, index, rowData) {
+    this.openModal();
+  }
+
+  openModal() {
+    this.setState({
+      modalOpen: true,
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      modalOpen: false,
+    });
   }
 
   /**
@@ -78,6 +108,8 @@ class Logger extends Component {
             rowClassName={this.rowClassName}
             rowCount={list.length}
             rowGetter={({ index }) => list[index]}
+            onRowClick={({ event, index, rowData }) =>
+              this.onRowClickHandler(event, index, rowData)}
           >
             <Column
               className={s.tableColumn}
@@ -110,6 +142,7 @@ class Logger extends Component {
               width={210}
             />
             <Column
+              cellDataGetter={(columnData) => JSON.stringify(columnData)}
               className={s.tableColumn}
               label="Error"
               dataKey="err"
@@ -138,6 +171,14 @@ class Logger extends Component {
             {!isFetching && data ? this.renderTable(data.docs) : null}
           </div>
         </Container>
+
+        <ModalWrapper
+          isOpen={this.state.modalOpen}
+          onRequestClose={this.closeModal}
+          contentLabel={'Authentication'}
+        >
+          Modal
+        </ModalWrapper>
       </div>
     );
   }
