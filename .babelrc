@@ -16,8 +16,7 @@
       }
     ],
     "stage-0",
-    "react",
-    "flow"
+    "react"
   ],
   "plugins": [
     "transform-decorators-legacy"
