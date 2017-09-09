@@ -11,6 +11,7 @@ import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
 import NotifyBox from '../../components/common/notifyBox';
 import ModalWrapper from '../../components/common/modal';
+import formatISODateTime from '../..//utils/date';
 import s from '../../styles/table.css';
 import styles from './logger.scss';
 
@@ -20,11 +21,11 @@ class Logger extends Component {
 
     this.state = {
       modalOpen: false,
+      currentRowData: null,
     };
 
     this.rowClassName = this.rowClassName.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
-    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -48,6 +49,7 @@ class Logger extends Component {
 
   /**
    * Sets style to even and odd rows
+   *
    * @param {index} param0
    * @returns {string} className
    */
@@ -58,20 +60,31 @@ class Logger extends Component {
     return index % 2 === 0 ? s.tableEvenRow : s.tableOddRow;
   }
 
+  /**
+   * Set new state open modal and set current row data for modal
+   *
+   * @param {Object} event
+   * @param {Number} index
+   * @param {Object} rowData
+   * @returns {undefined}
+   */
   onRowClickHandler(event, index, rowData) {
-    this.openModal();
-  }
-
-  openModal() {
     this.setState({
+      currentRowData: rowData,
       modalOpen: true,
     });
   }
 
+  /**
+   * Set state to close modal and reset current row data
+   *
+   * @returns {undefined}
+   */
   closeModal() {
-    this.setState({
+    this.setState(() => ({
+      currentRowData: null,
       modalOpen: false,
-    });
+    }));
   }
 
   /**
@@ -118,6 +131,8 @@ class Logger extends Component {
               width={210}
             />
             <Column
+              cellDataGetter={(columnData) =>
+                formatISODateTime(columnData.rowData.time)}
               className={s.tableColumn}
               label="Time"
               dataKey="time"
@@ -154,6 +169,48 @@ class Logger extends Component {
     );
   }
 
+  renderRowDataModal() {
+    if (!this.state.currentRowData) return <div>No log avaliable</div>;
+    const {
+      _id,
+      time,
+      msg,
+      name,
+      level,
+      err: { stack },
+      req,
+      res,
+    } = this.state.currentRowData;
+    return (
+      <div className={styles.modal}>
+        <div className={s.tableEvenRow}>
+          <div>Id</div>
+          <div>{_id}</div>
+        </div>
+        <div className={s.tableOddRow}>
+          <div>Time</div>
+          <div>{time}</div>
+        </div>
+        <div className={s.tableEvenRow}>
+          <div>Message</div>
+          <div>{msg}</div>
+        </div>
+        <div className={s.tableOddRow}>
+          <div>Name</div>
+          <div>{name}</div>
+        </div>
+        <div className={s.tableEvenRow}>
+          <div>Level</div>
+          <div>{level}</div>
+        </div>
+        <div className={s.tableOddRow}>
+          <div>Error</div>
+          <div>{stack}</div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { data, isFetching, error } = this.props;
     return (
@@ -173,11 +230,12 @@ class Logger extends Component {
         </Container>
 
         <ModalWrapper
+          className="mw992"
           isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}
           contentLabel={'Authentication'}
         >
-          Modal
+          <div>{this.renderRowDataModal()}</div>
         </ModalWrapper>
       </div>
     );

@@ -404,7 +404,6 @@ const values = {
           'redux-thunk',
           'react-modal',
           'react-virtualized',
-          'gsap',
           'axios',
           'core-decorators',
         ],

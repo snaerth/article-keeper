@@ -26,6 +26,14 @@
   background: $primary-white;
   overflow-y: auto;
   overflow-x: hidden;
+
+  &.mw768 {
+    max-width: 768px;
+  }
+
+  &.mw992 {
+    max-width: 992px;
+  }
 }
 
 @media screen and (max-width: $max-768) {
