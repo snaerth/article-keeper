@@ -3,14 +3,22 @@
 }
 
 .modal {
-  padding: 4em 1em 2em;
+  padding: 0 0 2em;
 
-  > div {
+  .row {
     display: grid;
     grid-template-columns: 150px 1fr;
 
-    > div {
+    > div:nth-child(1) {
       font-weight: bold;
     }
+
+    > div:nth-child(2) {
+      font-size: 14px;
+    }
   }
+}
+
+.title {
+  font-size: 30px;
 }

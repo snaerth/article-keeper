@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
@@ -169,6 +170,16 @@ class Logger extends Component {
     );
   }
 
+  renderObject(obj) {
+    // return Object.keys(obj).map((key) => {
+    //   if (Object.keys(obj[key]).length > 0) {
+    //     return Object.keys()
+    //   }
+    //   return (<div>{obj[key]}</div>);
+    // });
+    return 'test';
+  }
+
   renderRowDataModal() {
     if (!this.state.currentRowData) return <div>No log avaliable</div>;
     const {
@@ -182,32 +193,51 @@ class Logger extends Component {
       res,
     } = this.state.currentRowData;
     return (
-      <div className={styles.modal}>
-        <div className={s.tableEvenRow}>
-          <div>Id</div>
-          <div>{_id}</div>
-        </div>
-        <div className={s.tableOddRow}>
-          <div>Time</div>
-          <div>{time}</div>
-        </div>
-        <div className={s.tableEvenRow}>
-          <div>Message</div>
-          <div>{msg}</div>
-        </div>
-        <div className={s.tableOddRow}>
-          <div>Name</div>
-          <div>{name}</div>
-        </div>
-        <div className={s.tableEvenRow}>
-          <div>Level</div>
-          <div>{level}</div>
-        </div>
-        <div className={s.tableOddRow}>
-          <div>Error</div>
-          <div>{stack}</div>
-        </div>
-      </div>
+      <article className={styles.modal}>
+        <header>
+          <div className="banner">
+            <Container>
+              <h1 className={styles.title}>Log</h1>
+            </Container>
+          </div>
+        </header>
+        <Container>
+          <div className={classnames(s.tableOddRow, styles.row)}>
+            <div>Id</div>
+            <div>{_id}</div>
+          </div>
+          <div className={classnames(s.tableEvenRow, styles.row)}>
+            <div>Time</div>
+            <div>{time}</div>
+          </div>
+          <div className={classnames(s.tableOddRow, styles.row)}>
+            <div>Message</div>
+            <div>{msg}</div>
+          </div>
+          <div className={classnames(s.tableEvenRow, styles.row)}>
+            <div>Name</div>
+            <div>{name}</div>
+          </div>
+          <div className={classnames(s.tableOddRow, styles.row)}>
+            <div>Level</div>
+            <div>{level}</div>
+          </div>
+          <div className={classnames(s.tableEvenRow, styles.row)}>
+            <div>Error</div>
+            <div>{stack}</div>
+          </div>
+          <div className={classnames(s.tableOddRow, styles.row)}>
+            <div>Request</div>
+            <div>
+              {this.renderObject(req)}
+            </div>
+          </div>
+          <div className={classnames(s.tableEvenRow, styles.row)}>
+            <div>Response</div>
+            <div>{res}</div>
+          </div>
+        </Container>
+      </article>
     );
   }
 
