@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
+import shortid from 'shortid';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
@@ -171,13 +172,21 @@ class Logger extends Component {
   }
 
   renderObject(obj) {
-    // return Object.keys(obj).map((key) => {
-    //   if (Object.keys(obj[key]).length > 0) {
-    //     return Object.keys()
-    //   }
-    //   return (<div>{obj[key]}</div>);
-    // });
-    return 'test';
+    const keys = Object.keys(obj);
+    const values = Object.values(obj);
+
+    return keys.map((v, i) => {
+      if (values[i] && typeof values[i] === 'object') {
+        return this.renderObject(values[i]);
+      }
+
+      return (
+        <div key={shortid.generate()} className={classnames(styles.row)}>
+          <div>{v}</div>
+          <div>{JSON.stringify(values[i])}</div>
+        </div>
+      );
+    });
   }
 
   renderRowDataModal() {
@@ -228,13 +237,15 @@ class Logger extends Component {
           </div>
           <div className={classnames(s.tableOddRow, styles.row)}>
             <div>Request</div>
-            <div>
+            <div className={styles.overflowHidden}>
               {this.renderObject(req)}
             </div>
           </div>
           <div className={classnames(s.tableEvenRow, styles.row)}>
             <div>Response</div>
-            <div>{res}</div>
+            <div className={styles.overflowHidden}>
+              {this.renderObject(res)}
+            </div>
           </div>
         </Container>
       </article>
