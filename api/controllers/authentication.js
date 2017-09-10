@@ -328,7 +328,7 @@ export async function forgotPassword(req, res) {
   // email to user
   try {
     const token = await createRandomToken();
-    const { user } = await attachTokenToUser({ token, email });
+    const user = await attachTokenToUser({ token, email });
     const url = `${HOST}:${PORT}/reset/${token}`;
     const { name } = user;
     const data = await sendResetPasswordEmail({ url, email, name });

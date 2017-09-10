@@ -38,14 +38,12 @@
 
 @media screen and (max-width: $max-768) {
   .modalInner {
-    padding: 20px 0;
     max-height: 560px;
   }
 }
 
 @media screen and (max-width: $max-768) and (min-height: $min-768) {
   .modalInner {
-    padding: 20px 0;
     max-height: $max-768;
   }
 }

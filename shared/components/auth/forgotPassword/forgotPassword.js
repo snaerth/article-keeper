@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import styles from './forgotPassword.scss';
+import s from './forgotPassword.scss';
 import MainHeading from '../../common/mainheading';
 import Input from '../../common/input';
 import Button from '../../common/button';
@@ -37,24 +37,26 @@ class Signin extends Component {
     this.props.actions.clean();
   }
 
+  componentWillUnmount() {
+    this.props.actions.clean();
+  }
+
   /**
-     * Handles form submit event
-     *
-     * @param {Object}
-     * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
-     */
+   * Handles form submit event
+   *
+   * @param {Object}
+   * @returns {undefined}
+   */
   handleFormSubmit({ email }) {
     this.props.actions.isFetching();
     this.props.actions.forgotPassword({ email });
   }
 
   /**
-     * Renders messages in a notifycation box
-     *
-     * @returns {JSX}
-     * @author Snær Seljan Þóroddsson
-     */
+   * Renders messages in a notifycation box
+   *
+   * @returns {JSX}
+   */
   renderMessages() {
     const { errorMessage, message } = this.props;
     if (errorMessage) {
@@ -80,39 +82,38 @@ class Signin extends Component {
     return (
       <div className={className}>
         {!isFetching ? this.renderMessages() : null}
-        {isFetching
-          ? <Loader absolute>Loading...</Loader>
-          : <div>
-            <form
-              onSubmit={handleSubmit(this.handleFormSubmit)}
-              noValidate
-              autoComplete="off"
-            >
-              <MainHeading text="Forgot password" className="medium" />
-              <fieldset>
-                <Field
-                  component={Input}
-                  name="email"
-                  id="email"
-                  type="email"
-                  label="Email"
+        {isFetching ? <Loader absolute>Sending email</Loader> : null}
+        <div className={isFetching ? s.almostHidden : ''}>
+          <form
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            noValidate
+            autoComplete="off"
+          >
+            <MainHeading text="Forgot password" className="medium" />
+            <fieldset>
+              <Field
+                component={Input}
+                name="email"
+                id="email"
+                type="email"
+                label="Email"
+              >
+                <Email />
+              </Field>
+            </fieldset>
+            <fieldset>
+              <div>
+                <Button
+                  text="Reset password"
+                  ariaLabel="Reset password"
+                  className="fullWidth"
                 >
-                  <Email />
-                </Field>
-              </fieldset>
-              <fieldset>
-                <div>
-                  <Button
-                    text="Reset password"
-                    ariaLabel="Reset password"
-                    className="fullWidth"
-                  >
-                    <ArrowForward className={styles.iconArrowForward} />
-                  </Button>
-                </div>
-              </fieldset>
-            </form>
-          </div>}
+                  <ArrowForward className={s.iconArrowForward} />
+                </Button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
       </div>
     );
   }
@@ -123,7 +124,6 @@ class Signin extends Component {
  *
  * @param {String} email
  * @return {Object} errors
- * @author Snær Seljan Þóroddsson
  */
 function validate({ email }) {
   const errors = {};
@@ -145,7 +145,6 @@ function validate({ email }) {
  *
  * @param {Object} state - Application state
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
   return {
@@ -160,7 +159,6 @@ function mapStateToProps(state) {
  *
  * @param {Object} dispatch - Redux dispatch medhod
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 function mapDispatchToProps(dispatch) {
   return {

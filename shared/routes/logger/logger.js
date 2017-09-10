@@ -171,6 +171,12 @@ class Logger extends Component {
     );
   }
 
+  /**
+   * Render rows from object properties
+   *
+   * @param {Object} obj
+   * @returns {JSX}
+   */
   renderObject(obj) {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
@@ -217,7 +223,7 @@ class Logger extends Component {
             </Container>
           </div>
         </header>
-        <Container>
+        <section>
           <div className={classnames(s.tableOddRow, styles.row)}>
             <div>Id</div>
             <div>{_id}</div>
@@ -254,7 +260,7 @@ class Logger extends Component {
               {this.renderObject(res)}
             </div>
           </div>
-        </Container>
+        </section>
       </article>
     );
   }

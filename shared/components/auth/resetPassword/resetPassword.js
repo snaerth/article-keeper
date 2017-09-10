@@ -11,7 +11,7 @@ import NotifyBox from '../../common/notifyBox';
 import * as actionCreators from '../actions';
 import Loader from '../../common/loader';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
-import styles from './resetPassword.scss';
+import s from './resetPassword.scss';
 
 class ResetPassword extends Component {
   static propTypes = {
@@ -82,15 +82,14 @@ class ResetPassword extends Component {
    * @returns {JSX}
    */
   renderForm() {
-    const { handleSubmit, message } = this.props;
-    if (!message) return null;
+    const { handleSubmit } = this.props;
+
     return (
       <form
         onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}
         noValidate
         autoComplete="off"
       >
-        <MainHeading text="Reset password" className="medium" />
         <fieldset>
           <Field
             component={Password}
@@ -98,7 +97,7 @@ class ResetPassword extends Component {
             id="password"
             type="password"
             label="New password"
-            placeholder="someone@example.com"
+            placeholder="New password here"
           />
         </fieldset>
         <fieldset>
@@ -107,7 +106,7 @@ class ResetPassword extends Component {
             ariaLabel="Reset password"
             className="fullWidth"
           >
-            <ArrowForward className={styles.iconArrowForward} />
+            <ArrowForward className={s.iconArrowForward} />
           </Button>
         </fieldset>
       </form>
@@ -117,11 +116,13 @@ class ResetPassword extends Component {
   render() {
     const { isFetching } = this.props;
     return (
-      <div className="cardContainer">
-        <div className="card">
-          {!isFetching ? this.renderMessages() : null}
-          {isFetching ? <Loader>Resetting password</Loader> : this.renderForm()}
-        </div>
+      <div className={s.container}>
+        <p>
+          Please enter your new password. We will send you an email
+          to confirm the password has changed.
+        </p>
+        {!isFetching ? this.renderMessages() : null}
+        {isFetching ? <Loader>Resetting password</Loader> : this.renderForm()}
       </div>
     );
   }
