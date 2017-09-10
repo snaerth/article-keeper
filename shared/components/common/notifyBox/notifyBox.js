@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TweenMax } from 'gsap';
 import styles from './notifyBox.scss';
 
 /**
@@ -14,10 +13,6 @@ class Error extends Component {
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
   };
-
-  componentDidMount() {
-    TweenMax.fromTo(this.container, 0.5, { y: 10 }, { y: 0 });
-  }
 
   checkBoxType(type) {
     switch (type) {

@@ -177,11 +177,18 @@ class Logger extends Component {
 
     return keys.map((v, i) => {
       if (values[i] && typeof values[i] === 'object') {
-        return this.renderObject(values[i]);
+        return (
+          <div className={styles.row}>
+            <div>{v}</div>
+            <div className={styles.overflowHidden}>
+              {this.renderObject(values[i])}
+            </div>
+          </div>
+        );
       }
 
       return (
-        <div key={shortid.generate()} className={classnames(styles.row)}>
+        <div key={shortid.generate()} className={styles.row}>
           <div>{v}</div>
           <div>{JSON.stringify(values[i])}</div>
         </div>
