@@ -37,3 +37,14 @@
 .overflowHidden {
   overflow: hidden;
 }
+
+.searchInputContainer {
+  padding: 0;
+  margin-bottom: 15px;
+  max-width: 400px;
+}
+
+.searchIcon {
+  position: relative;
+  top: 3px;
+}

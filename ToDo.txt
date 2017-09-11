@@ -9,6 +9,7 @@ TODO
   - Finish reset password
   - Fix loggun leit í apa
   - Klára loggun client - Er næsta verkefni
+  - Update dependencys
   - Klára önnur test
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur

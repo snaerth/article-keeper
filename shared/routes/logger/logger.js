@@ -5,18 +5,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import shortid from 'shortid';
+import { reduxForm, Field } from 'redux-form';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+
 import { getLogs, isFetchingData, isNotFetchingData } from './actions';
 import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
+import Input from '../../components/common/input';
 import NotifyBox from '../../components/common/notifyBox';
 import ModalWrapper from '../../components/common/modal';
-import Input from '../../components/common/input';
 import formatISODateTime from '../../utils/date';
 import Search from '../../assets/images/search.svg';
-import s from '../../styles/table.css';
+// Styles
+import tableStyles from '../../styles/table.css';
 import styles from './logger.scss';
 
 class Logger extends Component {
@@ -26,14 +29,17 @@ class Logger extends Component {
     this.state = {
       modalOpen: false,
       currentRowData: null,
+      searchValue: '',
     };
 
     this.rowClassName = this.rowClassName.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired,
     data: PropTypes.object,
@@ -59,9 +65,9 @@ class Logger extends Component {
    */
   rowClassName({ index }) {
     if (index < 0) {
-      return s.headerRow;
+      return tableStyles.headerRow;
     }
-    return index % 2 === 0 ? s.tableEvenRow : s.tableOddRow;
+    return index % 2 === 0 ? tableStyles.tableEvenRow : tableStyles.tableOddRow;
   }
 
   /**
@@ -92,13 +98,15 @@ class Logger extends Component {
   }
 
   /**
-   * Search query for logs in database
-   * @param {Object} e - Event from form submit
-   */
-  handleSearchSubmit(e) {
-    e.preventDefault();
+     * Handles form submit event
+     * @param {Object}
+     * @returns {undefined}
+     */
+  handleFormSubmit({ search }) {
+    const { token } = this.props;
+    this.props.actions.isFetchingData();
+    this.props.actions.getLogsById({ token, search });
   }
-
 
   /**
      * Renders error message box
@@ -130,7 +138,7 @@ class Logger extends Component {
             height={600}
             headerHeight={30}
             rowHeight={30}
-            headerClassName={s.tableHeader}
+            headerClassName={tableStyles.tableHeader}
             rowClassName={this.rowClassName}
             rowCount={list.length}
             rowGetter={({ index }) => list[index]}
@@ -138,7 +146,7 @@ class Logger extends Component {
               this.onRowClickHandler(event, index, rowData)}
           >
             <Column
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Id"
               dataKey="_id"
               width={210}
@@ -146,32 +154,32 @@ class Logger extends Component {
             <Column
               cellDataGetter={(columnData) =>
                 formatISODateTime(columnData.rowData.time)}
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Time"
               dataKey="time"
               width={210}
             />
             <Column
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Message"
               dataKey="msg"
               width={210}
             />
             <Column
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Name"
               dataKey="name"
               width={210}
             />
             <Column
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Level"
               dataKey="level"
               width={210}
             />
             <Column
               cellDataGetter={(columnData) => JSON.stringify(columnData)}
-              className={s.tableColumn}
+              className={tableStyles.tableColumn}
               label="Error"
               dataKey="err"
               width={210}
@@ -239,50 +247,53 @@ class Logger extends Component {
           </div>
         </header>
         <section>
-          <div className={classnames(s.tableOddRow, styles.row)}>
+          <div className={classnames(tableStyles.tableOddRow, styles.row)}>
             <div>Id</div>
             <div>{_id}</div>
           </div>
-          <div className={classnames(s.tableEvenRow, styles.row)}>
+          <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Time</div>
             <div>{time}</div>
           </div>
-          <div className={classnames(s.tableOddRow, styles.row)}>
+          <div className={classnames(tableStyles.tableOddRow, styles.row)}>
             <div>Message</div>
             <div>{msg}</div>
           </div>
-          <div className={classnames(s.tableEvenRow, styles.row)}>
+          <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Name</div>
             <div>{name}</div>
           </div>
-          <div className={classnames(s.tableOddRow, styles.row)}>
+          <div className={classnames(tableStyles.tableOddRow, styles.row)}>
             <div>Level</div>
             <div>{level}</div>
           </div>
-          <div className={classnames(s.tableEvenRow, styles.row)}>
+          <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Error</div>
             <div>{stack}</div>
           </div>
-          {req ? <div className={classnames(s.tableOddRow, styles.row)}>
-            <div>Request</div>
-            <div className={styles.overflowHidden}>
-              {this.renderObjectRecursive(req)}
+          {req
+            ? <div className={classnames(tableStyles.tableOddRow, styles.row)}>
+              <div>Request</div>
+              <div className={styles.overflowHidden}>
+                {this.renderObjectRecursive(req)}
+              </div>
             </div>
-          </div>
-          : null}
-          {res ? <div className={classnames(s.tableEvenRow, styles.row)}>
-            <div>Response</div>
-            <div className={styles.overflowHidden}>
-              {this.renderObjectRecursive(res)}
+            : null}
+          {res
+            ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
+              <div>Response</div>
+              <div className={styles.overflowHidden}>
+                {this.renderObjectRecursive(res)}
+              </div>
             </div>
-          </div> : null}
+            : null}
         </section>
       </article>
     );
   }
 
   render() {
-    const { data, isFetching, error } = this.props;
+    const { data, isFetching, error, handleSubmit } = this.props;
     return (
       <div>
         <Helmet title="Log" />
@@ -292,26 +303,35 @@ class Logger extends Component {
           </Container>
         </div>
         <Container className="mt25mb50">
-          {this.renderError(error)}
+          {error ? this.renderError(error) : null}
           <div className={styles.minHeight200}>
             {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-            {!isFetching && data ?
-              <div>
-                <form onSubmit={this.handleSearchSubmit} noValidate>
-                  <fieldset>
-                    <Input
-                      name="email"
-                      id="email"
-                      type="email"
-                      label="Email"
-                      placeholder="someone@example.com"
+            {!isFetching && data
+              ? <div>
+                <form
+                  onSubmit={handleSubmit(this.handleFormSubmit)}
+                  noValidate
+                >
+                  <div className={styles.searchInputContainer}>
+                    <Field
+                      component={Input}
+                      name="search"
+                      id="search"
+                      type="text"
+                      label="Search"
+                      placeholder="Search..."
+                      hidelabel
                     >
-                      <Search />
-                    </Input>
-                  </fieldset>
+                      <Search
+                        className={styles.searchIcon}
+                        onClick={handleSubmit(this.handleFormSubmit)}
+                      />
+                    </Field>
+                  </div>
                 </form>
                 {this.renderTable(data.docs)}
-              </div> : null}
+              </div>
+              : null}
           </div>
         </Container>
 
@@ -355,4 +375,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logger);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'search',
+    fields: ['search'],
+  })(Logger),
+);
