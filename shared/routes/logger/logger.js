@@ -13,7 +13,9 @@ import Container from '../../components/common/container';
 import Loader from '../../components/common/loader';
 import NotifyBox from '../../components/common/notifyBox';
 import ModalWrapper from '../../components/common/modal';
-import formatISODateTime from '../..//utils/date';
+import Input from '../../components/common/input';
+import formatISODateTime from '../../utils/date';
+import Search from '../../assets/images/search.svg';
 import s from '../../styles/table.css';
 import styles from './logger.scss';
 
@@ -88,6 +90,15 @@ class Logger extends Component {
       modalOpen: false,
     }));
   }
+
+  /**
+   * Search query for logs in database
+   * @param {Object} e - Event from form submit
+   */
+  handleSearchSubmit(e) {
+    e.preventDefault();
+  }
+
 
   /**
      * Renders error message box
@@ -172,12 +183,12 @@ class Logger extends Component {
   }
 
   /**
-   * Render rows from object properties
+   * Render rows from object properties recursively
    *
    * @param {Object} obj
    * @returns {JSX}
    */
-  renderObject(obj) {
+  renderObjectRecursive(obj) {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
 
@@ -187,7 +198,7 @@ class Logger extends Component {
           <div className={styles.row}>
             <div>{v}</div>
             <div className={styles.overflowHidden}>
-              {this.renderObject(values[i])}
+              {this.renderObjectRecursive(values[i])}
             </div>
           </div>
         );
@@ -201,7 +212,10 @@ class Logger extends Component {
       );
     });
   }
-
+  /**
+   * Renders data for modal
+   * @param {JSX}
+   */
   renderRowDataModal() {
     if (!this.state.currentRowData) return <div>No log avaliable</div>;
     const {
@@ -214,6 +228,7 @@ class Logger extends Component {
       req,
       res,
     } = this.state.currentRowData;
+
     return (
       <article className={styles.modal}>
         <header>
@@ -248,18 +263,19 @@ class Logger extends Component {
             <div>Error</div>
             <div>{stack}</div>
           </div>
-          <div className={classnames(s.tableOddRow, styles.row)}>
+          {req ? <div className={classnames(s.tableOddRow, styles.row)}>
             <div>Request</div>
             <div className={styles.overflowHidden}>
-              {this.renderObject(req)}
+              {this.renderObjectRecursive(req)}
             </div>
           </div>
-          <div className={classnames(s.tableEvenRow, styles.row)}>
+          : null}
+          {res ? <div className={classnames(s.tableEvenRow, styles.row)}>
             <div>Response</div>
             <div className={styles.overflowHidden}>
-              {this.renderObject(res)}
+              {this.renderObjectRecursive(res)}
             </div>
-          </div>
+          </div> : null}
         </section>
       </article>
     );
@@ -279,7 +295,23 @@ class Logger extends Component {
           {this.renderError(error)}
           <div className={styles.minHeight200}>
             {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-            {!isFetching && data ? this.renderTable(data.docs) : null}
+            {!isFetching && data ?
+              <div>
+                <form onSubmit={this.handleSearchSubmit} noValidate>
+                  <fieldset>
+                    <Input
+                      name="email"
+                      id="email"
+                      type="email"
+                      label="Email"
+                      placeholder="someone@example.com"
+                    >
+                      <Search />
+                    </Input>
+                  </fieldset>
+                </form>
+                {this.renderTable(data.docs)}
+              </div> : null}
           </div>
         </Container>
 
