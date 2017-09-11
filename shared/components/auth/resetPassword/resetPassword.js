@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router';
-import MainHeading from '../../common/mainheading';
 import Password from '../../common/password';
 import Button from '../../common/button';
 import NotifyBox from '../../common/notifyBox';

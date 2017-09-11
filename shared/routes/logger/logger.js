@@ -105,7 +105,7 @@ class Logger extends Component {
   handleFormSubmit({ search }) {
     const { token } = this.props;
     this.props.actions.isFetchingData();
-    this.props.actions.getLogsById({ token, search });
+    this.props.actions.getLogsBySearchQuery(token, search);
   }
 
   /**
@@ -213,7 +213,7 @@ class Logger extends Component {
       }
 
       return (
-        <div key={shortid.generate()} className={styles.row}>
+        <div key={shortid.generate()} className={classnames(styles.row, styles.noPaddingLeft)}>
           <div>{v}</div>
           <div>{JSON.stringify(values[i])}</div>
         </div>

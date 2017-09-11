@@ -12,14 +12,6 @@
     display: grid;
     grid-template-columns: 150px 1fr;
 
-    > div {
-      padding-left: 20px;
-
-      @include viewport(handset) {
-        padding-left: initial;
-      }
-    }
-
     > div:nth-child(1) {
       font-weight: bold;
     }
