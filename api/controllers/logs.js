@@ -1,6 +1,9 @@
+import mongoose from 'mongoose';
 import Log from '../models/log';
 import log from '../services/logService';
-import getPagination from '../services/paginationService';
+import getPagination, {
+  getPaginationFromQueryString,
+} from '../services/paginationService';
 
 /**
  * Delete log by id
@@ -74,6 +77,69 @@ export async function getLogs(req, res) {
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error getting logs from database');
+    return res.status(500).send({ error: err });
+  }
+}
+
+/**
+ * Get logs by search query string
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {*}
+ * @author Snær Seljan Þóroddsson
+ */
+export async function getLogsBySearchQuery(req, res) {
+  const searchQuery = req.params.query;
+
+  if (!searchQuery) {
+    return res.status(422).send({
+      error: 'Parameter query is required to perform log search',
+    });
+  }
+
+  // Get default pagination object
+  const pagination = await getPaginationFromQueryString(req);
+  // Check if sort params exist in query string
+  // If exist add them to pagination sort prop
+  const { msg, level, name, time } = req.params;
+  const sort = {};
+  if (msg) sort.msg = msg;
+  if (level) sort.level = level;
+  if (name) sort.name = name;
+  if (time) sort.time = time;
+  if (Object.keys(sort).length > 0) {
+    pagination.sort = sort;
+  }
+
+  let query;
+
+  // Check if searchQuery is valid mongo ObjectId
+  if (searchQuery.match(/^[0-9a-fA-F]{24}$/)) {
+    query = { _id: mongoose.Types.ObjectId(searchQuery) };
+  } else {
+    // Search query for Log mongoose model
+    query = {
+      $or: [
+        { msg: new RegExp(searchQuery, 'i') },
+        { name: new RegExp(searchQuery, 'i') },
+        { 'err.stack': new RegExp(searchQuery, 'i') },
+        { 'req.statusCode': new RegExp(searchQuery, 'i') },
+        { 'req.method': new RegExp(searchQuery, 'i') },
+        { 'req.headers': new RegExp(searchQuery, 'i') },
+        { 'res.header': new RegExp(searchQuery, 'i') },
+        { 'res.statusCode': new RegExp(searchQuery, 'i') },
+      ],
+    };
+  }
+
+  try {
+    // Fetch logs by search query from database
+    const result = await Log.paginate(query, pagination);
+
+    return res.status(200).send(result);
+  } catch (err) {
+    log.error({ req, res, err }, 'Error searching logs by query from database');
     return res.status(500).send({ error: err });
   }
 }

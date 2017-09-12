@@ -203,7 +203,7 @@ class Logger extends Component {
     return keys.map((v, i) => {
       if (values[i] && typeof values[i] === 'object') {
         return (
-          <div className={styles.row}>
+          <div className={classnames(styles.row, styles.rowPadding)}>
             <div>{v}</div>
             <div className={styles.overflowHidden}>
               {this.renderObjectRecursive(values[i])}
@@ -213,7 +213,7 @@ class Logger extends Component {
       }
 
       return (
-        <div key={shortid.generate()} className={classnames(styles.row, styles.noPaddingLeft)}>
+        <div key={shortid.generate()} className={styles.row}>
           <div>{v}</div>
           <div>{JSON.stringify(values[i])}</div>
         </div>

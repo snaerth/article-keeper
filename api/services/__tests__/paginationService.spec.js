@@ -1,7 +1,9 @@
 import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
-import getPagination from '../paginationService';
+import getPagination, {
+  getPaginationFromQueryString,
+} from '../paginationService';
 
 // Initialize app
 const app = express();
@@ -9,16 +11,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 describe('Run pagination service tests', () => {
-  app.post('/paginationTest/', async (req, res) => {
+  app.post('/pagination/', async (req, res) => {
     const pagination = await getPagination(req);
     return res.send(pagination);
   });
 
+  app.get('/pagination/', async (req, res) => {
+    const pagination = await getPaginationFromQueryString(req);
+    return res.send(pagination);
+  });
+
   // Get pagination
-  test('Get pagination object', () => {
+  test('Get pagination object from post request', () => {
     try {
       request(app)
-        .post('/paginationTest/')
+        .post('/pagination/')
         .send({
           limit: 10,
           offset: 10,
@@ -26,6 +33,27 @@ describe('Run pagination service tests', () => {
         .set('Accept', 'application/json')
         .end((err, res) => {
           const { offset, limit } = res.body;
+          expect(limit).toEqual(10);
+          expect(offset).toEqual(10);
+        });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
+
+  // Get pagination
+  test('Get pagination object from request query string', () => {
+    try {
+      request(app)
+        .get('/pagination/')
+        .query({
+          limit: 10,
+          offset: 10,
+        })
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          const { offset, limit } = res.params;
           expect(limit).toEqual(10);
           expect(offset).toEqual(10);
         });
