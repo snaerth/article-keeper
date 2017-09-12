@@ -5,7 +5,12 @@ import bodyParser from 'body-parser';
 import config from '../../config';
 import log from '../../services/logService';
 import Log from '../../models/log';
-import { getLogs, deleteLogsById, deleteAllLogs } from '../../controllers/logs';
+import {
+  getLogs,
+  deleteLogsById,
+  deleteAllLogs,
+  getLogsBySearchQuery,
+} from '../../controllers/logs';
 
 const { TEST_DB_URL } = config;
 // Initialize app
@@ -38,11 +43,12 @@ afterAll(async (done) => {
 
 describe('Run tests for logs route handlers', () => {
   app.post('/logs/', getLogs);
+  app.get('/logs/search/:query', getLogsBySearchQuery);
   app.delete('/log/:id', deleteLogsById);
   app.delete('/deleteall/', deleteAllLogs);
 
-  // GET logs from
-  test('Get logs request', () => {
+  // GET logs
+  test('Get logs', () => {
     try {
       request(app)
         .post('/logs')
@@ -55,6 +61,31 @@ describe('Run tests for logs route handlers', () => {
           const doc = res.body.docs[0];
           const logId = doc._id; // eslint-disable-line
           expect(doc.msg).toEqual('Error message');
+          expect(doc.level).toEqual(50);
+          expect(doc).toHaveProperty('name');
+          expect(doc).toHaveProperty('time');
+          expect(doc).toHaveProperty('err');
+        });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
+
+  // GET logs by search query
+  test('Get logs by search query', () => {
+    try {
+      request(app)
+        .get('/logs/search/Application name')
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            throw new Error(err);
+          }
+
+          const doc = res.body.docs[0];
+          const logId = doc._id; // eslint-disable-line
+          expect(doc.name).toEqual('Application name');
           expect(doc.level).toEqual(50);
           expect(doc).toHaveProperty('name');
           expect(doc).toHaveProperty('time');

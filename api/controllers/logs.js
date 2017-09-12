@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import Log from '../models/log';
 import log from '../services/logService';
-import getPagination, {
-  getPaginationFromQueryString,
-} from '../services/paginationService';
+import createPaginationObject from '../services/paginationService';
 
 /**
  * Delete log by id
@@ -57,11 +55,11 @@ export async function deleteAllLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
+  const { offset, limit, msg, level, name, time } = req.body;
   // Get default pagination object
-  const pagination = await getPagination(req);
+  const pagination = createPaginationObject(offset, limit);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
-  const { msg, level, name, time } = req.body;
   const sort = {};
   if (msg) sort.msg = msg;
   if (level) sort.level = level;
@@ -90,19 +88,18 @@ export async function getLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogsBySearchQuery(req, res) {
-  const searchQuery = req.params.query;
+  const { query, offset, limit, msg, level, name, time } = req.params;
 
-  if (!searchQuery) {
+  if (!query) {
     return res.status(422).send({
       error: 'Parameter query is required to perform log search',
     });
   }
 
   // Get default pagination object
-  const pagination = await getPaginationFromQueryString(req);
+  const pagination = createPaginationObject(offset, limit);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
-  const { msg, level, name, time } = req.params;
   const sort = {};
   if (msg) sort.msg = msg;
   if (level) sort.level = level;
@@ -112,14 +109,15 @@ export async function getLogsBySearchQuery(req, res) {
     pagination.sort = sort;
   }
 
-  let query;
+  let searchQuery;
 
   // Check if searchQuery is valid mongo ObjectId
-  if (searchQuery.match(/^[0-9a-fA-F]{24}$/)) {
-    query = { _id: mongoose.Types.ObjectId(searchQuery) };
+  if (query.match(/^[0-9a-fA-F]{24}$/)) {
+    // Search query by id
+    searchQuery = { _id: mongoose.Types.ObjectId(query) };
   } else {
-    // Search query for Log mongoose model
-    query = {
+    // Search query for for other Log properties
+    searchQuery = {
       $or: [
         { msg: new RegExp(searchQuery, 'i') },
         { name: new RegExp(searchQuery, 'i') },
@@ -135,7 +133,7 @@ export async function getLogsBySearchQuery(req, res) {
 
   try {
     // Fetch logs by search query from database
-    const result = await Log.paginate(query, pagination);
+    const result = await Log.paginate(searchQuery, pagination);
 
     return res.status(200).send(result);
   } catch (err) {

@@ -65,7 +65,7 @@ export function getLogsBySearchQuery(token, searchQuery) {
         },
       };
 
-      const res = await axios.get(`/api/logs/${searchQuery}`, config);
+      const res = await axios.get(`/api/logs/search/${searchQuery}`, config);
       // Dispatch GET_LOGS_SUCCESS action to logReducer
       dispatch({ type: GET_LOGS_SUCCESS, payload: res.data });
     } catch (error) {

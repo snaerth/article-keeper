@@ -22,6 +22,9 @@ class Error extends Component {
       case 'success':
         return styles.success;
 
+      case 'info':
+        return styles.info;
+
       default:
         return styles.error;
     }

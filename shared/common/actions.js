@@ -1,4 +1,4 @@
-import { MODAL_OPEN, MODAL_CLOSE } from './types';
+import { MODAL_OPEN, MODAL_CLOSE, ERROR_UNKNOWN } from './types';
 
 /**
  * Handles error from server
@@ -7,22 +7,32 @@ import { MODAL_OPEN, MODAL_CLOSE } from './types';
  * @author Snær Seljan Þóroddsson
  */
 export function authError(type, error) {
-  const errorMessage = error.response.data.error
-    ? error.response.data.error
-    : error.response.data;
+  let payload = 'Error in authError';
 
-  let payload = errorMessage;
-
-  if (error.response.status === 401) {
-    payload = 'Unauthorized';
+  if (error.message) {
+    console.error(error);
+    payload = error.message;
+    return { type: ERROR_UNKNOWN, payload };
   }
 
-  if (
-    errorMessage &&
-    typeof errorMessage === 'string' &&
-    errorMessage.toLowerCase() === 'proxy_error'
-  ) {
-    payload = 'Error connecting to server';
+  if (error.response) {
+    if (error.response.data && error.response.data.error) {
+      payload = error.response.data.error;
+    } else if (error.response.data) {
+      payload = error.response.data;
+    }
+
+    if (error.response.status === 401) {
+      payload = 'Unauthorized';
+    }
+
+    if (
+      payload &&
+      typeof payload === 'string' &&
+      payload.toLowerCase() === 'proxy_error'
+    ) {
+      payload = 'Error connecting to server';
+    }
   }
 
   return { type, payload };
