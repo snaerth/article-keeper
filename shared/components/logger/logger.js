@@ -15,6 +15,7 @@ import LoggerTable from './loggerTable';
 import LoggerModalData from './loggerModalData';
 import Loader from '../common/loader';
 import Input from '../common/input';
+import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Search from '../../assets/images/search.svg';
@@ -31,7 +32,7 @@ class Logger extends Component {
       currentRowData: null,
       searchValue: '',
       formData: { limit: 50, offset: 10 },
-      focusedInput: false,
+      focusedInput: null,
       startDate: null,
       endDate: null,
     };
@@ -49,6 +50,7 @@ class Logger extends Component {
     data: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
+    serverError: PropTypes.string,
   };
 
   /**
@@ -104,9 +106,16 @@ class Logger extends Component {
      */
   handleFormSubmit({ search }) {
     const { token } = this.props;
+    const { startDate, endDate } = this.state;
+    const hasDateRange = startDate && endDate;
+
     this.props.actions.isFetchingData();
-    if (search) {
-      this.props.actions.getLogsBySearchQuery(token, search);
+    if (search || (!search && hasDateRange) || (search && hasDateRange)) {
+      const queryString = hasDateRange
+        ? `${search || ''}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`
+        : search;
+
+      this.props.actions.getLogsBySearchQuery(token, queryString);
     } else {
       const { formData } = this.state;
       this.props.actions.getLogs({ token, formData });
@@ -120,8 +129,6 @@ class Logger extends Component {
      * @returns {JSX}
      */
   renderError(error) {
-    if (!error) return null;
-
     return (
       <fieldset className="noPadding">
         <NotifyBox strongText="Error: " text={error} type="error" />
@@ -130,43 +137,57 @@ class Logger extends Component {
   }
 
   render() {
-    const { data, isFetching, error, handleSubmit } = this.props;
+    const { data, isFetching, error, serverError, handleSubmit } = this.props;
     const { currentRowData } = this.state;
 
     return (
       <div>
         {error ? this.renderError(error) : null}
+        {serverError ? this.renderError(serverError) : null}
         <div className={styles.minHeight200}>
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
           {!isFetching && data
             ? <div>
               <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                <div className={styles.searchInputContainer}>
-                  <Field
-                    component={Input}
-                    name="search"
-                    id="search"
-                    type="text"
-                    label="Search"
-                    placeholder="Search..."
-                    hidelabel
-                  >
-                    <Search
-                      className={styles.searchIcon}
-                      onClick={handleSubmit(this.handleFormSubmit)}
+                <div className={styles.inputContainer}>
+                  <div>
+                    <div className={styles.searchInputContainer}>
+                      <Field
+                        component={Input}
+                        name="search"
+                        id="search"
+                        type="text"
+                        label="Search"
+                        placeholder="Search..."
+                        hidelabel
+                      >
+                        <Search
+                          className={styles.searchIcon}
+                          onClick={handleSubmit(this.handleFormSubmit)}
+                        />
+                      </Field>
+                    </div>
+                  </div>
+                  <div>
+                    <DateRangePicker
+                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                      onDatesChange={({ startDate, endDate }) =>
+                          this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                      onFocusChange={(focusedInput) =>
+                          this.setState({ focusedInput })}
+                      isOutsideRange={() => false}
                     />
-                  </Field>
+                  </div>
+                  <div>
+                    <Button
+                      type="submit"
+                      text="Search"
+                      ariaLabel="Search logs"
+                    />
+                  </div>
                 </div>
-                <DateRangePicker
-                  startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                  endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                  onDatesChange={({ startDate, endDate }) =>
-                      this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                  focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                  onFocusChange={(focusedInput) =>
-                      this.setState({ focusedInput })}
-                  isOutsideRange={() => false}
-                />
               </form>
               <LoggerTable
                 list={data.docs}
@@ -197,8 +218,9 @@ class Logger extends Component {
  */
 function mapStateToProps(state) {
   const { error, isFetching, data } = state.logs;
+  const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
-  return { error, isFetching, token, data };
+  return { error, serverError, isFetching, token, data };
 }
 
 /**

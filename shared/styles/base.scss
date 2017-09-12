@@ -163,13 +163,3 @@ nav .active {
     color: $primary-white;
   }
 }
-
-/*
-  React-dates override
-*/
-.SingleDatePickerInput {
-  color: $text-dark;
-  font-size: $font-size;
-  border-radius: $border-radius;
-  border: $input-border-height solid $input-border-color;
-}

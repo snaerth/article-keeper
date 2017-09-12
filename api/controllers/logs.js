@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Log from '../models/log';
 import log from '../services/logService';
 import createPaginationObject from '../services/paginationService';
+import parseDateYearMonthDay from '../utils/date';
 
 /**
  * Delete log by id
@@ -89,6 +90,7 @@ export async function getLogs(req, res) {
  */
 export async function getLogsBySearchQuery(req, res) {
   const { query, offset, limit, msg, level, name, time } = req.params;
+  const { startDate, endDate } = req.query;
 
   if (!query) {
     return res.status(422).send({
@@ -132,6 +134,15 @@ export async function getLogsBySearchQuery(req, res) {
   }
 
   try {
+    if (startDate && endDate) {
+      const gte = await parseDateYearMonthDay(startDate);
+      const lte = await parseDateYearMonthDay(endDate);
+
+      searchQuery.$or.push({
+        time: { $gte: gte, $lte: lte },
+      });
+    }
+
     // Fetch logs by search query from database
     const result = await Log.paginate(searchQuery, pagination);
 

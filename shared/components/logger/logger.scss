@@ -39,9 +39,24 @@
   padding: 0;
   margin-bottom: 15px;
   max-width: 400px;
+  min-width: 300px;
 }
 
 .searchIcon {
   position: relative;
   top: 3px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    margin-right: 15px;
+
+    &:last-of-type {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
 }

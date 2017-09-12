@@ -10,7 +10,6 @@ export function authError(type, error) {
   let payload = 'Error in authError';
 
   if (error.message) {
-    console.error(error);
     payload = error.message;
     return { type: ERROR_UNKNOWN, payload };
   }

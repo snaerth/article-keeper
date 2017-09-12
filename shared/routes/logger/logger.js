@@ -12,7 +12,7 @@ const LoggerRoute = () => (
     <Helmet title="Logger" />
     <div className="banner">
       <Container>
-        <h1>Logger</h1>
+        <h1>Admin system logs</h1>
       </Container>
     </div>
     <Container className="mt25mb50">
