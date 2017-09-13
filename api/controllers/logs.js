@@ -5,6 +5,25 @@ import createPaginationObject from '../services/paginationService';
 import parseDateYearMonthDay from '../utils/date';
 
 /**
+ * Creates sort object for Log request query
+ *
+ * @param {String} msg
+ * @param {String} level
+ * @param {String} name
+ * @param {String} time
+ * @returns {Object} sort
+ */
+function createSortObject(msg, level, name, time) {
+  const sort = {};
+  if (msg) sort.msg = msg;
+  if (level) sort.level = level;
+  if (name) sort.name = name;
+  if (time) sort.time = time;
+
+  return sort;
+}
+
+/**
  * Delete log by id
  *
  * @param {Object} req
@@ -61,11 +80,7 @@ export async function getLogs(req, res) {
   const pagination = createPaginationObject(offset, limit);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
-  const sort = {};
-  if (msg) sort.msg = msg;
-  if (level) sort.level = level;
-  if (name) sort.name = name;
-  if (time) sort.time = time;
+  const sort = createSortObject(msg, level, name, time);
   if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
@@ -90,7 +105,6 @@ export async function getLogs(req, res) {
  */
 export async function getLogsBySearchQuery(req, res) {
   const { query, offset, limit, msg, level, name, time } = req.params;
-  const { startDate, endDate } = req.query;
 
   if (!query) {
     return res.status(422).send({
@@ -102,12 +116,8 @@ export async function getLogsBySearchQuery(req, res) {
   const pagination = createPaginationObject(offset, limit);
   // Check if sort params exist in query string
   // If exist add them to pagination sort prop
-  const sort = {};
-  if (msg) sort.msg = msg;
-  if (level) sort.level = level;
-  if (name) sort.name = name;
-  if (time) sort.time = time;
-  if (Object.keys(sort).length > 0) {
+  const sort = createSortObject(msg, level, name, time);
+  if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
 
@@ -134,21 +144,63 @@ export async function getLogsBySearchQuery(req, res) {
   }
 
   try {
-    if (startDate && endDate) {
-      const gte = await parseDateYearMonthDay(startDate);
-      const lte = await parseDateYearMonthDay(endDate);
-
-      searchQuery.$or.push({
-        time: { $gte: gte, $lte: lte },
-      });
-    }
-
     // Fetch logs by search query from database
     const result = await Log.paginate(searchQuery, pagination);
-
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error searching logs by query from database');
+    return res.status(500).send({ error: err });
+  }
+}
+
+/**
+ * Get logs by date range. Date format should be YYYY-MM-DD
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {*}
+ * @author Snær Seljan Þóroddsson
+ */
+export async function getLogsByDateRange(req, res) {
+  const { startDate, endDate } = req.query;
+
+  if (startDate && endDate) {
+    return res.status(422).send({
+      error: 'Parameters startDate and endDate are required and have to be on valid date format',
+    });
+  }
+
+  const { offset, limit, msg, level, name, time } = req.params;
+
+  // Get default pagination object
+  const pagination = createPaginationObject(offset, limit);
+  // Check if sort params exist in query string
+  // If exist add them to pagination sort prop
+  const sort = createSortObject(msg, level, name, time);
+  if (Object.keys(sort).length !== 0) {
+    pagination.sort = sort;
+  }
+
+  try {
+    const gte = await parseDateYearMonthDay(startDate);
+    const lte = await parseDateYearMonthDay(endDate);
+    const query = {
+      $or: [
+        {
+          time: { $gte: gte, $lte: lte },
+        },
+      ],
+    };
+
+    // Fetch logs by search query from database
+    const result = await Log.paginate(query, pagination);
+
+    return res.status(200).send(result);
+  } catch (err) {
+    log.error(
+      { req, res, err },
+      'Error searching logs by date range query from database',
+    );
     return res.status(500).send({ error: err });
   }
 }

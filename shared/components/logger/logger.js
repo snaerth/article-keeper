@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,7 +23,7 @@ import Search from '../../assets/images/search.svg';
 import tableStyles from '../../styles/table.css';
 import styles from './logger.scss';
 
-class Logger extends Component {
+class Logger extends PureComponent {
   constructor(props) {
     super(props);
 
