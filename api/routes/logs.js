@@ -2,6 +2,7 @@ import { isAdmin } from '../controllers/users';
 import {
   getLogs,
   getLogsBySearchQuery,
+  getLogsByDateRange,
   deleteLogsById,
   deleteAllLogs,
   createFakeLogs,
@@ -16,6 +17,11 @@ import {
 export default function (app, requireAuth) {
   app.post('/logs', [requireAuth, isAdmin], getLogs);
   app.get('/logs/search/:query', [requireAuth, isAdmin], getLogsBySearchQuery);
+  app.get(
+    '/logs/search/:startDate/:endDate',
+    [requireAuth, isAdmin],
+    getLogsByDateRange,
+  );
   app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
   app.delete('/log/:id', [requireAuth, isAdmin], deleteLogsById);
   app.post('/create-fake-logs', [requireAuth, isAdmin], createFakeLogs);

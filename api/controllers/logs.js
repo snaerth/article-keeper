@@ -105,6 +105,7 @@ export async function getLogs(req, res) {
  */
 export async function getLogsBySearchQuery(req, res) {
   const { query, offset, limit, msg, level, name, time } = req.params;
+  const { startDate, endDate } = req.query;
 
   if (!query) {
     return res.status(422).send({
@@ -121,29 +122,46 @@ export async function getLogsBySearchQuery(req, res) {
     pagination.sort = sort;
   }
 
-  let searchQuery;
-
+  let searchQuery = {};
+  let $or = [];
   // Check if searchQuery is valid mongo ObjectId
   if (query.match(/^[0-9a-fA-F]{24}$/)) {
     // Search query by id
     searchQuery = { _id: mongoose.Types.ObjectId(query) };
   } else {
+    const reExp = new RegExp(query, 'i');
     // Search query for for other Log properties
-    searchQuery = {
-      $or: [
-        { msg: new RegExp(searchQuery, 'i') },
-        { name: new RegExp(searchQuery, 'i') },
-        { 'err.stack': new RegExp(searchQuery, 'i') },
-        { 'req.statusCode': new RegExp(searchQuery, 'i') },
-        { 'req.method': new RegExp(searchQuery, 'i') },
-        { 'req.headers': new RegExp(searchQuery, 'i') },
-        { 'res.header': new RegExp(searchQuery, 'i') },
-        { 'res.statusCode': new RegExp(searchQuery, 'i') },
-      ],
-    };
+    $or = [
+      { msg: reExp },
+      { name: reExp },
+      { 'err.stack': reExp },
+      { 'req.statusCode': reExp },
+      { 'req.method': reExp },
+      { 'req.headers': reExp },
+      { 'res.header': reExp },
+      { 'res.statusCode': reExp },
+    ];
   }
 
   try {
+    if (startDate && endDate) {
+      const gte = await parseDateYearMonthDay(startDate);
+      const lte = await parseDateYearMonthDay(endDate);
+
+      // Search query for text search and date range
+      searchQuery.$and = [
+        {
+          $or,
+        },
+        {
+          time: { $gte: gte, $lte: lte },
+        },
+      ];
+    } else {
+      // Search query for text search
+      searchQuery.$or = $or;
+    }
+
     // Fetch logs by search query from database
     const result = await Log.paginate(searchQuery, pagination);
     return res.status(200).send(result);
@@ -162,11 +180,11 @@ export async function getLogsBySearchQuery(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogsByDateRange(req, res) {
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate } = req.params;
 
-  if (startDate && endDate) {
+  if (!startDate && !endDate) {
     return res.status(422).send({
-      error: 'Parameters startDate and endDate are required and have to be on valid date format',
+      error: 'Parameters startDate and endDate are required and have to be on valid date format YYYY-mm-dd',
     });
   }
 
