@@ -53,21 +53,14 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
           />
           <Column
             className={tableStyles.tableColumn}
-            label="Name"
-            dataKey="name"
-            width={210}
-          />
-          <Column
-            className={tableStyles.tableColumn}
-            label="Level"
+            label="Type"
             dataKey="level"
             width={210}
           />
           <Column
-            cellDataGetter={(columnData) => JSON.stringify(columnData)}
             className={tableStyles.tableColumn}
-            label="Error"
-            dataKey="err"
+            label="Name"
+            dataKey="name"
             width={210}
           />
         </Table>
