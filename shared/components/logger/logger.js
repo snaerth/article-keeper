@@ -189,6 +189,11 @@ class Logger extends PureComponent {
                   </div>
                   <div>
                     <Button
+                      type="text"
+                      text="Clear"
+                      ariaLabel="Clear inputs"
+                    />
+                    <Button
                       type="submit"
                       text="Search"
                       ariaLabel="Search logs"
