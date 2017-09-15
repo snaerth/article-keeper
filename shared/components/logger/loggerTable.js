@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import levels from './level';
 import formatISODateTime from '../../utils/date';
 import NotifyBox from '../common/notifyBox';
 import tableStyles from '../../styles/table.css';
@@ -46,16 +47,16 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             width={210}
           />
           <Column
-            className={tableStyles.tableColumn}
-            label="Message"
-            dataKey="msg"
-            width={210}
+            cellDataGetter={(columnData) => levels(columnData.rowData.level)}
+            label="Type"
+            dataKey="level"
+            width={80}
           />
           <Column
             className={tableStyles.tableColumn}
-            label="Type"
-            dataKey="level"
-            width={210}
+            label="Message"
+            dataKey="msg"
+            width={300}
           />
           <Column
             className={tableStyles.tableColumn}

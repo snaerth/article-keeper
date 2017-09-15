@@ -110,15 +110,22 @@ class Logger extends PureComponent {
     const hasDateRange = startDate && endDate;
 
     this.props.actions.isFetchingData();
-    if (search || (!search && hasDateRange) || (search && hasDateRange)) {
-      const queryString = hasDateRange
-        ? `${search || ''}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`
-        : search;
+
+    let queryString = '';
+
+    if (!search && !hasDateRange) {
+      // get all logs
+      this.props.actions.getLogs({ token });
+    } else {
+      if (search && !hasDateRange) {
+        // query by text only
+        queryString = search;
+      } else if (search && hasDateRange) {
+        // query by text and date range
+        queryString = `${search}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`;
+      }
 
       this.props.actions.getLogsBySearchQuery(token, queryString);
-    } else {
-      const { formData } = this.state;
-      this.props.actions.getLogs({ token, formData });
     }
   }
 
