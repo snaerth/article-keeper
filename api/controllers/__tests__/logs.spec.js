@@ -51,8 +51,8 @@ describe('Run tests for logs route handlers', () => {
   test('Get logs', () => {
     try {
       request(app)
-        .post('/logs')
-        .send({
+        .get('/logs')
+        .query({
           limit: 50,
           offset: 10,
         })
@@ -103,8 +103,8 @@ describe('Run tests for logs route handlers', () => {
 
     try {
       request(app)
-        .post('/logs')
-        .send({
+        .get('/logs')
+        .query({
           limit: 50,
           offset: 10,
         })

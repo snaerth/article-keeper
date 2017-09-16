@@ -15,7 +15,7 @@ import {
  * @returns {*}
  */
 export default function (app, requireAuth) {
-  app.post('/logs', [requireAuth, isAdmin], getLogs);
+  app.get('/logs', [requireAuth, isAdmin], getLogs);
   app.get('/logs/search/:query', [requireAuth, isAdmin], getLogsBySearchQuery);
   app.get(
     '/logs/search/:startDate/:endDate',

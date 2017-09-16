@@ -37,9 +37,11 @@
 
 .searchInputContainer {
   padding: 0;
-  margin-bottom: 15px;
-  max-width: 400px;
-  min-width: 300px;
+
+  @include viewport(desktop) {
+    max-width: 400px;
+    min-width: 300px;
+  }
 }
 
 .searchIcon {
@@ -48,15 +50,37 @@
 }
 
 .inputContainer {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  margin-bottom: 15px;
+  grid-template-columns: 1fr;
+  grid-gap: 15px;
 
-  > div {
-    margin-right: 15px;
+  @include viewport(tablet) {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    &:last-of-type {
-      margin-right: 0;
+  @include viewport(desktop) {
+    grid-template-columns: 1fr 1.5fr 1fr;
+  }
+
+  > div:last-of-type {
+    margin-left: auto;
+
+    @include viewport(tablet) {
+      margin-left: 0;
+    }
+
+    @include viewport(desktop) {
       margin-left: auto;
     }
+
+    button:first-child {
+      margin-right: 15px;
+    }
   }
+}
+
+.clearButtonContainer {
+  display: inline-block;
+  margin-right: 15px;
 }

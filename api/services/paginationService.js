@@ -1,13 +1,13 @@
 /**
  * Creates default pagination object
- * @param {Number} offset
- * @param {String} limit
+ * @param {Number} page
+ * @param {Number} limit
  * @returns {Object} pagination
  */
-export default function createPaginationObject(offset = 0, limit = 50) {
+export default function createPaginationObject(page = 1, limit = 50) {
   // Pagination
   return {
-    offset: parseInt(offset, 10),
+    page: parseInt(page, 10),
     limit: parseInt(limit > 100 ? 100 : limit, 10),
   };
 }

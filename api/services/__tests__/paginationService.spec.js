@@ -22,13 +22,13 @@ describe('Run pagination service tests', () => {
         .post('/pagination/')
         .send({
           limit: 10,
-          offset: 10,
+          page: 1,
         })
         .set('Accept', 'application/json')
         .end((err, res) => {
-          const { offset, limit } = res.body;
+          const { page, limit } = res.body;
           expect(limit).toEqual(10);
-          expect(offset).toEqual(10);
+          expect(page).toEqual(1);
         });
     } catch (err) {
       expect(err).toThrowErrorMatchingSnapshot();

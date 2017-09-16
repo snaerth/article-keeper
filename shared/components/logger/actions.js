@@ -34,13 +34,23 @@ export function isNotFetchingData() {
 export function getLogs({ token, formData }) {
   return async (dispatch) => {
     try {
+      let url = '/api/logs';
+
+      if (formData) {
+        const queryParams = Object.entries(formData).map(
+          (e) => `${encodeURIComponent(e[0])}=${encodeURIComponent(e[1])}`,
+        );
+
+        url = `${url}?${queryParams.join('&')}`;
+      }
+
       const config = {
         headers: {
           authorization: token,
         },
       };
 
-      const res = await axios.post('/api/logs', formData, config);
+      const res = await axios.get(url, config);
       // Dispatch GET_LOGS_SUCCESS action to logReducer
       dispatch({ type: GET_LOGS_SUCCESS, payload: res.data });
     } catch (error) {

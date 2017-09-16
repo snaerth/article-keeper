@@ -5,22 +5,39 @@ import createPaginationObject from '../services/paginationService';
 import parseDateYearMonthDay from '../utils/date';
 
 /**
- * Creates sort object for Log request query
+ * Enriches pagination object with sort and other pagination properties
  *
+ * @param {Object} pagination - { limit: Number, offset: Number }
  * @param {String} msg
  * @param {String} level
  * @param {String} name
  * @param {String} time
+ * @param {String} page
+ * @param {String} pages
  * @returns {Object} sort
  */
-function createSortObject(msg, level, name, time) {
+function addToPaginationObject(
+  pagination,
+  msg,
+  level,
+  name,
+  time,
+  page,
+  pages,
+) {
   const sort = {};
   if (msg) sort.msg = msg;
   if (level) sort.level = level;
   if (name) sort.name = name;
   if (time) sort.time = time;
+  if (Object.keys(sort).length !== 0) {
+    pagination.sort = sort;
+  }
 
-  return sort;
+  if (page) pagination.page = page;
+  if (pages) pagination.pages = pages;
+
+  return pagination;
 }
 
 /**
@@ -75,15 +92,20 @@ export async function deleteAllLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
-  const { offset, limit, msg, level, name, time } = req.body;
+  const { limit, msg, level, name, time, page, pages } = req.query;
+
   // Get default pagination object
-  const pagination = createPaginationObject(offset, limit);
-  // Check if sort params exist in query string
-  // If exist add them to pagination sort prop
-  const sort = createSortObject(msg, level, name, time);
-  if (Object.keys(sort).length !== 0) {
-    pagination.sort = sort;
-  }
+  let pagination = createPaginationObject(page, limit);
+  // Enrich pagination object
+  pagination = addToPaginationObject(
+    pagination,
+    msg,
+    level,
+    name,
+    time,
+    page,
+    pages,
+  );
 
   try {
     // Fetch logs from database
@@ -104,7 +126,7 @@ export async function getLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogsBySearchQuery(req, res) {
-  const { query, offset, limit, msg, level, name, time } = req.params;
+  const { query, limit, msg, level, name, time, page, pages } = req.params;
   const { startDate, endDate } = req.query;
 
   if (!query) {
@@ -114,13 +136,17 @@ export async function getLogsBySearchQuery(req, res) {
   }
 
   // Get default pagination object
-  const pagination = createPaginationObject(offset, limit);
-  // Check if sort params exist in query string
-  // If exist add them to pagination sort prop
-  const sort = createSortObject(msg, level, name, time);
-  if (Object.keys(sort).length !== 0) {
-    pagination.sort = sort;
-  }
+  let pagination = createPaginationObject(page, limit);
+  // Enrich pagination object
+  pagination = addToPaginationObject(
+    pagination,
+    msg,
+    level,
+    name,
+    time,
+    page,
+    pages,
+  );
 
   let searchQuery = {};
   let $or = [];
@@ -188,16 +214,20 @@ export async function getLogsByDateRange(req, res) {
     });
   }
 
-  const { offset, limit, msg, level, name, time } = req.params;
+  const { limit, msg, level, name, time, page, pages } = req.params;
 
   // Get default pagination object
-  const pagination = createPaginationObject(offset, limit);
-  // Check if sort params exist in query string
-  // If exist add them to pagination sort prop
-  const sort = createSortObject(msg, level, name, time);
-  if (Object.keys(sort).length !== 0) {
-    pagination.sort = sort;
-  }
+  let pagination = createPaginationObject(page, limit);
+  // Enrich pagination object
+  pagination = addToPaginationObject(
+    pagination,
+    msg,
+    level,
+    name,
+    time,
+    page,
+    pages,
+  );
 
   try {
     const gte = await parseDateYearMonthDay(startDate);

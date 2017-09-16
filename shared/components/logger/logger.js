@@ -18,7 +18,10 @@ import Input from '../common/input';
 import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
+import Pagination from '../common/pagination';
+import createPagination from '../../utils/pagination';
 import Search from '../../assets/images/search.svg';
+
 // Styles
 import tableStyles from '../../styles/table.css';
 import styles from './logger.scss';
@@ -30,8 +33,7 @@ class Logger extends PureComponent {
     this.state = {
       modalOpen: false,
       currentRowData: null,
-      searchValue: '',
-      formData: { limit: 50, offset: 10 },
+      formData: { limit: 50, page: 1 },
       focusedInput: null,
       startDate: null,
       endDate: null,
@@ -41,6 +43,7 @@ class Logger extends PureComponent {
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.clearInputs = this.clearInputs.bind(this);
   }
 
   static propTypes = {
@@ -51,6 +54,8 @@ class Logger extends PureComponent {
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
     serverError: PropTypes.string,
+    reset: PropTypes.func.isRequired,
+    pagination: PropTypes.object.isRequired,
   };
 
   /**
@@ -91,6 +96,21 @@ class Logger extends PureComponent {
   }
 
   /**
+   * Clears serach inputs for querying logs
+   *
+   * @param {Object} event
+   */
+  clearInputs(event) {
+    event.preventDefault();
+    this.props.reset();
+    this.setState(() => ({
+      focusedInput: null,
+      startDate: null,
+      endDate: null,
+    }));
+  }
+
+  /**
    * Set state to close modal and reset current row data
    */
   closeModal() {
@@ -105,7 +125,7 @@ class Logger extends PureComponent {
      * @param {Object}
      */
   handleFormSubmit({ search }) {
-    const { token } = this.props;
+    const { token, actions } = this.props;
     const { startDate, endDate } = this.state;
     const hasDateRange = startDate && endDate;
 
@@ -120,12 +140,26 @@ class Logger extends PureComponent {
       if (search && !hasDateRange) {
         // query by text only
         queryString = search;
-      } else if (search && hasDateRange) {
-        // query by text and date range
-        queryString = `${search}?startDate=${startDate.format('YYYY-MM-DD')}&endDate=${endDate.format('YYYY-MM-DD')}`;
+        actions.getLogsBySearchQuery(token, queryString);
+        return false;
       }
 
-      this.props.actions.getLogsBySearchQuery(token, queryString);
+      if (hasDateRange) {
+        const sd = startDate.format('YYYY-MM-DD');
+        const ed = endDate.format('YYYY-MM-DD');
+
+        if (search) {
+          // query by text and date range
+          queryString = `${search}?startDate=${sd}&endDate=${ed}`;
+          actions.getLogsBySearchQuery(token, queryString);
+          return false;
+        }
+
+        // query by date range
+        queryString = `${sd}/${ed}`;
+        actions.getLogsBySearchQuery(token, queryString);
+        return false;
+      }
     }
   }
 
@@ -144,7 +178,14 @@ class Logger extends PureComponent {
   }
 
   render() {
-    const { data, isFetching, error, serverError, handleSubmit } = this.props;
+    const {
+      data,
+      isFetching,
+      error,
+      serverError,
+      handleSubmit,
+      pagination,
+    } = this.props;
     const { currentRowData } = this.state;
 
     return (
@@ -189,9 +230,10 @@ class Logger extends PureComponent {
                   </div>
                   <div>
                     <Button
-                      type="text"
+                      type="button"
                       text="Clear"
                       ariaLabel="Clear inputs"
+                      onClick={(e) => this.clearInputs(e)}
                     />
                     <Button
                       type="submit"
@@ -201,11 +243,21 @@ class Logger extends PureComponent {
                   </div>
                 </div>
               </form>
+              {pagination
+                  ? <Pagination
+                    page={pagination.page}
+                    pages={pagination.pages}
+                    limit={pagination.limit}
+                    total={pagination.total}
+                  />
+                  : null}
+
               <LoggerTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
                 rowClassName={this.rowClassName}
               />
+
             </div>
             : null}
         </div>
@@ -232,7 +284,14 @@ function mapStateToProps(state) {
   const { error, isFetching, data } = state.logs;
   const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
-  return { error, serverError, isFetching, token, data };
+
+  let pagination = null;
+  if (data) {
+    const { limit, page, pages, total } = data;
+    pagination = data ? createPagination(limit, page, pages, total) : {};
+  }
+
+  return { error, serverError, isFetching, token, data, pagination };
 }
 
 /**
