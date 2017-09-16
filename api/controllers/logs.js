@@ -12,19 +12,9 @@ import parseDateYearMonthDay from '../utils/date';
  * @param {String} level
  * @param {String} name
  * @param {String} time
- * @param {String} page
- * @param {String} pages
  * @returns {Object} sort
  */
-function addToPaginationObject(
-  pagination,
-  msg,
-  level,
-  name,
-  time,
-  page,
-  pages,
-) {
+function addToPaginationObject(pagination, msg, level, name, time) {
   const sort = {};
   if (msg) sort.msg = msg;
   if (level) sort.level = level;
@@ -33,9 +23,6 @@ function addToPaginationObject(
   if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
-
-  if (page) pagination.page = page;
-  if (pages) pagination.pages = pages;
 
   return pagination;
 }
@@ -92,20 +79,12 @@ export async function deleteAllLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
-  const { limit, msg, level, name, time, page, pages } = req.query;
+  const { limit, msg, level, name, time, page } = req.query;
 
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
   // Enrich pagination object
-  pagination = addToPaginationObject(
-    pagination,
-    msg,
-    level,
-    name,
-    time,
-    page,
-    pages,
-  );
+  pagination = addToPaginationObject(pagination, msg, level, name, time);
 
   try {
     // Fetch logs from database
@@ -126,7 +105,7 @@ export async function getLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogsBySearchQuery(req, res) {
-  const { query, limit, msg, level, name, time, page, pages } = req.params;
+  const { query, limit, msg, level, name, time, page } = req.params;
   const { startDate, endDate } = req.query;
 
   if (!query) {
@@ -138,22 +117,14 @@ export async function getLogsBySearchQuery(req, res) {
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
   // Enrich pagination object
-  pagination = addToPaginationObject(
-    pagination,
-    msg,
-    level,
-    name,
-    time,
-    page,
-    pages,
-  );
+  pagination = addToPaginationObject(pagination, msg, level, name, time);
 
-  let searchQuery = {};
+  const searchQuery = {};
   let $or = [];
   // Check if searchQuery is valid mongo ObjectId
   if (query.match(/^[0-9a-fA-F]{24}$/)) {
     // Search query by id
-    searchQuery = { _id: mongoose.Types.ObjectId(query) };
+    $or = [{ _id: mongoose.Types.ObjectId(query) }];
   } else {
     const reExp = new RegExp(query, 'i');
     // Search query for for other Log properties
@@ -214,20 +185,12 @@ export async function getLogsByDateRange(req, res) {
     });
   }
 
-  const { limit, msg, level, name, time, page, pages } = req.params;
+  const { limit, msg, level, name, time, page } = req.params;
 
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
   // Enrich pagination object
-  pagination = addToPaginationObject(
-    pagination,
-    msg,
-    level,
-    name,
-    time,
-    page,
-    pages,
-  );
+  pagination = addToPaginationObject(pagination, msg, level, name, time);
 
   try {
     const gte = await parseDateYearMonthDay(startDate);

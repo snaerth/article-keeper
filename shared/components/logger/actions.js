@@ -29,21 +29,12 @@ export function isNotFetchingData() {
  * Gets logs from api
  *
  * @param {String} token
- * @param {Object} formData
+ * @param {String} queryString
  */
-export function getLogs({ token, formData }) {
+export function getLogs({ token, queryString }) {
   return async (dispatch) => {
     try {
-      let url = '/api/logs';
-
-      if (formData) {
-        const queryParams = Object.entries(formData).map(
-          (e) => `${encodeURIComponent(e[0])}=${encodeURIComponent(e[1])}`,
-        );
-
-        url = `${url}?${queryParams.join('&')}`;
-      }
-
+      const url = `/api/logs${queryString ? `?${queryString}` : ''}`;
       const config = {
         headers: {
           authorization: token,
@@ -60,22 +51,22 @@ export function getLogs({ token, formData }) {
 }
 
 /**
- * Gets logs from api
+ * Gets logs from api by search query
  *
  * @param {String} token
- * @param {String} token - For api authentication
- * @param {String} searchQuery
+ * @param {String} queryString
  */
-export function getLogsBySearchQuery(token, searchQuery) {
+export function getLogsBySearchQuery(token, queryString) {
   return async (dispatch) => {
     try {
+      const url = `/api/logs/search/${queryString}`;
       const config = {
         headers: {
           authorization: token,
         },
       };
 
-      const res = await axios.get(`/api/logs/search/${searchQuery}`, config);
+      const res = await axios.get(url, config);
       // Dispatch GET_LOGS_SUCCESS action to logReducer
       dispatch({ type: GET_LOGS_SUCCESS, payload: res.data });
     } catch (error) {

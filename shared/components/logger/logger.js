@@ -20,6 +20,7 @@ import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
 import createPagination from '../../utils/pagination';
+import { formDataToQueryString } from '../../utils/urlHelpers';
 import Search from '../../assets/images/search.svg';
 
 // Styles
@@ -44,6 +45,7 @@ class Logger extends PureComponent {
     this.closeModal = this.closeModal.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.clearInputs = this.clearInputs.bind(this);
+    this.paginateHandler = this.paginateHandler.bind(this);
   }
 
   static propTypes = {
@@ -56,16 +58,18 @@ class Logger extends PureComponent {
     serverError: PropTypes.string,
     reset: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
+    search: PropTypes.string,
   };
 
   /**
    * Fetch logs
    */
   componentDidMount() {
+    this.props.actions.isFetchingData();
     const { token } = this.props;
     const { formData } = this.state;
-    this.props.actions.isFetchingData();
-    this.props.actions.getLogs({ token, formData });
+    const queryString = formDataToQueryString(formData);
+    this.props.actions.getLogs({ token, queryString });
   }
 
   /**
@@ -121,26 +125,32 @@ class Logger extends PureComponent {
   }
 
   /**
-     * Handles form submit event
-     * @param {Object}
-     */
+   * Handles form submit event
+   * @param {Object}
+   */
   handleFormSubmit({ search }) {
+    this.prepareAndSumbit(search, this.state.formData);
+  }
+
+  /**
+   * Prepare data and submit request
+   * @param {String} search
+   */
+  prepareAndSumbit(search, formData) {
+    // Set loading
+    this.props.actions.isFetchingData();
     const { token, actions } = this.props;
     const { startDate, endDate } = this.state;
     const hasDateRange = startDate && endDate;
-
-    this.props.actions.isFetchingData();
-
-    let queryString = '';
+    let queryString = formDataToQueryString(formData);
 
     if (!search && !hasDateRange) {
       // get all logs
-      this.props.actions.getLogs({ token });
+      this.props.actions.getLogs({ token, queryString });
     } else {
       if (search && !hasDateRange) {
         // query by text only
-        queryString = search;
-        actions.getLogsBySearchQuery(token, queryString);
+        actions.getLogsBySearchQuery(token, `${search}?${queryString}`);
         return false;
       }
 
@@ -161,6 +171,13 @@ class Logger extends PureComponent {
         return false;
       }
     }
+  }
+
+  paginateHandler(page) {
+    const formData = { ...this.state.formData };
+    formData.page = page;
+    this.setState(() => ({ formData }));
+    this.prepareAndSumbit(this.props.search, formData);
   }
 
   /**
@@ -243,21 +260,18 @@ class Logger extends PureComponent {
                   </div>
                 </div>
               </form>
-              {pagination
-                  ? <Pagination
-                    page={pagination.page}
-                    pages={pagination.pages}
-                    limit={pagination.limit}
-                    total={pagination.total}
-                  />
-                  : null}
-
               <LoggerTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
                 rowClassName={this.rowClassName}
               />
-
+              {pagination
+                  ? <Pagination
+                    page={pagination.page}
+                    pages={pagination.pages}
+                    onClick={this.paginateHandler}
+                  />
+                  : null}
             </div>
             : null}
         </div>
@@ -284,14 +298,19 @@ function mapStateToProps(state) {
   const { error, isFetching, data } = state.logs;
   const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
+  let pagination = {};
+  let search = '';
 
-  let pagination = null;
   if (data) {
     const { limit, page, pages, total } = data;
-    pagination = data ? createPagination(limit, page, pages, total) : {};
+    pagination = createPagination({ limit, pages, page, total });
   }
 
-  return { error, serverError, isFetching, token, data, pagination };
+  if (state.form.search && state.form.search.values && state.form.search.values.search) {
+    search = state.form.search.values.search;
+  }
+
+  return { error, serverError, isFetching, token, data, pagination, search };
 }
 
 /**

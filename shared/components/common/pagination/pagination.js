@@ -2,13 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './pagination.scss';
 
-function Pagination({ page, pages, limit, total }) {
-  const pagesArr = Array.from({ length: pages }, (v, i) => i);
+function Pagination({ page, pages, onClick }) {
+  const pagesArr = Array.from({ length: pages }, (v, i) => i + 1);
 
+  if (pages <= 1) return null;
   return (
     <div className={s.container}>
       <div className={s.pagination}>
-        <a role="button" tabIndex="0">❮</a>
+        <a
+          role="button"
+          tabIndex="0"
+          onClick={() => onClick(page <= 1 ? 1 : page - 1)}
+        >
+          ❮
+        </a>
         {pagesArr.map((i) => {
           if (i === page) {
             return (
@@ -26,7 +33,13 @@ function Pagination({ page, pages, limit, total }) {
             <a key={`pagination-page-${i}`} role="button" tabIndex="0">{i}</a>
           );
         })}
-        <a role="button" tabIndex="0">❯</a>
+        <a
+          role="button"
+          tabIndex="0"
+          onClick={() => onClick(page >= pages ? pages : page + 1)}
+        >
+          ❯
+        </a>
       </div>
     </div>
   );
@@ -35,8 +48,7 @@ function Pagination({ page, pages, limit, total }) {
 Pagination.propTypes = {
   page: PropTypes.number.isRequired,
   pages: PropTypes.number.isRequired,
-  limit: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Pagination;

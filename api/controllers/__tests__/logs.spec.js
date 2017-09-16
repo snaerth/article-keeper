@@ -54,7 +54,7 @@ describe('Run tests for logs route handlers', () => {
         .get('/logs')
         .query({
           limit: 50,
-          offset: 10,
+          page: 1,
         })
         .set('Accept', 'application/json')
         .end((err, res) => {

@@ -8,6 +8,6 @@ describe('Run tests for dates', () => {
 
   it('Parse date to YYYY-mm-dd format', async () => {
     const date = await parseDateYearMonthDay('Fail-04-30');
-    expect(date).toBeNaN();
+    expect(date).toThrowErrorMatchingSnapshot();
   });
 });
