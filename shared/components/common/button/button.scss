@@ -55,6 +55,21 @@
   }
 }
 
+.grey {
+  color: $text-dark;
+  background: $primary-grey;
+
+  &:hover {
+    color: $text-dark;
+    background: darken($primary-grey, 15%);
+  }
+
+  &:focus {
+    color: $text-dark;
+    background: darken($primary-grey, 15%);
+  }
+}
+
 .default {
   background: $button-background;
 

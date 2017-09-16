@@ -6,6 +6,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import levels from './level';
 import formatISODateTime from '../../utils/date';
 import NotifyBox from '../common/notifyBox';
+import DeleteIcon from '../../assets/images/delete.svg';
 import tableStyles from '../../styles/table.css';
 
 function LoggerTable({ list, onRowClickHandler, rowClassName }) {
@@ -44,7 +45,7 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             className={tableStyles.tableColumn}
             label="Time"
             dataKey="time"
-            width={210}
+            width={180}
           />
           <Column
             cellDataGetter={(columnData) => levels(columnData.rowData.level)}
