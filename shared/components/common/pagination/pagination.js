@@ -30,7 +30,14 @@ function Pagination({ page, pages, onClick }) {
             );
           }
           return (
-            <a key={`pagination-page-${i}`} role="button" tabIndex="0">{i}</a>
+            <a
+              key={`pagination-page-${i}`}
+              role="button"
+              tabIndex="0"
+              onClick={() => onClick(i)}
+            >
+              {i}
+            </a>
           );
         })}
         <a

@@ -250,6 +250,7 @@ class Logger extends PureComponent {
                       type="button"
                       text="Clear"
                       ariaLabel="Clear inputs"
+                      color="green"
                       onClick={(e) => this.clearInputs(e)}
                     />
                     <Button
