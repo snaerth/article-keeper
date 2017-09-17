@@ -270,6 +270,7 @@ class Logger extends PureComponent {
                   ? <Pagination
                     page={pagination.page}
                     pages={pagination.pages}
+                    set={Math.floor(pagination.page / 10)}
                     onClick={this.paginateHandler}
                   />
                   : null}

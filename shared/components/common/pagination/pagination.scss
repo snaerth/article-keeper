@@ -6,7 +6,7 @@
 }
 
 .pagination {
-  display: inline-block;
+  display: block;
 }
 
 .pagination a {
@@ -29,7 +29,7 @@
 }
 
 .numberContainer {
-  display: inline-block;
+  display: block;
   position: relative;
   top: 13px;
   padding-top: 8px;
@@ -37,7 +37,7 @@
   min-height: 37px;
   overflow: hidden;
 
-  span {
+  div {
     display: none;
     position: absolute;
     top: 7px;

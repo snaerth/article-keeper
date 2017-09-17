@@ -1,40 +1,45 @@
-.slideInOut-enter {
-  opacity: 0.01;
-  transform: translate3d(-100px, 0, 0);
+/*!
+ * animate.css -http://daneden.me/animate
+ * Version - 3.5.2
+ * Licensed under the MIT license - http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) 2017 Daniel Eden
+ */
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 
-.slideInOut-enter.slideInOut-enter-active {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+.fadeInRight {
+  animation-name: fadeInRight;
 }
 
-.slideInOut-exit {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.slideInOut-exit.slideInOut-exit-active {
-  opacity: 0.01;
-  transform: translate3d(100px, 0, 0);
-  transition: opacity 100ms ease-in-out, transform 100ms ease-in-out;
+.fadeInLeft {
+  animation-name: fadeInLeft;
 }
 
-// Fade in
-.fadeIn-enter {
-  opacity: 0.01;
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-.fadeIn-enter.fadeIn-enter-active {
-  opacity: 1;
-  transition: opacity 700ms ease-in-out;
-}
-
-.fadeIn-exit {
-  opacity: 1;
-}
-
-.fadeIn-exit.fadeIn-exit-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in-out;
-}

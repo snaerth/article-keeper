@@ -5,15 +5,20 @@ import splitToChunks from '../../../utils/arrayHelpers';
 import s from './pagination.scss';
 
 /**
- * Pagination function component
- *
- * @param {Object} page | pages | onClick
+ * Pagination component
+ * Usage <Pagination
+ *          page={11}  // Current active page
+ *          pages={24} // Total pages
+ *          onClick={onPageClickHandler} // Handler function when page is clicked
+ *          set={2} // Active set, each set is 10 numbers.
+ *                  // Best practice is to use Math.floor(currentActivePage / 10)
+ *         />
  */
-
 class Pagination extends Component {
   static propTypes = {
     page: PropTypes.number.isRequired,
     pages: PropTypes.number.isRequired,
+    set: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired,
   };
 
@@ -21,31 +26,14 @@ class Pagination extends Component {
     super(props);
 
     this.state = {
-      activeArr: Math.floor(props.page / 10),
+      activeSet: props.set,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.page !== nextProps.page) {
-      this.setState(() => ({ activeArr: Math.floor(nextProps.page / 10) }));
+      this.setState(() => ({ activeSet: Math.floor(nextProps.page / 10) }));
     }
-  }
-
-  /**
-   * Sets active chunk
-   *
-   * @param {Array} chunksArr - Array of arrays
-   * @param {Number} activePage
-   */
-  activeChunk(chunksArr, activePage) {
-    let active = 0;
-    for (let i = 0; i < chunksArr.length; i++) {
-      if (chunksArr[i].includes(activePage)) {
-        active = i;
-      }
-    }
-
-    return active;
   }
 
   /**
@@ -59,15 +47,15 @@ class Pagination extends Component {
     return Array.from({ length: len }, (v, i) => i + 1);
   }
 
-  clickHandler(activeArr, chunksArr, direction) {
+  clickHandler(activeSet, chunksArr, direction) {
     let active;
 
     switch (direction) {
       case 'next':
-        active = activeArr + 1;
+        active = activeSet + 1;
         break;
       case 'prev':
-        active = activeArr - 1;
+        active = activeSet - 1;
         break;
       default:
         active = 0;
@@ -82,16 +70,15 @@ class Pagination extends Component {
       active = 0;
     }
 
-    this.setState(() => ({ activeArr: active }));
+    this.setState(() => ({ activeSet: active }));
   }
 
   render() {
     const { page, pages, onClick } = this.props;
-    const { activeArr } = this.state;
+    const { activeSet } = this.state;
     const pagesArr = this.createArr(pages);
     const chunksArr = splitToChunks(pagesArr, 10);
-    const nextActiveArr = this.activeChunk(chunksArr, page);
-    console.log(activeArr);
+
     if (pages <= 1) {
       return null;
     }
@@ -102,15 +89,15 @@ class Pagination extends Component {
           <a
             role="button"
             tabIndex="0"
-            onClick={() => this.clickHandler(activeArr, chunksArr, 'prev')}
+            onClick={() => this.clickHandler(activeSet, chunksArr, 'prev')}
           >
             ❮
           </a>
-          <span className={s.numberContainer}>
+          <div className={s.numberContainer}>
             {chunksArr.map((arr, i) => (
-              <span
+              <div
                 key={shortid.generate()}
-                className={activeArr === i ? s.active : ''}
+                className={activeSet === i ? s.active : ''}
               >
                 {arr.map((j) => {
                   if (j === page) {
@@ -136,13 +123,13 @@ class Pagination extends Component {
                     </a>
                   );
                 })}
-              </span>
+              </div>
             ))}
-          </span>
+          </div>
           <a
             role="button"
             tabIndex="0"
-            onClick={() => this.clickHandler(activeArr, chunksArr, 'next')}
+            onClick={() => this.clickHandler(activeSet, chunksArr, 'next')}
           >
             ❯
           </a>
@@ -153,4 +140,3 @@ class Pagination extends Component {
 }
 
 export default Pagination;
-/* onClick(page >= pages ? pages : page + 1) */
