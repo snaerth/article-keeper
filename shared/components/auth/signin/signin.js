@@ -15,7 +15,7 @@ import MainHeading from '../../common/mainheading';
 import validateEmail from './../../../utils/validate';
 import Loader from '../../common/loader';
 import * as actionCreators from '../actions';
-import Email from '../../../assets/images//email.svg';
+import Email from '../../../assets/images/email.svg';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
 import s from './signin.scss';
 

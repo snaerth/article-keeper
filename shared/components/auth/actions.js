@@ -99,6 +99,7 @@ export function signupUser({ email, password, name, formData }) {
           password,
           name,
         });
+
         const payload = {
           user: response.data,
         };

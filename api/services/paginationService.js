@@ -1,28 +1,13 @@
 /**
- * Gets default pagination params from request query string
- * and returns it as an object
- * @param {Object} req
- * @returns {Object} pagination default object
+ * Creates default pagination object
+ * @param {Number} page
+ * @param {Number} limit
+ * @returns {Object} pagination
  */
-export default async function getPagination(req) {
-  return new Promise((resolve, reject) => {
-    let { offset, limit } = req.body;
-
-    if (!limit) {
-      return reject('Limit param is required in query string');
-    }
-
-    try {
-      // Pagination
-      offset = parseInt(offset, 10);
-      limit = parseInt(limit > 50 ? 50 : limit, 10);
-
-      return resolve({
-        offset,
-        limit,
-      });
-    } catch (err) {
-      return reject(err);
-    }
-  });
+export default function createPaginationObject(page = 1, limit = 50) {
+  // Pagination
+  return {
+    page: parseInt(page, 10),
+    limit: parseInt(limit > 100 ? 100 : limit, 10),
+  };
 }

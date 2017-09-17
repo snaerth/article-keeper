@@ -15,6 +15,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        error: null,
       };
 
     case IS_NOT_FETCHING:
@@ -38,6 +39,6 @@ export default function (state = initialState, action) {
       };
 
     default:
-      return { ...state };
+      return { ...state, isFetching: false };
   }
 }

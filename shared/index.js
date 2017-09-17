@@ -15,13 +15,13 @@ import Header from './components/header';
 import Home from './routes/home';
 import About from './routes/about';
 import Signout from './routes/signout';
+import ResetPassword from './routes/resetPassword';
 import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Admin from './routes/admin';
 import Logger from './routes/logger';
 
 // Components
-import ResetPassword from './components/auth/resetPassword';
 import * as actionCreators from './components/auth/actions';
 
 // Container Components
@@ -75,7 +75,11 @@ class App extends Component {
             <Route path="/signout" component={Signout} />
             <Route path="/reset/:token" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
-            <Route path="/logs" component={Logger} />
+            <PrivateRoute
+              path="/logs"
+              component={Logger}
+              authenticated={isAdmin}
+            />
             <PrivateRoute
               path="/admin"
               component={Admin}

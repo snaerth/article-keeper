@@ -80,7 +80,7 @@ class Header extends Component {
         <Container>
           <Navigation>
             <NavLink to="/" activeClassName={s.noActive}>Home</NavLink>
-            <div className={s.logo}>ADMIN SYSTEM</div>
+            <span className={s.logo}>ADMIN SYSTEM</span>
             {!authenticated
               ? <NavLink
                 to="/signin"

@@ -16,7 +16,7 @@ export function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode(
     {
-      sub: user.id,
+      sub: user._id, // eslint-disable-line
       iat: timestamp,
     },
     process.env.JWT_SECRET,

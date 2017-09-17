@@ -1,14 +1,15 @@
 // Colors
-$primary-yellow: #facb7a;
+$primary-yellow: rgb(255, 196, 0);
 $primary-purple: #7a29e7;
-$primary-red: #dc886c;
-$primary-green: #9ccc65;
+$primary-red: #fb917b;
+$primary-green: #99ede6;
+$primary-blue: #36c3e0;
 $primary-pink: #f478dc;
 $primary-pink-darker: #cc62ee;
 $primary-black: #000;
 $primary-white: #fff;
 $primary-card: #fff;
-$primary-grey: #ccc;
+$primary-grey: #dfe2e5;
 $primary-background:#fff;
 $secondary-black: #2f3238;
 $navbar-background: #a9bac2;
@@ -44,7 +45,7 @@ $container-gutter-mobile: $gutter;
 $container-gutter-tablet: 50px;
 $container-gutter-desktop: 70px;
 // page dimensions
-$page-width: 1000px;
+$page-width: 1200px;
 $limit: $page-width+($container-gutter-desktop * 2);
 // Fonts
 $font-family: 'Roboto', sans-serif;

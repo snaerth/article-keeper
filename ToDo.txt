@@ -6,9 +6,13 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Refactor auth and fix signin
-  - Fix loggun leit í apa
-  - Klára loggun client - Er næsta verkefni
+  - Klára loggun client og server 
+    - Search by date
+    - Search by date and query,
+    - Client pagination
+    - Fix date test
+  - Finish reset password
+  - Update dependencys
   - Klára önnur test
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur

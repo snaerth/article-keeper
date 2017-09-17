@@ -1,0 +1,28 @@
+@import '~styles/variables';
+
+.container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  float: left;
+  padding: 8px 16px;
+  color: $text-dark;
+  border-radius: $border-radius;
+  text-decoration: none;
+  transition: background-color $hover-transition;
+
+  &.active {
+    color: $primary-white;
+    background-color: $primary-pink;
+  }
+
+  &:hover:not(.active) {
+    background-color: $primary-grey;
+  }
+}

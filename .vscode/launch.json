@@ -23,24 +23,6 @@
         ]
       },
       {
-        "type": "node",
-        "request": "launch",
-        "name": "Run Tests",
-        "program": "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
-        "args": [
-          "--runInBand",
-          "--u"
-        ],
-        "runtimeArgs": [
-          "--inspect-brk"
-        ],
-        "stopOnEntry": false,
-        "cwd": "${workspaceRoot}",
-        "sourceMaps": true,
-        "console": "externalTerminal",
-        "protocol": "auto"
-      },
-      {
         "name": "Jest Debugger",
         "type": "node",
         "request": "launch",
@@ -55,7 +37,7 @@
           "jest-environment-node-debug",
           "--runInBand"
         ],
-        "console": "externalTerminal"
+        "console": "integratedTerminal"
       }
     ]
   }

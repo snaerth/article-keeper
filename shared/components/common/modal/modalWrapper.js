@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
-import styles from './modalWrapper.scss';
+import classnames from 'classnames';
+import s from './modalWrapper.scss';
 import ExitIcon from '../../../assets/images/exit.svg';
 
-const ModalStyles = {
+const Modals = {
   overlay: {
     position: 'fixed',
     top: 0,
@@ -41,9 +42,14 @@ const ModalStyles = {
  * Modal component
  */
 const ModalWrapper = (props) => (
-  <Modal {...props} closeTimeoutMS={300} style={ModalStyles}>
-    <div className={styles.modalInner}>
-      <ExitIcon className={styles.exit} onClick={props.onRequestClose} />
+  <Modal {...props} closeTimeoutMS={300} style={Modals}>
+    <div
+      className={classnames(
+        s.modalInner,
+        props.className ? s[props.className] : '',
+      )}
+    >
+      <ExitIcon className={s.exit} onClick={props.onRequestClose} />
       {props.children}
     </div>
   </Modal>
@@ -52,6 +58,7 @@ const ModalWrapper = (props) => (
 ModalWrapper.propTypes = {
   onRequestClose: PropTypes.func.isRequired,
   children: PropTypes.element,
+  className: PropTypes.string,
 };
 
 export default ModalWrapper;

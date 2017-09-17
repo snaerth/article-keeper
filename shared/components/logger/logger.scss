@@ -1,0 +1,86 @@
+@import '~styles/mixins';
+@import '~styles/variables';
+
+.minHeight200 {
+  min-height: 200px;
+}
+
+.modal {
+  padding: 0 0 2em;
+
+  .row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+
+    > div:nth-child(1) {
+      font-weight: bold;
+    }
+
+    > div:nth-child(2) {
+      font-size: 14px;
+    }
+  }
+
+  .rowPadding {
+    margin: 5px 0;
+    padding: 5px 0;
+  }
+}
+
+.title {
+  font-size: 30px;
+}
+
+.overflowHidden {
+  overflow: hidden;
+}
+
+.searchInputContainer {
+  padding: 0;
+
+  @include viewport(desktop) {
+    max-width: 400px;
+    min-width: 300px;
+  }
+}
+
+.searchIcon {
+  position: relative;
+  top: 3px;
+}
+
+.inputContainer {
+  display: grid;
+  margin-bottom: 15px;
+  grid-template-columns: 1fr;
+  grid-gap: 15px;
+
+  @include viewport(tablet) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include viewport(desktop) {
+    grid-template-columns: 1fr 1.5fr 1fr;
+  }
+
+  > div:last-of-type {
+    margin-left: auto;
+
+    @include viewport(tablet) {
+      margin-left: 0;
+    }
+
+    @include viewport(desktop) {
+      margin-left: auto;
+    }
+
+    button:first-child {
+      margin-right: 15px;
+    }
+  }
+}
+
+.clearButtonContainer {
+  display: inline-block;
+  margin-right: 15px;
+}

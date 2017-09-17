@@ -1,4 +1,4 @@
-import { MODAL_OPEN, MODAL_CLOSE } from './types';
+import { MODAL_OPEN, MODAL_CLOSE, ERROR_UNKNOWN } from './types';
 
 const initialState = {
   modalOpen: false,
@@ -6,10 +6,10 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case 'LOCATION_CHANGE': // Default location change in react-router-redux library
+    case ERROR_UNKNOWN:
       return {
         ...state,
-        modalOpen: false,
+        error: action.payload,
       };
 
     case MODAL_OPEN:

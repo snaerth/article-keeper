@@ -61,10 +61,7 @@ class AuthWrapper extends Component {
         <div className={s.containerOuter}>
           {!renderOrder[0]
             ? <div className={s.back}>
-              <button
-                className="link-slideright"
-                onClick={(e) => this.changeAuthComp(e, 0)}
-              >
+              <button onClick={(e) => this.changeAuthComp(e, 0)}>
                 <ArrowBackward className={s.iconArrowBackward} />
               </button>
             </div>

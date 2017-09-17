@@ -43,6 +43,23 @@
   cursor: pointer;
 }
 
+.back button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    fill: $text-dark;
+
+    &:hover {
+      fill: $primary-black;
+    }
+  }
+}
+
 .iconArrowBackward {
   fill: $text-dark;
 }
@@ -53,7 +70,7 @@
   min-width: 100%;
 
   @include viewport(handset) {
-    padding: 2em 1em 1em;
+    padding: 4em 1em 1em;
   }
 }
 
