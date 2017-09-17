@@ -238,6 +238,7 @@ export async function createFakeLogs(req, res) {
     }
     return res.status(200).send({ success: 'Fake logs successfully created' });
   } catch (err) {
+    log.error({ req, res, err }, 'Error creating fake logs');
     return res.status(500).send({ error: err });
   }
 }
