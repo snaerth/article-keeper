@@ -10,9 +10,10 @@
 }
 
 .pagination a {
-  float: left;
-  padding: 8px 16px;
+  display: inline;
+  padding: 8px 14px;
   color: $text-dark;
+  cursor: pointer;
   border-radius: $border-radius;
   text-decoration: none;
   transition: background-color $hover-transition;
@@ -24,5 +25,26 @@
 
   &:hover:not(.active) {
     background-color: $primary-grey;
+  }
+}
+
+.numberContainer {
+  display: inline-block;
+  position: relative;
+  top: 13px;
+  padding-top: 8px;
+  min-width: 508px;
+  min-height: 37px;
+  overflow: hidden;
+
+  span {
+    display: none;
+    position: absolute;
+    top: 7px;
+    left: 0;
+
+    &.active {
+      display: block;
+    }
   }
 }

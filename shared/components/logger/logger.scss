@@ -64,11 +64,7 @@
   }
 
   > div:last-of-type {
-    margin-left: auto;
-
-    @include viewport(tablet) {
-      margin-left: 0;
-    }
+    margin-left: 0;
 
     @include viewport(desktop) {
       margin-left: auto;
