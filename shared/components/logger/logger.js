@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { DateRangePicker } from 'react-dates';
-import ReactPaginate from 'react-paginate';
 
 import {
   getLogs,
@@ -71,10 +70,6 @@ class Logger extends PureComponent {
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
     this.props.actions.getLogs({ token, queryString });
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.pagination && nextProps.pagination.page !== this.props.pagination.page) || false; // eslint-disable-line
   }
 
   /**
@@ -276,19 +271,10 @@ class Logger extends PureComponent {
                 rowClassName={this.rowClassName}
               />
               {pagination
-                  ? <ReactPaginate
-                    previousLabel={'❮'}
-                    nextLabel={'❯'}
-                    breakLabel={<a role="button" tabIndex="0">...</a>}
-                    breakClassName={'break-me'}
+                  ? <Pagination
                     pageCount={pagination.pages}
                     initialPage={pagination.page}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.paginateHandler}
-                    containerClassName={'pagination'}
-                    subContainerClassName={'pages pagination'}
-                    activeClassName={'active'}
+                    onPageChangeHandler={this.paginateHandler}
                   />
                   : null}
 
