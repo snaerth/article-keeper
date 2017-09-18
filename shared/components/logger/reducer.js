@@ -9,7 +9,7 @@ const initialState = {
   isFetching: false,
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case IS_FETCHING:
       return {
@@ -39,6 +39,6 @@ export default function (state = initialState, action) {
       };
 
     default:
-      return { ...state, isFetching: false };
+      return { ...state };
   }
 }

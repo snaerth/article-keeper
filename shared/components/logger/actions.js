@@ -32,7 +32,7 @@ export function isNotFetchingData() {
  * @param {String} queryString
  */
 export function getLogs({ token, queryString }) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/logs${queryString ? `?${queryString}` : ''}`;
       const config = {
@@ -57,7 +57,7 @@ export function getLogs({ token, queryString }) {
  * @param {String} queryString
  */
 export function getLogsBySearchQuery(token, queryString) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/logs/search/${queryString}`;
       const config = {

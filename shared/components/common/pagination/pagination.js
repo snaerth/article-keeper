@@ -10,9 +10,6 @@ class Pagination extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    console.log(
-      nextProps.initialPage && nextProps.initialPage !== this.props.initialPage,
-    );
     if (
       nextProps.initialPage && nextProps.initialPage !== this.props.initialPage
     ) {
@@ -35,7 +32,7 @@ class Pagination extends Component {
         breakLabel={<a role="button" tabIndex="0">...</a>}
         breakClassName={'break-me'}
         pageCount={pageCount}
-        initialPage={initialPage}
+        initialPage={initialPage - 1}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={onPageChangeHandler}
