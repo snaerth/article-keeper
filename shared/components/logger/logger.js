@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { DateRangePicker } from 'react-dates';
+import ReactPaginate from 'react-paginate';
 
 import {
   getLogs,
@@ -70,6 +71,10 @@ class Logger extends PureComponent {
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
     this.props.actions.getLogs({ token, queryString });
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.pagination && nextProps.pagination.page !== this.props.pagination.page) || false; // eslint-disable-line
   }
 
   /**
@@ -172,10 +177,14 @@ class Logger extends PureComponent {
       }
     }
   }
-
+  /**
+   * Changes current page state and submits
+   *
+   * @param  {Object} page
+   */
   paginateHandler(page) {
     const formData = { ...this.state.formData };
-    formData.page = page;
+    formData.page = page.selected + 1;
     this.setState(() => ({ formData }));
     this.prepareAndSumbit(this.props.search, formData);
   }
@@ -267,13 +276,22 @@ class Logger extends PureComponent {
                 rowClassName={this.rowClassName}
               />
               {pagination
-                  ? <Pagination
-                    page={pagination.page}
-                    pages={pagination.pages}
-                    set={Math.floor(pagination.page / 10)}
-                    onClick={this.paginateHandler}
+                  ? <ReactPaginate
+                    previousLabel={'❮'}
+                    nextLabel={'❯'}
+                    breakLabel={<a role="button" tabIndex="0">...</a>}
+                    breakClassName={'break-me'}
+                    pageCount={pagination.pages}
+                    initialPage={pagination.page}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.paginateHandler}
+                    containerClassName={'pagination'}
+                    subContainerClassName={'pages pagination'}
+                    activeClassName={'active'}
                   />
                   : null}
+
             </div>
             : null}
         </div>
@@ -336,3 +354,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     fields: ['search'],
   })(Logger),
 );
+
+
+// <Pagination
+//                     page={pagination.page}
+//                     pages={pagination.pages}
+//                     set={Math.floor(pagination.page / 10)}
+//                     onClick={this.paginateHandler}
+//                   />

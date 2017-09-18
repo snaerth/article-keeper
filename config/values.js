@@ -398,6 +398,7 @@ const values = {
           'react-ga',
           'react-helmet',
           'react-jobs',
+          'react-paginate',
           'react-router-dom',
           'redux',
           'react-redux',

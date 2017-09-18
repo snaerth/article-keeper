@@ -1,0 +1,30 @@
+@import '~styles/variables';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+
+  li {
+    display: inline;
+
+    &.active a {
+      color: $primary-white;
+      background-color: $primary-pink;
+    }
+  }
+
+  a {
+    display: inline;
+    padding: 8px 14px;
+    color: $text-dark;
+    cursor: pointer;
+    border-radius: $border-radius;
+    text-decoration: none;
+    transition: background-color $hover-transition;
+
+    &:hover:not(.active) {
+      background-color: $primary-grey;
+    }
+  }
+}
