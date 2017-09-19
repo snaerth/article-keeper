@@ -73,12 +73,12 @@ class Signin extends Component {
 
   render() {
     const { handleSubmit, isFetching, onClick, className } = this.props;
-    const { almostHidden, iconArrowForward, textCenter, mb25 } = s;
+    const { iconArrowForward, textCenter, mb25 } = s;
 
     return (
       <div className={className}>
         {isFetching ? <Loader absolute>Signing in...</Loader> : null}
-        <div className={isFetching ? almostHidden : ''}>
+        <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError()}
           <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <MainHeading text="Sign in with email" className="medium" />

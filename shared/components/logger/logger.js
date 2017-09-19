@@ -25,11 +25,14 @@ import Search from '../../assets/images/search.svg';
 
 // Styles
 import tableStyles from '../../styles/table.css';
-import styles from './logger.scss';
+import s from './logger.scss';
 
 class Logger extends PureComponent {
   constructor(props) {
     super(props);
+
+    // Checks if device is smaller than 400px to detect react-dates orientation
+    // const orientation = window.matchMedia('(max-width: 400px)').matches ? 'vertical' : 'horizontal';
 
     this.state = {
       modalOpen: false,
@@ -38,6 +41,7 @@ class Logger extends PureComponent {
       focusedInput: null,
       startDate: null,
       endDate: null,
+      orientation: 'horizontal',
     };
 
     this.rowClassName = this.rowClassName.bind(this);
@@ -137,20 +141,20 @@ class Logger extends PureComponent {
    * @param {String} search
    */
   prepareAndSumbit(search, formData) {
-    this.props.actions.isFetchingData();
-    const { token, actions: { getLogs, getLogsBySearchQuery } } = this.props;
+    const { token, actions } = this.props;
     const { startDate, endDate } = this.state;
     const hasDateRange = startDate && endDate;
-
     let queryString = formDataToQueryString(formData);
 
+    // Set loading
+    actions.isFetchingData();
     if (!search && !hasDateRange) {
       // get all logs
-      getLogs({ token, queryString });
+      actions.getLogs({ token, queryString });
     } else {
       if (search && !hasDateRange) {
         // query by text only
-        getLogsBySearchQuery(token, `${search}?${queryString}`);
+        actions.getLogsBySearchQuery(token, `${search}?${queryString}`);
         return false;
       }
 
@@ -161,13 +165,13 @@ class Logger extends PureComponent {
         if (search) {
           // query by text and date range
           queryString = `${search}?startDate=${sd}&endDate=${ed}`;
-          getLogsBySearchQuery(token, queryString);
+          actions.getLogsBySearchQuery(token, queryString);
           return false;
         }
 
         // query by date range
         queryString = `${sd}/${ed}`;
-        getLogsBySearchQuery(token, queryString);
+        actions.getLogsBySearchQuery(token, queryString);
         return false;
       }
     }
@@ -206,85 +210,87 @@ class Logger extends PureComponent {
       serverError,
       handleSubmit,
       pagination,
+
     } = this.props;
-    const { currentRowData } = this.state;
-    console.log('sdfds');
+    const { currentRowData, orientation } = this.state;
+
     return (
       <div>
         {error ? this.renderError(error) : null}
         {serverError ? this.renderError(serverError) : null}
-        <div className={styles.minHeight200}>
+        <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-          {!isFetching && data
-            ? <div>
-                <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                  <div className={styles.inputContainer}>
-                    <div>
-                      <div className={styles.searchInputContainer}>
-                        <Field
-                          component={Input}
-                          name="search"
-                          id="search"
-                          type="text"
-                          label="Search"
-                          placeholder="Search..."
-                          hidelabel
-                        >
-                          <Search
-                            className={styles.searchIcon}
-                            onClick={handleSubmit(this.handleFormSubmit)}
-                          />
-                        </Field>
-                      </div>
-                    </div>
-                    <div>
-                      <DateRangePicker
-                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                        onDatesChange={({ startDate, endDate }) =>
-                          this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                        onFocusChange={focusedInput =>
-                          this.setState({ focusedInput })}
-                        isOutsideRange={() => false}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        type="button"
-                        text="Clear"
-                        ariaLabel="Clear inputs"
-                        color="grey"
-                        onClick={e => this.clearInputs(e)}
-                      />
-                      <Button
-                        type="submit"
-                        text="Search"
-                        ariaLabel="Search logs"
-                      />
+          {data
+            ? <div className={isFetching ? 'almostHidden' : ''}>
+              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                <div className={s.inputContainer}>
+                  <div>
+                    <div className={s.searchInputContainer}>
+                      <Field
+                        component={Input}
+                        name="search"
+                        id="search"
+                        type="text"
+                        label="Search"
+                        placeholder="Search..."
+                        hidelabel
+                      >
+                        <Search
+                          className={s.searchIcon}
+                          onClick={handleSubmit(this.handleFormSubmit)}
+                        />
+                      </Field>
                     </div>
                   </div>
-                </form>
-                <LoggerTable
-                  list={data.docs}
-                  onRowClickHandler={this.onRowClickHandler}
-                  rowClassName={this.rowClassName}
-                />
-                {Pagination
-                  ? <Pagination
-                      pageCount={pagination.pages}
-                      initialPage={pagination.page}
-                      onPageChangeHandler={this.paginateHandler}
+                  <div>
+                    <DateRangePicker
+                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                      onDatesChange={({ startDate, endDate }) =>
+                        this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                      onFocusChange={(focusedInput) =>
+                        this.setState({ focusedInput })}
+                      isOutsideRange={() => false}
+                      orientation={orientation}
                     />
-                  : null}
-              </div>
-            : null}
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      text="Clear"
+                      ariaLabel="Clear inputs"
+                      color="grey"
+                      onClick={(e) => this.clearInputs(e)}
+                    />
+                    <Button
+                      type="submit"
+                      text="Search"
+                      ariaLabel="Search logs"
+                    />
+                  </div>
+                </div>
+              </form>
+              <LoggerTable
+                list={data.docs}
+                onRowClickHandler={this.onRowClickHandler}
+                rowClassName={this.rowClassName}
+              />
+              <Pagination
+                pageCount={pagination.pages || 1}
+                initialPage={pagination.page || 1}
+                onPageChangeHandler={this.paginateHandler}
+              />
+            </div>
+          : null}
+
         </div>
         <ModalWrapper
           className="mw992"
           isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}
           contentLabel={'Authentication'}
+          exitIconClassName="white"
         >
           <LoggerModalData data={currentRowData} />
         </ModalWrapper>
@@ -332,7 +338,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       { getLogs, isFetchingData, isNotFetchingData, getLogsBySearchQuery },
-      dispatch
+      dispatch,
     ),
   };
 }
@@ -341,5 +347,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'search',
     fields: ['search'],
-  })(Logger)
+  })(Logger),
 );

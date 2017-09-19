@@ -83,7 +83,7 @@ class Signin extends Component {
       <div className={className}>
         {!isFetching ? this.renderMessages() : null}
         {isFetching ? <Loader absolute>Sending email</Loader> : null}
-        <div className={isFetching ? s.almostHidden : ''}>
+        <div className={isFetching ? 'almostHidden' : ''}>
           <form
             onSubmit={handleSubmit(this.handleFormSubmit)}
             noValidate

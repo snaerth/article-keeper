@@ -36,6 +36,7 @@ class Pagination extends Component {
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={onPageChangeHandler}
+        disableInitialCallback
         containerClassName={'pagination'}
         subContainerClassName={'pages pagination'}
         activeClassName={'active'}

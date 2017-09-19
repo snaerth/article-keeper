@@ -49,7 +49,10 @@ const ModalWrapper = (props) => (
         props.className ? s[props.className] : '',
       )}
     >
-      <ExitIcon className={s.exit} onClick={props.onRequestClose} />
+      <ExitIcon
+        className={classnames(s.exit, s[props.exitIconClassName])}
+        onClick={props.onRequestClose}
+      />
       {props.children}
     </div>
   </Modal>
@@ -59,6 +62,7 @@ ModalWrapper.propTypes = {
   onRequestClose: PropTypes.func.isRequired,
   children: PropTypes.element,
   className: PropTypes.string,
+  exitIconClassName: PropTypes.string,
 };
 
 export default ModalWrapper;

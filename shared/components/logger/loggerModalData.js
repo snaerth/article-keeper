@@ -97,6 +97,9 @@ function LoggerModalData({ data }) {
           </div>
           : null}
       </section>
+      <section>
+        Delete
+      </section>
     </article>
   );
 }

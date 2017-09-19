@@ -18,7 +18,7 @@ import validateEmail from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
 import ArrowForward from '../../../assets/images/arrow_forward.svg';
-import styles from './signup.scss';
+import s from './signup.scss';
 
 /**
  * Signup component
@@ -130,12 +130,11 @@ class Signup extends Component {
 
   render() {
     const { handleSubmit, errorMessage, isFetching, className } = this.props;
-    const { almostHidden } = styles;
 
     return (
       <div className={className}>
         {isFetching ? <Loader absolute>Signing up</Loader> : null}
-        <div className={isFetching ? almostHidden : ''}>
+        <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError(errorMessage)}
           <MainHeading text="Sign up with email" className="medium" />
           <form
@@ -177,7 +176,7 @@ class Signup extends Component {
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>
-            <fieldset className={styles.noPaddingBottom}>
+            <fieldset className={s.noPaddingBottom}>
               <Button
                 onClick={() => this.fileUploaderToggler()}
                 text="Add profile image"
@@ -196,14 +195,14 @@ class Signup extends Component {
                 />
                 : null}
             </fieldset>
-            <fieldset className={styles.fieldsetButton}>
+            <fieldset className={s.fieldsetButton}>
               <div>
                 <Button
                   text="Sign up"
                   ariaLabel="Sign up"
                   className="fullWidth"
                 >
-                  <ArrowForward className={styles.iconArrowForward} />
+                  <ArrowForward className={s.iconArrowForward} />
                 </Button>
               </div>
             </fieldset>
