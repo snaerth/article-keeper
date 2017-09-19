@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import shortid from 'shortid';
 
 import Container from '../common/container';
+import Button from '../common/button';
 
 import tableStyles from '../../styles/table.css';
 import styles from './logger.scss';
@@ -42,7 +43,7 @@ function renderObjectRecursive(obj) {
   });
 }
 
-function LoggerModalData({ data }) {
+function LoggerModalData({ data, deleteHandler }) {
   if (!data) return <div>No log avaliable</div>;
   const { _id, time, msg, name, level, err: { stack }, req, res } = data;
 
@@ -98,7 +99,12 @@ function LoggerModalData({ data }) {
           : null}
       </section>
       <section>
-        Delete
+        <Button
+          type="button"
+          text="Delete"
+          ariaLabel="Delete log"
+          onClick={deleteHandler}
+        />
       </section>
     </article>
   );
@@ -106,6 +112,7 @@ function LoggerModalData({ data }) {
 
 LoggerModalData.propTypes = {
   data: PropTypes.object,
+  deleteHandler: PropTypes.func.isRequired,
 };
 
 export default LoggerModalData;

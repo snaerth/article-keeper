@@ -50,6 +50,7 @@ class Logger extends PureComponent {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.clearInputs = this.clearInputs.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
   static propTypes = {
@@ -176,6 +177,7 @@ class Logger extends PureComponent {
       }
     }
   }
+
   /**
    * Changes current page state and submits
    *
@@ -186,6 +188,15 @@ class Logger extends PureComponent {
     formData.page = data.selected + 1;
     this.setState(() => ({ formData }));
     this.prepareAndSumbit(this.props.search, formData);
+  }
+
+  /**
+   * Delete handler to delete log item
+   *
+   * @param  {String} id
+   */
+  deleteHandler(id) {
+    console.log(id);
   }
 
   /**
@@ -292,7 +303,7 @@ class Logger extends PureComponent {
           contentLabel={'Authentication'}
           exitIconClassName="white"
         >
-          <LoggerModalData data={currentRowData} />
+          <LoggerModalData data={currentRowData} deleteHandler={this.deleteHandler} />
         </ModalWrapper>
       </div>
     );

@@ -7,8 +7,7 @@ TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
   - Klára loggun client og server
-    - Client pagination - Færa pagination yfir í pagination component
-    - Fix date test
+    - Log setja delete aðgerða og takka
   - Finish reset password
   - Update dependencys
   - Klára önnur test
