@@ -70,6 +70,21 @@
   }
 }
 
+.red {
+  color: $primary-white;
+  background: $primary-red;
+
+  &:hover {
+    color: $primary-white;
+    background: darken($primary-red, 15%);
+  }
+
+  &:focus {
+    color: $primary-white;
+    background: darken($primary-red, 15%);
+  }
+}
+
 .default {
   background: $button-background;
 

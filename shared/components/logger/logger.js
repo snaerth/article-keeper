@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,6 +10,7 @@ import {
   isFetchingData,
   isNotFetchingData,
   getLogsBySearchQuery,
+  deleteLogById,
 } from './actions';
 import LoggerTable from './loggerTable';
 import LoggerModalData from './loggerModalData';
@@ -27,12 +28,9 @@ import Search from '../../assets/images/search.svg';
 import tableStyles from '../../styles/table.css';
 import s from './logger.scss';
 
-class Logger extends PureComponent {
+class Logger extends Component {
   constructor(props) {
     super(props);
-
-    // Checks if device is smaller than 400px to detect react-dates orientation
-    // const orientation = window.matchMedia('(max-width: 400px)').matches ? 'vertical' : 'horizontal';
 
     this.state = {
       modalOpen: false,
@@ -41,7 +39,6 @@ class Logger extends PureComponent {
       focusedInput: null,
       startDate: null,
       endDate: null,
-      orientation: 'horizontal',
     };
 
     this.rowClassName = this.rowClassName.bind(this);
@@ -70,7 +67,12 @@ class Logger extends PureComponent {
    * Fetch logs
    */
   componentDidMount() {
-    this.props.actions.isFetchingData();
+    // Checks if device is smaller than 620px to detect react-dates orientation
+    const orientation = window.matchMedia('(max-width: 620px)').matches
+      ? 'vertical'
+      : 'horizontal';
+
+    this.props.actions.isFetchingData(orientation);
     const { token } = this.props;
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
@@ -196,7 +198,11 @@ class Logger extends PureComponent {
    * @param  {String} id
    */
   deleteHandler(id) {
-    console.log(id);
+    const { actions, token } = this.props;
+    const queryString = formDataToQueryString(this.state.formData);
+    this.closeModal();
+    actions.deleteLogById(this.props.token, id);
+    actions.getLogs({ token, queryString });
   }
 
   /**
@@ -221,9 +227,9 @@ class Logger extends PureComponent {
       serverError,
       handleSubmit,
       pagination,
-
+      orientation,
     } = this.props;
-    const { currentRowData, orientation } = this.state;
+    const { currentRowData } = this.state;
 
     return (
       <div>
@@ -233,67 +239,67 @@ class Logger extends PureComponent {
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
           {data
             ? <div className={isFetching ? 'almostHidden' : ''}>
-              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                <div className={s.inputContainer}>
-                  <div>
-                    <div className={s.searchInputContainer}>
-                      <Field
-                        component={Input}
-                        name="search"
-                        id="search"
-                        type="text"
-                        label="Search"
-                        placeholder="Search..."
-                        hidelabel
-                      >
-                        <Search
-                          className={s.searchIcon}
-                          onClick={handleSubmit(this.handleFormSubmit)}
-                        />
-                      </Field>
+                <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                  <div className={s.inputContainer}>
+                    <div>
+                      <div className={s.searchInputContainer}>
+                        <Field
+                          component={Input}
+                          name="search"
+                          id="search"
+                          type="text"
+                          label="Search"
+                          placeholder="Search..."
+                          hidelabel
+                        >
+                          <Search
+                            className={s.searchIcon}
+                            onClick={handleSubmit(this.handleFormSubmit)}
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                    <div>
+                      <DateRangePicker
+                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                        onDatesChange={({ startDate, endDate }) =>
+                          this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                        onFocusChange={focusedInput =>
+                          this.setState({ focusedInput })}
+                        isOutsideRange={() => false}
+                        orientation={orientation || 'horizontal'}
+                      />
+                    </div>
+                    <div>
+                      <Button
+                        type="button"
+                        text="Clear"
+                        ariaLabel="Clear inputs"
+                        color="grey"
+                        onClick={e => this.clearInputs(e)}
+                      />
+                      <Button
+                        type="submit"
+                        text="Search"
+                        ariaLabel="Search logs"
+                      />
                     </div>
                   </div>
-                  <div>
-                    <DateRangePicker
-                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                      onDatesChange={({ startDate, endDate }) =>
-                        this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                      onFocusChange={(focusedInput) =>
-                        this.setState({ focusedInput })}
-                      isOutsideRange={() => false}
-                      orientation={orientation}
-                    />
-                  </div>
-                  <div>
-                    <Button
-                      type="button"
-                      text="Clear"
-                      ariaLabel="Clear inputs"
-                      color="grey"
-                      onClick={(e) => this.clearInputs(e)}
-                    />
-                    <Button
-                      type="submit"
-                      text="Search"
-                      ariaLabel="Search logs"
-                    />
-                  </div>
-                </div>
-              </form>
-              <LoggerTable
-                list={data.docs}
-                onRowClickHandler={this.onRowClickHandler}
-                rowClassName={this.rowClassName}
-              />
-              <Pagination
-                pageCount={pagination.pages || 1}
-                initialPage={pagination.page || 1}
-                onPageChangeHandler={this.paginateHandler}
-              />
-            </div>
-          : null}
+                </form>
+                <LoggerTable
+                  list={data.docs}
+                  onRowClickHandler={this.onRowClickHandler}
+                  rowClassName={this.rowClassName}
+                />
+                <Pagination
+                  pageCount={pagination.pages || 1}
+                  initialPage={pagination.page || 1}
+                  onPageChangeHandler={this.paginateHandler}
+                />
+              </div>
+            : null}
 
         </div>
         <ModalWrapper
@@ -303,7 +309,10 @@ class Logger extends PureComponent {
           contentLabel={'Authentication'}
           exitIconClassName="white"
         >
-          <LoggerModalData data={currentRowData} deleteHandler={this.deleteHandler} />
+          <LoggerModalData
+            data={currentRowData}
+            deleteHandler={this.deleteHandler}
+          />
         </ModalWrapper>
       </div>
     );
@@ -317,7 +326,7 @@ class Logger extends PureComponent {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data } = state.logs;
+  const { error, isFetching, data, orientation } = state.logs;
   const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   let pagination = {};
@@ -336,7 +345,16 @@ function mapStateToProps(state) {
     search = state.form.search.values.search;
   }
 
-  return { error, serverError, isFetching, token, data, pagination, search };
+  return {
+    error,
+    serverError,
+    isFetching,
+    token,
+    data,
+    pagination,
+    search,
+    orientation,
+  };
 }
 
 /**
@@ -348,8 +366,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { getLogs, isFetchingData, isNotFetchingData, getLogsBySearchQuery },
-      dispatch,
+      {
+        getLogs,
+        isFetchingData,
+        isNotFetchingData,
+        getLogsBySearchQuery,
+        deleteLogById,
+      },
+      dispatch
     ),
   };
 }
@@ -358,5 +382,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'search',
     fields: ['search'],
-  })(Logger),
+  })(Logger)
 );

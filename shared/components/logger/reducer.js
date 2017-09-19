@@ -1,12 +1,15 @@
 import {
   GET_LOGS_SUCCESS,
   GET_LOGS_ERROR,
+  DELETE_LOGS_SUCCESS,
+  DELETE_LOGS_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
 } from './types';
 
 const initialState = {
   isFetching: false,
+  orientation: 'horizontal',
 };
 
 export default function(state = initialState, action) {
@@ -15,6 +18,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        orientation: action.payload,
         error: null,
       };
 
@@ -35,6 +39,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+        error: action.payload,
+      };
+
+    case DELETE_LOGS_SUCCESS:
+      return {
+        ...state,
+        deleteStatus: action.payload,
+      };
+
+    case DELETE_LOGS_ERROR:
+      return {
+        ...state,
         error: action.payload,
       };
 

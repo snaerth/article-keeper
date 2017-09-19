@@ -83,29 +83,34 @@ function LoggerModalData({ data, deleteHandler }) {
         </div>
         {req
           ? <div className={classnames(tableStyles.tableOddRow, styles.row)}>
-            <div>Request</div>
-            <div className={styles.overflowHidden}>
-              {renderObjectRecursive(req)}
+              <div>Request</div>
+              <div className={styles.overflowHidden}>
+                {renderObjectRecursive(req)}
+              </div>
             </div>
-          </div>
           : null}
         {res
           ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
-            <div>Response</div>
-            <div className={styles.overflowHidden}>
-              {renderObjectRecursive(res)}
+              <div>Response</div>
+              <div className={styles.overflowHidden}>
+                {renderObjectRecursive(res)}
+              </div>
             </div>
-          </div>
           : null}
       </section>
-      <section>
-        <Button
-          type="button"
-          text="Delete"
-          ariaLabel="Delete log"
-          onClick={deleteHandler}
-        />
-      </section>
+      <footer>
+        <Container>
+          <div className={styles.deleteButtonContainer}>
+            <Button
+              type="button"
+              text="Delete"
+              ariaLabel="Delete log"
+              color="red"
+              onClick={() => deleteHandler(_id)}
+            />
+          </div>
+        </Container>
+      </footer>
     </article>
   );
 }

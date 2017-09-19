@@ -40,7 +40,7 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             width={210}
           />
           <Column
-            cellDataGetter={(columnData) =>
+            cellDataGetter={columnData =>
               formatISODateTime(columnData.rowData.time)}
             className={tableStyles.tableColumn}
             label="Time"
@@ -48,7 +48,7 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             width={180}
           />
           <Column
-            cellDataGetter={(columnData) => levels(columnData.rowData.level)}
+            cellDataGetter={columnData => levels(columnData.rowData.level)}
             label="Type"
             dataKey="level"
             width={80}

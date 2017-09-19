@@ -14,15 +14,15 @@ import {
  * @param {Func} requireAuth - authentication helper function
  * @returns {*}
  */
-export default function (app, requireAuth) {
+export default function(app, requireAuth) {
   app.get('/logs', [requireAuth, isAdmin], getLogs);
   app.get('/logs/search/:query', [requireAuth, isAdmin], getLogsBySearchQuery);
   app.get(
     '/logs/search/:startDate/:endDate',
     [requireAuth, isAdmin],
-    getLogsByDateRange,
+    getLogsByDateRange
   );
   app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
-  app.delete('/log/:id', [requireAuth, isAdmin], deleteLogsById);
+  app.delete('/logs/:id', [requireAuth, isAdmin], deleteLogsById);
   app.post('/logs/create-fake-logs', [requireAuth, isAdmin], createFakeLogs);
 }

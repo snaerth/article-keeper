@@ -2,6 +2,8 @@ import axios from 'axios';
 import {
   GET_LOGS_SUCCESS,
   GET_LOGS_ERROR,
+  DELETE_LOGS_SUCCESS,
+  DELETE_LOGS_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
 } from './types';
@@ -10,10 +12,11 @@ import { authError } from '../../common/actions';
 /**
  * Is fetching data state
  *
+ * @params {String} orientation vertical or horizontal
  * @returns {Object}
  */
-export function isFetchingData() {
-  return { type: IS_FETCHING };
+export function isFetchingData(orientation) {
+  return { type: IS_FETCHING, payload: orientation };
 }
 
 /**
@@ -71,6 +74,31 @@ export function getLogsBySearchQuery(token, queryString) {
       dispatch({ type: GET_LOGS_SUCCESS, payload: res.data });
     } catch (error) {
       dispatch(authError(GET_LOGS_ERROR, error));
+    }
+  };
+}
+
+/**
+ * Delete single log by id
+ *
+ * @param {String} token
+ * @param {String} id
+ */
+export function deleteLogById(token, id) {
+  return async dispatch => {
+    try {
+      const url = `/api/logs/${id}`;
+      const config = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      const res = await axios.delete(url, config);
+      // Dispatch GET_LOGS_SUCCESS action to logReducer
+      dispatch({ type: DELETE_LOGS_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch(authError(DELETE_LOGS_ERROR, error));
     }
   };
 }
