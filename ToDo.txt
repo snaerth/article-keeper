@@ -6,6 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Remove removeUserProps, use mongoose select instead
   - Users
     - Create + test
     - Update + test
