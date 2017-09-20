@@ -16,7 +16,7 @@ import { authError } from '../../common/actions';
  * @returns {Object}
  */
 export function isFetchingData(orientation) {
-  return { type: IS_FETCHING, payload: orientation };
+  return { type: IS_FETCHING, payload: orientation || 'horizontal' };
 }
 
 /**
@@ -35,7 +35,7 @@ export function isNotFetchingData() {
  * @param {String} queryString
  */
 export function getLogs({ token, queryString }) {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const url = `/api/logs${queryString ? `?${queryString}` : ''}`;
       const config = {
@@ -60,7 +60,7 @@ export function getLogs({ token, queryString }) {
  * @param {String} queryString
  */
 export function getLogsBySearchQuery(token, queryString) {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const url = `/api/logs/search/${queryString}`;
       const config = {
@@ -85,7 +85,7 @@ export function getLogsBySearchQuery(token, queryString) {
  * @param {String} id
  */
 export function deleteLogById(token, id) {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const url = `/api/logs/${id}`;
       const config = {

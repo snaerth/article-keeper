@@ -61,6 +61,7 @@ class Logger extends Component {
     reset: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
     search: PropTypes.string,
+    orientation: PropTypes.string.isRequired,
   };
 
   /**
@@ -239,68 +240,67 @@ class Logger extends Component {
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
           {data
             ? <div className={isFetching ? 'almostHidden' : ''}>
-                <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                  <div className={s.inputContainer}>
-                    <div>
-                      <div className={s.searchInputContainer}>
-                        <Field
-                          component={Input}
-                          name="search"
-                          id="search"
-                          type="text"
-                          label="Search"
-                          placeholder="Search..."
-                          hidelabel
-                        >
-                          <Search
-                            className={s.searchIcon}
-                            onClick={handleSubmit(this.handleFormSubmit)}
-                          />
-                        </Field>
-                      </div>
-                    </div>
-                    <div>
-                      <DateRangePicker
-                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                        onDatesChange={({ startDate, endDate }) =>
-                          this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                        onFocusChange={focusedInput =>
-                          this.setState({ focusedInput })}
-                        isOutsideRange={() => false}
-                        orientation={orientation || 'horizontal'}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        type="button"
-                        text="Clear"
-                        ariaLabel="Clear inputs"
-                        color="grey"
-                        onClick={e => this.clearInputs(e)}
-                      />
-                      <Button
-                        type="submit"
-                        text="Search"
-                        ariaLabel="Search logs"
-                      />
+              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                <div className={s.inputContainer}>
+                  <div>
+                    <div className={s.searchInputContainer}>
+                      <Field
+                        component={Input}
+                        name="search"
+                        id="search"
+                        type="text"
+                        label="Search"
+                        placeholder="Search..."
+                        hidelabel
+                      >
+                        <Search
+                          className={s.searchIcon}
+                          onClick={handleSubmit(this.handleFormSubmit)}
+                        />
+                      </Field>
                     </div>
                   </div>
-                </form>
-                <LoggerTable
-                  list={data.docs}
-                  onRowClickHandler={this.onRowClickHandler}
-                  rowClassName={this.rowClassName}
-                />
-                <Pagination
-                  pageCount={pagination.pages || 1}
-                  initialPage={pagination.page || 1}
-                  onPageChangeHandler={this.paginateHandler}
-                />
-              </div>
+                  <div>
+                    <DateRangePicker
+                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                      onDatesChange={({ startDate, endDate }) =>
+                        this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                      onFocusChange={(focusedInput) =>
+                        this.setState({ focusedInput })}
+                      isOutsideRange={() => false}
+                      orientation={orientation || 'horizontal'}
+                    />
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      text="Clear"
+                      ariaLabel="Clear inputs"
+                      color="grey"
+                      onClick={(e) => this.clearInputs(e)}
+                    />
+                    <Button
+                      type="submit"
+                      text="Search"
+                      ariaLabel="Search logs"
+                    />
+                  </div>
+                </div>
+              </form>
+              <LoggerTable
+                list={data.docs}
+                onRowClickHandler={this.onRowClickHandler}
+                rowClassName={this.rowClassName}
+              />
+              <Pagination
+                pageCount={pagination.pages || 1}
+                initialPage={pagination.page || 1}
+                onPageChangeHandler={this.paginateHandler}
+              />
+            </div>
             : null}
-
         </div>
         <ModalWrapper
           className="mw992"
@@ -373,7 +373,7 @@ function mapDispatchToProps(dispatch) {
         getLogsBySearchQuery,
         deleteLogById,
       },
-      dispatch
+      dispatch,
     ),
   };
 }
@@ -382,5 +382,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'search',
     fields: ['search'],
-  })(Logger)
+  })(Logger),
 );

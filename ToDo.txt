@@ -6,8 +6,6 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Klára loggun client og server
-    - Log setja delete aðgerða og takka
   - Finish reset password
   - Update dependencys
   - Klára önnur test

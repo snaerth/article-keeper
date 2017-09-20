@@ -9,15 +9,6 @@ class Pagination extends Component {
     onPageChangeHandler: PropTypes.func.isRequired,
   };
 
-  shouldComponentUpdate(nextProps) {
-    if (
-      nextProps.initialPage && nextProps.initialPage !== this.props.initialPage
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   render() {
     const { initialPage, pageCount, onPageChangeHandler } = this.props;
 
