@@ -2,24 +2,34 @@ import mongoose from 'mongoose';
 import Log from '../models/log';
 import log from '../services/logService';
 import createPaginationObject from '../services/paginationService';
+import dbSortValues from '../services/dbService';
 import parseDateYearMonthDay from '../utils/date';
+
+// Sort values for sorting in mongodb
+const sortVals = dbSortValues();
 
 /**
  * Enriches pagination object with sort and other pagination properties
  *
  * @param {Object} pagination - { limit: Number, offset: Number }
- * @param {String} msg
- * @param {String} level
- * @param {String} name
- * @param {String} time
+ * @param {String|Number} msg
+ * @param {String|Number} level
+ * @param {String|Number} name
+ * @param {String|Number} time
  * @returns {Object} sort
  */
-function addToPaginationObject(pagination, msg, level, name, time) {
+function addToPaginationObject(
+  pagination,
+  msg = 1,
+  level = 1,
+  name = 1,
+  time = 1,
+) {
   const sort = {};
-  if (msg) sort.msg = msg;
-  if (level) sort.level = level;
-  if (name) sort.name = name;
-  if (time) sort.time = time;
+  if (sortVals.includes(msg)) sort.msg = msg;
+  if (sortVals.includes(level)) sort.level = level;
+  if (sortVals.includes(name)) sort.name = name;
+  if (sortVals.includes(time)) sort.time = time;
   if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
@@ -91,7 +101,7 @@ export async function getLogs(req, res) {
     const result = await Log.paginate({}, pagination);
     return res.status(200).send(result);
   } catch (err) {
-    log.error({ req, res, err }, 'Error getting logs from database');
+    log.error({ req, res, err }, 'Error getting logs');
     return res.status(500).send({ error: err });
   }
 }
@@ -163,7 +173,7 @@ export async function getLogsBySearchQuery(req, res) {
     const result = await Log.paginate(searchQuery, pagination);
     return res.status(200).send(result);
   } catch (err) {
-    log.error({ req, res, err }, 'Error searching logs by query from database');
+    log.error({ req, res, err }, 'Error searching logs by query');
     return res.status(500).send({ error: err });
   }
 }
@@ -208,10 +218,7 @@ export async function getLogsByDateRange(req, res) {
 
     return res.status(200).send(result);
   } catch (err) {
-    log.error(
-      { req, res, err },
-      'Error searching logs by date range query from database',
-    );
+    log.error({ req, res, err }, 'Error searching logs by date range query');
     return res.status(500).send({ error: err });
   }
 }

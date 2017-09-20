@@ -18,8 +18,8 @@ export default function (app, requireAuth) {
   app.post('/users', [requireAuth, isAdmin], createUser);
   // Get all users
   app.get('/users', [requireAuth, isAdmin], getUsers);
-  // Get user by id
-  app.get('/users/:id', [requireAuth, isAdmin], getUser);
+  // Get user by search query
+  app.get('/users/:query', [requireAuth, isAdmin], getUser);
   // Update user
   app.put('/users/:id', [requireAuth, isAdmin], updateUser);
   // Delete user

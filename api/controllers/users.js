@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import jwt from 'jwt-simple';
 import path from 'path';
 import uuid from 'uuid/v1';
@@ -5,8 +6,29 @@ import User from '../models/user';
 import { resizeImage } from '../services/imageService';
 import createPaginationObject from '../services/paginationService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
+import dbSortValues from '../services/dbService';
 import log from '../services/logService';
 import { removeUserProps, validateSignup } from './authentication';
+
+// Sort values for sorting in db
+const sortVals = dbSortValues();
+// Properties to select from user collection in db
+const select = {
+  name: 1,
+  email: 1,
+  createdAt: 1,
+  roles: 1,
+  imageUrl: 1,
+  thumbnailUrl: 1,
+  dateOfBirth: 1,
+  profile: 1,
+  'facebook.email': 1,
+  'facebook.name': 1,
+  'twitter.email': 1,
+  'twitter.name': 1,
+  'google.email': 1,
+  'google.name': 1,
+};
 
 /**
  * Gets token for user
@@ -45,16 +67,21 @@ export function isAdmin(req, res, next) {
  * Enriches pagination object with sort and other pagination properties
  *
  * @param {Object} pagination - { limit: Number, offset: Number }
- * @param {String} name
- * @param {String} email
- * @param {String} dateOfBirth
+ * @param {String|Number} name
+ * @param {String|Number} email
+ * @param {String|Number} dateOfBirth
  * @returns {Object} sort
  */
-function addToPaginationObject(pagination, name, email, dateOfBirth) {
+function addToPaginationObject(
+  pagination,
+  name = 1,
+  email = 1,
+  dateOfBirth = 1,
+) {
   const sort = {};
-  if (name) sort.name = name;
-  if (email) sort.email = email;
-  if (dateOfBirth) sort.dateOfBirth = dateOfBirth;
+  if (sortVals.includes(name)) sort.name = name;
+  if (sortVals.includes(email)) sort.email = email;
+  if (sortVals.includes(dateOfBirth)) sort.dateOfBirth = dateOfBirth;
   if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
@@ -369,7 +396,7 @@ export async function deleteUser(req, res) {
 }
 
 /**
- * Get user by id
+ * Get user by search query
  *
  * @param {Object} req
  * @param {Object} res
@@ -377,7 +404,40 @@ export async function deleteUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getUser(req, res) {
-  return res.status(200).send('Get user');
+  const { page, limit } = req.query;
+  const { query } = req.params;
+
+  if (!query) {
+    return res.status(422).send({
+      error: 'Parameter query is required to perform user search',
+    });
+  }
+  // Get default pagination object
+  const pagination = createPaginationObject(page, limit);
+  // Only select these properties
+  pagination.select = select;
+
+  const searchQuery = {};
+  const $or = [];
+  // Check if searchQuery is valid mongo ObjectId
+  if (query.match(/^[0-9a-fA-F]{24}$/)) {
+    // Search query by id
+    $or.push({ _id: mongoose.Types.ObjectId(query) });
+  } else {
+    const reExp = new RegExp(query, 'i');
+    // Search query for for other User properties
+    $or.push({ name: reExp }, { email: reExp });
+  }
+
+  try {
+    searchQuery.$or = $or;
+    // Fetch user by search query from database
+    const result = await User.paginate(searchQuery, pagination);
+    return res.status(200).send(result);
+  } catch (err) {
+    log.error({ req, res, err }, 'Error getting user by search query');
+    return res.status(500).send({ error: err });
+  }
 }
 
 /**
@@ -396,29 +456,14 @@ export async function getUsers(req, res) {
   // Enrich pagination object
   pagination = addToPaginationObject(pagination, name, email, dateOfBirth);
   // Only select these properties
-  pagination.select = {
-    name: 1,
-    email: 1,
-    createdAt: 1,
-    roles: 1,
-    imageUrl: 1,
-    thumbnailUrl: 1,
-    dateOfBirth: 1,
-    profile: 1,
-    'facebook.email': 1,
-    'facebook.name': 1,
-    'twitter.email': 1,
-    'twitter.name': 1,
-    'google.email': 1,
-    'google.name': 1,
-  };
+  pagination.select = select;
 
   try {
     // Fetch Users from database
     const result = await User.paginate({}, pagination);
     return res.status(200).send(result);
   } catch (err) {
-    log.error({ req, res, err }, 'Error getting logs from database');
+    log.error({ req, res, err }, 'Error getting users');
     return res.status(500).send({ error: err });
   }
 }

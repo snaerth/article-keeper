@@ -6,6 +6,13 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Users
+    - Create + test
+    - Update + test
+    - Get user + test => test is no over
+    - Get users + test  => test is no over
+    - delete user + test
+    - put + test
   - Finish reset password
   - Update dependencys
   - Klára önnur test
