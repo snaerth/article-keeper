@@ -1,14 +1,29 @@
-import { uploadUserImage, updateUser } from '../controllers/users';
+import {
+  updateUser,
+  createUser,
+  deleteUser,
+  getUser,
+  getUsers,
+  uploadUserImage,
+  isAdmin,
+} from '../controllers/users';
 
 /**
- * Default Admin routes
+ * Default User routes
  * @param {Object} app - Express app referece
  * @param {Func} requireAuth - authentication helper function
- * @returns {undefined}
  */
 export default function (app, requireAuth) {
-  // Upload images
-  app.post('/userimage', [requireAuth], uploadUserImage);
+  // Create user
+  app.post('/users', [requireAuth, isAdmin], createUser);
+  // Get all users
+  app.get('/users', [requireAuth, isAdmin], getUsers);
+  // Get user by id
+  app.get('/users/:id', [requireAuth, isAdmin], getUser);
   // Update user
-  app.put('/user', requireAuth, updateUser);
+  app.put('/users/:id', [requireAuth, isAdmin], updateUser);
+  // Delete user
+  app.delete('/users/:id', [requireAuth, isAdmin], deleteUser);
+  // Upload images
+  app.post('/users/userimage', [requireAuth, isAdmin], uploadUserImage);
 }

@@ -22,7 +22,6 @@ import { authError } from '../../common/actions';
  * Is fetching data state
  *
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function isFetching() {
   return { type: IS_FETCHING };
@@ -32,7 +31,6 @@ export function isFetching() {
  * Is not fetching data state
  *
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function isNotFetching() {
   return { type: IS_NOT_FETCHING };
@@ -43,7 +41,6 @@ export function isNotFetching() {
  *
  * @param {Object} image
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function setPreviewUserImage(image) {
   return { type: SET_PREVIEW_USER_IMAGE, payload: image };
@@ -55,8 +52,6 @@ export function setPreviewUserImage(image) {
  * if auth error dispatch error auth
  *
  * @param {Object} email, password
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
  */
 export function signinUser({ email, password }) {
   return async (dispatch) => {
@@ -81,13 +76,11 @@ export function signinUser({ email, password }) {
 /**
  * Signup Post request
  * Post request to /api/signup to signup user
- * Post request to /api/userimage to save user image
+ * Post request to /api/users/userimage to save user image
  * Stores token in localStorage if response success and dispatches action AUTH_USER
  * if auth error dispatch error auth
  *
  * @param {Object} email, password, name, formData
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
  */
 export function signupUser({ email, password, name, formData }) {
   return (dispatch) =>
@@ -119,7 +112,7 @@ export function signupUser({ email, password, name, formData }) {
           },
         };
 
-        const res = await axios.post('/api/userimage', formData, config);
+        const res = await axios.post('/api/users/userimage', formData, config);
         // Dispatch USER_UPDATED action to authReducer
         dispatch({ type: USER_UPDATED, payload: res.data });
         // Save token to localStorage
@@ -137,14 +130,12 @@ export function signupUser({ email, password, name, formData }) {
 
 /**
  * Add user image to user
- * Post request to /api/userimage to save user image
+ * Post request to /api/users/userimage to save user image
  * if success dispatch action ADD_USER_IMAGE_SUCCESS
  * if auth error dispatch error auth
  *
  * @param {Object} formData
  * @param {String} token
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
  */
 export function addUserImage(formData, token) {
   return async (dispatch) => {
@@ -155,7 +146,11 @@ export function addUserImage(formData, token) {
     };
 
     try {
-      const response = await axios.post('/api/userimage', formData, config);
+      const response = await axios.post(
+        '/api/users/userimage',
+        formData,
+        config,
+      );
       // Dispatch USER_UPDATED action to authReducer
       dispatch({ type: USER_UPDATED, payload: response.data });
       // Save token to localStorage
@@ -170,7 +165,6 @@ export function addUserImage(formData, token) {
  * Open modal action createor
  *
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function openModal() {
   return { type: MODAL_OPEN };
@@ -180,7 +174,6 @@ export function openModal() {
  * Close modal action createor
  *
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function closeModal() {
   return { type: MODAL_CLOSE };
@@ -190,7 +183,6 @@ export function closeModal() {
  * Resets image and error for auth
  *
  * @returns {Object}
- * @author Snær Seljan Þóroddsson
  */
 export function clean() {
   return { type: CLEAN };
@@ -200,7 +192,6 @@ export function clean() {
  * Signs out user and removes token key from localStorage
  *
  * @returns {Object} action
- * @author Snær Seljan Þóroddsson
  */
 export function signoutUser() {
   return async (dispatch) => {
@@ -220,8 +211,6 @@ export function signoutUser() {
  * Forgot password
  *
  * @param {String} email
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
  */
 export function forgotPassword({ email }) {
   return async (dispatch) => {
@@ -239,8 +228,6 @@ export function forgotPassword({ email }) {
  * Reset password
  *
  * @param {String} password
- * @returns {undefined}
- * @author Snær Seljan Þóroddsson
  */
 export function resetPassword({ password, token }) {
   return async (dispatch) => {

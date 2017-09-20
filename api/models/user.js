@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 import bcrypt from 'bcrypt-nodejs';
 import Promise from 'bluebird';
 
@@ -59,7 +60,6 @@ const schema = {
     enum: ['FACEBOOK', 'TWITTER', 'GOOGLE', 'LOCAL'],
     default: 'LOCAL',
   },
-
   facebook: {
     id: String,
     token: String,
@@ -85,6 +85,14 @@ const schema = {
 
 // Define user model
 const userSchema = new Schema(schema);
+
+// Pagination
+mongoosePaginate.paginate.options = {
+  limit: 50,
+};
+
+// Add mongoose pagination plugin to schema
+userSchema.plugin(mongoosePaginate);
 
 // On save, encrypt password Before saving user model, run this function
 userSchema.pre('save', function preSave(next) {

@@ -3,6 +3,7 @@ import path from 'path';
 import uuid from 'uuid/v1';
 import User from '../models/user';
 import { resizeImage } from '../services/imageService';
+import createPaginationObject from '../services/paginationService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
 import log from '../services/logService';
 import { removeUserProps, validateSignup } from './authentication';
@@ -21,6 +22,44 @@ export function tokenForUser(user) {
     },
     process.env.JWT_SECRET,
   );
+}
+
+/**
+ * Check whether user has admin roles
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Func} next
+ * @returns {undefined
+ * @author Snær Seljan Þóroddsson
+ */
+export function isAdmin(req, res, next) {
+  if (req.user && req.user.roles.includes('admin')) {
+    return next();
+  }
+
+  return res.status(401).send({ error: 'Unauthorized' });
+}
+
+/**
+ * Enriches pagination object with sort and other pagination properties
+ *
+ * @param {Object} pagination - { limit: Number, offset: Number }
+ * @param {String} name
+ * @param {String} email
+ * @param {String} dateOfBirth
+ * @returns {Object} sort
+ */
+function addToPaginationObject(pagination, name, email, dateOfBirth) {
+  const sort = {};
+  if (name) sort.name = name;
+  if (email) sort.email = email;
+  if (dateOfBirth) sort.dateOfBirth = dateOfBirth;
+  if (Object.keys(sort).length !== 0) {
+    pagination.sort = sort;
+  }
+
+  return pagination;
 }
 
 /**
@@ -135,23 +174,6 @@ export async function uploadUserImage(req, res) {
   } else {
     return res.status(422).send({ error: 'Image required' });
   }
-}
-
-/**
- * Check whether user has admin roles
- *
- * @param {Object} req
- * @param {Object} res
- * @param {Func} next
- * @returns {undefined
- * @author Snær Seljan Þóroddsson
- */
-export function isAdmin(req, res, next) {
-  if (req.user && req.user.roles.includes('admin')) {
-    return next();
-  }
-
-  return res.status(401).send({ error: 'Unauthorized' });
 }
 
 /**
@@ -320,4 +342,83 @@ export async function updateUserPassword({ token, password }) {
       return reject(err);
     }
   });
+}
+
+/**
+ * Create user
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export async function createUser(req, res) {
+  return res.status(200).send('Create user');
+}
+
+/**
+ * Delete user
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export async function deleteUser(req, res) {
+  return res.status(200).send('Delete user');
+}
+
+/**
+ * Get user by id
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export async function getUser(req, res) {
+  return res.status(200).send('Get user');
+}
+
+/**
+ * Get all users
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export async function getUsers(req, res) {
+  const { limit, name, email, dateOfBirth, page } = req.query;
+
+  // Get default pagination object
+  let pagination = createPaginationObject(page, limit);
+  // Enrich pagination object
+  pagination = addToPaginationObject(pagination, name, email, dateOfBirth);
+  // Only select these properties
+  pagination.select = {
+    name: 1,
+    email: 1,
+    createdAt: 1,
+    roles: 1,
+    imageUrl: 1,
+    thumbnailUrl: 1,
+    dateOfBirth: 1,
+    profile: 1,
+    'facebook.email': 1,
+    'facebook.name': 1,
+    'twitter.email': 1,
+    'twitter.name': 1,
+    'google.email': 1,
+    'google.name': 1,
+  };
+
+  try {
+    // Fetch Users from database
+    const result = await User.paginate({}, pagination);
+    return res.status(200).send(result);
+  } catch (err) {
+    log.error({ req, res, err }, 'Error getting logs from database');
+    return res.status(500).send({ error: err });
+  }
 }

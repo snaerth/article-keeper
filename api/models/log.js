@@ -37,7 +37,6 @@ mongoosePaginate.paginate.options = {
 };
 
 // Add mongoose pagination plugin to schema
-// https://github.com/edwardhotchkiss/mongoose-paginate
 logSchema.plugin(mongoosePaginate);
 
 export default mongoose.model('Log', logSchema);
