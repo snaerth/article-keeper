@@ -1,5 +1,5 @@
 import {
-  updateUser,
+  userUpdateUser as updateUser,
   createUser,
   deleteUser,
   getUser,

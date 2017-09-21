@@ -240,7 +240,7 @@ export function checkUserByEmail(email) {
  * @author Snær Seljan Þóroddsson
  */
 export async function updateUser(req, res) {
-  if (!req.body) return res.status(422).send({ error: 'No post data found' });
+  if (!req.body) return res.status(422).send('No post data found');
   if (!req.user) return res.status(422).send({ error: 'No user found' });
 
   const { email, password, newPassword, name, dateOfBirth, phone } = req.body;
@@ -258,41 +258,38 @@ export async function updateUser(req, res) {
     try {
       // Find user by email and populate user props
       const user = await findUserByEmail(email);
-      user.email = email;
-      user.password = password;
-      user.name = name;
-      user.dateOfBirth = dateOfBirth;
-      user.phone = phone;
+      if (user.email) user.email = email;
+      if (user.password) user.password = password;
+      if (user.name) user.name = name;
+      if (user.dateOfBirth) user.dateOfBirth = dateOfBirth;
+      if (user.phone) user.phone = phone;
 
-      return user.comparePassword(
-        password,
-        (err, isMatch) =>
-          new Promise(async (resolve, reject) => {
-            if (err) {
-              return reject(err);
-            }
+      return user.comparePassword(password, async (err, isMatch) => {
+        if (err) {
+          return res.status(422).send({ error: err });
+        }
 
-            if (!isMatch) {
-              return reject('Password does not match old password');
-            }
+        if (!isMatch) {
+          return res
+            .status(422)
+            .send({ error: 'Password does not match old password' });
+        }
 
-            user.password = newPassword;
-            // Save new user to databases
-            const updatedUser = await saveUser(user);
-            // Log in db
-            log.info(
-              { info: updatedUser },
-              `User ${updatedUser.name} updated in db`,
-            );
-            // Remove unwanted props for client
-            const newUser = removeUserProps(updatedUser);
-            // Send response object with user token and user information
-            return res.status(200).json({
-              token: tokenForUser(updatedUser),
-              ...newUser,
-            });
-          }),
-      );
+        user.password = newPassword;
+        // Save new user to databases
+        const updatedUser = await saveUser(user);
+        // Log in db
+        log.info(
+          { req, res, info: updatedUser },
+          `User ${updatedUser.email} updated in db`,
+        );
+        // Remove unwanted props for client
+        const newUser = removeUserProps(updatedUser);
+        // Send response object with user token and user information
+        return res
+          .status(200)
+          .json({ token: tokenForUser(newUser), ...newUser });
+      });
     } catch (err) {
       log.error({ req, res, err }, 'Error updating user');
 
@@ -387,10 +384,7 @@ export async function updateUserPassword({ token, password }) {
  * @author Snær Seljan Þóroddsson
  */
 export async function createUser(req, res) {
-  if (!req.body) {
-    return res.status(422).send({ error: 'No post data found' });
-  }
-
+  if (!req.body) return res.status(422).send('No post data found');
   const { email, password, name, phone, roles, dateOfBirth } = req.body;
 
   // Validate post request inputs
@@ -450,15 +444,19 @@ export async function deleteUser(req, res) {
   }
 
   try {
-    const userId = await User.findByIdAndRemove(id);
-    // Log in db
-    log.info(
-      { info: `User with ${userId} deleted` },
-      `User with ${userId} deleted`,
-    );
-    return res
-      .status(200)
-      .send({ success: `User ${userId} successfully deleted` });
+    const user = await User.findByIdAndRemove(id);
+    if (user) {
+      // Log in db
+      log.info(
+        { req, res, info: `User ${user.email} deleted` },
+        `User ${user.email} deleted`,
+      );
+      return res
+        .status(200)
+        .send({ success: `User ${user.email} successfully deleted` });
+    }
+
+    return res.status(404).send(`User ${id} not found`);
   } catch (err) {
     log.error({ req, res, err }, `Error deleting user ${id}`);
     return res.status(500).send({ error: err });
@@ -535,5 +533,65 @@ export async function getUsers(req, res) {
   } catch (err) {
     log.error({ req, res, err }, 'Error getting users');
     return res.status(500).send({ error: err });
+  }
+}
+
+/**
+ * Updates user without comparing password and save to database
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {Object} res
+ * @author Snær Seljan Þóroddsson
+ */
+export async function userUpdateUser(req, res) {
+  if (!req.body) return res.status(422).send('No post data found');
+  if (!req.user) return res.status(422).send('No user found');
+
+  const { email, password, name, dateOfBirth, phone, roles } = req.body;
+  // Validate post request inputs
+  const error = validateSignup({
+    email,
+    password,
+    newPassword: null,
+    name,
+    dateOfBirth,
+    phone,
+  });
+
+  if (!error) {
+    try {
+      // Find user by email and populate user props
+      const user = await findUserByEmail(email);
+      if (user.email) user.email = email;
+      if (user.password) user.password = password;
+      if (user.name) user.name = name;
+      if (user.dateOfBirth) user.dateOfBirth = dateOfBirth;
+      if (user.phone) user.phone = phone;
+      if (roles) {
+        user.roles = Array.isArray(roles) && roles.includes('admin')
+          ? ['user', 'admin']
+          : ['user'];
+      }
+
+      // Save new user to databases
+      const updatedUser = await saveUser(user);
+      // Log in db
+      log.info(
+        { req, res, info: updatedUser },
+        `User ${updatedUser.email} updated in db`,
+      );
+
+      // Remove unwanted props for client
+      const newUser = removeUserProps(updatedUser);
+      // Send response object with user token and user information
+      return res.status(200).json(newUser);
+    } catch (err) {
+      log.error({ req, res, err }, 'Error updating user');
+
+      return res.status(422).send({ error: err });
+    }
+  } else {
+    return res.status(422).send({ error });
   }
 }

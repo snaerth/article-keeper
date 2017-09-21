@@ -300,6 +300,8 @@ async function sendResetPasswordEmail({ url, email, name }) {
     try {
       // Send email
       const info = await sendMail(to, subject, text, html);
+      log.info({ info }, `Email sent to ${email}`);
+
       // Return info and email
       return resolve({ info, email });
     } catch (err) {
@@ -359,6 +361,7 @@ export async function resetPassword(req, res) {
   if (token && password) {
     try {
       const user = await updateUserPassword({ token, password });
+      log.info({ req, res, info: user }, `Password updated for ${user.email}`);
       return res.send(
         `Success! Your password has been changed for ${user.email}.`,
       );
