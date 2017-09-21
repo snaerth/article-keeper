@@ -190,7 +190,6 @@ export function validateSignup({
  * @param {Object} req
  * @param {Object} res
  * @returns {Object} res
- * @returns {undefined}
  * @author Snær Seljan Þóroddsson
  */
 export async function signup(req, res) {
@@ -217,8 +216,7 @@ export async function signup(req, res) {
         ...newUser,
       });
     } catch (err) {
-      log.error({ req, res, err }, 'Error signup user');
-
+      log.error({ req, res, err }, 'Error signin up user');
       return res.status(422).send({ error: err });
     }
   } else {
@@ -232,7 +230,7 @@ export async function signup(req, res) {
  *
  * @param {Object} req
  * @param {Object} res
- * @returns {undefined}
+ * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
 export function signin(req, res) {
@@ -318,7 +316,7 @@ async function sendResetPasswordEmail({ url, email, name }) {
  *
  * @param {Object} req
  * @param {Object} res
- * @returns {undefined}
+ * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
 export async function forgotPassword(req, res) {
@@ -351,7 +349,7 @@ export async function forgotPassword(req, res) {
  *
  * @param {Object} req
  * @param {Object} res
- * @returns {undefined}
+ * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
 export async function resetPassword(req, res) {

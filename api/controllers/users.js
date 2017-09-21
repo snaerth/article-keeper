@@ -11,7 +11,7 @@ import log from '../services/logService';
 import { removeUserProps, validateSignup } from './authentication';
 
 // Sort values for sorting in db
-const sortVals = dbSortValues();
+const sortVals = dbSortValues(); // [-1,1,'asc','desc']
 // Properties to select from user collection in db
 const select = {
   name: 1,
@@ -131,10 +131,10 @@ export function saveUser(user) {
       try {
         // Save user to database
         const newUser = await user.save();
+        log.info({ info: newUser }, `User ${newUser.name} saved in db`);
         return resolve(newUser);
       } catch (err) {
         log.error({ err }, 'Error saving user');
-
         return reject(err);
       }
     } else {
@@ -195,7 +195,6 @@ export async function uploadUserImage(req, res) {
       });
     } catch (err) {
       log.error({ req, res, err }, 'Error uploading user image');
-
       return res.status(422).send({ error: err });
     }
   } else {
@@ -280,6 +279,11 @@ export async function updateUser(req, res) {
             user.password = newPassword;
             // Save new user to databases
             const updatedUser = await saveUser(user);
+            // Log in db
+            log.info(
+              { info: updatedUser },
+              `User ${updatedUser.name} updated in db`,
+            );
             // Remove unwanted props for client
             const newUser = removeUserProps(updatedUser);
             // Send response object with user token and user information
@@ -362,6 +366,9 @@ export async function updateUserPassword({ token, password }) {
 
       // Save user to databases
       await user.save();
+      // Log in db
+      log.info({ info: user }, `Update password for user ${user.name}`);
+
       return resolve(user);
     } catch (err) {
       log.error({ err }, 'Error updating user password');
@@ -380,7 +387,52 @@ export async function updateUserPassword({ token, password }) {
  * @author Snær Seljan Þóroddsson
  */
 export async function createUser(req, res) {
-  return res.status(200).send('Create user');
+  if (!req.body) {
+    return res.status(422).send({ error: 'No post data found' });
+  }
+
+  const { email, password, name, phone, roles, dateOfBirth } = req.body;
+
+  // Validate post request inputs
+  const validateError = validateSignup({
+    email,
+    password,
+    newPassword: null,
+    name,
+    dateOfBirth,
+    phone,
+  });
+
+  if (!validateError) {
+    try {
+      // Check for if user exists by email
+      await checkUserByEmail(email);
+
+      const user = new User({
+        name,
+        email,
+        password,
+        dateOfBirth,
+        phone,
+        roles: Array.isArray(roles) && roles.includes('admin')
+          ? ['user', 'admin']
+          : ['user'],
+      });
+      // Save user in database
+      await saveUser(user);
+      // Remove unwanted props for client
+      const newUser = removeUserProps(user);
+      // Send response object with user token and user information
+      return res.status(200).json({
+        ...newUser,
+      });
+    } catch (err) {
+      log.error({ req, res, err }, 'Error creating user');
+      return res.status(422).send({ error: err });
+    }
+  } else {
+    return res.status(422).send({ error: validateError });
+  }
 }
 
 /**
@@ -392,7 +444,25 @@ export async function createUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function deleteUser(req, res) {
-  return res.status(200).send('Delete user');
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).send({ error: 'No id found in query string' });
+  }
+
+  try {
+    const userId = await User.findByIdAndRemove(id);
+    // Log in db
+    log.info(
+      { info: `User with ${userId} deleted` },
+      `User with ${userId} deleted`,
+    );
+    return res
+      .status(200)
+      .send({ success: `User ${userId} successfully deleted` });
+  } catch (err) {
+    log.error({ req, res, err }, `Error deleting user ${id}`);
+    return res.status(500).send({ error: err });
+  }
 }
 
 /**
@@ -435,7 +505,7 @@ export async function getUser(req, res) {
     const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
   } catch (err) {
-    log.error({ req, res, err }, 'Error getting user by search query');
+    log.error({ req, res, err }, `Error getting user by search query ${query}`);
     return res.status(500).send({ error: err });
   }
 }

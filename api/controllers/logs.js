@@ -6,7 +6,7 @@ import dbSortValues from '../services/dbService';
 import parseDateYearMonthDay from '../utils/date';
 
 // Sort values for sorting in mongodb
-const sortVals = dbSortValues();
+const sortVals = dbSortValues(); // [-1,1,'asc','desc']
 
 /**
  * Enriches pagination object with sort and other pagination properties
