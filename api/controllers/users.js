@@ -232,75 +232,6 @@ export function checkUserByEmail(email) {
 }
 
 /**
- * Updates user and save to database
- *
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} res
- * @author Snær Seljan Þóroddsson
- */
-export async function updateUser(req, res) {
-  if (!req.body) return res.status(422).send('No post data found');
-  if (!req.user) return res.status(422).send({ error: 'No user found' });
-
-  const { email, password, newPassword, name, dateOfBirth, phone } = req.body;
-  // Validate post request inputs
-  const error = validateSignup({
-    email,
-    password,
-    newPassword,
-    name,
-    dateOfBirth,
-    phone,
-  });
-
-  if (!error) {
-    try {
-      // Find user by email and populate user props
-      const user = await findUserByEmail(email);
-      if (user.email) user.email = email;
-      if (user.password) user.password = password;
-      if (user.name) user.name = name;
-      if (user.dateOfBirth) user.dateOfBirth = dateOfBirth;
-      if (user.phone) user.phone = phone;
-
-      return user.comparePassword(password, async (err, isMatch) => {
-        if (err) {
-          return res.status(422).send({ error: err });
-        }
-
-        if (!isMatch) {
-          return res
-            .status(422)
-            .send({ error: 'Password does not match old password' });
-        }
-
-        user.password = newPassword;
-        // Save new user to databases
-        const updatedUser = await saveUser(user);
-        // Log in db
-        log.info(
-          { req, res, info: updatedUser },
-          `User ${updatedUser.email} updated in db`,
-        );
-        // Remove unwanted props for client
-        const newUser = removeUserProps(updatedUser);
-        // Send response object with user token and user information
-        return res
-          .status(200)
-          .json({ token: tokenForUser(newUser), ...newUser });
-      });
-    } catch (err) {
-      log.error({ req, res, err }, 'Error updating user');
-
-      return res.status(422).send({ error: err });
-    }
-  } else {
-    return res.status(422).send({ error });
-  }
-}
-
-/**
  * Finds user by email,if user exist
  * set resetPasswordToken and resetPasswordExpires props
  * save those props to user
@@ -544,7 +475,7 @@ export async function getUsers(req, res) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
-export async function userUpdateUser(req, res) {
+export async function updateUser(req, res) {
   if (!req.body) return res.status(422).send('No post data found');
   if (!req.user) return res.status(422).send('No user found');
 

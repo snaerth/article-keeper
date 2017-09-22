@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import shortid from 'shortid';
 
+import levels from './level';
 import Container from '../common/container';
 import Button from '../common/button';
 
@@ -45,7 +46,7 @@ function renderObjectRecursive(obj) {
 
 function LoggerModalData({ data, deleteHandler }) {
   if (!data) return <div>No log avaliable</div>;
-  const { _id, time, msg, name, level, err: { stack }, req, res } = data;
+  const { _id, time, msg, name, level, err, req, res } = data;
 
   return (
     <article className={styles.modal}>
@@ -75,27 +76,29 @@ function LoggerModalData({ data, deleteHandler }) {
         </div>
         <div className={classnames(tableStyles.tableOddRow, styles.row)}>
           <div>Level</div>
-          <div>{level}</div>
+          <div>{`${level} - ${levels(level)}`}</div>
         </div>
-        <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
-          <div>Error</div>
-          <div>{stack}</div>
-        </div>
+        {err && err.stack
+          ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
+            <div>Error</div>
+            <div>{err.stack}</div>
+          </div>
+          : null}
         {req
           ? <div className={classnames(tableStyles.tableOddRow, styles.row)}>
-              <div>Request</div>
-              <div className={styles.overflowHidden}>
-                {renderObjectRecursive(req)}
-              </div>
+            <div>Request</div>
+            <div className={styles.overflowHidden}>
+              {renderObjectRecursive(req)}
             </div>
+          </div>
           : null}
         {res
           ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
-              <div>Response</div>
-              <div className={styles.overflowHidden}>
-                {renderObjectRecursive(res)}
-              </div>
+            <div>Response</div>
+            <div className={styles.overflowHidden}>
+              {renderObjectRecursive(res)}
             </div>
+          </div>
           : null}
       </section>
       <footer>

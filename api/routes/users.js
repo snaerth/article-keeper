@@ -1,6 +1,6 @@
 import {
-  userUpdateUser as updateUser,
   createUser,
+  updateUser,
   deleteUser,
   getUser,
   getUsers,

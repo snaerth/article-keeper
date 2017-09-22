@@ -19,11 +19,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 mongoose.Promise = global.Promise;
 
+app.get('/logs/', getLogs);
+app.get('/logs/search/:query', getLogsBySearchQuery);
+app.delete('/log/:id', deleteLogsById);
+app.delete('/deleteall/', deleteAllLogs);
+
 // Db connect
 beforeAll(async (done) => {
   try {
     await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
-    await Log.collection.remove();
     log.error({ err: new Error('This is a error') }, 'Error message');
     done();
   } catch (error) {
@@ -42,11 +46,6 @@ afterAll(async (done) => {
 });
 
 describe('Run tests for logs route handlers', () => {
-  app.post('/logs/', getLogs);
-  app.get('/logs/search/:query', getLogsBySearchQuery);
-  app.delete('/log/:id', deleteLogsById);
-  app.delete('/deleteall/', deleteAllLogs);
-
   // GET logs
   test('Get logs', () => {
     try {
@@ -59,7 +58,6 @@ describe('Run tests for logs route handlers', () => {
         .set('Accept', 'application/json')
         .end((err, res) => {
           const doc = res.body.docs[0];
-          const logId = doc._id; // eslint-disable-line
           expect(doc.msg).toEqual('Error message');
           expect(doc.level).toEqual(50);
           expect(doc).toHaveProperty('name');
@@ -84,7 +82,6 @@ describe('Run tests for logs route handlers', () => {
           }
 
           const doc = res.body.docs[0];
-          const logId = doc._id; // eslint-disable-line
           expect(doc.name).toEqual('Application name');
           expect(doc.level).toEqual(50);
           expect(doc).toHaveProperty('name');

@@ -25,6 +25,20 @@ app.use(
 
 mongoose.Promise = global.Promise;
 
+// POST request /uploads/images/news/
+app.post('/uploads/images/news/', uploadFiles);
+
+// POST save image fake route
+app.post('/saveimage/', async (req, res) => {
+  const images = req.files.images;
+  try {
+    const imageObj = await saveImage(images, './media/news/');
+    return res.status(200).send(imageObj);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
 // Db connect
 beforeAll(async (done) => {
   try {
@@ -45,20 +59,6 @@ afterAll(async (done) => {
 });
 
 describe('POST /userimage', () => {
-  // POST request /uploads/images/news/
-  app.post('/uploads/images/news/', uploadFiles);
-
-  // POST save image fake route
-  app.post('/saveimage/', async (req, res) => {
-    const images = req.files.images;
-    try {
-      const imageObj = await saveImage(images, './media/news/');
-      return res.status(200).send(imageObj);
-    } catch (err) {
-      return res.status(500).send(err);
-    }
-  });
-
   test('Upload image and save image to filesystem', () => {
     request(app)
       .post('/uploads/images/news')
