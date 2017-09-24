@@ -7,11 +7,11 @@ import formatISODateTime from '../../utils/date';
 import NotifyBox from '../common/notifyBox';
 import tableStyles from '../../styles/table.css';
 
-function LoggerTable({ list, onRowClickHandler, rowClassName }) {
+function UsersTable({ list, onRowClickHandler, rowClassName }) {
   if (list.length === 0) {
     return (
       <fieldset className="noPadding">
-        <NotifyBox text="No logs found" type="info" />
+        <NotifyBox text="No users found" type="info" />
       </fieldset>
     );
   }
@@ -32,17 +32,40 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             onRowClickHandler(event, index, rowData)}
         >
           <Column
+            cellDataGetter={columnData => {
+              if (columnData.rowData.thumbnailUrl) {
+                return (
+                  <img
+                    src={columnData.rowData.thumbnailUrl}
+                    alt={columnData.rowData.name}
+                  />
+                );
+              }
+              return null;
+            }}
+            className={tableStyles.tableColumn}
+            label="Image"
+            dataKey="thumbnailUrl"
+            width={210}
+          />
+          <Column
+            className={tableStyles.tableColumn}
+            label="Name"
+            dataKey="name"
+            width={210}
+          />
+          <Column
             className={tableStyles.tableColumn}
             label="Id"
             dataKey="_id"
             width={210}
           />
           <Column
-            cellDataGetter={(columnData) =>
-              formatISODateTime(columnData.rowData.time)}
+            cellDataGetter={columnData =>
+              formatISODateTime(columnData.rowData.createdAt)}
             className={tableStyles.tableColumn}
-            label="Time"
-            dataKey="time"
+            label="Created at"
+            dataKey="createdAt"
             width={180}
           />
           <Column
@@ -57,22 +80,16 @@ function LoggerTable({ list, onRowClickHandler, rowClassName }) {
             dataKey="msg"
             width={300}
           />
-          <Column
-            className={tableStyles.tableColumn}
-            label="Name"
-            dataKey="name"
-            width={210}
-          />
         </Table>
       )}
     </AutoSizer>
   );
 }
 
-LoggerTable.propTypes = {
+UsersTable.propTypes = {
   list: PropTypes.array.isRequired,
   onRowClickHandler: PropTypes.func.isRequired,
   rowClassName: PropTypes.func.isRequired,
 };
 
-export default LoggerTable;
+export default UsersTable;

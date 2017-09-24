@@ -59,7 +59,7 @@ class Users extends Component {
   };
 
   /**
-   * Fetch logs
+   * Fetch users
    */
   componentDidMount() {
     // Checks if device is smaller than 620px to detect react-dates orientation
@@ -71,7 +71,7 @@ class Users extends Component {
     const { token } = this.props;
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
-    this.props.actions.getLogs({ token, queryString });
+    this.props.actions.getUsers({ token, queryString });
   }
 
   /**
@@ -102,7 +102,7 @@ class Users extends Component {
   }
 
   /**
-   * Clears serach inputs for querying logs
+   * Clears serach inputs for querying users
    *
    * @param {Object} event
    */
@@ -147,12 +147,12 @@ class Users extends Component {
     // Set loading
     actions.isFetchingData();
     if (!search && !hasDateRange) {
-      // get all logs
-      actions.getLogs({ token, queryString });
+      // get all users
+      actions.getUsers({ token, queryString });
     } else {
       if (search && !hasDateRange) {
         // query by text only
-        actions.getLogsBySearchQuery(token, `${search}?${queryString}`);
+        actions.getUsersBySearchQuery(token, `${search}?${queryString}`);
         return false;
       }
 
@@ -163,13 +163,13 @@ class Users extends Component {
         if (search) {
           // query by text and date range
           queryString = `${search}?startDate=${sd}&endDate=${ed}`;
-          actions.getLogsBySearchQuery(token, queryString);
+          actions.getUsersBySearchQuery(token, queryString);
           return false;
         }
 
         // query by date range
         queryString = `${sd}/${ed}`;
-        actions.getLogsBySearchQuery(token, queryString);
+        actions.getUsersBySearchQuery(token, queryString);
         return false;
       }
     }
@@ -188,7 +188,7 @@ class Users extends Component {
   }
 
   /**
-   * Delete handler to delete log item
+   * Delete handler to delete user
    *
    * @param  {String} id
    */
@@ -196,8 +196,8 @@ class Users extends Component {
     const { actions, token } = this.props;
     const queryString = formDataToQueryString(this.state.formData);
     this.closeModal();
-    actions.deleteLogById(this.props.token, id);
-    actions.getLogs({ token, queryString });
+    actions.deleteUserById(this.props.token, id);
+    actions.getUsers({ token, queryString });
   }
 
   /**
@@ -231,69 +231,69 @@ class Users extends Component {
         {error ? this.renderError(error) : null}
         {serverError ? this.renderError(serverError) : null}
         <div className={s.minHeight200}>
-          {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
+          {isFetching ? <Loader absolute>Getting users...</Loader> : null}
           {data
             ? <div className={isFetching ? 'almostHidden' : ''}>
-              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                <div className={s.inputContainer}>
-                  <div>
-                    <div className={s.searchInputContainer}>
-                      <Field
-                        component={Input}
-                        name="search"
-                        id="search"
-                        type="text"
-                        label="Search"
-                        placeholder="Search..."
-                        hidelabel
-                      >
-                        <Search
-                          className={s.searchIcon}
-                          onClick={handleSubmit(this.handleFormSubmit)}
-                        />
-                      </Field>
+                <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                  <div className={s.inputContainer}>
+                    <div>
+                      <div className={s.searchInputContainer}>
+                        <Field
+                          component={Input}
+                          name="search"
+                          id="search"
+                          type="text"
+                          label="Search"
+                          placeholder="Search..."
+                          hidelabel
+                        >
+                          <Search
+                            className={s.searchIcon}
+                            onClick={handleSubmit(this.handleFormSubmit)}
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                    <div>
+                      <DateRangePicker
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onDatesChange={({ startDate, endDate }) =>
+                          this.setState({ startDate, endDate })}
+                        focusedInput={this.state.focusedInput}
+                        onFocusChange={focusedInput =>
+                          this.setState({ focusedInput })}
+                        isOutsideRange={() => false}
+                        orientation={orientation || 'horizontal'}
+                      />
+                    </div>
+                    <div>
+                      <Button
+                        type="button"
+                        text="Clear"
+                        ariaLabel="Clear inputs"
+                        color="grey"
+                        onClick={e => this.clearInputs(e)}
+                      />
+                      <Button
+                        type="submit"
+                        text="Search"
+                        ariaLabel="Search users"
+                      />
                     </div>
                   </div>
-                  <div>
-                    <DateRangePicker
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) =>
-                        this.setState({ startDate, endDate })}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) =>
-                        this.setState({ focusedInput })}
-                      isOutsideRange={() => false}
-                      orientation={orientation || 'horizontal'}
-                    />
-                  </div>
-                  <div>
-                    <Button
-                      type="button"
-                      text="Clear"
-                      ariaLabel="Clear inputs"
-                      color="grey"
-                      onClick={(e) => this.clearInputs(e)}
-                    />
-                    <Button
-                      type="submit"
-                      text="Search"
-                      ariaLabel="Search users"
-                    />
-                  </div>
-                </div>
-              </form>
-              <UsersTable
-                list={data.docs}
-                onRowClickHandler={this.onRowClickHandler}
-                rowClassName={this.rowClassName}
-              />
-              <Pagination
-                pageCount={pagination.pages || 1}
-                initialPage={pagination.page || 1}
-                onPageChangeHandler={this.paginateHandler}
-              />
-            </div>
+                </form>
+                <UsersTable
+                  list={data.docs}
+                  onRowClickHandler={this.onRowClickHandler}
+                  rowClassName={this.rowClassName}
+                />
+                <Pagination
+                  pageCount={pagination.pages || 1}
+                  initialPage={pagination.page || 1}
+                  onPageChangeHandler={this.paginateHandler}
+                />
+              </div>
             : null}
         </div>
         <ModalWrapper
@@ -320,7 +320,7 @@ class Users extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data, orientation } = state.logs;
+  const { error, isFetching, data, orientation } = state.users;
   const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   let pagination = {};
@@ -367,5 +367,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'usersSearch',
     fields: ['search'],
-  })(Users),
+  })(Users)
 );
