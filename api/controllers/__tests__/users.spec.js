@@ -33,26 +33,17 @@ app.delete('/users/:id', deleteUser);
 // Upload images
 app.post('/users/userimage', uploadUserImage);
 
-const postData = {
-  name: 'Tester Testerson',
-  password: 'Testerson1',
-  email: 'tester2@tester.is',
-  phone: '555-5555',
-  dateOfBirth: 'Wed Apr 27 1983 00:00:00 GMT+0000 (Greenwich Standard Time)',
-  roles: ['admin'],
-};
-
 // Db connect
 beforeAll(async (done) => {
   try {
     await mongoose.connect(TEST_DB_URL, { useMongoClient: true });
-    request(app).post('/users').send(postData).expect(200, done);
+    done();
   } catch (error) {
     throw new Error(error);
   }
 });
 
-// Remove docs from log collections
+// After all tests have run
 afterAll(async (done) => {
   try {
     await mongoose.disconnect(done);
@@ -62,6 +53,29 @@ afterAll(async (done) => {
 });
 
 describe('Run tests for users route handlers', () => {
+  // // Create user
+  test('Create user', () => {
+    try {
+      request(app)
+        .post('/users')
+        .send({
+          name: 'Tester Testerson',
+          password: 'Testerson1',
+          email: 'tester2@tester.is',
+          phone: '555-5555',
+          dateOfBirth: 'Wed Apr 27 1983 00:00:00 GMT+0000 (Greenwich Standard Time)',
+          roles: ['admin'],
+        })
+        .end((err, res) => {
+          const user = res.body;
+          expect(user.name).toEqual();
+        });
+    } catch (err) {
+      expect(err).toThrowErrorMatchingSnapshot();
+      throw new Error(err);
+    }
+  });
+
   // GET users
   test('Get users', () => {
     try {
@@ -74,7 +88,7 @@ describe('Run tests for users route handlers', () => {
         .set('Accept', 'application/json')
         .end((err, res) => {
           const user = res.doc.body[0];
-          expect(user).toHaveProperty('jon');
+          expect(user).toHaveProperty('snaer');
           expect(user).toHaveProperty('email');
           expect(user).toHaveProperty('createdAt');
           expect(user).toHaveProperty('imageUrl');

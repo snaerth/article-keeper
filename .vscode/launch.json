@@ -1,43 +1,36 @@
+{
   // Use IntelliSense to learn about possible Node.js debug attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Launch",
-        "type": "node",
-        "protocol": "inspector",
-        "request": "launch",
-        "program": "${workspaceRoot}\\debug\\api\\index",
-        "stopOnEntry": false,
-        "args": [],
-        "cwd": "${workspaceRoot}",
-        "runtimeArgs": [
-          "--harmony",
-          "--no-deprecation"
-        ],
-        "sourceMaps": true,
-        "outFiles": [
-          "${workspaceRoot}/debug/api/**/*.js"
-        ]
-      },
-      {
-        "name": "Jest Debugger",
-        "type": "node",
-        "request": "launch",
-        "args": [
-          "--u"
-        ],
-        "runtimeArgs": [
-          "--inspect-brk",
-          "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
-          "-i",
-          "--env",
-          "jest-environment-node-debug",
-          "--runInBand"
-        ],
-        "console": "integratedTerminal"
-      }
-    ]
-  }
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "launch",
+      "program": "${workspaceRoot}\\debug\\api\\index",
+      "stopOnEntry": false,
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["--harmony", "--no-deprecation"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/debug/api/**/*.js"]
+    },
+    {
+      "name": "Jest Debugger",
+      "type": "node",
+      "request": "launch",
+      "args": ["--u"],
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
+        "-i",
+        "--env",
+        "jest-environment-node-debug",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}
