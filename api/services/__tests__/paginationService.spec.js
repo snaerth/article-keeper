@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 describe('Run pagination service tests', () => {
-  app.post('/pagination/', async (req, res) => {
+  app.post('/pagination', async (req, res) => {
     const { offset, limit } = req.body;
     const pagination = createPaginationObject(offset, limit);
     return res.send(pagination);
@@ -19,7 +19,7 @@ describe('Run pagination service tests', () => {
   test('Get pagination object from post request', () => {
     try {
       request(app)
-        .post('/pagination/')
+        .post('/pagination')
         .send({
           limit: 10,
           page: 1,

@@ -3,7 +3,6 @@ import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
 import config from '../../config';
-import User from '../../models/user';
 import {
   getUsers,
   getUser,
@@ -88,7 +87,7 @@ describe('Run tests for users route handlers', () => {
         .set('Accept', 'application/json')
         .end((err, res) => {
           const user = res.doc.body[0];
-          expect(user).toHaveProperty('snaer');
+          expect(user).toHaveProperty('name');
           expect(user).toHaveProperty('email');
           expect(user).toHaveProperty('createdAt');
           expect(user).toHaveProperty('imageUrl');

@@ -5,15 +5,9 @@ import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { DateRangePicker } from 'react-dates';
 
-import {
-  getLogs,
-  isFetchingData,
-  isNotFetchingData,
-  getLogsBySearchQuery,
-  deleteLogById,
-} from './actions';
-import LoggerTable from './loggerTable';
-import LoggerModalData from './loggerModalData';
+import * as actionCreators from './actions';
+import UsersTable from './usersTable';
+import UsersModalData from './usersModalData';
 import Loader from '../common/loader';
 import Input from '../common/input';
 import Button from '../common/button';
@@ -26,9 +20,9 @@ import Search from '../../assets/images/search.svg';
 
 // Styles
 import tableStyles from '../../styles/table.css';
-import s from './logger.scss';
+import s from './users.scss';
 
-class Logger extends Component {
+class Users extends Component {
   constructor(props) {
     super(props);
 
@@ -284,12 +278,12 @@ class Logger extends Component {
                     <Button
                       type="submit"
                       text="Search"
-                      ariaLabel="Search logs"
+                      ariaLabel="Search users"
                     />
                   </div>
                 </div>
               </form>
-              <LoggerTable
+              <UsersTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
                 rowClassName={this.rowClassName}
@@ -306,10 +300,10 @@ class Logger extends Component {
           className="mw992"
           isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}
-          contentLabel={'Logs'}
+          contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          <LoggerModalData
+          <UsersModalData
             data={currentRowData}
             deleteHandler={this.deleteHandler}
           />
@@ -365,22 +359,13 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(
-      {
-        getLogs,
-        isFetchingData,
-        isNotFetchingData,
-        getLogsBySearchQuery,
-        deleteLogById,
-      },
-      dispatch,
-    ),
+    actions: bindActionCreators(actionCreators, dispatch),
   };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
-    form: 'search',
+    form: 'usersSearch',
     fields: ['search'],
-  })(Logger),
+  })(Users),
 );

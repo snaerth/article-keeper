@@ -5,6 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug",
+      "type": "node",
+      "protocol": "inspector",
+      "request": "launch",
+      "program": "${workspaceRoot}\\api\\index",
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": [
+        "--harmony",
+        "--no-deprecation"
+      ],
+      "sourceMaps": true
+    },
+    {
       "name": "Launch",
       "type": "node",
       "protocol": "inspector",
@@ -13,15 +27,22 @@
       "stopOnEntry": false,
       "args": [],
       "cwd": "${workspaceRoot}",
-      "runtimeArgs": ["--harmony", "--no-deprecation"],
+      "runtimeArgs": [
+        "--harmony",
+        "--no-deprecation"
+      ],
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/debug/api/**/*.js"]
+      "outFiles": [
+        "${workspaceRoot}/debug/api/**/*.js"
+      ]
     },
     {
       "name": "Jest Debugger",
       "type": "node",
       "request": "launch",
-      "args": ["--u"],
+      "args": [
+        "--u"
+      ],
       "runtimeArgs": [
         "--inspect-brk",
         "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",

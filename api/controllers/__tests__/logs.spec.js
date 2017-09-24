@@ -19,10 +19,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 mongoose.Promise = global.Promise;
 
-app.get('/logs/', getLogs);
+app.get('/logs', getLogs);
 app.get('/logs/search/:query', getLogsBySearchQuery);
 app.delete('/log/:id', deleteLogsById);
-app.delete('/deleteall/', deleteAllLogs);
+app.delete('/deleteall', deleteAllLogs);
 
 // Db connect
 beforeAll(async (done) => {

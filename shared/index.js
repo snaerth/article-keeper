@@ -19,6 +19,7 @@ import ResetPassword from './routes/resetPassword';
 import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Admin from './routes/admin';
+import Users from './routes/users';
 import Logger from './routes/logger';
 
 // Components
@@ -75,6 +76,11 @@ class App extends Component {
             <Route path="/signout" component={Signout} />
             <Route path="/reset/:token" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
+            <PrivateRoute
+              path="/users"
+              component={Users}
+              authenticated={isAdmin}
+            />
             <PrivateRoute
               path="/logs"
               component={Logger}
