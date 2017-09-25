@@ -87,14 +87,15 @@ describe('Run tests for users route handlers', () => {
         .set('Accept', 'application/json')
         .end((err, res) => {
           const user = res.doc.body[0];
-          expect(user).toHaveProperty('name');
-          expect(user).toHaveProperty('email');
+          expect(user).toHaveProperty('name', 'Tester Testerson');
+          expect(user).toHaveProperty('email', 'tester2@tester.is');
+          expect(user).toHaveProperty('phone', '555-5555');
+          expect(user).toHaveProperty('roles', ['user','admin']);
           expect(user).toHaveProperty('createdAt');
           expect(user).toHaveProperty('imageUrl');
           expect(user).toHaveProperty('thumbnailUrl');
           expect(user).toHaveProperty('dateOfBirth');
           expect(user).toHaveProperty('profile');
-          expect(user).toHaveProperty('name');
           expect(user).toHaveProperty('facebook.email');
           expect(user).toHaveProperty('facebook.name');
           expect(user).toHaveProperty('twitter.email');

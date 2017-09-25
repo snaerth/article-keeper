@@ -14,6 +14,7 @@ TODO
     - Get users + test  => test is no over
     - delete user + test
     - put + test
+  - Date picker geta manually skrifað inn dagsetingu.
   - Finish reset password
   - Update dependencys
   - Klára önnur test

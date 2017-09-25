@@ -12,7 +12,6 @@ import serialize from 'serialize-javascript';
 
 import HTML from 'components/html';
 import config from 'utils/config';
-import Analytics from 'utils/analytics';
 
 import getClientBundleEntryAssets from './getClientBundleEntryAssets';
 import ifElse from '../../../internal/utils/logic/ifElse';
@@ -24,10 +23,6 @@ import ClientConfig from '../../../config/components/ClientConfig';
 function KeyedComponent({ children }) {
   return Children.only(children);
 }
-
-const facebookPixel = config('facebookPixel');
-const twitterPixel = config('twitterPixel');
-const analytics = new Analytics({ facebookPixel, twitterPixel });
 
 // Resolve the assets (js/css) for the client bundle's entry chunk.
 const clientEntryAssets = getClientBundleEntryAssets();
@@ -70,8 +65,6 @@ function ServerHTML(props) {
   );
 
   const headerElements = removeNil([
-    ifElse(facebookPixel)(() => inlineScript(analytics.facebook)),
-    ifElse(twitterPixel)(() => inlineScript(analytics.twitter)),
     ...ifElse(helmet)(() => helmet.title.toComponent(), []),
     ...ifElse(helmet)(() => helmet.base.toComponent(), []),
     ...ifElse(helmet)(() => helmet.meta.toComponent(), []),
@@ -83,7 +76,6 @@ function ServerHTML(props) {
   ]);
 
   const bodyElements = removeNil([
-    ifElse(facebookPixel)(() => analytics.facebookNoscript),
     // Binds the client configuration object to the window object so
     // that we can safely expose some configuration values to the
     // client bundle that gets executed in the browser.
@@ -163,7 +155,5 @@ ServerHTML.propTypes = {
   nonce: PropTypes.string,
   reactAppString: PropTypes.string,
 };
-
-// EXPORT
 
 export default ServerHTML;

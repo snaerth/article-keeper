@@ -4,6 +4,7 @@ import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import formatISODateTime from '../../utils/date';
+import getUserEmail from '../../utils/userHelper';
 import NotifyBox from '../common/notifyBox';
 import tableStyles from '../../styles/table.css';
 
@@ -32,12 +33,12 @@ function UsersTable({ list, onRowClickHandler, rowClassName }) {
             onRowClickHandler(event, index, rowData)}
         >
           <Column
-            cellDataGetter={columnData => {
-              if (columnData.rowData.thumbnailUrl) {
+            cellRenderer={(cellData) => {
+              if (cellData.rowData.thumbnailUrl) {
                 return (
                   <img
-                    src={columnData.rowData.thumbnailUrl}
-                    alt={columnData.rowData.name}
+                    src={cellData.rowData.thumbnailUrl}
+                    alt={cellData.rowData.name}
                   />
                 );
               }
@@ -46,22 +47,40 @@ function UsersTable({ list, onRowClickHandler, rowClassName }) {
             className={tableStyles.tableColumn}
             label="Image"
             dataKey="thumbnailUrl"
-            width={210}
+            width={100}
           />
           <Column
             className={tableStyles.tableColumn}
             label="Name"
             dataKey="name"
+            width={250}
+          />
+          <Column
+            cellRenderer={(cellData) => {
+              let email = cellData.rowData.email;
+              if (!email) {
+                email = getUserEmail(cellData.rowData);
+              }
+              return (
+                <a href={`mailto:${email}`}>
+                  {email}
+                </a>
+              );
+            }}
+            getUserEmail
+            className={tableStyles.tableColumn}
+            label="Email"
+            dataKey="thumbnailUrl"
             width={210}
           />
           <Column
             className={tableStyles.tableColumn}
             label="Id"
             dataKey="_id"
-            width={210}
+            width={230}
           />
           <Column
-            cellDataGetter={columnData =>
+            cellDataGetter={(columnData) =>
               formatISODateTime(columnData.rowData.createdAt)}
             className={tableStyles.tableColumn}
             label="Created at"
@@ -70,15 +89,9 @@ function UsersTable({ list, onRowClickHandler, rowClassName }) {
           />
           <Column
             className={tableStyles.tableColumn}
-            label="Type"
-            dataKey="level"
-            width={80}
-          />
-          <Column
-            className={tableStyles.tableColumn}
-            label="Message"
-            dataKey="msg"
-            width={300}
+            label="Roles"
+            dataKey="roles"
+            width={150}
           />
         </Table>
       )}

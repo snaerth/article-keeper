@@ -162,13 +162,13 @@ class Users extends Component {
 
         if (search) {
           // query by text and date range
-          queryString = `${search}?startDate=${sd}&endDate=${ed}`;
+          queryString = `?query=${search}?startDate=${sd}&endDate=${ed}`;
           actions.getUsersBySearchQuery(token, queryString);
           return false;
         }
 
         // query by date range
-        queryString = `${sd}/${ed}`;
+        queryString = `?startDate=${sd}&endDate=${ed}`;
         actions.getUsersBySearchQuery(token, queryString);
         return false;
       }
@@ -234,66 +234,67 @@ class Users extends Component {
           {isFetching ? <Loader absolute>Getting users...</Loader> : null}
           {data
             ? <div className={isFetching ? 'almostHidden' : ''}>
-                <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                  <div className={s.inputContainer}>
-                    <div>
-                      <div className={s.searchInputContainer}>
-                        <Field
-                          component={Input}
-                          name="search"
-                          id="search"
-                          type="text"
-                          label="Search"
-                          placeholder="Search..."
-                          hidelabel
-                        >
-                          <Search
-                            className={s.searchIcon}
-                            onClick={handleSubmit(this.handleFormSubmit)}
-                          />
-                        </Field>
-                      </div>
-                    </div>
-                    <div>
-                      <DateRangePicker
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onDatesChange={({ startDate, endDate }) =>
-                          this.setState({ startDate, endDate })}
-                        focusedInput={this.state.focusedInput}
-                        onFocusChange={focusedInput =>
-                          this.setState({ focusedInput })}
-                        isOutsideRange={() => false}
-                        orientation={orientation || 'horizontal'}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        type="button"
-                        text="Clear"
-                        ariaLabel="Clear inputs"
-                        color="grey"
-                        onClick={e => this.clearInputs(e)}
-                      />
-                      <Button
-                        type="submit"
-                        text="Search"
-                        ariaLabel="Search users"
-                      />
+              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                <div className={s.inputContainer}>
+                  <div>
+                    <div className={s.searchInputContainer}>
+                      <Field
+                        component={Input}
+                        name="search"
+                        id="search"
+                        type="text"
+                        label="Search"
+                        placeholder="Search..."
+                        hidelabel
+                      >
+                        <Search
+                          className={s.searchIcon}
+                          onClick={handleSubmit(this.handleFormSubmit)}
+                        />
+                      </Field>
                     </div>
                   </div>
-                </form>
-                <UsersTable
-                  list={data.docs}
-                  onRowClickHandler={this.onRowClickHandler}
-                  rowClassName={this.rowClassName}
-                />
-                <Pagination
-                  pageCount={pagination.pages || 1}
-                  initialPage={pagination.page || 1}
-                  onPageChangeHandler={this.paginateHandler}
-                />
-              </div>
+                  <div>
+                    <DateRangePicker
+                      showDefaultInputIcon
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onDatesChange={({ startDate, endDate }) =>
+                        this.setState({ startDate, endDate })}
+                      focusedInput={this.state.focusedInput}
+                      onFocusChange={(focusedInput) =>
+                        this.setState({ focusedInput })}
+                      isOutsideRange={() => false}
+                      orientation={orientation || 'horizontal'}
+                    />
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      text="Clear"
+                      ariaLabel="Clear inputs"
+                      color="grey"
+                      onClick={(e) => this.clearInputs(e)}
+                    />
+                    <Button
+                      type="submit"
+                      text="Search"
+                      ariaLabel="Search users"
+                    />
+                  </div>
+                </div>
+              </form>
+              <UsersTable
+                list={data.docs}
+                onRowClickHandler={this.onRowClickHandler}
+                rowClassName={this.rowClassName}
+              />
+              <Pagination
+                pageCount={pagination.pages || 1}
+                initialPage={pagination.page || 1}
+                onPageChangeHandler={this.paginateHandler}
+              />
+            </div>
             : null}
         </div>
         <ModalWrapper
@@ -367,5 +368,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'usersSearch',
     fields: ['search'],
-  })(Users)
+  })(Users),
 );

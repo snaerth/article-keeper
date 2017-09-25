@@ -5,7 +5,6 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AppLayout, { Content } from 'components/app-layout';
-import Analytics from 'components/analytics';
 import config from './utils/config';
 
 // Components
@@ -69,7 +68,6 @@ class App extends Component {
         <Helmet {...config('helmet')} />
         <Header />
         <Content>
-          <Route component={Analytics} />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />

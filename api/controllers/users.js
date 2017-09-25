@@ -8,6 +8,8 @@ import createPaginationObject from '../services/paginationService';
 import { checkFileAndDelete, renameFile } from '../services/fileService';
 import dbSortValues from '../services/dbService';
 import log from '../services/logService';
+import parseDateYearMonthDay from '../utils/date';
+
 import { removeUserProps, validateSignup } from './authentication';
 
 // Sort values for sorting in db
@@ -403,7 +405,7 @@ export async function deleteUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getUser(req, res) {
-  const { page, limit } = req.query;
+  const { page, limit, startDate, endDate } = req.query;
   const { query } = req.params;
 
   if (!query) {
@@ -418,18 +420,40 @@ export async function getUser(req, res) {
 
   const searchQuery = {};
   const $or = [];
-  // Check if searchQuery is valid mongo ObjectId
-  if (query.match(/^[0-9a-fA-F]{24}$/)) {
-    // Search query by id
-    $or.push({ _id: mongoose.Types.ObjectId(query) });
-  } else {
-    const reExp = new RegExp(query, 'i');
-    // Search query for for other User properties
-    $or.push({ name: reExp }, { email: reExp });
+
+  if (query) {
+    // Check if searchQuery is valid mongo ObjectId
+    if (query.match(/^[0-9a-fA-F]{24}$/)) {
+      // Search query by id
+      $or.push({ _id: mongoose.Types.ObjectId(query) });
+    } else {
+      const reExp = new RegExp(query, 'i');
+      // Search query for for other User properties
+      $or.push({ name: reExp }, { email: reExp }, { roles: reExp });
+    }
   }
 
   try {
-    searchQuery.$or = $or;
+    if (startDate && endDate) {
+      const gte = await parseDateYearMonthDay(startDate);
+      const lte = await parseDateYearMonthDay(endDate);
+
+      // Search query for text search and date range
+      searchQuery.$and = [
+        {
+          $or,
+        },
+        {
+          createdAt: { $gte: gte, $lte: lte },
+        },
+        {
+          dateOfBirth: { $gte: gte, $lte: lte },
+        },
+      ];
+    } else {
+      // Search query for text search
+      searchQuery.$or = $or;
+    }
     // Fetch user by search query from database
     const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
@@ -448,7 +472,16 @@ export async function getUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getUsers(req, res) {
-  const { limit, name, email, dateOfBirth, page } = req.query;
+  const {
+    limit,
+    name,
+    email,
+    dateOfBirth,
+    page,
+    query,
+    startDate,
+    endDate,
+  } = req.query;
 
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
@@ -457,9 +490,52 @@ export async function getUsers(req, res) {
   // Only select these properties
   pagination.select = select;
 
+  const searchQuery = {};
+  const $or = [];
+  let emptySearch = false;
+
+  if (query) {
+    // Check if searchQuery is valid mongo ObjectId
+    if (query.match(/^[0-9a-fA-F]{24}$/)) {
+      // Search query by id
+      $or.push({ _id: mongoose.Types.ObjectId(query) });
+    } else {
+      const reExp = new RegExp(query, 'i');
+      // Search query for for other User properties
+      $or.push({ name: reExp }, { email: reExp }, { roles: reExp });
+    }
+  }
+
   try {
+    if (startDate && endDate) {
+      const gte = await parseDateYearMonthDay(startDate);
+      const lte = await parseDateYearMonthDay(endDate);
+
+      // Search query for text search and date range
+      searchQuery.$and = [
+        {
+          createdAt: { $gte: gte, $lte: lte },
+        },
+        {
+          dateOfBirth: { $gte: gte, $lte: lte },
+        },
+      ];
+    }
+
+    // Search query for text search
+    if ($or.length > 0) {
+      searchQuery.$and.push({ $or });
+    }
+
+    if (searchQuery.$and && searchQuery.$and.length === 0) {
+      emptySearch = true;
+    }
+
     // Fetch Users from database
-    const result = await User.paginate({}, pagination);
+    const result = await User.paginate(
+      !emptySearch ? searchQuery : {},
+      pagination,
+    );
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error getting users');

@@ -262,6 +262,7 @@ class Logger extends Component {
                   </div>
                   <div>
                     <DateRangePicker
+                      showDefaultInputIcon
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
                       onDatesChange={({ startDate, endDate }) =>
