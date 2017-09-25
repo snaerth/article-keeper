@@ -10,6 +10,7 @@
 
   .row {
     display: grid;
+    margin-bottom: 5px;
     grid-template-columns: 150px 1fr;
 
     > div:nth-child(1) {
@@ -90,6 +91,18 @@
   }
 }
 
+.buttonsContainerCenter {
+  text-align: center;
+
+  button {
+    margin: 0 7.5px;
+  }
+}
+
+.textCenter {
+  text-align: center;
+}
+
 .profileImage {
   display: inline-block;
   min-width: 200px;
@@ -124,4 +137,23 @@
     grid-template-columns: 100%;
     grid-row-gap: 1em;
   }
+}
+
+.role {
+  padding: 5px 10px;
+  margin-right: 5px;
+  background: $primary-grey;
+  border-radius: $border-radius;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.admin {
+    background: $primary-blue;
+  }
+}
+
+.deleteContainer {
+  padding: 2em 0;
 }
