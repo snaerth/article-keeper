@@ -72,22 +72,20 @@ class AuthWrapper extends Component {
                 <Link
                   role="button"
                   to="/signin"
-                  className={s.pink}
                   onClick={(e) => this.changeAuthComp(e, 1)}
                 >
                     Sign in
-                  </Link>
+                </Link>
                 <span /> or <span />
                 <Link
                   role="button"
                   to="/signup"
-                  className={s.pink}
                   onClick={(e) => this.changeAuthComp(e, 2)}
                 >
                     Sign up
-                  </Link>
+                </Link>
                 <span /> with email
-                </p>
+              </p>
             </SocialsButtons>
             : null}
           {renderOrder[1]

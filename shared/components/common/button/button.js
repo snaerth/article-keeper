@@ -12,7 +12,7 @@ const Button = (props) => {
     <button
       className={classnames(
         styles.button,
-        styles[color || 'default'],
+        styles[color],
         styles[className],
       )}
       type={type || 'submit'}

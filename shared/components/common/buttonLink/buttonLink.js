@@ -13,7 +13,7 @@ const ButtonLink = (props) => {
 
   return (
     <a
-      className={classnames(s.button, s[color || 'default'], cNames)}
+      className={classnames(s.button, s[color], cNames)}
       href={href}
       title={title}
       onClick={onClick}

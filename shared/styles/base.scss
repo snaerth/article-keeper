@@ -45,7 +45,7 @@ body {
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: 0.5px;
-  color: $text-dark; // iOS on orientation change
+  color: $primary-text-color; // iOS on orientation change
   background: $primary-background;
   text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
@@ -62,7 +62,7 @@ h1 {
   @include responsive-font(10vw, 40px, 60px);
 
   line-height: 1.2;
-  color: $text-dark;
+  color: $primary-text-color;
 }
 
 h1,
@@ -72,7 +72,7 @@ h4,
 h5,
 h6 {
   line-height: 1.2;
-  color: $text-dark;
+  color: $primary-text-color;
 }
 
 ul {
@@ -81,7 +81,7 @@ ul {
 }
 
 a {
-  color: $primary-pink;
+  color: $primary-color;
 
   &:hover {
     transition: color $hover-transition ease-out;
@@ -157,7 +157,7 @@ nav .active {
 // Banner
 .banner {
   padding: 40px 0;
-  background: $primary-pink;
+  background: $primary-color;
 
   h1 {
     margin: 0;

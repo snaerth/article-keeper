@@ -6,8 +6,8 @@ import { reduxForm, Field } from 'redux-form';
 import { DateRangePicker } from 'react-dates';
 
 import * as actionCreators from './actions';
-import UsersTable from './table';
-import UsersModalData from './usersModalData';
+import UsersTable from './userTable';
+import UsersModal from './userModal';
 import Loader from '../common/loader';
 import Input from '../common/input';
 import Button from '../common/button';
@@ -304,7 +304,7 @@ class Users extends Component {
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          <UsersModalData
+          <UsersModal
             data={currentRowData}
             deleteHandler={this.deleteHandler}
           />

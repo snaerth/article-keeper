@@ -5,37 +5,6 @@
   min-height: 200px;
 }
 
-.modal {
-  padding: 0 0 2em;
-
-  .row {
-    display: grid;
-    margin-bottom: 5px;
-    grid-template-columns: 150px 1fr;
-
-    > div:nth-child(1) {
-      font-weight: bold;
-    }
-
-    > div:nth-child(2) {
-      font-size: 14px;
-    }
-  }
-
-  .rowPadding {
-    margin: 5px 0;
-    padding: 5px 0;
-  }
-}
-
-.title {
-  font-size: 30px;
-}
-
-.overflowHidden {
-  overflow: hidden;
-}
-
 .searchInputContainer {
   padding: 0;
 
@@ -75,69 +44,4 @@
       margin-right: 15px;
     }
   }
-}
-
-.clearButtonContainer {
-  display: inline-block;
-  margin-right: 15px;
-}
-
-.buttonsContainer {
-  margin-top: 20px;
-  text-align: right;
-
-  button:first-child {
-    margin-right: 15px;
-  }
-}
-
-.buttonsContainerCenter {
-  text-align: center;
-
-  button {
-    margin: 0 7.5px;
-  }
-}
-
-.textCenter {
-  text-align: center;
-}
-
-.profileImage {
-  display: inline-block;
-  min-width: 200px;
-  border: $border solid $border-color;
-  box-shadow: 0 5px 15px $box-shadow-color;
-}
-
-.person {
-  width: 200px;
-  height: 200px;
-  border: $border solid $border-color;
-  fill: $primary-grey;
-}
-
-.grid {
-  display: grid;
-  padding-top: 30px;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 100%;
-  grid-column-gap: 1em;
-}
-
-@media screen and (max-width: $max-960) {
-  .grid {
-    grid-template-columns: 40% 60%;
-  }
-}
-
-@media screen and (max-width: $max-768) {
-  .grid {
-    grid-template-columns: 100%;
-    grid-row-gap: 1em;
-  }
-}
-
-.deleteContainer {
-  padding: 2em 0;
 }

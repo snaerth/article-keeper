@@ -1,17 +1,23 @@
 // Colors
-$primary-yellow: rgb(255, 196, 0);
-$primary-purple: #7a29e7;
-$primary-red: #fb917b;
-$primary-green: #99ede6;
-$primary-blue: #36c3e0;
-$primary-pink: #f478dc;
-$primary-pink-darker: #cc62ee;
-$primary-black: #000;
-$primary-white: #fff;
-$primary-card: #fff;
-$primary-grey: #dfe2e5;
-$primary-background:#fff;
-$secondary-black: #2f3238;
+$primary-color-dark:   #7b1fa2;
+$primary-color:        #9c27b0;
+$primary-color-light:  #e1bee7;
+$primary-color-text:   #fff;
+$accent-color:         #00bcd4;
+$primary-text-color:   #212121;
+$secondary-text-color: #757575;
+$divider-color:        #bdbdbd;
+$primary-background:   #fafafa;
+$primary-button-color: #212121;
+$primary-yellow:       #ffc107;
+$primary-red:          #d32f2f;
+$primary-green:        #4caf50;
+$primary-blue:         #03a9f4;
+$primary-black:        #000;
+$primary-white:        #fff;
+$primary-card:         #fff;
+$primary-grey:         #dfe2e5;
+$secondary-black:      #2f3238;
 $navbar-background: #a9bac2;
 $navbar-text: rgba(0, 0, 0, 0.44);
 $text-dark: #484848;
@@ -19,13 +25,8 @@ $facebook: #3b5998;
 $twitter: #00abf1;
 $google: #f44336;
 $color-placeholder: #dddfe2;
-$linear-background-primary: linear-gradient(-135deg, $primary-pink, $primary-pink-darker);
 // Link
 $link-color: #404d5b;
-// Button
-$button-background: #f478dc;
-$button-color: #fff;
-$button-color-hover: #fff;
 // Inputs
 $input-border-color: #dddfe2;
 $input-border-height: 1px;

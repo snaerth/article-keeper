@@ -43,7 +43,7 @@ Usage
 /// @param {Number}   $fallback    - Fallback for viewport-
 ///                                  based units (optional)
 ///
-/// @example scss - 5vw font size (with 50px fallback), 
+/// @example scss - 5vw font size (with 50px fallback),
 ///                 minumum of 35px and maximum of 150px
 ///  @include responsive-font(5vw, 35px, 150px, 50px);
 ///
@@ -93,6 +93,12 @@ Usage
 }
 
 @mixin viewport($media) {
+  @if $media == mobile {
+    @media only screen and (min-width: $min-320) {
+      @content;
+    }
+  }
+
   @if $media == handset {
     @media only screen and (max-width: $min-600) {
       @content;

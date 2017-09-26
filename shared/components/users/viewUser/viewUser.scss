@@ -1,0 +1,63 @@
+@import '~styles/mixins';
+@import '~styles/variables';
+
+.row {
+  display: grid;
+  margin-bottom: 5px;
+  font-size: 14px;
+  grid-template-columns: 100px 1fr;
+
+  > div:nth-child(1) {
+    font-weight: bold;
+  }
+
+  @include viewport(tablet) {
+    grid-template-columns: 150px 1fr;
+
+    > div:nth-child(1) {
+      font-size: 16px;
+    }
+
+    > div:nth-child(2) {
+      font-size: 14px;
+    }
+  }
+}
+
+.buttonsContainer {
+  margin-top: 20px;
+  text-align: right;
+
+  button:first-child {
+    margin-right: 15px;
+  }
+}
+
+.profileImage {
+  display: inline-block;
+  min-width: 200px;
+  border: $border solid $border-color;
+  box-shadow: 0 5px 15px $box-shadow-color;
+}
+
+.person {
+  width: 200px;
+  height: 200px;
+  border: $border solid $border-color;
+  fill: $primary-grey;
+}
+
+.grid {
+  display: grid;
+  padding-top: 30px;
+  grid-template-rows: 100%;
+  grid-gap: 1.5em;
+
+  @include viewport(mobile) {
+    grid-template-columns: 100%;
+  }
+
+  @include viewport(tablet) {
+    grid-template-columns: 200px 1fr;
+  }
+}
