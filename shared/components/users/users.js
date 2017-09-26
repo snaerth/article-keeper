@@ -6,7 +6,7 @@ import { reduxForm, Field } from 'redux-form';
 import { DateRangePicker } from 'react-dates';
 
 import * as actionCreators from './actions';
-import UsersTable from './usersTable';
+import UsersTable from './table';
 import UsersModalData from './usersModalData';
 import Loader from '../common/loader';
 import Input from '../common/input';

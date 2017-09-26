@@ -1,0 +1,16 @@
+@import '~styles/variables';
+
+.role {
+  padding: 5px 10px;
+  margin-right: 5px;
+  background: $primary-grey;
+  border-radius: $border-radius;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.admin {
+    background: $primary-blue;
+  }
+}

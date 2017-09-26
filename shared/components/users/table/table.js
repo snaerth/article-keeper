@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Table from 'react-virtualized/dist/commonjs/Table';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import formatISODateTime from '../../utils/date';
-import getUserEmail from '../../utils/userHelper';
-import NotifyBox from '../common/notifyBox';
-import tableStyles from '../../styles/table.css';
+import formatISODateTime from '../../../utils/date';
+import getUserEmail from '../../../utils/userHelper';
+import NotifyBox from '../../common/notifyBox';
+import tableStyles from '../../../styles/table.css';
 
 function UsersTable({ list, onRowClickHandler, rowClassName }) {
   if (list.length === 0) {

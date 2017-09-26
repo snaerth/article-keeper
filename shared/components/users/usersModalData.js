@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import shortid from 'shortid';
 
 import Container from '../common/container';
 import Button from '../common/button';
+import Tags from '../common/tags';
 import formatISODateTime from '../../utils/date';
 import getUserEmail from '../../utils/userHelper';
 
@@ -32,7 +31,7 @@ class LoggerModalData extends Component {
 
   /**
    * Changes the active state for views
-   * @param {Number} viewId 
+   * @param {Number} viewId
    */
   changeView(viewId) {
     this.setState(() => ({
@@ -98,30 +97,7 @@ class LoggerModalData extends Component {
               </div>
               <div className={styles.row}>
                 <div>Roles</div>
-                <div>
-                  {roles.map((role) => {
-                    switch (role) {
-                      case 'admin':
-                        return (
-                          <span
-                            key={shortid.generate()}
-                            className={classnames(styles.role, styles.admin)}
-                          >
-                            {role}
-                          </span>
-                        );
-                      default:
-                        return (
-                          <span
-                            key={shortid.generate()}
-                            className={styles.role}
-                          >
-                            {role}
-                          </span>
-                        );
-                    }
-                  })}
-                </div>
+                <div><Tags roles={roles} /></div>
               </div>
               <div className={styles.row}>
                 <div>Profile</div>

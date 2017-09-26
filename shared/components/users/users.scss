@@ -125,7 +125,6 @@
   grid-column-gap: 1em;
 }
 
-
 @media screen and (max-width: $max-960) {
   .grid {
     grid-template-columns: 40% 60%;
@@ -136,21 +135,6 @@
   .grid {
     grid-template-columns: 100%;
     grid-row-gap: 1em;
-  }
-}
-
-.role {
-  padding: 5px 10px;
-  margin-right: 5px;
-  background: $primary-grey;
-  border-radius: $border-radius;
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  &.admin {
-    background: $primary-blue;
   }
 }
 
