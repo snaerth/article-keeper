@@ -7,20 +7,21 @@ TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
   - Remove removeUserProps, use mongoose select instead
-  - Users
-    - Create + test
-    - Update + test
-    - Get user + test => test is no over
-    - Get users + test  => test is no over
-    - delete user + test
-    - put + test
-  - Date picker geta manually skrifað inn dagsetingu.
-  - Finish reset password
-  - Update dependencys
-  - Klára önnur test
+  - Users server
+    - Create + test  => test is not over
+    - Update + test => test is not over
+    - Get user + test => test is not over
+    - Get users + test  => test is not over
+    - delete user + test => test is not over
+    - put + test  => test is not over
   - Búa til update user í client og server
   - Búa til edit, delete, create and view users fyrir admin notendur
+  - Date picker geta manually skrifað inn dagsetingu.
+  - Finish reset password
+  - Klára önnur test
+
   - Búa til news edit, delete, create, view fyrir news
   - Muna að búa til test fyrir allt
+  - Update dependencys - React fiber og annað
 
 

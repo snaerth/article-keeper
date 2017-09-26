@@ -29,34 +29,31 @@ export async function createAdminUser() {
         adminUser.roles = ['admin', 'user'];
 
         // save default admin user to the database
-        return adminUser.save((err) => {
+        return adminUser.save(err => {
           if (err) {
             return reject(err);
           }
 
           return resolve(adminUser);
         });
-      },
+      }
     );
   });
 }
 
 export default (mongoUri, callback) => {
   const options = {
-    server: {
-      reconnectTries: 10,
-      socketOptions: {
-        keepAlive: 1,
-        connectTimeoutMS: 30000,
-        socketTimeoutMS: 0,
-      },
-    },
+    useMongoClient: true,
+    keepAlive: 1,
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 0,
+    reconnectTries: 10,
   };
 
   // Connect to database
   mongoose.connect(mongoUri, options);
 
-  mongoose.connection.on('error', (error) => {
+  mongoose.connection.on('error', error => {
     throw new Error(`Unable to connect to database: ${mongoUri}`, error);
   });
 

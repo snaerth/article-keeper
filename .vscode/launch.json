@@ -9,13 +9,10 @@
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
-      "program": "${workspaceRoot}\\api\\index",
-      "args": [],
+      "program": "${workspaceRoot}/api/index",
       "cwd": "${workspaceRoot}",
-      "runtimeArgs": [
-        "--harmony",
-        "--no-deprecation"
-      ],
+      "runtimeArgs": ["--harmony"],
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
       "sourceMaps": true
     },
     {
@@ -27,22 +24,15 @@
       "stopOnEntry": false,
       "args": [],
       "cwd": "${workspaceRoot}",
-      "runtimeArgs": [
-        "--harmony",
-        "--no-deprecation"
-      ],
+      "runtimeArgs": ["--harmony", "--no-deprecation"],
       "sourceMaps": true,
-      "outFiles": [
-        "${workspaceRoot}/debug/api/**/*.js"
-      ]
+      "outFiles": ["${workspaceRoot}/debug/api/**/*.js"]
     },
     {
       "name": "Jest Debugger",
       "type": "node",
       "request": "launch",
-      "args": [
-        "--u"
-      ],
+      "args": ["--u"],
       "runtimeArgs": [
         "--inspect-brk",
         "${workspaceRoot}/node_modules/jest-cli/bin/jest.js",
@@ -52,6 +42,17 @@
         "--runInBand"
       ],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Attach",
+      "type": "node",
+      "request": "attach",
+      "port": 5858,
+      "address": "localhost",
+      "restart": true,
+      "sourceMaps": false,
+      "localRoot": "${workspaceRoot}",
+      "remoteRoot": null
     }
   ]
 }
