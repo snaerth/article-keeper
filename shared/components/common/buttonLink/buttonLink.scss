@@ -31,6 +31,18 @@
   width: 100%;
 }
 
+.purple {
+  background: $primary-color;
+
+  &:hover {
+    background: darken($primary-color, 15%);
+  }
+
+  &:focus {
+    background: darken($primary-color, 15%);
+  }
+}
+
 .facebook {
   background: $facebook;
 

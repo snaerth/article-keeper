@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { withRouter } from 'react-router';
 import * as actionCreators from '../actions';
 
 // Components
@@ -288,12 +287,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm({
-      form: 'signup',
-      fields: ['name', 'email', 'password', 'image'],
-      validate,
-    })(Signup),
-  ),
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'signup',
+    fields: ['name', 'email', 'password', 'image'],
+    validate,
+  })(Signup),
 );

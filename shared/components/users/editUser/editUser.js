@@ -11,10 +11,7 @@ class EditUser extends Component {
       <Container>
         Edit {name}
         <div className={s.editContainer}>
-          <h2 className={s.textCenter}>
-            Do you really want to delete {name}?
-          </h2>
-          <div className={s.buttonsContainerCenter}>
+          <div className={s.pullRight}>
             <Button
               type="button"
               text="Cancel"
