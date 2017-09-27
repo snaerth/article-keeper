@@ -28,7 +28,8 @@
 }
 
 // stylelint-disable-next-line
-body, html {
+body,
+html {
   min-height: 100vh;
 }
 
@@ -96,8 +97,6 @@ fieldset {
     padding: 0;
   }
 }
-
-
 
 /*
 Visually hide an element
@@ -170,4 +169,12 @@ nav .active {
 .almostHidden {
   opacity: 0.6;
   pointer-events: none;
+}
+
+// Native HTML5 input date
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='date']::-webkit-inner-spin-button,
+input[type='date']::-webkit-search-cancel-button {
+  display: none;
+  -webkit-appearance: none;
 }

@@ -259,8 +259,9 @@ class Users extends Component {
                       showDefaultInputIcon
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) =>
-                        this.setState({ startDate, endDate })}
+                      onDatesChange={({ startDate, endDate }) => {
+                        this.setState({ startDate, endDate });
+                      }}
                       focusedInput={this.state.focusedInput}
                       onFocusChange={(focusedInput) =>
                         this.setState({ focusedInput })}

@@ -1,5 +1,5 @@
 import randombytes from 'randombytes';
-import { validateEmail, isIcelandicPhoneNumber } from '../utils/validate';
+import { validateEmail, isPhoneNumber } from '../utils/validate';
 import sendMail from '../services/mailService';
 import log from '../services/logService';
 import {
@@ -175,9 +175,9 @@ export function validateSignup({
     return 'Date is not in valid format. Try DD.MM.YYYY';
   }
 
-  // Check if string is Icelandic phone number
-  if (phone && !isIcelandicPhoneNumber(phone)) {
-    return 'Date is not in valid format. Try DD.MM.YYYY';
+  // Check if string is phone number
+  if (phone && !isPhoneNumber(phone)) {
+    return 'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
   }
 
   return null;

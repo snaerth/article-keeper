@@ -13,14 +13,15 @@ const Input = ({
   placeholder,
   autocomplete,
   hidelabel,
+  required,
 }) => (
   <div>
     <span className={s.input}>
-      {!hidelabel
-        ? <label className={s.inputLabel} htmlFor={id}>
+      {!hidelabel ? (
+        <label className={s.inputLabel} htmlFor={id}>
           <span className={s.inputLabelContent}>{label}</span>
         </label>
-        : null}
+      ) : null}
       <input
         {...input}
         type={type}
@@ -29,12 +30,11 @@ const Input = ({
         name={id}
         placeholder={placeholder}
         autoComplete={autocomplete || 'off'}
+        required={required ? 'required' : ''}
       />
       {children ? <span className={s.icon}>{children}</span> : null}
     </span>
-    {meta && meta.error && meta.touched
-      ? <ErrorText key={id} id={id} error={meta.error} />
-      : null}
+    {meta && meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
   </div>
 );
 
@@ -48,6 +48,7 @@ Input.propTypes = {
   autocomplete: PropTypes.string,
   children: PropTypes.element,
   hidelabel: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default Input;

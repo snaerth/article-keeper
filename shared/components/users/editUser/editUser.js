@@ -9,14 +9,16 @@ import * as actionCreators from '../actions';
 // Components
 import Container from '../../common/container';
 import Input from '../../common/input';
+import Checkbox from '../../common/checkbox';
 import Password from '../../common/password';
 import Button from '../../common/button';
 import NotifyBox from '../../common/notifyBox';
 import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
-import validateEmail from './../../../utils/validate';
+import validateEmail, { isPhoneNumber } from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
+import Calendar from '../../../assets/images/calendar.svg';
 import s from './editUser.scss';
 
 /**
@@ -188,6 +190,40 @@ class EditUser extends Component {
                   autoComplete="off"
                 />
               </fieldset>
+              <fieldset>
+                <Field
+                  component={Input}
+                  name="phone"
+                  id="phone"
+                  type="text"
+                  label="Phone"
+                  placeholder="(555) 555-5555"
+                  autoComplete="off"
+                />
+              </fieldset>
+            </div>
+            <div className={s.row}>
+              <fieldset>
+                <Field
+                  component={(props) => <Input {...props} required />}
+                  name="Date of birth"
+                  id="dateOfBirth"
+                  type="date"
+                  label="Date of birth"
+                  autoComplete="off"
+                >
+                  <Calendar />
+                </Field>
+              </fieldset>
+              <fieldset>
+                <Field
+                  component={Checkbox}
+                  name="roles"
+                  id="roles"
+                  type="checkbox"
+                  label="Roles"
+                />
+              </fieldset>
             </div>
             <fieldset className={s.noPaddingBottom}>
               <Button
@@ -240,7 +276,7 @@ class EditUser extends Component {
  * @return {Object} errors
  * @author Snær Seljan Þóroddsson
  */
-function validate({ email, password, name }) {
+function validate({ email, password, name, phone, dateOfBirth }) {
   const errors = {};
 
   // Email
@@ -277,6 +313,25 @@ function validate({ email, password, name }) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 
+  // Date of birth
+  if (!dateOfBirth) {
+    errors.dateOfBirth = 'Date required';
+  }
+
+  if (dateOfBirth && !Date.parse(dateOfBirth)) {
+    errors.dateOfBirth = 'Date is not in valid format. Try DD.MM.YYYY';
+  }
+
+  // Phone number
+  if (!phone) {
+    errors.phone = 'Phone required';
+  }
+
+  // Check if string is Icelandic phone number
+  if (phone && !isPhoneNumber(phone)) {
+    errors.phone = 'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
+  }
+
   return errors;
 }
 
@@ -310,7 +365,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'signup',
-    fields: ['name', 'email', 'password', 'image'],
+    fields: ['name', 'email', 'password', 'image', 'phone', 'roles', 'dateOfBirth'],
     validate,
   })(EditUser),
 );

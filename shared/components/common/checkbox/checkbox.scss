@@ -1,0 +1,78 @@
+.button {
+  display: inline-block;
+  position: relative;
+  color: #fff;
+
+  label {
+    display: inline-block;
+    text-align: left;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.button .icon {
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.icon::before,
+.icon::after {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 35%;
+  transition: 0.2s ease-out;
+}
+
+.tuli label {
+  line-height: 20px;
+  text-indent: 30px;
+}
+
+.tuli input[type='checkbox']:checked ~ .icon {
+  background: #fff;
+}
+
+.tuli input[type='checkbox']:checked ~ .icon::before,
+.tuli input[type='checkbox']:checked ~ .icon::after {
+  opacity: 1;
+}
+
+.tuli .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 1px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.tuli .icon::before,
+.tuli .icon::after {
+  top: 35%;
+  left: 2px;
+  opacity: 0;
+  width: 12px;
+  height: 2px;
+  background: #61b136;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  transform-origin: left center;
+}
+
+.tuli .icon::before {
+  transform: translate(0, 0) rotate(45deg) scale(0.6, 1);
+}
+
+.tuli .icon::after {
+  transform: translate(4px, 6px) rotate(-45deg);
+}

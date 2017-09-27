@@ -1,13 +1,9 @@
-import {
-  isIcelandicPhoneNumber,
-  validateEmail,
-  validateSeoUrl,
-} from '../validate';
+import { isIcelandicPhoneNumber, isPhoneNumber, validateEmail, validateSeoUrl } from '../validate';
 import { replaceIcelandicCharacters } from '../friendlyUrl';
 
 describe('Runs validation tests', () => {
   // Icelandic Phone number
-  it('Validate if string icelandic phone number', () => {
+  it('Validate if string is icelandic phone number', () => {
     const phone1 = '354-866-6665';
     const phone2 = '+354-866-6665';
     const phone3 = '354-866-66659';
@@ -18,6 +14,17 @@ describe('Runs validation tests', () => {
     expect(isPhone1).toEqual(true);
     expect(isPhone2).toEqual(true);
     expect(isPhone3).toEqual(false);
+  });
+
+  // Phone number
+  it('Validate if string is phone number', () => {
+    const phone1 = '354-866-6665';
+    const phone2 = '+354-866-6665';
+    const isPhone1 = isPhoneNumber(phone1);
+    const isPhone2 = isPhoneNumber(phone2);
+
+    expect(isPhone1).toEqual(true);
+    expect(isPhone2).toEqual(true);
   });
 
   // Email
@@ -35,9 +42,7 @@ describe('Runs validation tests', () => {
   it('Validate if string is SEO friendly string', () => {
     const str = 'this-is-seo-firendly-url';
     const str2 = '%this-is- seo &firendly-url';
-    const str3 = replaceIcelandicCharacters(
-      'Snær-Seljan-Þóroddsson-is-a-Icelandic-name',
-    );
+    const str3 = replaceIcelandicCharacters('Snær-Seljan-Þóroddsson-is-a-Icelandic-name');
     const valid = validateSeoUrl(str);
     const unvalid = validateSeoUrl(str2);
     const valid2 = validateSeoUrl(str3);

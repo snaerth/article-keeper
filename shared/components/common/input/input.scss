@@ -54,7 +54,7 @@
 }
 
 .inputField:focus {
-  animation: anim-shadow 0.3s forwards;
+  animation: anim-shadow $transition-duration forwards;
 }
 
 .icon {
