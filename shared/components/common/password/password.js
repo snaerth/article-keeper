@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './password.scss';
+import styles from '../input/input.scss';
 import ErrorText from '../errorText';
 import VisibilitySvg from '../../../assets/images/visibility.svg';
 import VisibilityOffSvg from '../../../assets/images/visibility_off.svg';
@@ -41,10 +41,10 @@ class Password extends Component {
 
     return (
       <div>
-        {meta.error && meta.touched
-          ? <ErrorText key={id} id={id} error={meta.error} />
-          : null}
         <span className={styles.input}>
+          <label className={styles.inputLabel} htmlFor={id}>
+            <span className={styles.inputLabelContent}>{label}</span>
+          </label>
           <input
             {...input}
             type={type}
@@ -63,10 +63,10 @@ class Password extends Component {
           >
             {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
           </span>
-          <label className={styles.inputLabel} htmlFor={id}>
-            <span className={styles.inputLabelContent}>{label}</span>
-          </label>
         </span>
+        {meta.error && meta.touched
+          ? <ErrorText key={id} id={id} error={meta.error} />
+          : null}
       </div>
     );
   }

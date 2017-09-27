@@ -89,6 +89,7 @@ a {
 }
 
 fieldset {
+  margin-bottom: 10px;
   border: 0;
 
   @include viewport(handset) {

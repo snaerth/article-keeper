@@ -1,3 +1,1 @@
-import input from './input';
-
-export default input;
+export { default } from './input';

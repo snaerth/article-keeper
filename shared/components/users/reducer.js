@@ -3,13 +3,18 @@ import {
   GET_USERS_ERROR,
   DELETE_USERS_SUCCESS,
   DELETE_USERS_ERROR,
+  UPDATE_USERS_SUCCESS,
+  UPDATE_USERS_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
+  CLEAN,
+  SET_PREVIEW_USER_IMAGE,
 } from './types';
 
 const initialState = {
   isFetching: false,
   orientation: 'horizontal',
+  image: null,
 };
 
 export default function (state = initialState, action) {
@@ -28,6 +33,19 @@ export default function (state = initialState, action) {
         isFetching: false,
       };
 
+    case CLEAN:
+      return {
+        ...state,
+        error: '',
+        image: null,
+      };
+
+    case SET_PREVIEW_USER_IMAGE:
+      return {
+        ...state,
+        image: action.payload,
+      };
+
     case GET_USERS_SUCCESS:
       return {
         ...state,
@@ -36,6 +54,20 @@ export default function (state = initialState, action) {
       };
 
     case GET_USERS_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload,
+      };
+
+    case UPDATE_USERS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        data: action.payload,
+      };
+
+    case UPDATE_USERS_ERROR:
       return {
         ...state,
         isFetching: false,

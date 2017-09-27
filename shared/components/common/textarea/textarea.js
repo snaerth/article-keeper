@@ -5,18 +5,18 @@ import ErrorText from '../errorText';
 
 const Input = (props) => (
   <span className={styles.input}>
-    {props.meta.error && props.meta.touched
-      ? <ErrorText key={props.id} id={props.id} error={props.meta.error} />
-      : null}
+    <label className={styles.inputLabel} htmlFor={props.id}>
+      <span className={styles.inputLabelContent}>{props.label}</span>
+    </label>
     <textarea
       {...props.input}
       className={styles.inputField}
       id={props.id}
       placeholder={props.placeholder}
     />
-    <label className={styles.inputLabel} htmlFor={props.id}>
-      <span className={styles.inputLabelContent}>{props.label}</span>
-    </label>
+    {props.meta.error && props.meta.touched
+      ? <ErrorText key={props.id} id={props.id} error={props.meta.error} />
+      : null}
   </span>
 );
 

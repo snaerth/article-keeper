@@ -15,11 +15,12 @@ const Input = ({
   hidelabel,
 }) => (
   <div>
-    {meta && meta.error && meta.touched
-      ? <ErrorText key={id} id={id} error={meta.error} />
-      : null}
     <span className={s.input}>
-      {children ? <span className={s.icon}>{children}</span> : null}
+      {!hidelabel
+        ? <label className={s.inputLabel} htmlFor={id}>
+          <span className={s.inputLabelContent}>{label}</span>
+        </label>
+        : null}
       <input
         {...input}
         type={type}
@@ -29,12 +30,11 @@ const Input = ({
         placeholder={placeholder}
         autoComplete={autocomplete || 'off'}
       />
-      {!hidelabel
-        ? <label className={s.inputLabel} htmlFor={id}>
-          <span className={s.inputLabelContent}>{label}</span>
-        </label>
-        : null}
+      {children ? <span className={s.icon}>{children}</span> : null}
     </span>
+    {meta && meta.error && meta.touched
+      ? <ErrorText key={id} id={id} error={meta.error} />
+      : null}
   </div>
 );
 

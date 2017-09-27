@@ -4,10 +4,33 @@ import {
   GET_USERS_ERROR,
   DELETE_USERS_SUCCESS,
   DELETE_USERS_ERROR,
+  UPDATE_USERS_SUCCESS,
+  UPDATE_USERS_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
+  CLEAN,
+  SET_PREVIEW_USER_IMAGE,
 } from './types';
 import { authError } from '../../common/actions';
+
+/**
+ * Resets image and error
+ *
+ * @returns {Object}
+ */
+export function clean() {
+  return { type: CLEAN };
+}
+
+/**
+ * Stores user image for preview
+ *
+ * @param {Object} image
+ * @returns {Object}
+ */
+export function setPreviewUserImage(image) {
+  return { type: SET_PREVIEW_USER_IMAGE, payload: image };
+}
 
 /**
  * Is fetching data state
@@ -96,6 +119,31 @@ export function deleteUserById(token, id) {
       dispatch({ type: DELETE_USERS_SUCCESS, payload: res.data });
     } catch (error) {
       dispatch(authError(DELETE_USERS_ERROR, error));
+    }
+  };
+}
+
+/**
+ * Updates user
+ *
+ * @param {String} token
+ * @param {String} id
+ * @param {Object} formData
+ */
+export function updateUser(token, id, formData) {
+  return async (dispatch) => {
+    try {
+      const url = `/api/users/${id}`;
+      const config = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      const res = await axios.put(url, formData, config);
+      dispatch({ type: UPDATE_USERS_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch(authError(UPDATE_USERS_ERROR, error));
     }
   };
 }
