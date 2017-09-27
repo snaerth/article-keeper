@@ -1,78 +1,64 @@
-.button {
-  display: inline-block;
+@import '~styles/variables';
+
+$md-checkbox-margin: 16px 0;
+$md-checkbox-checked-color: $primary-green;
+$md-checkbox-border-color: $text-dark;
+
+$md-checkbox-size: 20px;
+$md-checkbox-padding: 4px;
+
+$md-checkmark-width: 2px;
+$md-checkmark-color: $primary-white;
+
+.checkbox {
   position: relative;
-  color: #fff;
+  margin: $md-checkbox-margin;
 
   label {
-    display: inline-block;
-    text-align: left;
     cursor: pointer;
-    text-transform: uppercase;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &::before {
+      // box
+      width: $md-checkbox-size;
+      height: $md-checkbox-size;
+      cursor: pointer;
+      background: $primary-white;
+      border: 2px solid $md-checkbox-border-color;
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
   }
 
-  input {
-    display: none;
+  input[type='checkbox'] {
+    margin-right: $md-checkbox-size - 10px;
+    outline: 0;
+
+    &:checked {
+      + label::before {
+        background: $md-checkbox-checked-color;
+        border: none;
+      }
+
+      + label::after {
+        $md-checkmark-size: $md-checkbox-size - 2 * $md-checkbox-padding;
+
+        top: ($md-checkbox-size / 2) - ($md-checkmark-size / 4) - $md-checkbox-size/10;
+        left: $md-checkbox-padding;
+        width: $md-checkmark-size;
+        height: $md-checkmark-size / 2;
+        border: $md-checkmark-width solid $md-checkmark-color;
+        border-top-style: none;
+        border-right-style: none;
+        transform: rotate(-45deg);
+      }
+    }
   }
-}
-
-.button .icon {
-  cursor: pointer;
-  pointer-events: none;
-}
-
-.icon::before,
-.icon::after {
-  content: '';
-  position: absolute;
-  top: 45%;
-  left: 35%;
-  transition: 0.2s ease-out;
-}
-
-.tuli label {
-  line-height: 20px;
-  text-indent: 30px;
-}
-
-.tuli input[type='checkbox']:checked ~ .icon {
-  background: #fff;
-}
-
-.tuli input[type='checkbox']:checked ~ .icon::before,
-.tuli input[type='checkbox']:checked ~ .icon::after {
-  opacity: 1;
-}
-
-.tuli .icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #fff;
-  border-radius: 1px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
-}
-
-.tuli .icon::before,
-.tuli .icon::after {
-  top: 35%;
-  left: 2px;
-  opacity: 0;
-  width: 12px;
-  height: 2px;
-  background: #61b136;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  transform-origin: left center;
-}
-
-.tuli .icon::before {
-  transform: translate(0, 0) rotate(45deg) scale(0.6, 1);
-}
-
-.tuli .icon::after {
-  transform: translate(4px, 6px) rotate(-45deg);
 }

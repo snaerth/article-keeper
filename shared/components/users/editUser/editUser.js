@@ -215,6 +215,8 @@ class EditUser extends Component {
                   <Calendar />
                 </Field>
               </fieldset>
+            </div>
+            <div className={s.row}>
               <fieldset>
                 <Field
                   component={Checkbox}
@@ -222,6 +224,13 @@ class EditUser extends Component {
                   id="roles"
                   type="checkbox"
                   label="Roles"
+                />
+                <Field
+                  component={Checkbox}
+                  name="user"
+                  id="user"
+                  type="checkbox"
+                  label="Users"
                 />
               </fieldset>
             </div>
