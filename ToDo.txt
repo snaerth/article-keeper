@@ -6,6 +6,8 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - EditUser setja phone icon
+  - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead
   - Users server
     - Create + test  => test is not over
