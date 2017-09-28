@@ -1,3 +1,8 @@
-import textarea from './textarea';
+import { asyncComponent } from 'react-async-component';
 
-export default textarea;
+export default asyncComponent({
+  // include home and about route in same chunk e.g main
+  resolve: () => System.import(/* webpackChunkName: "common" */ './textarea'),
+});
+
+// export { default } from './textarea';

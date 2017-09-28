@@ -71,6 +71,10 @@
   }
 }
 
+.iconNoLable {
+  top: 25%;
+}
+
 @keyframes anim-shadow {
   to {
     border: $input-border-height solid $primary-color;

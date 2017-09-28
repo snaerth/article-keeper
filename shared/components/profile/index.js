@@ -1,9 +1,8 @@
-// import { asyncComponent } from 'react-async-component';
+import { asyncComponent } from 'react-async-component';
 
-// export default asyncComponent({
-//   resolve: () => System.import('./profile'),
-//   ssrMode: 'boundary',
-//   name: 'Profile',
-// });
+export default asyncComponent({
+  // include home and about route in same chunk e.g main
+  resolve: () => System.import(/* webpackChunkName: "profile" */ './profile'),
+});
 
-export { default } from './profile';
+// export { default } from './profile';

@@ -1,3 +1,8 @@
-import ErrorText from './errorText';
+import { asyncComponent } from 'react-async-component';
 
-export default ErrorText;
+export default asyncComponent({
+  // include home and about route in same chunk e.g main
+  resolve: () => System.import(/* webpackChunkName: "common" */ './errorText'),
+});
+
+// export { default } from './errorText';

@@ -1,4 +1,4 @@
-import formatISODateTime, { checkTime } from '../date';
+import formatISODateTime, { checkTime, formatISODate } from '../date';
 
 describe('Run tests for date', () => {
   test('Check if time is bigger or smaller than zero', () => {
@@ -11,6 +11,13 @@ describe('Run tests for date', () => {
     const success = formatISODateTime('2017-08-11T12:41:59.791Z');
     expect(success).toMatch('2017-08-11 12:41:59');
     const fail = formatISODateTime('test');
+    expect(fail).toThrowErrorMatchingSnapshot();
+  });
+
+  test('Format date string to ISO date format', () => {
+    const success = formatISODate('2017-08-11T12:41:59.791Z');
+    expect(success).toMatch('2017-08-11');
+    const fail = formatISODate('test');
     expect(fail).toThrowErrorMatchingSnapshot();
   });
 });

@@ -248,7 +248,6 @@ class Users extends Component {
                         hidelabel
                       >
                         <Search
-                          className={s.searchIcon}
                           onClick={handleSubmit(this.handleFormSubmit)}
                         />
                       </Field>

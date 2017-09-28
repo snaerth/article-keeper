@@ -16,6 +16,8 @@ import NotifyBox from '../../common/notifyBox';
 import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
 import validateEmail, { isPhoneNumber } from './../../../utils/validate';
+import getUserEmail from './../../../utils/userHelper';
+import { formatInputDate } from './../../../utils/date';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
 import Calendar from '../../../assets/images/calendar.svg';
@@ -33,18 +35,14 @@ class EditUser extends Component {
     isFetching: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
     changeViewHandler: PropTypes.func.isRequired,
+    initialize: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.fileUploaderToggler = this.fileUploaderToggler.bind(this);
     this.onDrop = this.onDrop.bind(this);
-
-    this.state = {
-      showImageLoader: false,
-    };
   }
 
   componentWillMount() {
@@ -56,7 +54,6 @@ class EditUser extends Component {
      *
      * @param {Object}
      * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
      */
   async handleFormSubmit({ email, password, name }) {
     this.props.actions.isFetching();
@@ -87,7 +84,6 @@ class EditUser extends Component {
      * @param {Array} acceptedFiles
      * @param {Array} rejectedFiles
      * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
      */
   onDrop(acceptedFiles, rejectedFiles) {
     if (rejectedFiles.length > 0) {
@@ -104,7 +100,6 @@ class EditUser extends Component {
      *
      * @param {String} errorMessage - Error message
      * @returns {JSX}
-     * @author Snær Seljan Þóroddsson
      */
   renderError(errorMessage) {
     if (!errorMessage) return null;
@@ -115,25 +110,13 @@ class EditUser extends Component {
     );
   }
 
-  /**
-     * Toggles showImageLoader state
-     *
-     * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
-     */
-  fileUploaderToggler() {
-    this.setState({
-      showImageLoader: !this.state.showImageLoader,
-    });
-  }
-
   render() {
     const {
       handleSubmit,
       error,
       isFetching,
       changeViewHandler,
-      user: { email },
+      user: { email, name },
     } = this.props;
 
     return (
@@ -161,6 +144,7 @@ class EditUser extends Component {
                   type="text"
                   label="Name"
                   placeholder="Full name"
+                  value={name}
                 >
                   <Person />
                 </Field>
@@ -206,7 +190,7 @@ class EditUser extends Component {
               <fieldset>
                 <Field
                   component={(props) => <Input {...props} required />}
-                  name="Date of birth"
+                  name="dateOfBirth"
                   id="dateOfBirth"
                   type="date"
                   label="Date of birth"
@@ -215,43 +199,43 @@ class EditUser extends Component {
                   <Calendar />
                 </Field>
               </fieldset>
+              <fieldset>
+                <div>
+                  <strong>User roles</strong>
+                </div>
+                <div className={s.checkbox}>
+                  <Field
+                    component={Checkbox}
+                    name="admin"
+                    id="admin"
+                    type="checkbox"
+                    label="Admin"
+                  />
+                </div>
+                <div className={s.checkbox}>
+                  <Field
+                    component={Checkbox}
+                    name="user"
+                    id="user"
+                    type="checkbox"
+                    label="Users"
+                  />
+                </div>
+              </fieldset>
             </div>
             <div className={s.row}>
               <fieldset>
-                <Field
-                  component={Checkbox}
-                  name="roles"
-                  id="roles"
-                  type="checkbox"
-                  label="Roles"
-                />
-                <Field
-                  component={Checkbox}
-                  name="user"
-                  id="user"
-                  type="checkbox"
-                  label="Users"
-                />
-              </fieldset>
-            </div>
-            <fieldset className={s.noPaddingBottom}>
-              <Button
-                onClick={() => this.fileUploaderToggler()}
-                text="Add profile image"
-                color="purple"
-                ariaLabel="Add profile image"
-                type="button"
-                className="fullWidth"
-              />
-              {this.state.showImageLoader
-                ? <FileUploader
+                <div>
+                  <strong>Profile image</strong>
+                </div>
+                <FileUploader
                   accept="image/*"
                   onDrop={this.onDrop}
                   multiple={false}
                   image={this.props.image}
                 />
-                : null}
-            </fieldset>
+              </fieldset>
+            </div>
           </form>
           <div className={s.editContainer}>
             <div className={s.pullRight}>
@@ -322,23 +306,15 @@ function validate({ email, password, name, phone, dateOfBirth }) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 
-  // Date of birth
-  if (!dateOfBirth) {
-    errors.dateOfBirth = 'Date required';
-  }
-
+  // Check if valid date object
   if (dateOfBirth && !Date.parse(dateOfBirth)) {
     errors.dateOfBirth = 'Date is not in valid format. Try DD.MM.YYYY';
   }
 
-  // Phone number
-  if (!phone) {
-    errors.phone = 'Phone required';
-  }
-
-  // Check if string is Icelandic phone number
+  // Check if string is phone number
   if (phone && !isPhoneNumber(phone)) {
-    errors.phone = 'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
+    errors.phone =
+      'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
   }
 
   return errors;
@@ -348,14 +324,27 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * Maps state to components props
  *
  * @param {Object} state - Application state
+ * @param {Object} ownProps - Components own props
  * @returns {Object}
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const { error, image, isFetching } = state.users;
+  const { name, phone, dateOfBirth, roles, imageUrl } = ownProps.user;
+
   return {
     error,
     image,
     isFetching,
+    initialValues: {
+      name,
+      email: getUserEmail(ownProps.user),
+      password: '',
+      image: imageUrl || '',
+      phone: phone || '',
+      dateOfBirth: dateOfBirth ? formatInputDate(dateOfBirth) : '',
+      admin: !!roles.includes('admin'),
+      user: !!roles.includes('user'),
+    },
   };
 }
 
@@ -374,7 +363,16 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'signup',
-    fields: ['name', 'email', 'password', 'image', 'phone', 'roles', 'dateOfBirth'],
+    fields: [
+      'name',
+      'email',
+      'password',
+      'image',
+      'phone',
+      'dateOfBirth',
+      'admin',
+      'user',
+    ],
     validate,
   })(EditUser),
 );

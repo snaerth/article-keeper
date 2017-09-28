@@ -22,10 +22,6 @@
   transition: fill 0.2s ease-out;
 }
 
-.noPaddingBottom {
-  padding-bottom: 0;
-}
-
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -33,5 +29,14 @@
 
 .formContainer {
   margin-top: 2em;
+}
+
+.checkbox {
+  display: inline-block;
+  margin-right: 30px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
