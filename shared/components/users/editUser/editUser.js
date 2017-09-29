@@ -20,6 +20,7 @@ import getUserEmail from './../../../utils/userHelper';
 import { formatInputDate } from './../../../utils/date';
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
+import Phone from '../../../assets/images/phone.svg';
 import Calendar from '../../../assets/images/calendar.svg';
 import s from './editUser.scss';
 
@@ -116,7 +117,8 @@ class EditUser extends Component {
       error,
       isFetching,
       changeViewHandler,
-      user: { email, name },
+      image,
+      user: { email, name, imageUrl },
     } = this.props;
 
     return (
@@ -144,7 +146,6 @@ class EditUser extends Component {
                   type="text"
                   label="Name"
                   placeholder="Full name"
-                  value={name}
                 >
                   <Person />
                 </Field>
@@ -171,7 +172,6 @@ class EditUser extends Component {
                   type="password"
                   label="Password"
                   placeholder="Must have at least 6 characters"
-                  autoComplete="off"
                 />
               </fieldset>
               <fieldset>
@@ -182,8 +182,9 @@ class EditUser extends Component {
                   type="text"
                   label="Phone"
                   placeholder="(555) 555-5555"
-                  autoComplete="off"
-                />
+                >
+                  <Phone />
+                </Field>
               </fieldset>
             </div>
             <div className={s.row}>
@@ -194,7 +195,6 @@ class EditUser extends Component {
                   id="dateOfBirth"
                   type="date"
                   label="Date of birth"
-                  autoComplete="off"
                 >
                   <Calendar />
                 </Field>
@@ -232,7 +232,7 @@ class EditUser extends Component {
                   accept="image/*"
                   onDrop={this.onDrop}
                   multiple={false}
-                  image={this.props.image}
+                  image={image || imageUrl}
                 />
               </fieldset>
             </div>

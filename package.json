@@ -9,15 +9,12 @@
   "scripts": {
     "analyze:client": "babel-node internal/scripts/analyze --client",
     "analyze:server": "babel-node internal/scripts/analyze --server",
-    "build":
-      "npm run clean && cross-env NODE_ENV=production babel-node internal/scripts/build --optimize",
-    "build:dev":
-      "npm run clean && cross-env NODE_ENV=development babel-node internal/scripts/build",
+    "build": "npm run clean && cross-env NODE_ENV=production babel-node internal/scripts/build --optimize",
+    "build:dev": "npm run clean && cross-env NODE_ENV=development babel-node internal/scripts/build",
     "clean": "cross-env babel-node internal/scripts/clean",
     "deploy": "babel-node internal/scripts/deploy",
     "dev": "cross-env DEPLOYMENT=development babel-node internal/development",
-    "dev-remote":
-      "cross-env DEPLOYMENT=development babel-node internal/scripts/ngrok",
+    "dev-remote": "cross-env DEPLOYMENT=development babel-node internal/scripts/ngrok",
     "eslint": "eslint client server shared config internal api",
     "fix-sass": "npm rebuild node-sass",
     "lint": "npm run eslint && npm run stylelint",
@@ -54,12 +51,16 @@
       "server/**/*.{js}",
       "api/**/*.{js}"
     ],
-    "snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"],
-    "moduleDirectories": ["node_modules", "shared"],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "shared"
+    ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "<rootDir>/internal/jest/styleMock.js",
-      "\\.(je?pg|png|gif|ico|otf|ttf|eot|woff|woff2|svg)$":
-        "<rootDir>/internal/jest/assetMock.js",
+      "\\.(je?pg|png|gif|ico|otf|ttf|eot|woff|woff2|svg)$": "<rootDir>/internal/jest/assetMock.js",
       "^mongoose$": "<rootDir>/node_modules/mongoose"
     },
     "testPathIgnorePatterns": [
@@ -139,6 +140,7 @@
     "prop-types": "^15.5.10",
     "randombytes": "^2.0.5",
     "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-addons-shallow-compare": "^15.6.0",
     "react-async-bootstrapper": "^1.1.1",
     "react-async-component": "^1.0.1",
@@ -149,6 +151,7 @@
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-image-crop": "^2.0.8",
+    "react-infinite-calendar": "2.3.1",
     "react-jobs": "^1.0.0",
     "react-modal": "^2.3.2",
     "react-paginate": "^4.4.4",
@@ -156,6 +159,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-test-renderer": "^15.6.1",
+    "react-transition-group": "2.2.0",
     "react-virtualized": "^9.10.1",
     "redux": "^3.7.2",
     "redux-form": "^7.0.4",

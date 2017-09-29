@@ -8,17 +8,9 @@ import { AsyncComponentProvider } from 'react-async-component';
 import { JobProvider } from 'react-jobs';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import ReactGA from 'react-ga';
-import config from 'utils/config';
 import configureStore from '../shared/store/configureStore';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from '../shared';
-
-// Initialize Google Analytics
-const gaId = config('gaId');
-if (gaId) {
-  ReactGA.initialize(gaId);
-}
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
