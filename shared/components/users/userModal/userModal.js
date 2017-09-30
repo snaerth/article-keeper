@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Container from '../../common/container';
 import ViewUser from '../viewUser';
 import DeleteUser from '../deleteUser';
-import EditUser from '../editUser';
+import UserForm from '../editUser';
 
 import s from './userModal.scss';
 
@@ -61,7 +61,7 @@ class UserModal extends Component {
         );
 
       case 'edit':
-        return <EditUser user={data} changeViewHandler={this.changeView} />;
+        return <UserForm type="create" changeViewHandler={this.changeView} />;
 
       default:
         return <ViewUser data={data} changeViewHandler={this.changeView} />;

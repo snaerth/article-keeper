@@ -22,19 +22,20 @@ import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
 import Phone from '../../../assets/images/phone.svg';
 import Calendar from '../../../assets/images/calendar.svg';
-import s from './editUser.scss';
+import s from './userForm.scss';
 
 /**
- * EditUser component
+ * UserForm component
  */
-class EditUser extends Component {
+class UserForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     error: PropTypes.string,
     image: PropTypes.object,
+    type: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    user: PropTypes.object.isRequired,
+    user: PropTypes.object,
     changeViewHandler: PropTypes.func.isRequired,
     initialize: PropTypes.func.isRequired,
   };
@@ -118,12 +119,19 @@ class EditUser extends Component {
       isFetching,
       changeViewHandler,
       image,
-      user: { email, name, imageUrl },
+      type,
+      user,
     } = this.props;
 
     return (
       <Container>
-        {isFetching ? <Loader absolute>Updating user {email}</Loader> : null}
+        {isFetching
+          ? <Loader absolute>
+            {type === 'edit' && user
+              ? `Edit user ${user.email}`
+              : 'Create new user'}
+          </Loader>
+          : null}
         <div
           className={
             isFetching
@@ -232,7 +240,7 @@ class EditUser extends Component {
                   accept="image/*"
                   onDrop={this.onDrop}
                   multiple={false}
-                  image={image || imageUrl}
+                  image={image || user ? user.imageUrl : ''}
                 />
               </fieldset>
             </div>
@@ -329,23 +337,27 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  */
 function mapStateToProps(state, ownProps) {
   const { error, image, isFetching } = state.users;
-  const { name, phone, dateOfBirth, roles, imageUrl } = ownProps.user;
-
-  return {
+  const newProps = {
     error,
     image,
     isFetching,
-    initialValues: {
-      name,
-      email: getUserEmail(ownProps.user),
+  };
+
+  if (ownProps.user) {
+    const { name, phone, dateOfBirth, roles, imageUrl } = ownProps.user;
+    newProps.initialValues = {
+      name: name || '',
+      email: ownProps.user ? getUserEmail(ownProps.user) : '',
       password: '',
       image: imageUrl || '',
       phone: phone || '',
       dateOfBirth: dateOfBirth ? formatInputDate(dateOfBirth) : '',
       admin: !!roles.includes('admin'),
       user: !!roles.includes('user'),
-    },
-  };
+    };
+  }
+
+  return newProps;
 }
 
 /**
@@ -362,7 +374,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
-    form: 'signup',
+    form: 'userform',
     fields: [
       'name',
       'email',
@@ -374,5 +386,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       'user',
     ],
     validate,
-  })(EditUser),
+  })(UserForm),
 );
