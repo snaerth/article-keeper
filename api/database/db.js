@@ -29,14 +29,14 @@ export async function createAdminUser() {
         adminUser.roles = ['admin', 'user'];
 
         // save default admin user to the database
-        return adminUser.save(err => {
+        return adminUser.save((err) => {
           if (err) {
             return reject(err);
           }
 
           return resolve(adminUser);
         });
-      }
+      },
     );
   });
 }
@@ -53,7 +53,7 @@ export default (mongoUri, callback) => {
   // Connect to database
   mongoose.connect(mongoUri, options);
 
-  mongoose.connection.on('error', error => {
+  mongoose.connection.on('error', (error) => {
     throw new Error(`Unable to connect to database: ${mongoUri}`, error);
   });
 

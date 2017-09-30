@@ -37,7 +37,6 @@ class UserForm extends Component {
     isFetching: PropTypes.bool.isRequired,
     user: PropTypes.object,
     changeViewHandler: PropTypes.func.isRequired,
-    initialize: PropTypes.func.isRequired,
   };
 
   constructor(props) {

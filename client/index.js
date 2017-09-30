@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
-
 import React from 'react';
 import { render } from 'react-dom';
 import asyncBootstrapper from 'react-async-bootstrapper';
@@ -28,8 +27,7 @@ window.store = store;
 const supportsHistory = 'pushState' in window.history;
 
 // Get any rehydrateState for the async components.
-const asyncComponentsRehydrateState =
-  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line no-underscore-dangle
+const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line
 
 // Get any "rehydrate" state sent back by the server
 // eslint-disable-next-line no-underscore-dangle

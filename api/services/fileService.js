@@ -10,20 +10,13 @@ import log from '../services/logService';
  * @author Snær Seljan Þóroddsson
  */
 export function createDirectorys(
-  directorys = [
-    'public',
-    'public/images',
-    'uploads',
-    'media',
-    'media/users',
-    'media/news',
-  ]
+  directorys = ['public', 'public/images', 'uploads', 'media', 'media/users', 'media/news'],
 ) {
   for (let i = 0, len = directorys.length; i < len; i++) {
     const dir = directorys[i];
-    fs.exists(dir, exists => {
+    fs.exists(dir, (exists) => {
       if (!exists) {
-        fs.mkdir(dir, err => {
+        fs.mkdir(dir, (err) => {
           if (err) {
             log.error({ err }, 'Error creating directorys');
             throw new Error(`Failed to create directory ${dir}`);
@@ -44,9 +37,9 @@ export function createDirectorys(
 export function deleteDirectorys(directorys) {
   for (let i = 0, len = directorys.length; i < len; i++) {
     const dir = directorys[i];
-    fs.exists(dir, exists => {
+    fs.exists(dir, (exists) => {
       if (exists) {
-        rimraf(dir, err => {
+        rimraf(dir, (err) => {
           if (err) {
             log.error({ err }, 'Error deleteing directorys');
             throw new Error(`Failed to delete directory ${dir}`);
@@ -66,7 +59,7 @@ export function deleteDirectorys(directorys) {
  */
 export function deleteFile(filePath) {
   return new Promise((resolve, reject) => {
-    fs.unlink(filePath, error => {
+    fs.unlink(filePath, (error) => {
       if (error) {
         return reject(error);
       }
@@ -87,7 +80,7 @@ export function deleteFile(filePath) {
  */
 export function createFile(filePath, data, options = '') {
   return new Promise((resolve, reject) => {
-    fs.writeFile(filePath, data, options, error => {
+    fs.writeFile(filePath, data, options, (error) => {
       if (error) {
         return reject(error);
       }
@@ -107,7 +100,7 @@ export function createFile(filePath, data, options = '') {
  */
 export function renameFile(filePath, newFilePath) {
   return new Promise((resolve, reject) => {
-    fs.rename(filePath, newFilePath, error => {
+    fs.rename(filePath, newFilePath, (error) => {
       if (error) {
         return reject(error);
       }
@@ -125,8 +118,8 @@ export function renameFile(filePath, newFilePath) {
  * @author Snær Seljan Þóroddsson
  */
 export function fileExists(filePath) {
-  return new Promise(resolve => {
-    fs.exists(filePath, exists => {
+  return new Promise((resolve) => {
+    fs.exists(filePath, (exists) => {
       if (!exists) {
         return resolve(false);
       }

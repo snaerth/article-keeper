@@ -1,7 +1,6 @@
 import camelCase from 'lodash/camelCase';
 
 class Timing {
-
   timings = new Map();
 
   start(...args) {
@@ -50,21 +49,22 @@ class Timing {
 
     descriptor.value = function promiseTiming(...args) {
       const { end, cancel } = start(key);
-      return method.apply(this, args)
-      .then((data) => {
-        end();
-        return data;
-      })
-      .catch((err) => {
-        cancel();
-        throw err;
-      });
+      return method
+        .apply(this, args)
+        .then((data) => {
+          end();
+          return data;
+        })
+        .catch((err) => {
+          cancel();
+          throw err;
+        });
     };
-  }
+  };
 
   diff([as, ans], [bs, bns]) {
-    let ns = (ans - bns);
-    let s = (as - bs);
+    let ns = ans - bns;
+    let s = as - bs;
     if (ns < 0) {
       s -= 1;
       ns += 1e9;

@@ -90,7 +90,7 @@ describe('Run tests for users route handlers', () => {
           expect(user).toHaveProperty('name', 'Tester Testerson');
           expect(user).toHaveProperty('email', 'tester2@tester.is');
           expect(user).toHaveProperty('phone', '555-5555');
-          expect(user).toHaveProperty('roles', ['user','admin']);
+          expect(user).toHaveProperty('roles', ['user', 'admin']);
           expect(user).toHaveProperty('createdAt');
           expect(user).toHaveProperty('imageUrl');
           expect(user).toHaveProperty('thumbnailUrl');

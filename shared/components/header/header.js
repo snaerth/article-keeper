@@ -91,11 +91,11 @@ class Header extends Component {
                 key="signin"
                 onClick={(e) => this.openModal(e)}
               >
-                  Sign in / Sign up
-                </NavLink>
+                Sign in / Sign up
+              </NavLink>
               : <NavLink to="/signout" key="signout" activeClassName={s.active}>
-                  Sign out
-                </NavLink>}
+                Sign out
+              </NavLink>}
           </Navigation>
           <Navigation className="normal">
             {authenticated ? this.renderAuthLinks() : null}

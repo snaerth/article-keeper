@@ -18,11 +18,11 @@ const Input = ({
 }) => (
   <div>
     <span className={s.input}>
-      {!hidelabel
-        ? <label className={s.inputLabel} htmlFor={id}>
+      {!hidelabel ? (
+        <label className={s.inputLabel} htmlFor={id}>
           <span className={s.inputLabelContent}>{label}</span>
         </label>
-        : null}
+      ) : null}
       <input
         {...input}
         type={type}
@@ -33,15 +33,11 @@ const Input = ({
         autoComplete={autocomplete || 'off'}
         required={required ? 'required' : ''}
       />
-      {children
-        ? <span className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}>
-          {children}
-        </span>
-        : null}
+      {children ? (
+        <span className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}>{children}</span>
+      ) : null}
     </span>
-    {meta && meta.error && meta.touched
-      ? <ErrorText key={id} id={id} error={meta.error} />
-      : null}
+    {meta && meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
   </div>
 );
 

@@ -123,15 +123,15 @@ class Signin extends Component {
                   className="link-slideright"
                   onClick={onClick}
                 >
-                    Forgot password?
-                  </Link>
+                  Forgot password?
+                </Link>
                 : <Link
                   role="button"
                   to="/forgotpassword"
                   className="link-slideright"
                 >
-                    Forgot password?
-                  </Link>}
+                  Forgot password?
+                </Link>}
             </div>
           </form>
         </div>
