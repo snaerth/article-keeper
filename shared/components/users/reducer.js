@@ -3,17 +3,19 @@ import {
   GET_USERS_ERROR,
   DELETE_USERS_SUCCESS,
   DELETE_USERS_ERROR,
-  UPDATE_USERS_SUCCESS,
-  UPDATE_USERS_ERROR,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
+  IS_FETCHING_USER,
+  IS_NOT_FETCHING_USER,
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
 } from './types';
 
 const initialState = {
   isFetching: false,
-  orientation: 'horizontal',
+  isFetchingUser: false,
   image: null,
 };
 
@@ -23,7 +25,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetching: true,
-        orientation: action.payload,
         error: null,
       };
 
@@ -60,18 +61,19 @@ export default function (state = initialState, action) {
         error: action.payload,
       };
 
-    case UPDATE_USERS_SUCCESS:
+    case UPDATE_USER_SUCCESS:
       return {
         ...state,
         isFetching: false,
         data: action.payload,
+        errorUser: null,
       };
 
-    case UPDATE_USERS_ERROR:
+    case UPDATE_USER_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload,
+        errorUser: action.payload,
       };
 
     case DELETE_USERS_SUCCESS:
@@ -84,6 +86,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: action.payload,
+      };
+
+    case IS_FETCHING_USER:
+      return {
+        ...state,
+        isFetchingUser: true,
+        error: null,
+      };
+
+    case IS_NOT_FETCHING_USER:
+      return {
+        ...state,
+        isFetchingUser: false,
       };
 
     default:

@@ -61,20 +61,43 @@ class UserModal extends Component {
         );
 
       case 'edit':
-        return <UserForm type="create" changeViewHandler={this.changeView} />;
+        return <UserForm type="edit" user={data} changeViewHandler={this.changeView} />;
 
       default:
         return <ViewUser data={data} changeViewHandler={this.changeView} />;
     }
   }
 
+  /**
+   * Sets header title text
+   *
+   * @param {String} type
+   * @param {String} name
+   * @returns {String}
+   */
+  setHeaderTitle(type, name) {
+    switch (type) {
+      case 'edit':
+        return 'Edit user';
+
+      case 'create':
+        return 'Create user';
+
+      default:
+        return name;
+    }
+  }
+
   render() {
+    const { active } = this.state;
+    const { name } = this.props.data;
+
     return (
       <article className={s.modal}>
         <header>
           <div className="banner">
             <Container>
-              <h1 className={s.title}>{this.props.data.name}</h1>
+              <h1 className={s.title}>{this.setHeaderTitle(active, name)}</h1>
             </Container>
           </div>
         </header>

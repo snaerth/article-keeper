@@ -4,10 +4,12 @@ import {
   GET_USERS_ERROR,
   DELETE_USERS_SUCCESS,
   DELETE_USERS_ERROR,
-  UPDATE_USERS_SUCCESS,
-  UPDATE_USERS_ERROR,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
+  IS_FETCHING_USER,
+  IS_NOT_FETCHING_USER,
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
 } from './types';
@@ -35,11 +37,10 @@ export function setPreviewUserImage(image) {
 /**
  * Is fetching data state
  *
- * @params {String} orientation vertical or horizontal
  * @returns {Object}
  */
-export function isFetchingData(orientation) {
-  return { type: IS_FETCHING, payload: orientation || 'horizontal' };
+export function isFetchingData() {
+  return { type: IS_FETCHING };
 }
 
 /**
@@ -49,6 +50,24 @@ export function isFetchingData(orientation) {
  */
 export function isNotFetchingData() {
   return { type: IS_NOT_FETCHING };
+}
+
+/**
+ * Is fetching user
+ *
+ * @returns {Object}
+ */
+export function isFetchingUser() {
+  return { type: IS_FETCHING_USER };
+}
+
+/**
+ * Is not fetching user
+ *
+ * @returns {Object}
+ */
+export function isNotFetchingUser() {
+  return { type: IS_NOT_FETCHING_USER };
 }
 
 /**
@@ -141,9 +160,9 @@ export function updateUser(token, id, formData) {
       };
 
       const res = await axios.put(url, formData, config);
-      dispatch({ type: UPDATE_USERS_SUCCESS, payload: res.data });
+      dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch(authError(UPDATE_USERS_ERROR, error));
+      dispatch(authError(UPDATE_USER_ERROR, error));
     }
   };
 }

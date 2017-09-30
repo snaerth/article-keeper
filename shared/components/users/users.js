@@ -55,19 +55,13 @@ class Users extends Component {
     reset: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
     search: PropTypes.string,
-    orientation: PropTypes.string.isRequired,
   };
 
   /**
    * Fetch users
    */
   componentDidMount() {
-    // Checks if device is smaller than 620px to detect react-dates orientation
-    const orientation = window.matchMedia('(max-width: 620px)').matches
-      ? 'vertical'
-      : 'horizontal';
-
-    this.props.actions.isFetchingData(orientation);
+    this.props.actions.isFetchingData();
     const { token } = this.props;
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
@@ -128,6 +122,7 @@ class Users extends Component {
 
   /**
    * Handles form submit event
+   *
    * @param {Object}
    */
   handleFormSubmit({ search }) {
@@ -136,6 +131,7 @@ class Users extends Component {
 
   /**
    * Prepare data and submit request
+   *
    * @param {String} search
    */
   prepareAndSumbit(search, formData) {
@@ -201,11 +197,11 @@ class Users extends Component {
   }
 
   /**
-     * Renders error message box
-     *
-     * @param {String} error
-     * @returns {JSX}
-     */
+   * Renders error message box
+   *
+   * @param {String} error
+   * @returns {JSX}
+   */
   renderError(error) {
     return (
       <fieldset className="noPadding">
@@ -222,7 +218,6 @@ class Users extends Component {
       serverError,
       handleSubmit,
       pagination,
-      orientation,
     } = this.props;
     const { currentRowData } = this.state;
 
@@ -265,7 +260,6 @@ class Users extends Component {
                       onFocusChange={(focusedInput) =>
                         this.setState({ focusedInput })}
                       isOutsideRange={() => false}
-                      orientation={orientation || 'horizontal'}
                     />
                   </div>
                   <div>
@@ -321,7 +315,7 @@ class Users extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data, orientation } = state.users;
+  const { error, isFetching, data } = state.users;
   const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   let pagination = {};
@@ -348,7 +342,6 @@ function mapStateToProps(state) {
     data,
     pagination,
     search,
-    orientation,
   };
 }
 

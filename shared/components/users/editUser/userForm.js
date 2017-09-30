@@ -34,8 +34,9 @@ class UserForm extends Component {
     error: PropTypes.string,
     image: PropTypes.object,
     type: PropTypes.string.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    isFetchingUser: PropTypes.bool.isRequired,
     user: PropTypes.object,
+    initialValues: PropTypes.object,
     changeViewHandler: PropTypes.func.isRequired,
   };
 
@@ -51,32 +52,36 @@ class UserForm extends Component {
   }
 
   /**
-     * Handles form submit event
-     *
-     * @param {Object}
-     * @returns {undefined}
-     */
-  async handleFormSubmit({ email, password, name }) {
-    this.props.actions.isFetching();
+   * Handles form submit event
+   *
+   * @param {Object}
+   * @returns {undefined}
+   */
+  async handleFormSubmit(formValues) {
+    const { initialValues, actions, token, type, user } = this.props;
+    // Set loading
+    actions.isFetchingUser();
 
-    // TODO make async promise or something to wait for signup user
-    let formData = null;
+    const { dateOfBirth, email, image, name, password, phone } = formValues;
+    const data = { dateOfBirth, email, image, name, password, phone };
 
-    if (this.props.image) {
-      formData = new FormData();
+    if (formValues.admin === true) {
+      data.roles = ['admin', 'user'];
+    }
+
+    if (image && image !== initialValues.image) {
+      const formData = new FormData();
       formData.append('image', this.props.image);
     }
 
     try {
-      await this.props.actions.updateUser({
-        email,
-        password,
-        name,
-        formData,
-      });
+      if (type === 'edit') {
+        await actions.updateUser(token, user._id, data); // eslint-disable-line
+      }
     } catch (error) {
-      // No need to do something with error because error is already handled
+      /* Set error  */
     }
+
   }
 
   /**
@@ -115,7 +120,7 @@ class UserForm extends Component {
     const {
       handleSubmit,
       error,
-      isFetching,
+      isFetchingUser,
       changeViewHandler,
       image,
       type,
@@ -124,16 +129,16 @@ class UserForm extends Component {
 
     return (
       <Container>
-        {isFetching
+        {isFetchingUser
           ? <Loader absolute>
-            {type === 'edit' && user
-              ? `Edit user ${user.email}`
+            {type === 'edit'
+              ? 'Updating user'
               : 'Create new user'}
           </Loader>
           : null}
         <div
           className={
-            isFetching
+            isFetchingUser
               ? classnames(s.formContainer, 'almostHidden')
               : s.formContainer
           }
@@ -243,24 +248,23 @@ class UserForm extends Component {
                 />
               </fieldset>
             </div>
-          </form>
-          <div className={s.editContainer}>
-            <div className={s.pullRight}>
-              <Button
-                type="button"
-                text="Cancel"
-                ariaLabel="Edit user"
-                color="grey"
-                onClick={() => changeViewHandler(0)}
-              />
-              <Button
-                type="button"
-                text="Edit"
-                ariaLabel="Edit user"
-                color="blue"
-              />
+            <div className={s.editContainer}>
+              <div className={s.pullRight}>
+                <Button
+                  type="button"
+                  text="Cancel"
+                  ariaLabel="Edit user"
+                  color="grey"
+                  onClick={() => changeViewHandler(0)}
+                />
+                <Button
+                  type="submit"
+                  text="Edit"
+                  ariaLabel="Edit user"
+                />
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </Container>
     );
@@ -289,7 +293,7 @@ function validate({ email, password, name, phone, dateOfBirth }) {
   }
 
   // Password
-  if (!/[0-9]/.test(password) || !/[A-Z]/.test(password)) {
+  if (password && (!/[0-9]/.test(password) || !/[A-Z]/.test(password))) {
     errors.password =
       'Password must contain at least one number (0-9) and one uppercase letter (A-Z)';
   }
@@ -298,17 +302,13 @@ function validate({ email, password, name, phone, dateOfBirth }) {
     errors.password = 'The password must be of minimum length 6 characters';
   }
 
-  if (!password) {
-    errors.password = 'Password required';
-  }
-
   // Name
   if (!name) {
     errors.name = 'Name required';
   }
 
   if (
-    !/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2)
+    name && (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))
   ) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
@@ -335,14 +335,18 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @returns {Object}
  */
 function mapStateToProps(state, ownProps) {
-  const { error, image, isFetching } = state.users;
+  const { error, image, isFetchingUser } = state.users;
+  const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
     error,
     image,
-    isFetching,
+    isFetchingUser,
+    token,
   };
 
   if (ownProps.user) {
+    newProps.user = ownProps.user;
+
     const { name, phone, dateOfBirth, roles, imageUrl } = ownProps.user;
     newProps.initialValues = {
       name: name || '',

@@ -5,10 +5,10 @@ import ErrorText from '../errorText';
 
 const Input = ({ meta, id, label, input, required }) => (
   <div className={s.checkbox}>
-    <label htmlFor={id}>
-      <input {...input} type="checkbox" id={id} name={id} required={required ? 'required' : ''} />
-      {label}
-    </label>
+    <input {...input} type="checkbox" id={id} name={id} required={required ? 'required' : ''} />
+    {/* eslint-disable */}
+    <label htmlFor={id}>{label}</label>
+    {/* eslint-enable */}
     {meta && meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
   </div>
 );
