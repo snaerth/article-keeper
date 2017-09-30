@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Run tests for date Format date string to ISO date format 1`] = `"received is not a function"`;
+
 exports[`Run tests for date Format date string to ISO date time format 1`] = `"received is not a function"`;

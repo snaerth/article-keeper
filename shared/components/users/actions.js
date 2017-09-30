@@ -162,7 +162,7 @@ export function updateUser(token, id, formData) {
       const res = await axios.put(url, formData, config);
       dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch(authError(UPDATE_USER_ERROR, error));
+      dispatch({ UPDATE_USER_ERROR, payload: error });
     }
   };
 }

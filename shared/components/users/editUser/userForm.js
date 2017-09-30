@@ -335,10 +335,10 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @returns {Object}
  */
 function mapStateToProps(state, ownProps) {
-  const { error, image, isFetchingUser } = state.users;
+  const { errorUser, image, isFetchingUser } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
-    error,
+    error: errorUser, // Hérna var ég síðast
     image,
     isFetchingUser,
     token,

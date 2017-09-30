@@ -25,6 +25,10 @@ const schema = {
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
   roles: {
     type: Array,
     required: true,
@@ -111,10 +115,7 @@ userSchema.pre('save', function preSave(next) {
 });
 
 // Compare password to encrypted password
-userSchema.methods.comparePassword = function comparePassword(
-  candidatePassword,
-  callback,
-) {
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
     if (error) {
       return callback(error);

@@ -581,6 +581,8 @@ export async function updateUser(req, res) {
           : ['user'];
       }
 
+      user.updatedAt = new Date();
+
       // Save new user to databases
       const updatedUser = await saveUser(user);
       // Log in db
