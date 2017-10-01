@@ -61,7 +61,7 @@ function UsersTable({ list, onRowClickHandler, rowClassName }) {
               if (!email) {
                 email = getUserEmail(cellData.rowData);
               }
-              return <a href={`mailto:${email}`}>{email}</a>;
+              return email;
             }}
             getUserEmail
             className={tableStyles.tableColumn}

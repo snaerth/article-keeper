@@ -18,6 +18,7 @@ const initialState = {
   isFetching: false,
   isFetchingUser: false,
   image: null,
+  infoUser: null,
 };
 
 export default function (state = initialState, action) {
@@ -51,6 +52,7 @@ export default function (state = initialState, action) {
     case SET_USER:
       return {
         ...state,
+        infoUser: null,
         user: action.payload,
       };
 
@@ -73,6 +75,7 @@ export default function (state = initialState, action) {
         ...state,
         isFetchingUser: false,
         user: action.payload,
+        infoUser: 'User updated',
         errorUser: null,
       };
 
@@ -80,6 +83,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetchingUser: false,
+        infoUser: null,
         errorUser: action.payload,
       };
 

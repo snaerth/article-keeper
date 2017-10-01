@@ -15,13 +15,17 @@ import Button from '../../common/button';
 import NotifyBox from '../../common/notifyBox';
 import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
+// Utils
 import validateEmail, { isPhoneNumber } from './../../../utils/validate';
+import { formDataToQueryString } from './../../../utils/urlHelpers';
 import getUserEmail from './../../../utils/userHelper';
 import { formatInputDate } from './../../../utils/date';
+// Svg
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
 import Phone from '../../../assets/images/phone.svg';
 import Calendar from '../../../assets/images/calendar.svg';
+// Styles
 import s from './userForm.scss';
 
 /**
@@ -74,9 +78,13 @@ class UserForm extends Component {
     try {
       if (type === 'edit') {
         await actions.updateUser(token, user._id, data); // eslint-disable-line
-        actions.getUsers();
       }
+
+      const queryString = formDataToQueryString({ limit: 50, page: 1 });
+      actions.getUsers({ token, queryString });
+      console.log('User updated');
     } catch (error) {
+      console.log(error);
       /* Set error  */
     }
   }
@@ -118,10 +126,30 @@ class UserForm extends Component {
     );
   }
 
+  /**
+   * Renders information message box
+   *
+   * @param {String} msg - message
+   * @returns {JSX}
+   */
+  renderInfo(msg) {
+    if (!msg) return null;
+    return (
+      <fieldset>
+        <NotifyBox
+          text={msg}
+          type="info"
+          id="userUpdated"
+        />
+      </fieldset>
+    );
+  }
+
   render() {
     const {
       handleSubmit,
       errorUser,
+      infoUser,
       isFetchingUser,
       changeViewHandler,
       image,
@@ -145,6 +173,7 @@ class UserForm extends Component {
             )
           }
         >
+          {this.renderInfo(infoUser)}
           {this.renderError(errorUser)}
           <form
             onSubmit={handleSubmit(this.handleFormSubmit)}
@@ -325,13 +354,14 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { errorUser, image, isFetchingUser, user } = state.users;
+  const { errorUser, infoUser, image, isFetchingUser, user } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
     image,
     isFetchingUser,
     token,
     errorUser,
+    infoUser,
   };
 
   if (user) {

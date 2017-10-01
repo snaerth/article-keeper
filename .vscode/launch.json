@@ -42,17 +42,6 @@
         "--runInBand"
       ],
       "console": "integratedTerminal"
-    },
-    {
-      "name": "Attach",
-      "type": "node",
-      "request": "attach",
-      "port": 5858,
-      "address": "localhost",
-      "restart": true,
-      "sourceMaps": false,
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": null
     }
   ]
 }

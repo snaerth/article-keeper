@@ -3,24 +3,15 @@ import PropTypes from 'prop-types';
 import Container from '../../common/container';
 import Button from '../../common/button';
 import Tags from '../../common/tags';
-import formatISODateTime, {
-  formatDateWithMonthName,
-} from '../../../utils/date';
+import formatISODateTime, { formatDateWithMonthName } from '../../../utils/date';
 import getUserEmail from '../../../utils/userHelper';
 import Person from '../../../assets/images/person.svg';
 import s from './viewUser.scss';
 
 const View = ({ data, changeViewHandler }) => {
-  const {
-    _id,
-    roles,
-    profile,
-    name,
-    createdAt,
-    updatedAt,
-    dateOfBirth,
-    imageUrl,
-  } = data;
+  const { _id, roles, profile, name, createdAt, updatedAt, dateOfBirth, imageUrl } = data;
+  const email = getUserEmail(data);
+
   return (
     <div>
       <Container>
@@ -35,7 +26,9 @@ const View = ({ data, changeViewHandler }) => {
           <section>
             <div className={s.row}>
               <div>Email</div>
-              <div>{getUserEmail(data)}</div>
+              <div>
+                <a href={`mailto:${email}`}>{email}</a>
+              </div>
             </div>
             <div className={s.row}>
               <div>Id</div>

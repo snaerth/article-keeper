@@ -175,6 +175,7 @@ export function updateUser(token, id, formData) {
 
       const res = await axios.put(url, formData, config);
       dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
+      return Promise.resolve();
     } catch (error) {
       const payload = errorHelper(error);
       dispatch({ type: UPDATE_USER_ERROR, payload });
