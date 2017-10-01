@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import Container from '../../common/container';
 import Button from '../../common/button';
 import Tags from '../../common/tags';
-import formatISODateTime from '../../../utils/date';
+import formatISODateTime, {
+  formatDateWithMonthName,
+} from '../../../utils/date';
 import getUserEmail from '../../../utils/userHelper';
 import Person from '../../../assets/images/person.svg';
 import s from './viewUser.scss';
@@ -62,7 +64,7 @@ const View = ({ data, changeViewHandler }) => {
             {dateOfBirth ? (
               <div className={s.row}>
                 <div>Date of birth</div>
-                <div>{formatISODateTime(dateOfBirth)}</div>
+                <div>{formatDateWithMonthName(dateOfBirth)}</div>
               </div>
             ) : null}
           </section>

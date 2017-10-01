@@ -8,7 +8,8 @@ TODO
   -----------------------------------------------------------------------------
   - Taka út react-dates og setja inn npm install react-infinite-calendar react-transition-group --save
   - User email í töflu disable-a
-  - Update-a notenda upplýsingar með updatedAt dálki
+  - Update user image
+  - Update með datepicker
   - Uppfæra eins líkt og react-universally
   - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead

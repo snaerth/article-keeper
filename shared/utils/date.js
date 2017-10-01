@@ -1,5 +1,6 @@
 /**
  * Adds zero in front of time param if it's length is less than 10
+ *
  * @param {string} time
  * @returns {string}
  */
@@ -9,6 +10,7 @@ export function checkTime(time) {
 
 /**
  * Formats date string to format yyyy-MM-dd HH:mm:ss
+ *
  * @param {string} date
  * @returns {string} date
  */
@@ -31,6 +33,7 @@ export default function formatISODateTime(date) {
 
 /**
  * Formats date string to format yyyy-MM-dd
+ *
  * @param {string} date
  * @returns {string} date
  */
@@ -50,6 +53,7 @@ export function formatISODate(date) {
 
 /**
  * Formats date to HTML5 inputs date format mm-dd-yyyy
+ *
  * @param {string} date
  * @returns {string} date
  */
@@ -62,6 +66,40 @@ export function formatInputDate(date) {
 
     // yyyy-MM-dd
     return `${year}-${month}-${day}`;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+const months = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+];
+
+/**
+ * Formats date to HTML5 inputs date format dd monthname yyyy
+ * @param {string} date
+ * @returns {string} date
+ */
+export function formatDateWithMonthName(date) {
+  try {
+    const dt = new Date(date);
+    const year = dt.getFullYear();
+    const month = dt.getMonth();
+    const day = dt.getDate();
+
+    // dd monthname yyyy
+    return `${day} ${months[month]} ${year}`;
   } catch (error) {
     throw new Error(error);
   }
