@@ -51,7 +51,6 @@ class Users extends Component {
     data: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    serverError: PropTypes.string,
     reset: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
     search: PropTypes.string,
@@ -215,7 +214,6 @@ class Users extends Component {
       data,
       isFetching,
       error,
-      serverError,
       handleSubmit,
       pagination,
     } = this.props;
@@ -224,7 +222,6 @@ class Users extends Component {
     return (
       <div>
         {error ? this.renderError(error) : null}
-        {serverError ? this.renderError(serverError) : null}
         <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting users...</Loader> : null}
           {data
@@ -316,7 +313,6 @@ class Users extends Component {
  */
 function mapStateToProps(state) {
   const { error, isFetching, data } = state.users;
-  const serverError = state.common.error;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   let pagination = {};
   let search = '';
@@ -336,7 +332,6 @@ function mapStateToProps(state) {
 
   return {
     error,
-    serverError,
     isFetching,
     token,
     data,

@@ -13,7 +13,7 @@ import {
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
 } from './types';
-import { authError } from '../../common/actions';
+import { errorHelper } from '../../common/actions';
 
 /**
  * Resets image and error
@@ -89,7 +89,8 @@ export function getUsers({ token, queryString }) {
       const res = await axios.get(url, config);
       dispatch({ type: GET_USERS_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch(authError(GET_USERS_ERROR, error));
+      const payload = errorHelper(error);
+      dispatch({ type: GET_USERS_ERROR, payload });
     }
   };
 }
@@ -113,7 +114,8 @@ export function getUsersBySearchQuery(token, queryString) {
       const res = await axios.get(url, config);
       dispatch({ type: GET_USERS_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch(authError(GET_USERS_ERROR, error));
+      const payload = errorHelper(error);
+      dispatch({ type: GET_USERS_ERROR, payload });
     }
   };
 }
@@ -137,7 +139,8 @@ export function deleteUserById(token, id) {
       const res = await axios.delete(url, config);
       dispatch({ type: DELETE_USERS_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch(authError(DELETE_USERS_ERROR, error));
+      const payload = errorHelper(error);
+      dispatch({ type: DELETE_USERS_ERROR, payload });
     }
   };
 }
@@ -162,7 +165,8 @@ export function updateUser(token, id, formData) {
       const res = await axios.put(url, formData, config);
       dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch({ UPDATE_USER_ERROR, payload: error });
+      const payload = errorHelper(error);
+      dispatch({ type: UPDATE_USER_ERROR, payload });
     }
   };
 }

@@ -37,7 +37,7 @@ export default function (state = initialState, action) {
     case CLEAN:
       return {
         ...state,
-        error: '',
+        error: null,
         image: null,
       };
 
@@ -64,7 +64,7 @@ export default function (state = initialState, action) {
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isFetchingUser: false,
         data: action.payload,
         errorUser: null,
       };
@@ -72,7 +72,7 @@ export default function (state = initialState, action) {
     case UPDATE_USER_ERROR:
       return {
         ...state,
-        isFetching: false,
+        isFetchingUser: false,
         errorUser: action.payload,
       };
 

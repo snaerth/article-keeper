@@ -31,7 +31,7 @@ class UserForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
-    error: PropTypes.string,
+    errorUser: PropTypes.string,
     image: PropTypes.object,
     type: PropTypes.string.isRequired,
     isFetchingUser: PropTypes.bool.isRequired,
@@ -93,7 +93,7 @@ class UserForm extends Component {
      */
   onDrop(acceptedFiles, rejectedFiles) {
     if (rejectedFiles.length > 0) {
-      this.props.error = 'Only images allowed.';
+      this.props.errorUser = 'Only images allowed.';
       return;
     }
     if (acceptedFiles.length > 0) {
@@ -107,11 +107,11 @@ class UserForm extends Component {
      * @param {String} errorMessage - Error message
      * @returns {JSX}
      */
-  renderError(errorMessage) {
-    if (!errorMessage) return null;
+  renderError(error) {
+    if (!error) return null;
     return (
       <fieldset>
-        <NotifyBox strongText="Error: " text={errorMessage} type="error" />
+        <NotifyBox strongText="Error: " text={error} type="error" />
       </fieldset>
     );
   }
@@ -119,7 +119,7 @@ class UserForm extends Component {
   render() {
     const {
       handleSubmit,
-      error,
+      errorUser,
       isFetchingUser,
       changeViewHandler,
       image,
@@ -143,7 +143,7 @@ class UserForm extends Component {
               : s.formContainer
           }
         >
-          {this.renderError(error)}
+          {this.renderError(errorUser)}
           <form
             onSubmit={handleSubmit(this.handleFormSubmit)}
             noValidate
@@ -338,10 +338,10 @@ function mapStateToProps(state, ownProps) {
   const { errorUser, image, isFetchingUser } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
-    error: errorUser, // Hérna var ég síðast
     image,
     isFetchingUser,
     token,
+    errorUser,
   };
 
   if (ownProps.user) {
