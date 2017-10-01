@@ -161,9 +161,10 @@ export function deleteUserById(token, id) {
  *
  * @param {String} token
  * @param {String} id
- * @param {Object} formData
+ * @param {Object} data - Form post data
+ * @param {Object} imageFormData - Image formData
  */
-export function updateUser(token, id, formData) {
+export function updateUser(token, id, data, imageFormData) {
   return async (dispatch) => {
     try {
       const url = `/api/users/${id}`;
@@ -173,7 +174,11 @@ export function updateUser(token, id, formData) {
         },
       };
 
-      const res = await axios.put(url, formData, config);
+      const res = await axios.put(url, data, config);
+      if (imageFormData) {
+        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
+      }
+
       dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
       return Promise.resolve();
     } catch (error) {

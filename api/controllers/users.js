@@ -165,13 +165,16 @@ export function saveUser(user) {
  * @param {Object} req
  * @param {Object} res
  * @returns {Object} res
- * @author Snær Seljan Þóroddsson */
+ * @author Snær Seljan Þóroddsson
+ */
 export async function uploadUserImage(req, res) {
+  const { email } = req.fields;
+  if (!email) return res.status(422).send('No email found in post data');
+
   const image = req.files.image;
 
   if (image) {
     try {
-      const { email } = req.user;
       const user = await findUserByEmail(email);
       const uploadDir = './media/users/';
       const ext = path.extname(image.name);
@@ -182,6 +185,9 @@ export async function uploadUserImage(req, res) {
       const thumbnailPath = `${uploadDir}${`${fileName}-thumbnail${ext}`}`;
       const { imageUrl, thumbnailUrl } = user;
 
+      await resizeImage(image.path, thumbnailPath, 27);
+      await renameFile(image.path, imgPath);
+
       if (imageUrl) {
         await checkFileAndDelete(imageUrl);
       }
@@ -190,19 +196,23 @@ export async function uploadUserImage(req, res) {
         await checkFileAndDelete(thumbnailUrl);
       }
 
-      await resizeImage(image.path, thumbnailPath, 27);
-      await renameFile(image.path, imgPath);
+      const $set = {
+        imageUrl: uploadDir + fileName + ext,
+        thumbnailUrl: `${uploadDir + fileName}-thumbnail${ext}`,
+        updatedAt: new Date(),
+      };
 
-      user.imageUrl = uploadDir + fileName + ext;
-      user.thumbnailUrl = `${uploadDir + fileName}-thumbnail${ext}`;
-      // Update user
-      const updatedUser = await saveUser(user);
-      // Remove unwanted props for client
-      const newUser = removeUserProps(user);
+      // Find user by email and populate user props
+      const updatedUser = await User.findOneAndUpdate(
+        { email },
+        { $set },
+        { new: true },
+      ).select(select);
+
       // Send response object with user token and user information
       return res.status(200).send({
         token: tokenForUser(updatedUser),
-        ...newUser,
+        ...updatedUser,
       });
     } catch (err) {
       log.error({ req, res, err }, 'Error uploading user image');

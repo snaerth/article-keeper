@@ -36,6 +36,7 @@ class UserForm extends Component {
     handleSubmit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     errorUser: PropTypes.string,
+    infoUser: PropTypes.string,
     image: PropTypes.object,
     type: PropTypes.string.isRequired,
     isFetchingUser: PropTypes.bool.isRequired,
@@ -62,29 +63,29 @@ class UserForm extends Component {
    * @returns {undefined}
    */
   async handleFormSubmit(formValues) {
-    const { initialValues, actions, token, type, user } = this.props;
+    const { actions, token, type, user: { _id }, image } = this.props;
     // Set loading
     actions.isFetchingUser();
 
-    const { dateOfBirth, email, image, name, password, phone } = formValues;
-    const data = { dateOfBirth, email, image, name, password, phone };
+    const { dateOfBirth, email, name, password, phone } = formValues;
+    const data = { dateOfBirth, email, name, password, phone };
     data.roles = formValues.admin === true ? ['admin', 'user'] : ['user'];
 
-    if (image && image !== initialValues.image) {
-      const formData = new FormData();
-      formData.append('image', this.props.image);
+    let formData = null;
+    if (image) {
+      formData = new FormData();
+      formData.append('image', image);
+      formData.append('email', email);
     }
 
     try {
       if (type === 'edit') {
-        await actions.updateUser(token, user._id, data); // eslint-disable-line
+        await actions.updateUser(token, _id, data, formData); // eslint-disable-line
       }
 
       const queryString = formDataToQueryString({ limit: 50, page: 1 });
       actions.getUsers({ token, queryString });
-      console.log('User updated');
     } catch (error) {
-      console.log(error);
       /* Set error  */
     }
   }
@@ -266,7 +267,7 @@ class UserForm extends Component {
                   accept="image/*"
                   onDrop={this.onDrop}
                   multiple={false}
-                  image={image || user ? user.imageUrl : ''}
+                  image={image || (user ? user.imageUrl : '')}
                 />
               </fieldset>
             </div>
