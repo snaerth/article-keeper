@@ -19,3 +19,4 @@ export const IS_NOT_FETCHING_USER = 'is_not_fetching_user';
 // Rest
 export const CLEAN = 'clean';
 export const SET_PREVIEW_USER_IMAGE = 'set_preview_user_image';
+export const SET_USER = 'set_user';

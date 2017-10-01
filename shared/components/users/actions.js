@@ -12,8 +12,19 @@ import {
   IS_NOT_FETCHING_USER,
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
+  SET_USER,
 } from './types';
 import { errorHelper } from '../../common/actions';
+
+/**
+ * Set user
+ *
+ * @param {Object} user
+ * @returns {Object}
+ */
+export function setUser(payload) {
+  return { type: SET_USER, payload };
+}
 
 /**
  * Resets image and error
@@ -77,7 +88,7 @@ export function isNotFetchingUser() {
  * @param {String} queryString
  */
 export function getUsers({ token, queryString }) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/users${queryString ? `?${queryString}` : ''}`;
       const config = {
@@ -102,7 +113,7 @@ export function getUsers({ token, queryString }) {
  * @param {String} queryString
  */
 export function getUsersBySearchQuery(token, queryString) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/users/${queryString}`;
       const config = {
@@ -127,7 +138,7 @@ export function getUsersBySearchQuery(token, queryString) {
  * @param {String} id
  */
 export function deleteUserById(token, id) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/users/${id}`;
       const config = {
@@ -153,7 +164,7 @@ export function deleteUserById(token, id) {
  * @param {Object} formData
  */
 export function updateUser(token, id, formData) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       const url = `/api/users/${id}`;
       const config = {

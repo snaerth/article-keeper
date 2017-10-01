@@ -78,28 +78,28 @@ function LoggerModalData({ data, deleteHandler }) {
           <div>Level</div>
           <div>{`${level} - ${levels(level)}`}</div>
         </div>
-        {err && err.stack
-          ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
+        {err || (err && err.stack) ? (
+          <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Error</div>
-            <div>{err.stack}</div>
+            <div>{!err.stack ? err : err.stack}</div>
           </div>
-          : null}
-        {req
-          ? <div className={classnames(tableStyles.tableOddRow, styles.row)}>
+        ) : null}
+        {req ? (
+          <div className={classnames(tableStyles.tableOddRow, styles.row)}>
             <div>Request</div>
             <div className={styles.overflowHidden}>
               {renderObjectRecursive(req)}
             </div>
           </div>
-          : null}
-        {res
-          ? <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
+        ) : null}
+        {res ? (
+          <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Response</div>
             <div className={styles.overflowHidden}>
               {renderObjectRecursive(res)}
             </div>
           </div>
-          : null}
+        ) : null}
       </section>
       <footer>
         <Container>

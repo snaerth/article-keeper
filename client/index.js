@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-console */
+import smoothscroll from 'smoothscroll-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import asyncBootstrapper from 'react-async-bootstrapper';
@@ -10,6 +11,10 @@ import { BrowserRouter } from 'react-router-dom';
 import configureStore from '../shared/store/configureStore';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from '../shared';
+
+// Smooth Scroll behavior polyfill
+// https://github.com/iamdustan/smoothscroll
+smoothscroll.polyfill();
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -27,7 +32,8 @@ window.store = store;
 const supportsHistory = 'pushState' in window.history;
 
 // Get any rehydrateState for the async components.
-const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line
+const asyncComponentsRehydrateState =
+  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line
 
 // Get any "rehydrate" state sent back by the server
 // eslint-disable-next-line no-underscore-dangle

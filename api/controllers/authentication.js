@@ -25,16 +25,15 @@ const applicationUrl = `${PROTOCOL}://${HOST}:${PORT}`;
  */
 export function removeUserProps(user, moreProps) {
   let delProps = ['__v', 'createdAt', 'password'];
-  delProps = moreProps && moreProps.length
-    ? delProps.concat(moreProps)
-    : delProps;
+  delProps =
+    moreProps && moreProps.length ? delProps.concat(moreProps) : delProps;
 
   const newUser = user.toObject();
 
   for (let i = 0; i < delProps.length; i++) {
     const hasBarProperty = Object.prototype.hasOwnProperty.call(
       newUser,
-      delProps[i],
+      delProps[i]
     );
 
     if (hasBarProperty) {
@@ -105,7 +104,7 @@ export function signOut(req, res) {
   req.logout();
   res.clearCookie('user');
   res.clearCookie('userExpires');
-  req.session.destroy((err) => {
+  req.session.destroy(err => {
     if (err) {
       log.error({ req, res, err }, 'Error destroying request session');
 
@@ -137,22 +136,25 @@ export function validateSignup({
   dateOfBirth,
   phone,
 }) {
-  // Check if email, password or message exist in request
-  if (!email || !password || !name) {
-    return 'You must provide name, email and password';
+  // Check if email exist in request
+  if (!email) {
+    return 'You must provide email';
   }
+
   // Validate email
   if (!validateEmail(email)) {
     return `${email} is not a valid email`;
   }
 
-  // Check if password length is longer then 6 characters
-  if (password.length < 6) {
-    return 'Password must be of minimum length 6 characters';
-  }
-  // Check if password contains one number and one uppercase letter
-  if (!/[0-9]/.test(password) || !/[A-Z]/.test(password)) {
-    return 'Password must contain at least one number (0-9) and one uppercase letter (A-Z)';
+  if (password) {
+    // Check if password length is longer then 6 characters
+    if (password.length < 6) {
+      return 'Password must be of minimum length 6 characters';
+    }
+    // Check if password contains one number and one uppercase letter
+    if (!/[0-9]/.test(password) || !/[A-Z]/.test(password)) {
+      return 'Password must contain at least one number (0-9) and one uppercase letter (A-Z)';
+    }
   }
 
   if (newPassword) {
@@ -164,6 +166,11 @@ export function validateSignup({
     if (!/[0-9]/.test(newPassword) || !/[A-Z]/.test(newPassword)) {
       return 'New password must contain at least one number (0-9) and one uppercase letter (A-Z)';
     }
+  }
+
+  // Check if name exist in request
+  if (!name) {
+    return 'You must provide name';
   }
 
   // Name has to have aleast two names
@@ -335,7 +342,7 @@ export async function forgotPassword(req, res) {
     return res
       .status(200)
       .send(
-        `An e-mail has been sent to ${data.email} with further instructions.`,
+        `An e-mail has been sent to ${data.email} with further instructions.`
       );
   } catch (err) {
     log.error({ req, res, err }, 'Error in forgot password');
@@ -363,7 +370,7 @@ export async function resetPassword(req, res) {
       const user = await updateUserPassword({ token, password });
       log.info({ req, res, info: user }, `Password updated for ${user.email}`);
       return res.send(
-        `Success! Your password has been changed for ${user.email}.`,
+        `Success! Your password has been changed for ${user.email}.`
       );
     } catch (err) {
       log.error({ req, res, err }, 'Password is invalid or token has expired.');

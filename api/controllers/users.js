@@ -19,11 +19,13 @@ const select = {
   name: 1,
   email: 1,
   createdAt: 1,
+  updatedAt: 1,
   roles: 1,
   imageUrl: 1,
   thumbnailUrl: 1,
   dateOfBirth: 1,
   profile: 1,
+  phone: 1,
   'facebook.email': 1,
   'facebook.name': 1,
   'twitter.email': 1,
@@ -44,7 +46,7 @@ export function tokenForUser(user) {
       sub: user._id, // eslint-disable-line
       iat: timestamp,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET
   );
 }
 
@@ -78,7 +80,7 @@ function addToPaginationObject(
   pagination,
   name = 1,
   email = 1,
-  dateOfBirth = 1,
+  dateOfBirth = 1
 ) {
   const sort = {};
   if (sortVals.includes(name)) sort.name = name;
@@ -101,9 +103,16 @@ function addToPaginationObject(
 export async function findUserByEmail(email) {
   return new Promise(async (resolve, reject) => {
     try {
+      const $or = [
+        { email },
+        { 'facebook.email': email },
+        { 'twitter.email': email },
+        { 'google.email': email },
+      ];
+
       // See if user with given email exists
       const user = await User.findOne({
-        email,
+        $or,
       });
 
       // If a user does exist, return error
@@ -142,7 +151,7 @@ export function saveUser(user) {
     } else {
       log.error(
         { err: new Error('Object is not a mongoose object') },
-        'Object is not a mongoose object',
+        'Object is not a mongoose object'
       );
 
       return reject('Object is not a mongoose object');
@@ -341,9 +350,10 @@ export async function createUser(req, res) {
         password,
         dateOfBirth,
         phone,
-        roles: Array.isArray(roles) && roles.includes('admin')
-          ? ['user', 'admin']
-          : ['user'],
+        roles:
+          Array.isArray(roles) && roles.includes('admin')
+            ? ['user', 'admin']
+            : ['user'],
       });
       // Save user in database
       await saveUser(user);
@@ -382,7 +392,7 @@ export async function deleteUser(req, res) {
       // Log in db
       log.info(
         { req, res, info: `User ${user.email} deleted` },
-        `User ${user.email} deleted`,
+        `User ${user.email} deleted`
       );
       return res
         .status(200)
@@ -534,7 +544,7 @@ export async function getUsers(req, res) {
     // Fetch Users from database
     const result = await User.paginate(
       !emptySearch ? searchQuery : {},
-      pagination,
+      pagination
     );
     return res.status(200).send(result);
   } catch (err) {
@@ -568,33 +578,42 @@ export async function updateUser(req, res) {
 
   if (!error) {
     try {
-      // Find user by email and populate user props
-      const user = await findUserByEmail(email);
-      if (user.email) user.email = email;
-      if (user.password) user.password = password;
-      if (user.name) user.name = name;
-      if (user.dateOfBirth) user.dateOfBirth = dateOfBirth;
-      if (user.phone) user.phone = phone;
+      const $or = [
+        { email },
+        { 'facebook.email': email },
+        { 'twitter.email': email },
+        { 'google.email': email },
+      ];
+
+      const $set = {};
+      if (email) $set.email = email;
+      if (password) $set.password = password;
+      if (name) $set.name = name;
+      if (dateOfBirth) $set.dateOfBirth = dateOfBirth;
+      if (phone) $set.phone = phone;
       if (roles) {
-        user.roles = Array.isArray(roles) && roles.includes('admin')
-          ? ['user', 'admin']
-          : ['user'];
+        $set.roles =
+          Array.isArray(roles) && roles.includes('admin')
+            ? ['user', 'admin']
+            : ['user'];
       }
 
-      user.updatedAt = new Date();
+      $set.updatedAt = new Date();
 
-      // Save new user to databases
-      const updatedUser = await saveUser(user);
+      // Find user by email and populate user props
+      const updatedUser = await User.findOneAndUpdate(
+        { $or },
+        { $set },
+        { new: true }
+      ).select(select);
+
       // Log in db
       log.info(
         { req, res, info: updatedUser },
-        `User ${updatedUser.email} updated in db`,
+        `User ${updatedUser.email} updated in db`
       );
 
-      // Remove unwanted props for client
-      const newUser = removeUserProps(updatedUser);
-      // Send response object with user token and user information
-      return res.status(200).json(newUser);
+      return res.status(200).json(updatedUser);
     } catch (err) {
       log.error({ req, res, err }, 'Error updating user');
 

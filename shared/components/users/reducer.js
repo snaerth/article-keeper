@@ -9,6 +9,7 @@ import {
   IS_NOT_FETCHING,
   IS_FETCHING_USER,
   IS_NOT_FETCHING_USER,
+  SET_USER,
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
 } from './types';
@@ -19,7 +20,7 @@ const initialState = {
   image: null,
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case IS_FETCHING:
       return {
@@ -47,6 +48,12 @@ export default function (state = initialState, action) {
         image: action.payload,
       };
 
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
     case GET_USERS_SUCCESS:
       return {
         ...state,
@@ -65,7 +72,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetchingUser: false,
-        data: action.payload,
+        user: action.payload,
         errorUser: null,
       };
 

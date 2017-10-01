@@ -12,6 +12,7 @@ class Error extends Component {
     text: PropTypes.string,
     type: PropTypes.string.isRequired,
     className: PropTypes.string,
+    id: PropTypes.string,
   };
 
   checkBoxType(type) {
@@ -30,13 +31,29 @@ class Error extends Component {
     }
   }
 
+  componentDidMount() {
+    this.scrollToComponent();
+  }
+
+  componentWillUpdate() {
+    this.scrollToComponent();
+  }
+
+  /**
+   * Scrolls to this component
+   */
+  scrollToComponent() {
+    this.container.scrollIntoView({ behavior: 'smooth' });
+  }
+
   render() {
-    const { text, strongText, type, className } = this.props;
+    const { text, strongText, type, className, id } = this.props;
 
     return (
       <div
+        id={id}
         className={classnames(styles.box, this.checkBoxType(type), className)}
-        ref={(c) => this.container = c}
+        ref={(c) => (this.container = c)}
       >
         {strongText ? <strong>{strongText}</strong> : null}
         {text}

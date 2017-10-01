@@ -9,15 +9,26 @@ import Person from '../../../assets/images/person.svg';
 import s from './viewUser.scss';
 
 const View = ({ data, changeViewHandler }) => {
-  const { _id, roles, profile, name, createdAt, dateOfBirth, imageUrl } = data;
+  const {
+    _id,
+    roles,
+    profile,
+    name,
+    createdAt,
+    updatedAt,
+    dateOfBirth,
+    imageUrl,
+  } = data;
   return (
     <div>
       <Container>
         <div className={s.grid}>
           <aside>
-            {imageUrl
-              ? <img src={imageUrl} alt={name} className={s.profileImage} />
-              : <Person className={s.person} />}
+            {imageUrl ? (
+              <img src={imageUrl} alt={name} className={s.profileImage} />
+            ) : (
+              <Person className={s.person} />
+            )}
           </aside>
           <section>
             <div className={s.row}>
@@ -30,7 +41,9 @@ const View = ({ data, changeViewHandler }) => {
             </div>
             <div className={s.row}>
               <div>Roles</div>
-              <div><Tags roles={roles} /></div>
+              <div>
+                <Tags roles={roles} />
+              </div>
             </div>
             <div className={s.row}>
               <div>Profile</div>
@@ -40,12 +53,18 @@ const View = ({ data, changeViewHandler }) => {
               <div>Created at</div>
               <div>{formatISODateTime(createdAt)}</div>
             </div>
-            {dateOfBirth
-              ? <div className={s.row}>
+            {updatedAt ? (
+              <div className={s.row}>
+                <div>Updated at</div>
+                <div>{formatISODateTime(updatedAt)}</div>
+              </div>
+            ) : null}
+            {dateOfBirth ? (
+              <div className={s.row}>
                 <div>Date of birth</div>
                 <div>{formatISODateTime(dateOfBirth)}</div>
               </div>
-              : null}
+            ) : null}
           </section>
         </div>
       </Container>

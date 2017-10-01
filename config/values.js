@@ -390,12 +390,13 @@ const values = {
         // webpack loaders in order to be processed (e.g. CSS/SASS etc).
         // For these cases you don't want to include them in the Vendor DLL.
         include: [
+          'axios',
+          'core-decorators',
           'medium-draft',
           'react-async-bootstrapper',
           'react-async-component',
           'react',
           'react-dom',
-          'react-ga',
           'react-helmet',
           'react-jobs',
           'react-paginate',
@@ -405,8 +406,7 @@ const values = {
           'redux-thunk',
           'react-modal',
           'react-virtualized',
-          'axios',
-          'core-decorators',
+          'smoothscroll-polyfill',
         ],
 
         // The name of the vendor DLL.
@@ -476,7 +476,7 @@ const values = {
 
       // Remove stage-# prests
       presets.forEach(
-        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1),
+        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1)
       );
       // Add stage-0 to list of presets
       presets.push('stage-0');
@@ -520,7 +520,7 @@ const values = {
 // client bundle. That would be a big NO NO to do. :)
 if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
   throw new Error(
-    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.",
+    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`."
   );
 }
 

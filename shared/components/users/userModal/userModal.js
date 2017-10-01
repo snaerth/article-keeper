@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Container from '../../common/container';
 import ViewUser from '../viewUser';
@@ -61,7 +62,13 @@ class UserModal extends Component {
         );
 
       case 'edit':
-        return <UserForm type="edit" user={data} changeViewHandler={this.changeView} />;
+        return (
+          <UserForm
+            type="edit"
+            user={data}
+            changeViewHandler={this.changeView}
+          />
+        );
 
       default:
         return <ViewUser data={data} changeViewHandler={this.changeView} />;
@@ -107,4 +114,15 @@ class UserModal extends Component {
   }
 }
 
-export default UserModal;
+/**
+ * Maps state to components props
+ *
+ * @param {Object} state - Application state
+ * @param {Object} ownProps - Components own props
+ * @returns {Object}
+ */
+function mapStateToProps(state) {
+  return { data: state.users.user };
+}
+
+export default connect(mapStateToProps)(UserModal);

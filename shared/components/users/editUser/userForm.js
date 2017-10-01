@@ -64,10 +64,7 @@ class UserForm extends Component {
 
     const { dateOfBirth, email, image, name, password, phone } = formValues;
     const data = { dateOfBirth, email, image, name, password, phone };
-
-    if (formValues.admin === true) {
-      data.roles = ['admin', 'user'];
-    }
+    data.roles = formValues.admin === true ? ['admin', 'user'] : ['user'];
 
     if (image && image !== initialValues.image) {
       const formData = new FormData();
@@ -77,11 +74,11 @@ class UserForm extends Component {
     try {
       if (type === 'edit') {
         await actions.updateUser(token, user._id, data); // eslint-disable-line
+        actions.getUsers();
       }
     } catch (error) {
       /* Set error  */
     }
-
   }
 
   /**
@@ -111,7 +108,12 @@ class UserForm extends Component {
     if (!error) return null;
     return (
       <fieldset>
-        <NotifyBox strongText="Error: " text={error} type="error" />
+        <NotifyBox
+          strongText="Error: "
+          text={error}
+          type="error"
+          id="userError"
+        />
       </fieldset>
     );
   }
@@ -129,18 +131,18 @@ class UserForm extends Component {
 
     return (
       <Container>
-        {isFetchingUser
-          ? <Loader absolute>
-            {type === 'edit'
-              ? 'Updating user'
-              : 'Create new user'}
+        {isFetchingUser ? (
+          <Loader absolute>
+            {type === 'edit' ? 'Updating user' : 'Create new user'}
           </Loader>
-          : null}
+        ) : null}
         <div
           className={
-            isFetchingUser
-              ? classnames(s.formContainer, 'almostHidden')
-              : s.formContainer
+            isFetchingUser ? (
+              classnames(s.formContainer, 'almostHidden')
+            ) : (
+              s.formContainer
+            )
           }
         >
           {this.renderError(errorUser)}
@@ -202,7 +204,7 @@ class UserForm extends Component {
             <div className={s.row}>
               <fieldset>
                 <Field
-                  component={(props) => <Input {...props} required />}
+                  component={props => <Input {...props} required />}
                   name="dateOfBirth"
                   id="dateOfBirth"
                   type="date"
@@ -222,15 +224,6 @@ class UserForm extends Component {
                     id="admin"
                     type="checkbox"
                     label="Admin"
-                  />
-                </div>
-                <div className={s.checkbox}>
-                  <Field
-                    component={Checkbox}
-                    name="user"
-                    id="user"
-                    type="checkbox"
-                    label="Users"
                   />
                 </div>
               </fieldset>
@@ -257,11 +250,7 @@ class UserForm extends Component {
                   color="grey"
                   onClick={() => changeViewHandler(0)}
                 />
-                <Button
-                  type="submit"
-                  text="Edit"
-                  ariaLabel="Edit user"
-                />
+                <Button type="submit" text="Edit" ariaLabel="Edit user" />
               </div>
             </div>
           </form>
@@ -308,7 +297,8 @@ function validate({ email, password, name, phone, dateOfBirth }) {
   }
 
   if (
-    name && (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))
+    name &&
+    (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))
   ) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
@@ -335,7 +325,7 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @returns {Object}
  */
 function mapStateToProps(state, ownProps) {
-  const { errorUser, image, isFetchingUser } = state.users;
+  const { errorUser, image, isFetchingUser, user } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
     image,
@@ -344,19 +334,19 @@ function mapStateToProps(state, ownProps) {
     errorUser,
   };
 
-  if (ownProps.user) {
-    newProps.user = ownProps.user;
+  if (user) {
+    newProps.user = user;
 
-    const { name, phone, dateOfBirth, roles, imageUrl } = ownProps.user;
+    const { name, phone, dateOfBirth, roles, imageUrl } = user;
+
     newProps.initialValues = {
       name: name || '',
-      email: ownProps.user ? getUserEmail(ownProps.user) : '',
+      email: getUserEmail(user),
       password: '',
       image: imageUrl || '',
       phone: phone || '',
       dateOfBirth: dateOfBirth ? formatInputDate(dateOfBirth) : '',
       admin: !!roles.includes('admin'),
-      user: !!roles.includes('user'),
     };
   }
 
@@ -389,5 +379,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       'user',
     ],
     validate,
-  })(UserForm),
+  })(UserForm)
 );

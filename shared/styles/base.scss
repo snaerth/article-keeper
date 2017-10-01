@@ -178,3 +178,8 @@ input[type='date']::-webkit-search-cancel-button {
   display: none;
   -webkit-appearance: none;
 }
+
+// Checkbox readonly
+input[type='checkbox'][readonly] {
+  pointer-events: none;
+}

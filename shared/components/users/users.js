@@ -88,6 +88,7 @@ class Users extends Component {
    * @param {Object} rowData
    */
   onRowClickHandler(event, index, rowData) {
+    this.props.actions.setUser(rowData);
     this.setState({
       currentRowData: rowData,
       modalOpen: true,
@@ -210,13 +211,7 @@ class Users extends Component {
   }
 
   render() {
-    const {
-      data,
-      isFetching,
-      error,
-      handleSubmit,
-      pagination,
-    } = this.props;
+    const { data, isFetching, error, handleSubmit, pagination } = this.props;
     const { currentRowData } = this.state;
 
     return (
@@ -224,8 +219,8 @@ class Users extends Component {
         {error ? this.renderError(error) : null}
         <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting users...</Loader> : null}
-          {data
-            ? <div className={isFetching ? 'almostHidden' : ''}>
+          {data ? (
+            <div className={isFetching ? 'almostHidden' : ''}>
               <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
                 <div className={s.inputContainer}>
                   <div>
@@ -239,9 +234,7 @@ class Users extends Component {
                         placeholder="Search..."
                         hidelabel
                       >
-                        <Search
-                          onClick={handleSubmit(this.handleFormSubmit)}
-                        />
+                        <Search onClick={handleSubmit(this.handleFormSubmit)} />
                       </Field>
                     </div>
                   </div>
@@ -254,7 +247,7 @@ class Users extends Component {
                         this.setState({ startDate, endDate });
                       }}
                       focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) =>
+                      onFocusChange={focusedInput =>
                         this.setState({ focusedInput })}
                       isOutsideRange={() => false}
                     />
@@ -265,7 +258,7 @@ class Users extends Component {
                       text="Clear"
                       ariaLabel="Clear inputs"
                       color="grey"
-                      onClick={(e) => this.clearInputs(e)}
+                      onClick={e => this.clearInputs(e)}
                     />
                     <Button
                       type="submit"
@@ -286,7 +279,7 @@ class Users extends Component {
                 onPageChangeHandler={this.paginateHandler}
               />
             </div>
-            : null}
+          ) : null}
         </div>
         <ModalWrapper
           className="mw992"
@@ -295,10 +288,7 @@ class Users extends Component {
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          <UsersModal
-            data={currentRowData}
-            deleteHandler={this.deleteHandler}
-          />
+          <UsersModal deleteHandler={this.deleteHandler} />
         </ModalWrapper>
       </div>
     );
@@ -356,5 +346,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'usersSearch',
     fields: ['search'],
-  })(Users),
+  })(Users)
 );

@@ -36,7 +36,7 @@ export default function reactApplicationMiddleware(req, res) {
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
     const html = renderToStaticMarkup(
-      <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />,
+      <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />
     );
     res.status(200).send(`<!DOCTYPE html>${html}`);
     return;
@@ -55,6 +55,7 @@ export default function reactApplicationMiddleware(req, res) {
 
   // Compile an initial state
   const preloadedState = {};
+
   if (req.cookies.user && req.cookies.userExpires) {
     preloadedState.auth = {
       user: req.cookies.user,
@@ -106,7 +107,7 @@ export default function reactApplicationMiddleware(req, res) {
         preloadedState={preloadedState}
         jobsState={jobContext.getState()}
         asyncComponentsState={asyncComponentsContext.getState()}
-      />,
+      />
     );
 
     // Check if the router context contains a redirect, if so we need to set

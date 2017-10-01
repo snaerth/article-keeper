@@ -20,7 +20,11 @@ export function authError(type, error) {
       payload = 'Unauthorized';
     }
 
-    if (payload && typeof payload === 'string' && payload.toLowerCase() === 'proxy_error') {
+    if (
+      payload &&
+      typeof payload === 'string' &&
+      payload.toLowerCase() === 'proxy_error'
+    ) {
       payload = 'Error connecting to server';
     }
   } else if (error.message) {

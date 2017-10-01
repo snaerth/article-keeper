@@ -114,8 +114,27 @@ userSchema.pre('save', function preSave(next) {
   });
 });
 
+// On findOneAndUpdate, encrypt password Before updating user model, run this function
+userSchema.pre('findOneAndUpdate', function preUpdate(next) {
+  const password = this._update.$set.password || '';
+  if (!password) return next();
+  // Encrypt our password using the salt above
+  bcrypt.hash(password, bcrypt.genSaltSync(12), null, (error, hash) => {
+    if (error) {
+      return next(error);
+    }
+
+    // Update password with encrypted password
+    this.update({ $set: { password: hash } });
+    return next();
+  });
+});
+
 // Compare password to encrypted password
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
+userSchema.methods.comparePassword = function comparePassword(
+  candidatePassword,
+  callback
+) {
   bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
     if (error) {
       return callback(error);
