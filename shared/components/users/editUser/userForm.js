@@ -204,7 +204,7 @@ class UserForm extends Component {
             <div className={s.row}>
               <fieldset>
                 <Field
-                  component={props => <Input {...props} required />}
+                  component={(props) => <Input {...props} required />}
                   name="dateOfBirth"
                   id="dateOfBirth"
                   type="date"
@@ -324,7 +324,7 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @param {Object} ownProps - Components own props
  * @returns {Object}
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const { errorUser, image, isFetchingUser, user } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
@@ -379,5 +379,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       'user',
     ],
     validate,
-  })(UserForm)
+  })(UserForm),
 );

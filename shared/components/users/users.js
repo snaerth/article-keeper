@@ -212,7 +212,6 @@ class Users extends Component {
 
   render() {
     const { data, isFetching, error, handleSubmit, pagination } = this.props;
-    const { currentRowData } = this.state;
 
     return (
       <div>
@@ -247,7 +246,7 @@ class Users extends Component {
                         this.setState({ startDate, endDate });
                       }}
                       focusedInput={this.state.focusedInput}
-                      onFocusChange={focusedInput =>
+                      onFocusChange={(focusedInput) =>
                         this.setState({ focusedInput })}
                       isOutsideRange={() => false}
                     />
@@ -258,7 +257,7 @@ class Users extends Component {
                       text="Clear"
                       ariaLabel="Clear inputs"
                       color="grey"
-                      onClick={e => this.clearInputs(e)}
+                      onClick={(e) => this.clearInputs(e)}
                     />
                     <Button
                       type="submit"
@@ -346,5 +345,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'usersSearch',
     fields: ['search'],
-  })(Users)
+  })(Users),
 );

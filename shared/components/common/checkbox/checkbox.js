@@ -16,9 +16,7 @@ const Input = ({ meta, id, label, input, required, disabled }) => (
     {/* eslint-disable */}
     <label htmlFor={id}>{label}</label>
     {/* eslint-enable */}
-    {meta && meta.error && meta.touched ? (
-      <ErrorText key={id} id={id} error={meta.error} />
-    ) : null}
+    {meta && meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
   </div>
 );
 
@@ -28,6 +26,7 @@ Input.propTypes = {
   input: PropTypes.object,
   meta: PropTypes.object,
   required: PropTypes.bool,
+  disabled: PropTypes.string,
 };
 
 export default Input;

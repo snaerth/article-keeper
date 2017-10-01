@@ -475,9 +475,7 @@ const values = {
       plugins.push('transform-decorators-legacy');
 
       // Remove stage-# prests
-      presets.forEach(
-        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1)
-      );
+      presets.forEach((val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1));
       // Add stage-0 to list of presets
       presets.push('stage-0');
 
@@ -520,7 +518,7 @@ const values = {
 // client bundle. That would be a big NO NO to do. :)
 if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
   throw new Error(
-    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`."
+    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.",
   );
 }
 

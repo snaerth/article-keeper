@@ -46,7 +46,7 @@ export function tokenForUser(user) {
       sub: user._id, // eslint-disable-line
       iat: timestamp,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
   );
 }
 
@@ -80,7 +80,7 @@ function addToPaginationObject(
   pagination,
   name = 1,
   email = 1,
-  dateOfBirth = 1
+  dateOfBirth = 1,
 ) {
   const sort = {};
   if (sortVals.includes(name)) sort.name = name;
@@ -151,7 +151,7 @@ export function saveUser(user) {
     } else {
       log.error(
         { err: new Error('Object is not a mongoose object') },
-        'Object is not a mongoose object'
+        'Object is not a mongoose object',
       );
 
       return reject('Object is not a mongoose object');
@@ -392,7 +392,7 @@ export async function deleteUser(req, res) {
       // Log in db
       log.info(
         { req, res, info: `User ${user.email} deleted` },
-        `User ${user.email} deleted`
+        `User ${user.email} deleted`,
       );
       return res
         .status(200)
@@ -544,7 +544,7 @@ export async function getUsers(req, res) {
     // Fetch Users from database
     const result = await User.paginate(
       !emptySearch ? searchQuery : {},
-      pagination
+      pagination,
     );
     return res.status(200).send(result);
   } catch (err) {
@@ -604,13 +604,13 @@ export async function updateUser(req, res) {
       const updatedUser = await User.findOneAndUpdate(
         { $or },
         { $set },
-        { new: true }
+        { new: true },
       ).select(select);
 
       // Log in db
       log.info(
         { req, res, info: updatedUser },
-        `User ${updatedUser.email} updated in db`
+        `User ${updatedUser.email} updated in db`,
       );
 
       return res.status(200).json(updatedUser);

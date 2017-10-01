@@ -8,6 +8,7 @@ TODO
   -----------------------------------------------------------------------------
   - Taka út react-dates og setja inn npm install react-infinite-calendar react-transition-group --save
   - User email í töflu disable-a
+  - User updated skilaboð
   - Update user image
   - Update með datepicker
   - Uppfæra eins líkt og react-universally

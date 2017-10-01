@@ -33,7 +33,7 @@ export function removeUserProps(user, moreProps) {
   for (let i = 0; i < delProps.length; i++) {
     const hasBarProperty = Object.prototype.hasOwnProperty.call(
       newUser,
-      delProps[i]
+      delProps[i],
     );
 
     if (hasBarProperty) {
@@ -104,7 +104,7 @@ export function signOut(req, res) {
   req.logout();
   res.clearCookie('user');
   res.clearCookie('userExpires');
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     if (err) {
       log.error({ req, res, err }, 'Error destroying request session');
 
@@ -342,7 +342,7 @@ export async function forgotPassword(req, res) {
     return res
       .status(200)
       .send(
-        `An e-mail has been sent to ${data.email} with further instructions.`
+        `An e-mail has been sent to ${data.email} with further instructions.`,
       );
   } catch (err) {
     log.error({ req, res, err }, 'Error in forgot password');
@@ -370,7 +370,7 @@ export async function resetPassword(req, res) {
       const user = await updateUserPassword({ token, password });
       log.info({ req, res, info: user }, `Password updated for ${user.email}`);
       return res.send(
-        `Success! Your password has been changed for ${user.email}.`
+        `Success! Your password has been changed for ${user.email}.`,
       );
     } catch (err) {
       log.error({ req, res, err }, 'Password is invalid or token has expired.');
