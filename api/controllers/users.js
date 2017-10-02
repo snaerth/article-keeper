@@ -209,11 +209,8 @@ export async function uploadUserImage(req, res) {
         { new: true },
       ).select(select);
 
-      // Send response object with user token and user information
-      return res.status(200).send({
-        token: tokenForUser(updatedUser),
-        ...updatedUser,
-      });
+      // Send response object with and user information
+      return res.status(200).json(updatedUser);
     } catch (err) {
       log.error({ req, res, err }, 'Error uploading user image');
       return res.status(422).send({ error: err });

@@ -35,8 +35,10 @@ class Error extends Component {
     this.scrollToComponent();
   }
 
-  componentWillUpdate() {
-    this.scrollToComponent();
+  componentWillUpdate(nextProps) {
+    if (nextProps.text) {
+      this.scrollToComponent();
+    }
   }
 
   /**

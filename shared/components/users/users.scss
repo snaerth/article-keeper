@@ -14,6 +14,16 @@
   }
 }
 
+.dateContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+
+  .date {
+    min-width: 160px;
+  }
+}
+
 .inputContainer {
   display: grid;
   margin-bottom: 15px;

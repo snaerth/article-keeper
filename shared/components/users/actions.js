@@ -174,13 +174,22 @@ export function updateUser(token, id, data, imageFormData) {
         },
       };
 
+      // Update user
       const res = await axios.put(url, data, config);
+
       if (imageFormData) {
-        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
+        // Update userimage
+        const imageRes = await axios.post(
+          '/api/users/userimage',
+          imageFormData,
+          config,
+        );
+        dispatch({ type: UPDATE_USER_SUCCESS, payload: imageRes.data });
+      } else {
+        dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
       }
 
-      dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
-      return Promise.resolve();
+      return Promise.resolve('User updated');
     } catch (error) {
       const payload = errorHelper(error);
       dispatch({ type: UPDATE_USER_ERROR, payload });

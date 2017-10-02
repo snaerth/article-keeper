@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import { DateRangePicker } from 'react-dates';
-
+import InfiniteCalendar from 'react-infinite-calendar';
 import * as actionCreators from './actions';
 import UsersTable from './userTable';
 import UsersModal from './userModal';
@@ -14,10 +13,13 @@ import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
+// Utils
 import createPagination from '../../utils/pagination';
+import infiniteCalendarTheme from '../../utils/themes';
 import { formDataToQueryString } from '../../utils/urlHelpers';
+// Svg
 import Search from '../../assets/images/search.svg';
-
+import Calendar from '../../assets/images/calendar.svg';
 // Styles
 import tableStyles from '../../styles/table.css';
 import s from './users.scss';
@@ -33,6 +35,7 @@ class Users extends Component {
       focusedInput: null,
       startDate: null,
       endDate: null,
+      modalShowDate: false,
     };
 
     this.rowClassName = this.rowClassName.bind(this);
@@ -42,6 +45,7 @@ class Users extends Component {
     this.clearInputs = this.clearInputs.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.showDatePicker = this.showDatePicker.bind(this);
   }
 
   static propTypes = {
@@ -117,7 +121,19 @@ class Users extends Component {
     this.setState(() => ({
       currentRowData: null,
       modalOpen: false,
+      modalShowDate: false,
     }));
+  }
+
+  /**
+   * Sets state property modalShowDate to true
+   */
+  showDatePicker() {
+    this.setState(() => ({
+      modalShowDate: true,
+      modalOpen: true,
+    }));
+
   }
 
   /**
@@ -237,19 +253,31 @@ class Users extends Component {
                       </Field>
                     </div>
                   </div>
-                  <div>
-                    <DateRangePicker
-                      showDefaultInputIcon
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        this.setState({ startDate, endDate });
-                      }}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) =>
-                        this.setState({ focusedInput })}
-                      isOutsideRange={() => false}
-                    />
+                  <div className={s.dateContainer}>
+                    <div className={s.date}>
+                      <Field
+                        component={(props) => <Input {...props} required />}
+                        name="startDate"
+                        id="startDate"
+                        type="date"
+                        label="Start date"
+                        hidelabel
+                      >
+                        <Calendar onClick={() => this.showDatePicker()} />
+                      </Field>
+                    </div>
+                    <div className={s.date}>
+                      <Field
+                        component={(props) => <Input {...props} required />}
+                        name="endDate"
+                        id="endDate"
+                        type="date"
+                        label="End date"
+                        hidelabel
+                      >
+                        <Calendar />
+                      </Field>
+                    </div>
                   </div>
                   <div>
                     <Button
@@ -287,7 +315,11 @@ class Users extends Component {
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          <UsersModal deleteHandler={this.deleteHandler} />
+          {this.state.modalShowDate ?
+            <InfiniteCalendar
+              selected={new Date()}
+              theme={infiniteCalendarTheme()}
+            /> : <UsersModal deleteHandler={this.deleteHandler} />}
         </ModalWrapper>
       </div>
     );

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Container from '../../common/container';
 import ViewUser from '../viewUser';
 import DeleteUser from '../deleteUser';
-import UserForm from '../editUser';
+import UserForm from '../userForm';
 
 import s from './userModal.scss';
 
