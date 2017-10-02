@@ -17,6 +17,7 @@ import Pagination from '../common/pagination';
 import createPagination from '../../utils/pagination';
 import infiniteCalendarTheme from '../../utils/themes';
 import { formDataToQueryString } from '../../utils/urlHelpers';
+import { formatInputDate } from '../../utils/date';
 // Svg
 import Search from '../../assets/images/search.svg';
 import Calendar from '../../assets/images/calendar.svg';
@@ -25,8 +26,24 @@ import tableStyles from '../../styles/table.css';
 import s from './users.scss';
 
 class Users extends Component {
+  static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    actions: PropTypes.object.isRequired,
+    data: PropTypes.object,
+    isFetching: PropTypes.bool.isRequired,
+    error: PropTypes.string,
+    reset: PropTypes.func.isRequired,
+    pagination: PropTypes.object.isRequired,
+    user: PropTypes.object,
+    search: PropTypes.string,
+    change: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
+    this.dateTypes = ['startdate', 'enddate'];
+    this.minDate = new Date(1930, 1, 1);
 
     this.state = {
       modalOpen: false,
@@ -35,6 +52,7 @@ class Users extends Component {
       focusedInput: null,
       startDate: null,
       endDate: null,
+      modalDateType: this.dateTypes[0],
       modalShowDate: false,
     };
 
@@ -46,19 +64,8 @@ class Users extends Component {
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
     this.showDatePicker = this.showDatePicker.bind(this);
+    this.dateSelectHandler = this.dateSelectHandler.bind(this);
   }
-
-  static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired,
-    data: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    error: PropTypes.string,
-    reset: PropTypes.func.isRequired,
-    pagination: PropTypes.object.isRequired,
-    search: PropTypes.string,
-  };
 
   /**
    * Fetch users
@@ -127,10 +134,15 @@ class Users extends Component {
 
   /**
    * Sets state property modalShowDate to true
+   *
+   * @param {String} type
    */
-  showDatePicker() {
+  showDatePicker(type) {
+    if (!this.dateTypes.includes(type)) throw Error('Invalid type. Try string startdate or enddate');
+
     this.setState(() => ({
       modalShowDate: true,
+      modalDateType: type,
       modalOpen: true,
     }));
 
@@ -213,6 +225,30 @@ class Users extends Component {
   }
 
   /**
+   * On date select handler. Sets state for date
+   *
+   * @param {Date} date
+   */
+  dateSelectHandler(date) {
+    if (!date) return Error('No date returned from DatePicker');
+    const { modalDateType } = this.state;
+
+    // SetTimeout delay is because of animation header is laggy
+    setTimeout(() => {
+      // Set state for startdate or enddate
+      if (modalDateType === 'startdate') {
+        const startDate = formatInputDate(date);
+        this.setState({ startDate });
+        this.props.change('startDate', startDate);
+      } else if (modalDateType === 'enddate') {
+        const endDate = formatInputDate(date);
+        this.setState({ endDate });
+        this.props.change('endDate', endDate);
+      }
+    }, 300);
+  }
+
+  /**
    * Renders error message box
    *
    * @param {String} error
@@ -227,7 +263,7 @@ class Users extends Component {
   }
 
   render() {
-    const { data, isFetching, error, handleSubmit, pagination } = this.props;
+    const { data, isFetching, error, handleSubmit, pagination, user } = this.props;
 
     return (
       <div>
@@ -261,9 +297,10 @@ class Users extends Component {
                         id="startDate"
                         type="date"
                         label="Start date"
+                        value={this.state.startDate}
                         hidelabel
                       >
-                        <Calendar onClick={() => this.showDatePicker()} />
+                        <Calendar onClick={() => this.showDatePicker('startdate')} />
                       </Field>
                     </div>
                     <div className={s.date}>
@@ -273,9 +310,10 @@ class Users extends Component {
                         id="endDate"
                         type="date"
                         label="End date"
+                        value={this.state.endDate}
                         hidelabel
                       >
-                        <Calendar />
+                        <Calendar onClick={() => this.showDatePicker('enddate')} />
                       </Field>
                     </div>
                   </div>
@@ -309,17 +347,25 @@ class Users extends Component {
           ) : null}
         </div>
         <ModalWrapper
-          className="mw992"
+          className={!this.state.modalShowDate ? 'mw992' : 'mv360'}
           isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          {this.state.modalShowDate ?
-            <InfiniteCalendar
-              selected={new Date()}
-              theme={infiniteCalendarTheme()}
-            /> : <UsersModal deleteHandler={this.deleteHandler} />}
+          <div>
+            {this.state.modalShowDate ?
+              <InfiniteCalendar
+                width={360}
+                height={400}
+                theme={infiniteCalendarTheme()}
+                min={this.minDate}
+                minDate={this.minDate}
+                onSelect={this.dateSelectHandler}
+              /> : null}
+            {!this.state.modalShowDate && user ?
+              <UsersModal deleteHandler={this.deleteHandler} /> : null}
+          </div>
         </ModalWrapper>
       </div>
     );
@@ -333,7 +379,7 @@ class Users extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data } = state.users;
+  const { error, isFetching, data, user } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   let pagination = {};
   let search = '';
@@ -358,6 +404,7 @@ function mapStateToProps(state) {
     data,
     pagination,
     search,
+    user,
   };
 }
 

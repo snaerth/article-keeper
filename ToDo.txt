@@ -7,6 +7,7 @@ TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
   - Taka út react-dates og setja inn npm install react-infinite-calendar react-transition-group --save
+  - Laga react-infinite-calendar scroll villu og einnig banna start date eldri en old date
   - Update með datepicker
   - Uppfæra eins líkt og react-universally
   - EditUser gera dynamic fyrir edit og create
