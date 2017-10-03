@@ -165,7 +165,7 @@ class Users extends Component {
   prepareAndSumbit(search, formData) {
     const { token, actions } = this.props;
     const { startDate, endDate } = this.state;
-    const hasDateRange = startDate && endDate;
+    const hasDateRange = (startDate && endDate);
     let queryString = formDataToQueryString(formData);
 
     // Set loading
@@ -181,18 +181,15 @@ class Users extends Component {
       }
 
       if (hasDateRange) {
-        const sd = startDate.format('YYYY-MM-DD');
-        const ed = endDate.format('YYYY-MM-DD');
-
         if (search) {
           // query by text and date range
-          queryString = `?query=${search}?startDate=${sd}&endDate=${ed}`;
+          queryString = `?query=${search}&startDate=${startDate}&endDate=${endDate}`;
           actions.getUsersBySearchQuery(token, queryString);
           return false;
         }
 
         // query by date range
-        queryString = `?startDate=${sd}&endDate=${ed}`;
+        queryString = `?startDate=${startDate}&endDate=${endDate}`;
         actions.getUsersBySearchQuery(token, queryString);
         return false;
       }
@@ -298,6 +295,7 @@ class Users extends Component {
                         type="date"
                         label="Start date"
                         value={this.state.startDate}
+                        placeholder="From: "
                         hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('startdate')} />
@@ -311,6 +309,7 @@ class Users extends Component {
                         type="date"
                         label="End date"
                         value={this.state.endDate}
+                        placeholder="To: "
                         hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('enddate')} />

@@ -414,6 +414,59 @@ export async function deleteUser(req, res) {
 }
 
 /**
+ * Creates search query for mongoose User model
+ *
+ * @param {String} query
+ * @param {Object} startDate - Date object
+ * @param {Object} endDate - Date object
+ * @return {Object} searchQuery - Mongoose search query for user
+ */
+async function prepareMongooseDataBaseQuery(query, startDate, endDate) {
+  const searchQuery = {};
+  const $or = [];
+  const $and = [];
+
+  if (query) {
+    // Check if searchQuery is valid mongo ObjectId
+    if (query.match(/^[0-9a-fA-F]{24}$/)) {
+      // Search query by id
+      $or.push({ _id: mongoose.Types.ObjectId(query) });
+    } else {
+      const reExp = new RegExp(query, 'i');
+      // Search query for for other User properties
+      $or.push({ name: reExp }, { email: reExp }, { roles: reExp });
+    }
+  }
+
+  if (startDate && endDate) {
+    const gte = await parseDateYearMonthDay(startDate);
+    const lte = await parseDateYearMonthDay(endDate);
+    // Search query for text search and date range
+    $and.push({
+      $or: [
+        {
+          createdAt: { $gte: gte, $lte: lte },
+        },
+        {
+          dateOfBirth: { $gte: gte, $lte: lte },
+        },
+      ],
+    });
+  }
+
+  if ($and.length > 0 && $or.length > 0) {
+    $and.push({ $or });
+    searchQuery.$and = $and;
+  } else if ($and.length > 0) {
+    searchQuery.$and = $and;
+  } else if ($or.length > 0) {
+    searchQuery.$or = $or;
+  }
+
+  return searchQuery;
+}
+
+/**
  * Get user by search query
  *
  * @param {Object} req
@@ -435,42 +488,8 @@ export async function getUser(req, res) {
   // Only select these properties
   pagination.select = select;
 
-  const searchQuery = {};
-  const $or = [];
-
-  if (query) {
-    // Check if searchQuery is valid mongo ObjectId
-    if (query.match(/^[0-9a-fA-F]{24}$/)) {
-      // Search query by id
-      $or.push({ _id: mongoose.Types.ObjectId(query) });
-    } else {
-      const reExp = new RegExp(query, 'i');
-      // Search query for for other User properties
-      $or.push({ name: reExp }, { email: reExp }, { roles: reExp });
-    }
-  }
-
   try {
-    if (startDate && endDate) {
-      const gte = await parseDateYearMonthDay(startDate);
-      const lte = await parseDateYearMonthDay(endDate);
-
-      // Search query for text search and date range
-      searchQuery.$and = [
-        {
-          $or,
-        },
-        {
-          createdAt: { $gte: gte, $lte: lte },
-        },
-        {
-          dateOfBirth: { $gte: gte, $lte: lte },
-        },
-      ];
-    } else {
-      // Search query for text search
-      searchQuery.$or = $or;
-    }
+    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
     // Fetch user by search query from database
     const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
@@ -507,56 +526,15 @@ export async function getUsers(req, res) {
   // Only select these properties
   pagination.select = select;
 
-  const searchQuery = {};
-  const $or = [];
-  let emptySearch = false;
-
-  if (query) {
-    // Check if searchQuery is valid mongo ObjectId
-    if (query.match(/^[0-9a-fA-F]{24}$/)) {
-      // Search query by id
-      $or.push({ _id: mongoose.Types.ObjectId(query) });
-    } else {
-      const reExp = new RegExp(query, 'i');
-      // Search query for for other User properties
-      $or.push({ name: reExp }, { email: reExp }, { roles: reExp });
-    }
-  }
-
   try {
-    if (startDate && endDate) {
-      const gte = await parseDateYearMonthDay(startDate);
-      const lte = await parseDateYearMonthDay(endDate);
-
-      // Search query for text search and date range
-      searchQuery.$and = [
-        {
-          createdAt: { $gte: gte, $lte: lte },
-        },
-        {
-          dateOfBirth: { $gte: gte, $lte: lte },
-        },
-      ];
-    }
-
-    // Search query for text search
-    if ($or.length > 0) {
-      searchQuery.$and.push({ $or });
-    }
-
-    if (searchQuery.$and && searchQuery.$and.length === 0) {
-      emptySearch = true;
-    }
-
+    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
+    // Fetch user by search query from database
     // Fetch Users from database
-    const result = await User.paginate(
-      !emptySearch ? searchQuery : {},
-      pagination,
-    );
+    const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error getting users');
-    return res.status(500).send({ error: err });
+    return res.status(500).send({ error: err.message || err });
   }
 }
 

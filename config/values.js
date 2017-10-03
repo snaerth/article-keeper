@@ -259,13 +259,9 @@ const values = {
     objectSrc: [],
     scriptSrc: [
       "'self'",
+      "'unsafe-eval'",
       // Allow scripts from cdn.polyfill.io so that we can import the polyfill.
       'cdn.polyfill.io',
-      // For analytics
-      '*.google-analytics.com',
-      'connect.facebook.net',
-      'static.ads-twitter.com',
-      'analytics.twitter.com',
     ],
     styleSrc: ["'self' 'unsafe-inline'", 'fonts.googleapis.com', 'blob:'],
   },
@@ -475,7 +471,9 @@ const values = {
       plugins.push('transform-decorators-legacy');
 
       // Remove stage-# prests
-      presets.forEach((val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1));
+      presets.forEach(
+        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1),
+      );
       // Add stage-0 to list of presets
       presets.push('stage-0');
 

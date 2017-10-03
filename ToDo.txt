@@ -12,6 +12,7 @@ TODO
   - Uppfæra eins líkt og react-universally
   - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead
+  - Splitta Backenda í sér project
   - Users server
     - Create + test  => test is not over
     - Update + test => test is not over
