@@ -34,10 +34,14 @@ const Input = ({
         required={required ? 'required' : ''}
       />
       {children ? (
-        <span className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}>{children}</span>
+        <span className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}>
+          {children}
+        </span>
       ) : null}
     </span>
-    {meta && meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
+    {meta && meta.error && meta.touched ? (
+      <ErrorText key={id} id={id} error={meta.error} />
+    ) : null}
   </div>
 );
 

@@ -1,15 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Container from '../../common/container';
+import ImageBlurWrapper from '../../common/imageBlurWrapper';
 import Button from '../../common/button';
 import Tags from '../../common/tags';
-import formatISODateTime, { formatDateWithMonthName } from '../../../utils/date';
+import formatISODateTime, {
+  formatDateWithMonthName,
+} from '../../../utils/date';
 import getUserEmail from '../../../utils/userHelper';
 import Person from '../../../assets/images/person.svg';
 import s from './viewUser.scss';
 
 const View = ({ data, changeViewHandler }) => {
-  const { _id, roles, profile, name, createdAt, updatedAt, dateOfBirth, imageUrl } = data;
+  const {
+    _id,
+    roles,
+    profile,
+    name,
+    createdAt,
+    updatedAt,
+    dateOfBirth,
+    imageUrl,
+    thumbnailUrl,
+  } = data;
   const email = getUserEmail(data);
 
   return (
@@ -18,7 +31,12 @@ const View = ({ data, changeViewHandler }) => {
         <div className={s.grid}>
           <aside>
             {imageUrl ? (
-              <img src={imageUrl} alt={name} className={s.profileImage} />
+              <ImageBlurWrapper
+                src={imageUrl}
+                thumbnail={thumbnailUrl}
+                alt={name}
+                className={s.profileImage}
+              />
             ) : (
               <Person className={s.person} />
             )}

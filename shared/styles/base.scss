@@ -183,7 +183,7 @@ input[type='date']::-webkit-search-cancel-button {
 input[type='date']::before {
   content: attr(placeholder) !important;
   margin-right: 0.5em;
-  color: #aaa;
+  color: $text-dark;
 }
 
 input[type='date']:focus::before,

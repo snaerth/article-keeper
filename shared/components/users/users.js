@@ -13,6 +13,7 @@ import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
+import ErrorText from '../common/errorText';
 // Utils
 import createPagination from '../../utils/pagination';
 import infiniteCalendarTheme from '../../utils/themes';
@@ -29,6 +30,7 @@ class Users extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
+    startDateError: PropTypes.string,
     actions: PropTypes.object.isRequired,
     data: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
@@ -260,7 +262,7 @@ class Users extends Component {
   }
 
   render() {
-    const { data, isFetching, error, handleSubmit, pagination, user } = this.props;
+    const { data, isFetching, error, handleSubmit, pagination, user, startDateError } = this.props;
 
     return (
       <div>
@@ -314,6 +316,9 @@ class Users extends Component {
                       >
                         <Calendar onClick={() => this.showDatePicker('enddate')} />
                       </Field>
+                    </div>
+                    <div className={s.date}>
+                      {startDateError ? <ErrorText key={'startDate'} id={'startDate'} error={startDateError} /> : null}
                     </div>
                   </div>
                   <div>
@@ -372,14 +377,41 @@ class Users extends Component {
 }
 
 /**
+ * Valdates if startDate is bigger than endDate
+ * @param {startDate:String | endDate:String} object
+ */
+function validate({ startDate, endDate }) {
+  const errors = {};
+
+  if (startDate > endDate) {
+    errors.startDate = 'From date is bigger than to date';
+  }
+
+  return errors;
+}
+
+/**
  * Maps state to components props
  *
  * @param {Object} state - Application state
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data, user } = state.users;
-  const token = state.auth && state.auth.user ? state.auth.user.token : '';
+  const {
+    users: {
+      error,
+      isFetching,
+      data,
+      user,
+    },
+    auth,
+    form: {
+      usersSearch,
+    },
+  } = state;
+
+  const token = auth && auth.user ? auth.user.token : '';
+  const startDateError = (usersSearch && usersSearch.syncErrors && usersSearch.syncErrors.startDate) ? usersSearch.syncErrors.startDate : '';
   let pagination = {};
   let search = '';
 
@@ -404,6 +436,7 @@ function mapStateToProps(state) {
     pagination,
     search,
     user,
+    startDateError,
   };
 }
 
@@ -423,5 +456,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'usersSearch',
     fields: ['search'],
+    validate,
   })(Users),
 );
