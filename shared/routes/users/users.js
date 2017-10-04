@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 
 // Components
 import Users from '../../components/users';
+import TextAnime from '../../components/common/textAnime';
 
 // Containers
 import Container from '../../components/common/container';
@@ -12,7 +13,7 @@ const UsersRoute = () => (
     <Helmet title="Users" />
     <div className="banner">
       <Container>
-        <h1>Users</h1>
+        <TextAnime text="Users" />
       </Container>
     </div>
     <Container className="mt25mb50">

@@ -68,6 +68,7 @@
     ]
   },
   "dependencies": {
+    "animejs": "2.2.0",
     "app-root-dir": "^1.0.2",
     "assets-webpack-plugin": "^3.5.1",
     "async": "^2.5.0",

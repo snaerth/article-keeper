@@ -40,12 +40,9 @@ class ImageBlurWrapper extends Component {
     const img = new Image();
     img.src = src;
     img.onload = () => {
-      this.canvas.parentNode.classList.add('heightAuto');
-      setTimeout(() => {
-        this.canvas.classList.add(s.hide);
-        this.image.classList.add(s.show);
-      }, 1000);
-
+      this.canvas.parentNode.classList.add(s.heightAuto);
+      this.canvas.classList.add(s.hide);
+      this.image.classList.add(s.show);
       this.setState({ visible: false });
     };
   }
@@ -63,14 +60,14 @@ class ImageBlurWrapper extends Component {
     }
 
     return (
-      <figure>
+      <figure className={s.container}>
         <img
           src={visible ? src : ''}
           alt={alt}
           className={s.image}
-          ref={(c) => this.image = c}
+          ref={(c) => (this.image = c)}
         />
-        <canvas ref={(c) => this.canvas = c} className={s.canvas} />
+        <canvas ref={(c) => (this.canvas = c)} className={s.canvas} />
       </figure>
     );
   }

@@ -1,3 +1,10 @@
+
+.container {
+  position: relative;
+  margin: 0;
+  width: 100%;
+}
+
 .image {
   opacity: 0;
   visibility: hidden;
@@ -27,4 +34,8 @@
   visibility: visible;
   opacity: 1;
   transition: transform 0.4s, visibility 0s linear, opacity 0.4s 0s;
+}
+
+.heightAuto {
+  height: auto !important;
 }
