@@ -10,23 +10,14 @@ class TextAnime extends Component {
   };
 
   componentDidMount() {
-    anime
-      .timeline({ loop: true })
-      .add({
-        targets: '.letter',
-        rotateY: [-90, 0],
-        duration: 1300,
-        delay(el, i) {
-          return 45 * i;
-        },
-      })
-      .add({
-        targets: this.container,
-        opacity: 0,
-        duration: 1000,
-        easing: 'easeOutExpo',
-        delay: 1000,
-      });
+    anime({
+      targets: `.${s.letter}`,
+      rotateY: [-90, 0],
+      duration: 1300,
+      delay(el, i) {
+        return 45 * i;
+      },
+    });
   }
 
   /**
@@ -39,7 +30,7 @@ class TextAnime extends Component {
     const arr = [];
     [...text].forEach((letter) => {
       arr.push(
-        <span key={shortid.generate()} className="letter">
+        <span key={shortid.generate()} className={s.letter}>
           {letter}
         </span>,
       );

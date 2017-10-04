@@ -1,5 +1,11 @@
 .ml10 {
   position: relative;
+
+  .letter {
+    display: inline-block;
+    line-height: 1em;
+    transform-origin: 0 0;
+  }
 }
 
 .ml10 .text-wrapper {
@@ -11,8 +17,3 @@
   overflow: hidden;
 }
 
-.ml10 .letter {
-  display: inline-block;
-  line-height: 1em;
-  transform-origin: 0 0;
-}
