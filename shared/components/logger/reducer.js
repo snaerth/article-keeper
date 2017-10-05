@@ -9,7 +9,6 @@ import {
 
 const initialState = {
   isFetching: false,
-  orientation: 'horizontal',
 };
 
 export default function (state = initialState, action) {
@@ -18,7 +17,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isFetching: true,
-        orientation: action.payload,
         error: null,
       };
 

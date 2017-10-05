@@ -396,6 +396,7 @@ const values = {
           'react-dom',
           'react-helmet',
           'react-jobs',
+          'react-infinite-calendar',
           'react-paginate',
           'react-router-dom',
           'redux',

@@ -81,6 +81,65 @@ export async function deleteAllLogs(req, res) {
 }
 
 /**
+ * Creates search query for mongoose Log model
+ *
+ * @param {String} query
+ * @param {Object} startDate - Date object
+ * @param {Object} endDate - Date object
+ * @return {Object} searchQuery - Mongoose search query for Log
+ */
+async function prepareMongooseDataBaseQuery(query, startDate, endDate) {
+  const searchQuery = {};
+  const $or = [];
+  const $and = [];
+
+  if (query) {
+    // Check if searchQuery is valid mongo ObjectId
+    if (query.match(/^[0-9a-fA-F]{24}$/)) {
+      // Search query by id
+      $or.push({ _id: mongoose.Types.ObjectId(query) });
+    } else {
+      const reExp = new RegExp(query, 'i');
+      // Search query for for other Log properties
+      $or.push(
+        { msg: reExp },
+        { name: reExp },
+        { 'err.stack': reExp },
+        { 'req.statusCode': reExp },
+        { 'req.method': reExp },
+        { 'req.headers': reExp },
+        { 'res.header': reExp },
+        { 'res.statusCode': reExp },
+      );
+    }
+  }
+
+  if (startDate && endDate) {
+    const gte = await parseDateYearMonthDay(startDate);
+    const lte = await parseDateYearMonthDay(endDate);
+    // Search query for text search and date range
+    $and.push({
+      $or: [
+        {
+          time: { $gte: gte, $lte: lte },
+        },
+      ],
+    });
+  }
+
+  if ($and.length > 0 && $or.length > 0) {
+    $and.push({ $or });
+    searchQuery.$and = $and;
+  } else if ($and.length > 0) {
+    searchQuery.$and = $and;
+  } else if ($or.length > 0) {
+    searchQuery.$or = $or;
+  }
+
+  return searchQuery;
+}
+
+/**
  * Get logs
  *
  * @param {Object} req
@@ -89,7 +148,17 @@ export async function deleteAllLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogs(req, res) {
-  const { limit, msg, level, name, time, page } = req.query;
+  const {
+    query,
+    startDate,
+    endDate,
+    limit,
+    msg,
+    level,
+    name,
+    time,
+    page,
+  } = req.query;
 
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
@@ -97,8 +166,13 @@ export async function getLogs(req, res) {
   pagination = addToPaginationObject(pagination, msg, level, name, time);
 
   try {
+    const searchQuery = await prepareMongooseDataBaseQuery(
+      query,
+      startDate,
+      endDate,
+    );
     // Fetch logs from database
-    const result = await Log.paginate({}, pagination);
+    const result = await Log.paginate(searchQuery, pagination);
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error getting logs');
@@ -115,8 +189,8 @@ export async function getLogs(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getLogsBySearchQuery(req, res) {
-  const { query, limit, msg, level, name, time, page } = req.params;
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, limit, msg, level, name, time, page } = req.query;
+  const { query } = req.params;
 
   if (!query) {
     return res.status(422).send({
@@ -129,96 +203,17 @@ export async function getLogsBySearchQuery(req, res) {
   // Enrich pagination object
   pagination = addToPaginationObject(pagination, msg, level, name, time);
 
-  const searchQuery = {};
-  let $or = [];
-  // Check if searchQuery is valid mongo ObjectId
-  if (query.match(/^[0-9a-fA-F]{24}$/)) {
-    // Search query by id
-    $or = [{ _id: mongoose.Types.ObjectId(query) }];
-  } else {
-    const reExp = new RegExp(query, 'i');
-    // Search query for for other Log properties
-    $or = [
-      { msg: reExp },
-      { name: reExp },
-      { 'err.stack': reExp },
-      { 'req.statusCode': reExp },
-      { 'req.method': reExp },
-      { 'req.headers': reExp },
-      { 'res.header': reExp },
-      { 'res.statusCode': reExp },
-    ];
-  }
-
   try {
-    if (startDate && endDate) {
-      const gte = await parseDateYearMonthDay(startDate);
-      const lte = await parseDateYearMonthDay(endDate);
-
-      // Search query for text search and date range
-      searchQuery.$and = [
-        {
-          $or,
-        },
-        {
-          time: { $gte: gte, $lte: lte },
-        },
-      ];
-    } else {
-      // Search query for text search
-      searchQuery.$or = $or;
-    }
-
+    const searchQuery = await prepareMongooseDataBaseQuery(
+      query,
+      startDate,
+      endDate,
+    );
     // Fetch logs by search query from database
     const result = await Log.paginate(searchQuery, pagination);
     return res.status(200).send(result);
   } catch (err) {
     log.error({ req, res, err }, 'Error searching logs by query');
-    return res.status(500).send({ error: err });
-  }
-}
-
-/**
- * Get logs by date range. Date format should be YYYY-MM-DD
- *
- * @param {Object} req
- * @param {Object} res
- * @returns {*}
- * @author Snær Seljan Þóroddsson
- */
-export async function getLogsByDateRange(req, res) {
-  const { startDate, endDate } = req.params;
-
-  if (!startDate && !endDate) {
-    return res.status(422).send({
-      error: 'Parameters startDate and endDate are required and have to be on valid date format YYYY-mm-dd',
-    });
-  }
-
-  const { limit, msg, level, name, time, page } = req.params;
-
-  // Get default pagination object
-  let pagination = createPaginationObject(page, limit);
-  // Enrich pagination object
-  pagination = addToPaginationObject(pagination, msg, level, name, time);
-
-  try {
-    const gte = await parseDateYearMonthDay(startDate);
-    const lte = await parseDateYearMonthDay(endDate);
-    const query = {
-      $or: [
-        {
-          time: { $gte: gte, $lte: lte },
-        },
-      ],
-    };
-
-    // Fetch logs by search query from database
-    const result = await Log.paginate(query, pagination);
-
-    return res.status(200).send(result);
-  } catch (err) {
-    log.error({ req, res, err }, 'Error searching logs by date range query');
     return res.status(500).send({ error: err });
   }
 }

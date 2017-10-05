@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import InfiniteCalendar from 'react-infinite-calendar';
+// Components
 import * as actionCreators from './actions';
 import UsersTable from './userTable';
 import UsersModal from './userModal';
@@ -147,7 +148,6 @@ class Users extends Component {
       modalDateType: type,
       modalOpen: true,
     }));
-
   }
 
   /**

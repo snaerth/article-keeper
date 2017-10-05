@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm, Field } from 'redux-form';
-import { DateRangePicker } from 'react-dates';
-
+import InfiniteCalendar from 'react-infinite-calendar';
+// Components
 import {
   getLogs,
   isFetchingData,
@@ -20,17 +20,39 @@ import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
+import ErrorText from '../common/errorText';
+// Utils
+import infiniteCalendarTheme from '../../utils/themes';
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
+import { formatInputDate } from '../../utils/date';
+// Svg
 import Search from '../../assets/images/search.svg';
-
+import Calendar from '../../assets/images/calendar.svg';
 // Styles
 import tableStyles from '../../styles/table.css';
 import s from './logger.scss';
 
 class Logger extends Component {
+  static propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    token: PropTypes.string.isRequired,
+    startDateError: PropTypes.string,
+    actions: PropTypes.object.isRequired,
+    data: PropTypes.object,
+    isFetching: PropTypes.bool.isRequired,
+    error: PropTypes.string,
+    serverError: PropTypes.string,
+    reset: PropTypes.func.isRequired,
+    pagination: PropTypes.object.isRequired,
+    search: PropTypes.string,
+    change: PropTypes.func,
+  };
+
   constructor(props) {
     super(props);
+    this.dateTypes = ['startdate', 'enddate'];
+    this.minDate = new Date(1930, 1, 1);
 
     this.state = {
       modalOpen: false,
@@ -39,6 +61,8 @@ class Logger extends Component {
       focusedInput: null,
       startDate: null,
       endDate: null,
+      modalDateType: this.dateTypes[0],
+      modalShowDate: false,
     };
 
     this.rowClassName = this.rowClassName.bind(this);
@@ -48,36 +72,18 @@ class Logger extends Component {
     this.clearInputs = this.clearInputs.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.dateSelectHandler = this.dateSelectHandler.bind(this);
   }
-
-  static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    token: PropTypes.string.isRequired,
-    actions: PropTypes.object.isRequired,
-    data: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
-    error: PropTypes.string,
-    serverError: PropTypes.string,
-    reset: PropTypes.func.isRequired,
-    pagination: PropTypes.object.isRequired,
-    search: PropTypes.string,
-    orientation: PropTypes.string.isRequired,
-  };
 
   /**
    * Fetch logs
    */
   componentDidMount() {
-    // Checks if device is smaller than 620px to detect react-dates orientation
-    const orientation = window.matchMedia('(max-width: 620px)').matches
-      ? 'vertical'
-      : 'horizontal';
-
-    this.props.actions.isFetchingData(orientation);
+    this.props.actions.isFetchingData();
     const { token } = this.props;
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
-    this.props.actions.getLogs({ token, queryString });
+    this.props.actions.getLogs(token, queryString);
   }
 
   /**
@@ -129,6 +135,22 @@ class Logger extends Component {
     this.setState(() => ({
       currentRowData: null,
       modalOpen: false,
+      modalShowDate: false,
+    }));
+  }
+
+  /**
+   * Sets state property modalShowDate to true
+   *
+   * @param {String} type
+   */
+  showDatePicker(type) {
+    if (!this.dateTypes.includes(type)) throw Error('Invalid type. Try string startdate or enddate');
+
+    this.setState(() => ({
+      modalShowDate: true,
+      modalDateType: type,
+      modalOpen: true,
     }));
   }
 
@@ -154,7 +176,7 @@ class Logger extends Component {
     actions.isFetchingData();
     if (!search && !hasDateRange) {
       // get all logs
-      actions.getLogs({ token, queryString });
+      actions.getLogs(token, queryString || '');
     } else {
       if (search && !hasDateRange) {
         // query by text only
@@ -163,18 +185,15 @@ class Logger extends Component {
       }
 
       if (hasDateRange) {
-        const sd = startDate.format('YYYY-MM-DD');
-        const ed = endDate.format('YYYY-MM-DD');
-
         if (search) {
           // query by text and date range
-          queryString = `${search}?startDate=${sd}&endDate=${ed}`;
+          queryString = `${search}&startDate=${startDate}&endDate=${endDate}`;
           actions.getLogsBySearchQuery(token, queryString);
           return false;
         }
 
         // query by date range
-        queryString = `${sd}/${ed}`;
+        queryString = `?startDate=${startDate}&endDate=${endDate}`;
         actions.getLogsBySearchQuery(token, queryString);
         return false;
       }
@@ -207,6 +226,31 @@ class Logger extends Component {
   }
 
   /**
+   * On date select handler. Sets state for date
+   *
+   * @param {Date} date
+   */
+  dateSelectHandler(date) {
+    if (!date) return Error('No date returned from DatePicker');
+    const { modalDateType } = this.state;
+
+    // SetTimeout delay is because of animation header is laggy
+    setTimeout(() => {
+      // Set state for startdate or enddate
+      if (modalDateType === 'startdate') {
+        const startDate = formatInputDate(date);
+        this.setState({ startDate });
+        this.props.change('startDate', startDate);
+      } else if (modalDateType === 'enddate') {
+        const endDate = formatInputDate(date);
+        this.setState({ endDate });
+        this.props.change('endDate', endDate);
+      }
+    }, 300);
+  }
+
+
+  /**
      * Renders error message box
      *
      * @param {String} error
@@ -228,7 +272,7 @@ class Logger extends Component {
       serverError,
       handleSubmit,
       pagination,
-      orientation,
+      startDateError,
     } = this.props;
     const { currentRowData } = this.state;
 
@@ -260,19 +304,38 @@ class Logger extends Component {
                       </Field>
                     </div>
                   </div>
-                  <div>
-                    <DateRangePicker
-                      showDefaultInputIcon
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) =>
-                        this.setState({ startDate, endDate })}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) =>
-                        this.setState({ focusedInput })}
-                      isOutsideRange={() => false}
-                      orientation={orientation || 'horizontal'}
-                    />
+                  <div className={s.dateContainer}>
+                    <div className={s.date}>
+                      <Field
+                        component={(props) => <Input {...props} required />}
+                        name="startDate"
+                        id="startDate"
+                        type="date"
+                        label="Start date"
+                        value={this.state.startDate}
+                        placeholder="From: "
+                        hidelabel
+                      >
+                        <Calendar onClick={() => this.showDatePicker('startdate')} />
+                      </Field>
+                    </div>
+                    <div className={s.date}>
+                      <Field
+                        component={(props) => <Input {...props} required />}
+                        name="endDate"
+                        id="endDate"
+                        type="date"
+                        label="End date"
+                        value={this.state.endDate}
+                        placeholder="To: "
+                        hidelabel
+                      >
+                        <Calendar onClick={() => this.showDatePicker('enddate')} />
+                      </Field>
+                    </div>
+                    <div className={s.date}>
+                      {startDateError ? <ErrorText key={'startDate'} id={'startDate'} error={startDateError} /> : null}
+                    </div>
                   </div>
                   <div>
                     <Button
@@ -304,16 +367,29 @@ class Logger extends Component {
             : null}
         </div>
         <ModalWrapper
-          className="mw992"
+          className={!this.state.modalShowDate ? 'mw992' : 'mv360'}
           isOpen={this.state.modalOpen}
           onRequestClose={this.closeModal}
-          contentLabel={'Logs'}
+          contentLabel={'Log modal'}
           exitIconClassName="white"
         >
-          <LoggerModalData
-            data={currentRowData}
-            deleteHandler={this.deleteHandler}
-          />
+          <div>
+            {this.state.modalShowDate ?
+              <InfiniteCalendar
+                width={360}
+                height={400}
+                theme={infiniteCalendarTheme()}
+                min={this.minDate}
+                minDate={this.minDate}
+                onSelect={this.dateSelectHandler}
+              /> : null}
+            {!this.state.modalShowDate && currentRowData ?
+              <LoggerModalData
+                data={currentRowData}
+                deleteHandler={this.deleteHandler}
+              /> : null}
+          </div>
+
         </ModalWrapper>
       </div>
     );
@@ -327,9 +403,10 @@ class Logger extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { error, isFetching, data, orientation } = state.logs;
+  const { logs: { error, isFetching, data }, logsSearch, auth } = state;
+  const startDateError = (logsSearch && logsSearch.syncErrors && logsSearch.syncErrors.startDate) ? logsSearch.syncErrors.startDate : '';
   const serverError = state.common.error;
-  const token = state.auth && state.auth.user ? state.auth.user.token : '';
+  const token = auth && auth.user ? auth.user.token : '';
   let pagination = {};
   let search = '';
 
@@ -354,8 +431,22 @@ function mapStateToProps(state) {
     data,
     pagination,
     search,
-    orientation,
+    startDateError,
   };
+}
+
+/**
+ * Valdates if startDate is bigger than endDate
+ * @param {startDate:String | endDate:String} object
+ */
+function validate({ startDate, endDate }) {
+  const errors = {};
+
+  if (startDate > endDate) {
+    errors.startDate = 'From date is bigger than to date';
+  }
+
+  return errors;
 }
 
 /**
@@ -381,7 +472,8 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
-    form: 'search',
+    form: 'logsSearch',
     fields: ['search'],
+    validate,
   })(Logger),
 );

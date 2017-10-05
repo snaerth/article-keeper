@@ -15,8 +15,8 @@ import { authError } from '../../common/actions';
  * @params {String} orientation vertical or horizontal
  * @returns {Object}
  */
-export function isFetchingData(orientation) {
-  return { type: IS_FETCHING, payload: orientation || 'horizontal' };
+export function isFetchingData() {
+  return { type: IS_FETCHING };
 }
 
 /**
@@ -34,10 +34,10 @@ export function isNotFetchingData() {
  * @param {String} token
  * @param {String} queryString
  */
-export function getLogs({ token, queryString }) {
+export function getLogs(token, queryString) {
   return async (dispatch) => {
     try {
-      const url = `/api/logs${queryString ? `?${queryString}` : ''}`;
+      const url = `/api/logs?${queryString}`;
       const config = {
         headers: {
           authorization: token,
@@ -62,7 +62,7 @@ export function getLogs({ token, queryString }) {
 export function getLogsBySearchQuery(token, queryString) {
   return async (dispatch) => {
     try {
-      const url = `/api/logs/search/${queryString}`;
+      const url = `/api/logs/${queryString}`;
       const config = {
         headers: {
           authorization: token,

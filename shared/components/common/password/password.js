@@ -12,7 +12,7 @@ class Password extends Component {
     placeholder: PropTypes.string,
     input: PropTypes.object,
     meta: PropTypes.object,
-    autocomplete: PropTypes.string,
+    autoComplete: PropTypes.string,
   };
 
   constructor(props) {
@@ -37,7 +37,7 @@ class Password extends Component {
 
   render() {
     const { passwordVisibility, type } = this.state;
-    const { id, meta, input, placeholder, autocomplete, label } = this.props;
+    const { id, meta, input, placeholder, autoComplete, label } = this.props;
 
     return (
       <div>
@@ -52,7 +52,7 @@ class Password extends Component {
             id={id}
             name={id}
             placeholder={placeholder}
-            autoComplete={autocomplete || 'off'}
+            autoComplete={autoComplete}
             tabIndex={0}
           />
           <span
@@ -64,9 +64,9 @@ class Password extends Component {
             {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
           </span>
         </span>
-        {meta.error && meta.touched
-          ? <ErrorText key={id} id={id} error={meta.error} />
-          : null}
+        {meta.error && meta.touched ? (
+          <ErrorText key={id} id={id} error={meta.error} />
+        ) : null}
       </div>
     );
   }

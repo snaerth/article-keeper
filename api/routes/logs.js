@@ -2,7 +2,6 @@ import { isAdmin } from '../controllers/users';
 import {
   getLogs,
   getLogsBySearchQuery,
-  getLogsByDateRange,
   deleteLogsById,
   deleteAllLogs,
   createFakeLogs,
@@ -15,14 +14,14 @@ import {
  * @param {Func} requireAuth - authentication helper function
  */
 export default function (app, requireAuth) {
+  // Get all logs
   app.get('/logs', [requireAuth, isAdmin], getLogs);
-  app.get('/logs/search/:query', [requireAuth, isAdmin], getLogsBySearchQuery);
-  app.get(
-    '/logs/search/:startDate/:endDate',
-    [requireAuth, isAdmin],
-    getLogsByDateRange,
-  );
+  // Get logs by search query
+  app.get('/logs/:query', [requireAuth, isAdmin], getLogsBySearchQuery);
+  // Delete all logs
   app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
+  // Get log by id
   app.delete('/logs/:id', [requireAuth, isAdmin], deleteLogsById);
+  // Create fake logs
   app.post('/logs/create-fake-logs', [requireAuth, isAdmin], createFakeLogs);
 }
