@@ -1,20 +1,13 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-
-// Components
 import Profile from '../../components/profile';
-
-// Containers
 import Container from '../../components/common/container';
+import Banner from '../../components/common/banner';
 
 const ProfileRoute = () => (
   <div>
     <Helmet title="Profile" />
-    <div className="banner">
-      <Container>
-        <h1>Profile</h1>
-      </Container>
-    </div>
+    <Banner text="Profile" />
     <Container className="mt25">
       <Profile />
     </Container>

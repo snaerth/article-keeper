@@ -6,12 +6,10 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Setja API köll í redux í middleware - Sjá fyrirlestur
-    - https://www.youtube.com/watch?v=Gjiu7Lgdg3s
+  
   - Uppfæra eins líkt og react-universally
   - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead
-  - Splitta Backenda í sér project
   - Users server
     - Create + test  => test is not over
     - Update + test => test is not over

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+// Components
 import Container from '../../common/container';
 import ViewUser from '../viewUser';
 import DeleteUser from '../deleteUser';
 import UserForm from '../userForm';
-
+// Styles
 import s from './userModal.scss';
 
 class UserModal extends Component {

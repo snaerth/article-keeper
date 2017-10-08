@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import Container from '../../components/common/container';
+import Banner from '../../components/common/banner';
 
 export default class NotFound extends Component {
   static propTypes = {
@@ -21,11 +21,7 @@ export default class NotFound extends Component {
     return (
       <div>
         <Helmet title="Profile" />
-        <div className="banner">
-          <Container>
-            <h1>404 Page was not found</h1>
-          </Container>
-        </div>
+        <Banner text="404 Page was not found" />
       </div>
     );
   }

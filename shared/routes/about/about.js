@@ -1,15 +1,12 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Container from '../../components/common/container';
+import Banner from '../../components/common/banner';
 
 const About = () => (
   <div>
     <Helmet title="About" />
-    <div className="banner">
-      <Container>
-        <h1>About</h1>
-      </Container>
-    </div>
+    <Banner text="About" />
     <Container className="mt25">
       About text
     </Container>

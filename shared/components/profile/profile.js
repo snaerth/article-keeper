@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { SingleDatePicker } from 'react-dates';
 import s from './profile.scss';
 import ModalWrapper from '../common/modal';
 import ImageBlurWrapper from '../common/imageBlurWrapper';
@@ -81,12 +80,7 @@ class Profile extends Component {
       <div className={classnames(s.card, s.profileInformation)}>
         <h2 className={s.noMarginTop}>Additonal information</h2>
         {!noAdditonalInfo
-          ? <SingleDatePicker
-            date={null} // momentPropTypes.momentObj or null
-            onDateChange={(date) => this.setState({ date })} // PropTypes.func.isRequired
-            focused={this.state.focused} // PropTypes.bool
-            onFocusChange={({ focused }) => this.setState({ focused })}
-          />
+          ? <div>Bla user</div>
           : <div>
             <p>No additonal user information</p>
 

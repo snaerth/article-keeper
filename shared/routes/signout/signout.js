@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import styles from './signout.scss';
 import Button from '../../components/common/button';
 import Container from '../../components/common/container';
+import Banner from '../../components/common/banner';
 import * as actionCreators from '../../components/auth/actions';
 
 /**
@@ -27,11 +28,7 @@ class Signout extends Component {
     return (
       <div>
         <Helmet title="Sign out" />
-        <div className="banner">
-          <Container>
-            <h1>Sign out</h1>
-          </Container>
-        </div>
+        <Banner text="Sign out" />
         <Container className="mt25">
           <div className={signoutContainer}>
             <h2>

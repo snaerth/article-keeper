@@ -6,14 +6,13 @@
     line-height: 1em;
     transform-origin: 0 0;
   }
-}
 
-.ml10 .text-wrapper {
-  display: inline-block;
-  position: relative;
-  padding-top: 0.2em;
-  padding-right: 0.05em;
-  padding-bottom: 0.1em;
-  overflow: hidden;
+  .text-wrapper {
+    display: inline-block;
+    position: relative;
+    padding-top: 0.2em;
+    padding-right: 0.05em;
+    padding-bottom: 0.1em;
+    overflow: hidden;
+  }
 }
-

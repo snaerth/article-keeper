@@ -29,11 +29,16 @@ class TextAnime extends Component {
   renderLetters(text) {
     const arr = [];
     [...text].forEach((letter) => {
-      arr.push(
-        <span key={shortid.generate()} className={s.letter}>
-          {letter}
-        </span>,
-      );
+      // if letter is white space
+      if (/\s/.test(letter)) {
+        arr.push(' ');
+      } else {
+        arr.push(
+          <span key={shortid.generate()} className={s.letter}>
+            {letter}
+          </span>,
+        );
+      }
     });
 
     return arr;
