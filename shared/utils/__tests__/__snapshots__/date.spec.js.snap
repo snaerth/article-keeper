@@ -3,3 +3,5 @@
 exports[`Run tests for date Format date string to ISO date format 1`] = `"received is not a function"`;
 
 exports[`Run tests for date Format date string to ISO date time format 1`] = `"received is not a function"`;
+
+exports[`Run tests for date Format date string to date with month name 1`] = `"received is not a function"`;

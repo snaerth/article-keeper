@@ -27,7 +27,7 @@ describe('Run tests for date', () => {
 
   test('Format date string to date with month name', () => {
     const success = formatDateWithMonthName('2017-08-11T12:41:59.791Z');
-    expect(success).toMatch('11 september 2017');
+    expect(success).toMatch('11 august 2017');
     const fail = formatISODate('test');
     expect(fail).toThrowErrorMatchingSnapshot();
   });

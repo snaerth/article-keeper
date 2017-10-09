@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 describe('Run pagination service tests', () => {
   app.post('/pagination', async (req, res) => {
-    const { offset, limit } = req.body;
-    const pagination = createPaginationObject(offset, limit);
+    const { page, limit } = req.body;
+    const pagination = createPaginationObject(page, limit);
     return res.send(pagination);
   });
 
