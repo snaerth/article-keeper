@@ -6,7 +6,10 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  
+  - Setja leit í component
+  - Gera sort by dálka
+  - laga útlit fyrir leit hvað varðar takka
+
   - Uppfæra eins líkt og react-universally
   - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead
