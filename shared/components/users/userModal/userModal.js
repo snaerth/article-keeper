@@ -11,8 +11,14 @@ import s from './userModal.scss';
 
 class UserModal extends Component {
   static propTypes = {
+    activeView: PropTypes.string.isRequired,
     data: PropTypes.object,
+    name: PropTypes.string.isRequired,
     deleteHandler: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    activeView: 'view',
   };
 
   constructor(props) {
@@ -20,7 +26,7 @@ class UserModal extends Component {
 
     this.state = {
       views: ['view', 'delete', 'edit'],
-      active: 'view',
+      activeView: props.activeView,
     };
 
     this.changeView = this.changeView.bind(this);
@@ -31,12 +37,12 @@ class UserModal extends Component {
   }
 
   /**
-   * Changes the active state for views
+   * Changes the activeView state for views
    * @param {Number} viewId
    */
   changeView(viewId) {
     this.setState(() => ({
-      active: this.state.views[viewId],
+      activeView: this.state.views[viewId],
     }));
   }
 
@@ -44,10 +50,10 @@ class UserModal extends Component {
    * Changes witch component should render
    */
   setView() {
-    const { active } = this.state;
+    const { activeView } = this.state;
     const { data, deleteHandler } = this.props;
 
-    switch (active) {
+    switch (activeView) {
       case 'view':
         return <ViewUser data={data} changeViewHandler={this.changeView} />;
 
@@ -61,11 +67,12 @@ class UserModal extends Component {
           />
         );
 
+      case 'create':
       case 'edit':
         return (
           <UserForm
-            type="edit"
-            user={data}
+            type={activeView}
+            user={activeView === 'edit' ? data : {}}
             changeViewHandler={this.changeView}
           />
         );
@@ -96,15 +103,17 @@ class UserModal extends Component {
   }
 
   render() {
-    const { active } = this.state;
-    const { name } = this.props.data;
+    const { activeView } = this.state;
+    const { name } = this.props;
 
     return (
       <article className={s.modal}>
         <header>
           <div className="banner">
             <Container>
-              <h1 className={s.title}>{this.setHeaderTitle(active, name)}</h1>
+              <h1 className={s.title}>
+                {this.setHeaderTitle(activeView, name)}
+              </h1>
             </Container>
           </div>
         </header>
@@ -122,7 +131,12 @@ class UserModal extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  return { data: state.users.user };
+  const { user } = state.users;
+  if (user) {
+    return { data: user, name: user.name };
+  }
+
+  return { data: {}, name: 'Create User' };
 }
 
 export default connect(mapStateToProps)(UserModal);

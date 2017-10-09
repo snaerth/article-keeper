@@ -49,7 +49,7 @@
       margin-left: auto;
     }
 
-    button:first-child {
+    button:not(:last-child) {
       margin-right: 15px;
     }
   }

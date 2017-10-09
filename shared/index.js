@@ -105,10 +105,12 @@ class App extends Component {
 function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   // Check if user is admin user
-  const isAdmin = !!(user &&
+  const isAdmin = !!(
+    user &&
     user.roles &&
     user.roles.length > 0 &&
-    user.roles.includes('admin'));
+    user.roles.includes('admin')
+  );
 
   return { authenticated, isAdmin };
 }

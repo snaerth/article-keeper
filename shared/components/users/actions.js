@@ -6,6 +6,8 @@ import {
   DELETE_USERS_ERROR,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  CREATE_USER_SUCCESS,
+  CREATE_USER_ERROR,
   IS_FETCHING,
   IS_NOT_FETCHING,
   IS_FETCHING_USER,
@@ -13,6 +15,7 @@ import {
   CLEAN,
   SET_PREVIEW_USER_IMAGE,
   SET_USER,
+  UNSET_SET_USER,
 } from './types';
 import { errorHelper } from '../../common/actions';
 
@@ -24,6 +27,15 @@ import { errorHelper } from '../../common/actions';
  */
 export function setUser(payload) {
   return { type: SET_USER, payload };
+}
+
+/**
+ * Unset user
+ *
+ * @returns {Object}
+ */
+export function unsetUser() {
+  return { type: UNSET_SET_USER };
 }
 
 /**
@@ -193,6 +205,46 @@ export function updateUser(token, id, data, imageFormData) {
     } catch (error) {
       const payload = errorHelper(error);
       dispatch({ type: UPDATE_USER_ERROR, payload });
+    }
+  };
+}
+
+/**
+ * Creates new user
+ *
+ * @param {String} token
+ * @param {Object} data - Form post data
+ * @param {Object} imageFormData - Image formData
+ */
+export function createUser(token, data, imageFormData) {
+  return async (dispatch) => {
+    try {
+      const url = '/api/users/';
+      const config = {
+        headers: {
+          authorization: token,
+        },
+      };
+
+      // Create user
+      const res = await axios.post(url, data, config);
+
+      if (imageFormData) {
+        // Upload userimage
+        const imageRes = await axios.post(
+          '/api/users/userimage',
+          imageFormData,
+          config,
+        );
+        dispatch({ type: CREATE_USER_SUCCESS, payload: imageRes.data });
+      } else {
+        dispatch({ type: CREATE_USER_SUCCESS, payload: res.data });
+      }
+
+      return Promise.resolve('User updated');
+    } catch (error) {
+      const payload = errorHelper(error);
+      dispatch({ type: CREATE_USER_ERROR, payload });
     }
   };
 }

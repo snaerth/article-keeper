@@ -79,8 +79,14 @@ class UserForm extends Component {
     }
 
     try {
-      if (type === 'edit') {
-        await actions.updateUser(token, _id, data, formData); // eslint-disable-line
+      switch (type) {
+        case 'edit':
+          await actions.updateUser(token, _id, data, formData); // eslint-disable-line
+          break;
+
+        default:
+          await actions.createUser(token, data, formData);
+          break;
       }
 
       const queryString = formDataToQueryString({ limit: 50, page: 1 });
@@ -137,11 +143,7 @@ class UserForm extends Component {
     if (!msg) return null;
     return (
       <fieldset>
-        <NotifyBox
-          text={msg}
-          type="info"
-          id="userUpdated"
-        />
+        <NotifyBox text={msg} type="info" id="userUpdated" />
       </fieldset>
     );
   }
@@ -167,11 +169,9 @@ class UserForm extends Component {
         ) : null}
         <div
           className={
-            isFetchingUser ? (
-              classnames(s.formContainer, 'almostHidden')
-            ) : (
-              s.formContainer
-            )
+            isFetchingUser
+              ? classnames(s.formContainer, 'almostHidden')
+              : s.formContainer
           }
         >
           {this.renderInfo(infoUser)}
@@ -281,7 +281,11 @@ class UserForm extends Component {
                   color="grey"
                   onClick={() => changeViewHandler(0)}
                 />
-                <Button type="submit" text="Edit" ariaLabel="Edit user" />
+                <Button
+                  type="submit"
+                  text={type === 'edit' ? 'Edit' : 'Create'}
+                  ariaLabel={type === 'edit' ? 'Edit user' : 'Create user'}
+                />
               </div>
             </div>
           </form>
@@ -292,15 +296,20 @@ class UserForm extends Component {
 }
 
 /**
- * Validates form inputs, both email, password and message
+ * Validates form inputs
  *
- * @param {String} email
- * @param {String} password
- * @param {String} name
+ * @param {
+ *  email:String
+ *  password:String
+ *  name:String
+ *  phone:String
+ *  dateOfBirth:Date
+ * }
+ * @param {Object} props
  * @return {Object} errors
- * @author Snær Seljan Þóroddsson
  */
-function validate({ email, password, name, phone, dateOfBirth }) {
+function validate({ email, password, name, phone, dateOfBirth }, props) {
+  const { type } = props;
   const errors = {};
 
   // Email
@@ -310,6 +319,13 @@ function validate({ email, password, name, phone, dateOfBirth }) {
 
   if (!email) {
     errors.email = 'Email required';
+  }
+
+  if (type === 'create') {
+    // Password
+    if (!password) {
+      errors.password = 'Password required';
+    }
   }
 
   // Password
@@ -355,7 +371,7 @@ function validate({ email, password, name, phone, dateOfBirth }) {
  * @param {Object} ownProps - Components own props
  * @returns {Object}
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const { errorUser, infoUser, image, isFetchingUser, user } = state.users;
   const token = state.auth && state.auth.user ? state.auth.user.token : '';
   const newProps = {
@@ -366,7 +382,8 @@ function mapStateToProps(state) {
     infoUser,
   };
 
-  if (user) {
+
+  if (user && ownProps.type !== 'create') {
     newProps.user = user;
 
     const { name, phone, dateOfBirth, roles, imageUrl } = user;

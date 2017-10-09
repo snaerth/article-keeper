@@ -57,6 +57,7 @@ class Users extends Component {
       endDate: null,
       modalDateType: this.dateTypes[0],
       modalShowDate: false,
+      activeView: 'view',
     };
 
     this.rowClassName = this.rowClassName.bind(this);
@@ -68,6 +69,7 @@ class Users extends Component {
     this.deleteHandler = this.deleteHandler.bind(this);
     this.showDatePicker = this.showDatePicker.bind(this);
     this.dateSelectHandler = this.dateSelectHandler.bind(this);
+    this.openCreateUserModal = this.openCreateUserModal.bind(this);
   }
 
   /**
@@ -125,6 +127,21 @@ class Users extends Component {
   }
 
   /**
+   * Opens modal and sets create view
+   *
+   * @param {Object} event
+   */
+  openCreateUserModal(event) {
+    event.preventDefault();
+    this.props.actions.unsetUser();
+    this.setState(() => ({
+      currentRowData: null,
+      modalOpen: true,
+      activeView: 'create',
+    }));
+  }
+
+  /**
    * Set state to close modal and reset current row data
    */
   closeModal() {
@@ -132,6 +149,7 @@ class Users extends Component {
       currentRowData: null,
       modalOpen: false,
       modalShowDate: false,
+      activeView: 'view',
     }));
   }
 
@@ -262,7 +280,8 @@ class Users extends Component {
   }
 
   render() {
-    const { data, isFetching, error, handleSubmit, pagination, user, startDateError } = this.props;
+    const { data, isFetching, error, handleSubmit, pagination, startDateError } = this.props;
+    const { modalShowDate, activeView, modalOpen } = this.state;
 
     return (
       <div>
@@ -324,6 +343,13 @@ class Users extends Component {
                   <div>
                     <Button
                       type="button"
+                      text="Create"
+                      ariaLabel="Create user"
+                      color="purple"
+                      onClick={(e) => this.openCreateUserModal(e)}
+                    />
+                    <Button
+                      type="button"
                       text="Clear"
                       ariaLabel="Clear inputs"
                       color="grey"
@@ -351,14 +377,14 @@ class Users extends Component {
           ) : null}
         </div>
         <ModalWrapper
-          className={!this.state.modalShowDate ? 'mw992' : 'mv360'}
-          isOpen={this.state.modalOpen}
+          className={!modalShowDate ? 'mw992' : 'mv360'}
+          isOpen={modalOpen}
           onRequestClose={this.closeModal}
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
           <div>
-            {this.state.modalShowDate ?
+            {modalShowDate ?
               <InfiniteCalendar
                 width={360}
                 height={400}
@@ -367,8 +393,9 @@ class Users extends Component {
                 minDate={this.minDate}
                 onSelect={this.dateSelectHandler}
               /> : null}
-            {!this.state.modalShowDate && user ?
-              <UsersModal deleteHandler={this.deleteHandler} /> : null}
+            {!modalShowDate
+              ? <UsersModal deleteHandler={this.deleteHandler} activeView={activeView} />
+              : null}
           </div>
         </ModalWrapper>
       </div>

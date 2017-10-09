@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextAnime from '../textAnime';
 import Container from '../container';
+import Fade from '../animations/fade';
 import s from './banner.scss';
 
 function Banner({ text }) {
   return (
-    <div className="banner">
+    <div className={s.container}>
       <Container>
-        <TextAnime text={text} />
+        <Fade in>
+          <h1>{text}</h1>
+        </Fade>
       </Container>
     </div>
   );

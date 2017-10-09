@@ -1,7 +1,7 @@
 {
   // Place your settings in this file to overwrite the default settings
   "vsicons.projectDetection.autoReload": true,
-  "workbench.colorTheme": "One Dark Pro",
+  "workbench.colorTheme": "Material",
   "workbench.iconTheme": "vscode-icons",
   "workbench.sideBar.location": "left",
   "editor.wrappingIndent": "none",

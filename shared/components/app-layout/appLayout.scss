@@ -5,9 +5,10 @@
 
 :global {
   @import '~styles/base';
-  @import '~styles/pagination.scss';
-  @import '~styles/modal.scss';
-  @import '~styles/datePicker.scss';
+  @import '~styles/animate';
+  @import '~styles/pagination';
+  @import '~styles/modal';
+  @import '~styles/datePicker';
 }
 
 .layout {

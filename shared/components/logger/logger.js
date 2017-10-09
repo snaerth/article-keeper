@@ -222,7 +222,7 @@ class Logger extends Component {
     const queryString = formDataToQueryString(this.state.formData);
     this.closeModal();
     actions.deleteLogById(this.props.token, id);
-    actions.getLogs({ token, queryString });
+    actions.getLogs(token, queryString);
   }
 
   /**
