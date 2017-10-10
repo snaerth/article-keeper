@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from '../input/input.scss';
+import classnames from 'classnames';
 import ErrorText from '../errorText';
+// Svg
 import VisibilitySvg from '../../../assets/images/visibility.svg';
 import VisibilityOffSvg from '../../../assets/images/visibility_off.svg';
+// Styles
+import s from '../input/input.scss';
 
 class Password extends Component {
   static propTypes = {
@@ -17,8 +20,20 @@ class Password extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { passwordVisibility: false, type: 'password' };
+    this.state = {
+      passwordVisibility: false,
+      type: 'password',
+      active: false,
+    };
+
     this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.onFocusHandler = this.onFocusHandler.bind(this);
+  }
+
+  onFocusHandler() {
+    this.setState({
+      active: !this.state.active,
+    });
   }
 
   /**
@@ -36,27 +51,35 @@ class Password extends Component {
   };
 
   render() {
-    const { passwordVisibility, type } = this.state;
+    const { passwordVisibility, type, active } = this.state;
     const { id, meta, input, placeholder, autoComplete, label } = this.props;
 
     return (
       <div>
-        <span className={styles.input}>
-          <label className={styles.inputLabel} htmlFor={id}>
-            <span className={styles.inputLabelContent}>{label}</span>
-          </label>
+        <span
+          className={classnames(
+            s.input,
+            active || input.value ? s.active : '',
+            meta && meta.error ? s.error : '',
+          )}
+        >
           <input
             {...input}
             type={type}
-            className={styles.inputField}
+            className={s.inputField}
             id={id}
             name={id}
             placeholder={placeholder}
             autoComplete={autoComplete}
             tabIndex={0}
+            onFocus={this.onFocusHandler}
+            onBlur={this.onFocusHandler}
           />
+          <label className={s.inputLabel} htmlFor={id}>
+            <span className={s.inputLabelContent}>{label}</span>
+          </label>
           <span
-            className={styles.icon}
+            className={s.icon}
             onClick={this.toggleVisibility}
             role="button"
             tabIndex={0}

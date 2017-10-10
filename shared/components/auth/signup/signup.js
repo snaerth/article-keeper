@@ -108,11 +108,7 @@ class Signup extends Component {
      */
   renderError(errorMessage) {
     if (!errorMessage) return null;
-    return (
-      <fieldset>
-        <NotifyBox strongText="Error: " text={errorMessage} type="error" />
-      </fieldset>
-    );
+    return <NotifyBox strongText="Error: " text={errorMessage} type="error" />;
   }
 
   /**
@@ -179,20 +175,19 @@ class Signup extends Component {
               <Button
                 onClick={() => this.fileUploaderToggler()}
                 text="Add profile image"
-                color="purple"
+                color="grey"
                 ariaLabel="Add profile image"
                 type="button"
                 className="fullWidth"
-              />
-              {' '}
-              {this.state.showImageLoader
-                ? <FileUploader
+              />{' '}
+              {this.state.showImageLoader ? (
+                <FileUploader
                   accept="image/*"
                   onDrop={this.onDrop}
                   multiple={false}
                   image={this.props.image}
                 />
-                : null}
+              ) : null}
             </fieldset>
             <fieldset className={s.fieldsetButton}>
               <div>
@@ -200,6 +195,7 @@ class Signup extends Component {
                   text="Sign up"
                   ariaLabel="Sign up"
                   className="fullWidth"
+                  color="purple"
                 >
                   <ArrowForward className={s.iconArrowForward} />
                 </Button>
@@ -253,7 +249,8 @@ function validate({ email, password, name }) {
   }
 
   if (
-    !/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2)
+    !/^([^0-9]*)$/.test(name) ||
+    (name && name.trim().split(' ').length < 2)
   ) {
     errors.name = 'Name has aleast two names consisting of letters';
   }

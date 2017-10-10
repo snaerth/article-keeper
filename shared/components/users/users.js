@@ -317,7 +317,6 @@ class Users extends Component {
                         label="Start date"
                         value={this.state.startDate}
                         placeholder="From: "
-                        hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('startdate')} />
                       </Field>
@@ -331,7 +330,6 @@ class Users extends Component {
                         label="End date"
                         value={this.state.endDate}
                         placeholder="To: "
-                        hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('enddate')} />
                       </Field>

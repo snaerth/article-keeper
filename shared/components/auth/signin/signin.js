@@ -64,11 +64,7 @@ class Signin extends Component {
     const msg = errorMessage || error;
 
     if (!msg) return null;
-    return (
-      <fieldset>
-        <NotifyBox strongText="Error: " text={msg} type="error" />
-      </fieldset>
-    );
+    return <NotifyBox strongText="Error: " text={msg} type="error" />;
   }
 
   render() {
@@ -110,14 +106,15 @@ class Signin extends Component {
                   text="Sign in"
                   ariaLabel="Sign in"
                   className="fullWidth"
+                  color="purple"
                 >
                   <ArrowForward className={iconArrowForward} />
                 </Button>
               </div>
             </fieldset>
             <div className={classnames(textCenter, mb25)}>
-              {onClick
-                ? <Link
+              {onClick ? (
+                <Link
                   role="button"
                   to="/forgotpassword"
                   className="link-slideright"
@@ -125,13 +122,15 @@ class Signin extends Component {
                 >
                   Forgot password?
                 </Link>
-                : <Link
+              ) : (
+                <Link
                   role="button"
                   to="/forgotpassword"
                   className="link-slideright"
                 >
                   Forgot password?
-                </Link>}
+                </Link>
+              )}
             </div>
           </form>
         </div>

@@ -75,7 +75,7 @@
   top: 6px;
   padding: 0;
   width: 100%;
-  color: $text-dark;
+  color: $input-border-color;
   font-weight: bold;
   text-align: left;
   user-select: none;
@@ -121,11 +121,13 @@
   z-index: 2;
   top: 10px;
   cursor: pointer;
-  fill: $text-dark;
-  transition: fill $hover-transition;
 
+  svg {
+    fill: $input-border-color;
+    transition: fill $hover-transition;
+  }
   &:hover {
-    fill: $primary-black;
+    fill: $primary-color;
   }
 }
 
