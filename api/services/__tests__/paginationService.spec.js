@@ -21,8 +21,8 @@ describe('Run pagination service tests', () => {
       request(app)
         .post('/pagination')
         .send({
-          limit: 10,
           page: 1,
+          limit: 10,
         })
         .set('Accept', 'application/json')
         .end((err, res) => {

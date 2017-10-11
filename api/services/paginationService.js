@@ -7,7 +7,7 @@
 export default function createPaginationObject(page = 1, limit = 50) {
   // Pagination
   return {
-    page: parseInt(page, 10),
-    limit: parseInt(limit > 100 ? 100 : limit, 10),
+    page: parseInt(page || 1, 10),
+    limit: parseInt(limit > 100 ? 100 : limit || 50, 10),
   };
 }

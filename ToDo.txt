@@ -6,6 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Gera menu líkari þessum
     - https://www.pinterest.com/pin/95771929553255353/
