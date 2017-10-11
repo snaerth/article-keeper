@@ -7,39 +7,26 @@
 
 .searchInputContainer {
   padding: 0;
-
-  @include viewport(desktop) {
-    max-width: 400px;
-    min-width: 300px;
-  }
 }
 
-.dateContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 20px;
-
-  .date {
-    min-width: 225px;
-  }
-
-  .date:nth-child(3) {
-    grid-column: 1 / 3;
-  }
+.dateContainer .date {
+  min-width: 150px;
 }
 
 .inputContainer {
   display: grid;
-  margin-bottom: 15px;
+  margin: 40px 0 20px;
+  grid-gap: 35px;
   grid-template-columns: 1fr;
-  grid-gap: 15px;
 
   @include viewport(tablet) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-column-gap: 15px;
   }
 
   @include viewport(desktop) {
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-column-gap: 20px;
+    grid-template-columns: 1fr 150px 150px auto;
   }
 
   > div:last-of-type {

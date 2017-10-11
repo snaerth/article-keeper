@@ -294,8 +294,7 @@ class Logger extends Component {
                         id="search"
                         type="text"
                         label="Search"
-                        placeholder="Search..."
-                        hidelabel
+                        placeholder="Search logs..."
                       >
                         <Search
                           className={s.searchIcon}
@@ -314,7 +313,6 @@ class Logger extends Component {
                         label="Start date"
                         value={this.state.startDate}
                         placeholder="From: "
-                        hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('startdate')} />
                       </Field>
@@ -328,7 +326,6 @@ class Logger extends Component {
                         label="End date"
                         value={this.state.endDate}
                         placeholder="To: "
-                        hidelabel
                       >
                         <Calendar onClick={() => this.showDatePicker('enddate')} />
                       </Field>

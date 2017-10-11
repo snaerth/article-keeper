@@ -80,11 +80,11 @@
   grid-gap: 15px;
 
   @include viewport(tablet) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr;
   }
 
   @include viewport(desktop) {
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-columns: auto 1.5fr 1fr;
   }
 
   > div:last-of-type {

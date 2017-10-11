@@ -48,6 +48,7 @@ class Input extends Component {
         <span
           className={classnames(
             s.input,
+            id === 'search' ? s.searchInput : '',
             active || input.value ? s.active : '',
             meta && meta.error ? s.error : '',
           )}

@@ -300,8 +300,7 @@ class Users extends Component {
                         id="search"
                         type="text"
                         label="Search"
-                        placeholder="Search..."
-                        hidelabel
+                        placeholder="Search users..."
                       >
                         <Search onClick={handleSubmit(this.handleFormSubmit)} />
                       </Field>
@@ -321,6 +320,8 @@ class Users extends Component {
                         <Calendar onClick={() => this.showDatePicker('startdate')} />
                       </Field>
                     </div>
+                  </div>
+                  <div className={s.dateContainer}>
                     <div className={s.date}>
                       <Field
                         component={(props) => <Input {...props} required />}

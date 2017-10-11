@@ -179,18 +179,6 @@ input[type='date']::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
-// Input date placeholder trick
-input[type='date']::before {
-  content: attr(placeholder) !important;
-  margin-right: 0.5em;
-  color: $text-dark;
-}
-
-input[type='date']:focus::before,
-input[type='date']:valid::before {
-  content: '';
-}
-
 // Checkbox readonly
 input[type='checkbox'][readonly] {
   pointer-events: none;

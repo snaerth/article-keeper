@@ -1,3 +1,4 @@
+@import '~styles/mixins';
 @import '~styles/variables';
 
 .input {
@@ -6,6 +7,30 @@
   z-index: 1;
   width: 100%;
   vertical-align: top;
+  cursor: pointer;
+
+  &.searchInput {
+    max-width: 100%;
+    transition: max-width 0.15s ease-in-out;
+
+    @include viewport(tablet) {
+      max-width: 100px;
+    }
+
+    &.active {
+      max-width: 100%;
+    }
+  }
+
+  &.active .inputField {
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-text {
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+  }
 }
 
 .inputField {
@@ -17,9 +42,18 @@
   height: 45px;
   color: $text-dark;
   font-size: $font-size;
+  cursor: pointer;
   border: none;
   border-bottom: $input-border-height solid $input-border-color;
   background: transparent;
+
+  &::-webkit-datetime-edit-year-field,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-text {
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+  }
 
   &:not(:focus) {
     &::-webkit-input-placeholder { /* WebKit browsers */
@@ -66,6 +100,14 @@
       opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
+
+    &::-webkit-datetime-edit-year-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-text {
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
   }
 }
 
@@ -78,6 +120,7 @@
   color: $input-border-color;
   font-weight: bold;
   text-align: left;
+  cursor: pointer;
   user-select: none;
   transition: transform 0.2s ease-out, color 0.2s ease-out;
   transform: translate3d(0, 0, 0);
@@ -117,17 +160,18 @@
 
 .icon {
   position: absolute;
-  right: 4%;
-  z-index: 2;
+  right: 5px;
   top: 10px;
+  z-index: 2;
   cursor: pointer;
 
   svg {
     fill: $input-border-color;
     transition: fill $hover-transition;
-  }
-  &:hover {
-    fill: $primary-color;
+
+    &:hover {
+      fill: $primary-color;
+    }
   }
 }
 
