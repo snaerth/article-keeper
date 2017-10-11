@@ -6,6 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Setja leit í component
   - Gera sort by dálka
   - laga útlit fyrir leit hvað varðar takka
