@@ -7,7 +7,6 @@ TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
-  - Skýra Home Dashboard
   - Gera menu líkari þessum
     - https://www.pinterest.com/pin/95771929553255353/
   - Setja leit í component

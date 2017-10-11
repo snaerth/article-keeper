@@ -191,11 +191,7 @@ export function updateUser(token, id, data, imageFormData) {
 
       if (imageFormData) {
         // Update userimage
-        const imageRes = await axios.post(
-          '/api/users/userimage',
-          imageFormData,
-          config,
-        );
+        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
         dispatch({ type: UPDATE_USER_SUCCESS, payload: imageRes.data });
       } else {
         dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
@@ -231,11 +227,7 @@ export function createUser(token, data, imageFormData) {
 
       if (imageFormData) {
         // Upload userimage
-        const imageRes = await axios.post(
-          '/api/users/userimage',
-          imageFormData,
-          config,
-        );
+        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
         dispatch({ type: CREATE_USER_SUCCESS, payload: imageRes.data });
       } else {
         dispatch({ type: CREATE_USER_SUCCESS, payload: res.data });

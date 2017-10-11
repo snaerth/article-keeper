@@ -9,6 +9,7 @@
     "string-quotes": "single",
     "max-empty-lines": 5,
     "selector-max-id": 0,
+    "declaration-colon-newline-after": "always-multi-line",
     "at-rule-no-unknown": [ true, {
       ignoreAtRules: [
         'extend', 

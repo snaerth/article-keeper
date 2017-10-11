@@ -97,12 +97,12 @@ class UserForm extends Component {
   }
 
   /**
-     * Handles on drop for dropzone component
-     *
-     * @param {Array} acceptedFiles
-     * @param {Array} rejectedFiles
-     * @returns {undefined}
-     */
+   * Handles on drop for dropzone component
+   *
+   * @param {Array} acceptedFiles
+   * @param {Array} rejectedFiles
+   * @returns {undefined}
+   */
   onDrop(acceptedFiles, rejectedFiles) {
     if (rejectedFiles.length > 0) {
       this.props.errorUser = 'Only images allowed.';
@@ -114,21 +114,16 @@ class UserForm extends Component {
   }
 
   /**
-     * Renders error message box
-     *
-     * @param {String} errorMessage - Error message
-     * @returns {JSX}
-     */
+   * Renders error message box
+   *
+   * @param {String} errorMessage - Error message
+   * @returns {JSX}
+   */
   renderError(error) {
     if (!error) return null;
     return (
       <fieldset>
-        <NotifyBox
-          strongText="Error: "
-          text={error}
-          type="error"
-          id="userError"
-        />
+        <NotifyBox strongText="Error: " text={error} type="error" id="userError" />
       </fieldset>
     );
   }
@@ -163,24 +158,14 @@ class UserForm extends Component {
     return (
       <Container>
         {isFetchingUser ? (
-          <Loader absolute>
-            {type === 'edit' ? 'Updating user' : 'Create new user'}
-          </Loader>
+          <Loader absolute>{type === 'edit' ? 'Updating user' : 'Create new user'}</Loader>
         ) : null}
         <div
-          className={
-            isFetchingUser
-              ? classnames(s.formContainer, 'almostHidden')
-              : s.formContainer
-          }
+          className={isFetchingUser ? classnames(s.formContainer, 'almostHidden') : s.formContainer}
         >
           {this.renderInfo(infoUser)}
           {this.renderError(errorUser)}
-          <form
-            onSubmit={handleSubmit(this.handleFormSubmit)}
-            noValidate
-            autoComplete="off"
-          >
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
             <div className={s.row}>
               <fieldset>
                 <Field
@@ -343,10 +328,7 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
     errors.name = 'Name required';
   }
 
-  if (
-    name &&
-    (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))
-  ) {
+  if (name && (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 
@@ -357,8 +339,7 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
 
   // Check if string is phone number
   if (phone && !isPhoneNumber(phone)) {
-    errors.phone =
-      'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
+    errors.phone = 'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
   }
 
   return errors;
@@ -381,7 +362,6 @@ function mapStateToProps(state, ownProps) {
     errorUser,
     infoUser,
   };
-
 
   if (user && ownProps.type !== 'create') {
     newProps.user = user;
@@ -417,16 +397,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'userform',
-    fields: [
-      'name',
-      'email',
-      'password',
-      'image',
-      'phone',
-      'dateOfBirth',
-      'admin',
-      'user',
-    ],
+    fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
     validate,
   })(UserForm),
 );

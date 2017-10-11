@@ -72,8 +72,12 @@ $dimension: 3em;
   &:nth-of-type(1) {
     margin-top: $dimension/2;
     background: #534a47;
-    animation: movedown $duration cubic-bezier(0.39, 0.575, 0.565, 1)
-      $duration/2 infinite normal;
+    animation-duration: $duration;
+    animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+    animation-name: movedown;
+    animation-delay: $duration/2;
+    animation-iteration-count: infinite;
+    animation-fill-mode: normal;
 
     &::before {
       content: '';
@@ -91,7 +95,10 @@ $dimension: 3em;
 
   &:nth-of-type(3) {
     background: rgba(255, 255, 255, 0.6);
-    animation: moveup $duration cubic-bezier(0.39, 0.575, 0.565, 1) infinite
-      normal;
+    animation-duration: $duration;
+    animation-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+    animation-name: moveup;
+    animation-iteration-count: infinite;
+    animation-fill-mode: normal;
   }
 }

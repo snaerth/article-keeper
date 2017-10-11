@@ -14,7 +14,7 @@
     transition: max-width 0.15s ease-in-out;
 
     @include viewport(tablet) {
-      max-width: 100px;
+      max-width: 150px;
     }
 
     &.active {
@@ -56,22 +56,26 @@
   }
 
   &:not(:focus) {
-    &::-webkit-input-placeholder { /* WebKit browsers */
+    &::-webkit-input-placeholder {
+      /* WebKit browsers */
       opacity: 0;
       transition: opacity 0.1s ease-in-out;
     }
 
-    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    &:-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
       opacity: 0;
       transition: opacity 0.1s ease-in-out;
     }
 
-    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    &::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
       opacity: 0;
       transition: opacity 0.1s ease-in-out;
     }
 
-    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
       opacity: 0;
       transition: opacity 0.1s ease-in-out;
     }
@@ -81,22 +85,26 @@
     border-bottom: $input-border-height solid $primary-color;
     outline: none;
 
-    &::-webkit-input-placeholder { /* WebKit browsers */
+    &::-webkit-input-placeholder {
+      /* WebKit browsers */
       opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
 
-    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    &:-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
       opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
 
-    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    &::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
       opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
 
-    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
       opacity: 1;
       transition: opacity 0.2s ease-in-out;
     }
@@ -118,7 +126,7 @@
   padding: 0;
   width: 100%;
   color: $input-border-color;
-  font-weight: bold;
+  font-weight: 600;
   text-align: left;
   cursor: pointer;
   user-select: none;
@@ -178,4 +186,3 @@
 .iconNoLable {
   top: 10px;
 }
-

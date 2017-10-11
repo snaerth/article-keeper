@@ -11,7 +11,7 @@ import config from './utils/config';
 import Header from './components/header';
 
 // Routes
-import Home from './routes/home';
+import Dashboard from './routes/dashboard';
 import About from './routes/about';
 import Signout from './routes/signout';
 import ResetPassword from './routes/resetPassword';
@@ -69,26 +69,14 @@ class App extends Component {
         <Header />
         <Content>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Dashboard} />
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
             <Route path="/reset/:token" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
-            <PrivateRoute
-              path="/users"
-              component={Users}
-              authenticated={isAdmin}
-            />
-            <PrivateRoute
-              path="/logs"
-              component={Logger}
-              authenticated={isAdmin}
-            />
-            <PrivateRoute
-              path="/admin"
-              component={Admin}
-              authenticated={isAdmin}
-            />
+            <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
+            <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
+            <PrivateRoute path="/admin" component={Admin} authenticated={isAdmin} />
             <Route component={NotFound} />
           </Switch>
         </Content>
@@ -105,12 +93,7 @@ class App extends Component {
 function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   // Check if user is admin user
-  const isAdmin = !!(
-    user &&
-    user.roles &&
-    user.roles.length > 0 &&
-    user.roles.includes('admin')
-  );
+  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
 
   return { authenticated, isAdmin };
 }
