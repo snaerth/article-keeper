@@ -52,10 +52,6 @@ class UserForm extends Component {
     this.onDrop = this.onDrop.bind(this);
   }
 
-  componentWillMount() {
-    this.props.actions.clean();
-  }
-
   /**
    * Handles form submit event
    *
@@ -123,7 +119,12 @@ class UserForm extends Component {
     if (!error) return null;
     return (
       <fieldset>
-        <NotifyBox strongText="Error: " text={error} type="error" id="userError" />
+        <NotifyBox
+          strongText="Error: "
+          text={error}
+          type="error"
+          id="userError"
+        />
       </fieldset>
     );
   }
@@ -158,14 +159,24 @@ class UserForm extends Component {
     return (
       <Container>
         {isFetchingUser ? (
-          <Loader absolute>{type === 'edit' ? 'Updating user' : 'Create new user'}</Loader>
+          <Loader absolute>
+            {type === 'edit' ? 'Updating user' : 'Create new user'}
+          </Loader>
         ) : null}
         <div
-          className={isFetchingUser ? classnames(s.formContainer, 'almostHidden') : s.formContainer}
+          className={
+            isFetchingUser
+              ? classnames(s.formContainer, 'almostHidden')
+              : s.formContainer
+          }
         >
           {this.renderInfo(infoUser)}
           {this.renderError(errorUser)}
-          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
+          <form
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            noValidate
+            autoComplete="off"
+          >
             <div className={s.row}>
               <fieldset>
                 <Field
@@ -328,7 +339,10 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
     errors.name = 'Name required';
   }
 
-  if (name && (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))) {
+  if (
+    name &&
+    (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2))
+  ) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 
@@ -339,7 +353,8 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
 
   // Check if string is phone number
   if (phone && !isPhoneNumber(phone)) {
-    errors.phone = 'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
+    errors.phone =
+      'Phone is not in valid format. Try (555) 555-5555 or 555-5555';
   }
 
   return errors;
@@ -397,7 +412,16 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(
   reduxForm({
     form: 'userform',
-    fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
+    fields: [
+      'name',
+      'email',
+      'password',
+      'image',
+      'phone',
+      'dateOfBirth',
+      'admin',
+      'user',
+    ],
     validate,
   })(UserForm),
 );

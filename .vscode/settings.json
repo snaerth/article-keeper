@@ -2,7 +2,7 @@
   // Place your settings in this file to overwrite the default settings
   "vsicons.projectDetection.autoReload": true,
   "workbench.colorTheme": "Atom One Dark",
-  "workbench.iconTheme": "eq-material-theme-icons",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.sideBar.location": "left",
   "editor.wrappingIndent": "none",
   "editor.wordWrap": "off",

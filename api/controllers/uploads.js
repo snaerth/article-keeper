@@ -49,8 +49,12 @@ export async function saveImage(image, uploadDir) {
 
     try {
       const imageUrl = fileName + ext;
-      await resizeImage(image.path, thumbnailPath, 27);
-      await renameFile(image.path, imgPath);
+
+      await Promise.all([
+        resizeImage(image.path, thumbnailPath, 27),
+        renameFile(image.path, imgPath),
+      ]);
+
       const thumbnailUrl = `${fileName}-thumbnail${ext}`;
       resolve({
         url: uploadDir + imageUrl,

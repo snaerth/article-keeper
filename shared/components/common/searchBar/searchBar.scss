@@ -1,0 +1,39 @@
+@import '~styles/mixins';
+@import '~styles/variables';
+
+.searchInputContainer {
+  padding: 0;
+}
+
+.dateContainer .date {
+  min-width: 150px;
+}
+
+.inputContainer {
+  display: grid;
+  margin: 40px 0 20px;
+  grid-gap: 35px;
+  grid-template-columns: 1fr;
+
+  @include viewport(tablet) {
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-column-gap: 15px;
+  }
+
+  @include viewport(desktop) {
+    grid-column-gap: 20px;
+    grid-template-columns: 1fr 150px 150px auto;
+  }
+
+  > div:last-of-type {
+    margin-left: 0;
+
+    @include viewport(desktop) {
+      margin-left: auto;
+    }
+
+    button:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+}

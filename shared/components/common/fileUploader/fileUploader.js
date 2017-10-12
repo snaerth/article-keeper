@@ -25,17 +25,19 @@ const FileLoader = ({ onDrop, multiple, accept, image }) => (
         </div>
       </div>
     </Dropzone>
-    {image
-      ? <img
+    {image ? (
+      <img
         key="profileImage"
         src={image.preview ? image.preview : image}
         alt="User profile"
         className={s.imagePreviewContainer}
       />
-      : <div className={s.fakeFrame}>
+    ) : (
+      <div className={s.fakeFrame}>
         <span className="visually-hidden">Image frame</span>
         <Face width="100" height="100" className={s.svg} />
-      </div>}
+      </div>
+    )}
   </div>
 );
 
