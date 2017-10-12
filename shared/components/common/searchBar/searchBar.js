@@ -12,6 +12,7 @@ import ErrorText from '../errorText';
 // Utils
 import infiniteCalendarTheme from '../../../utils/themes';
 import { formatInputDate } from '../../../utils/date';
+import { formDataToQueryString } from '../../../utils/urlHelpers';
 // Svg
 import Search from '../../../assets/images/search.svg';
 import Calendar from '../../../assets/images/calendar.svg';
@@ -20,12 +21,16 @@ import s from './searchBar.scss';
 
 class SearchBar extends Component {
   static propTypes = {
+    token: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     submitCallback: PropTypes.func.isRequired,
     startDateError: PropTypes.string,
     reset: PropTypes.func.isRequired, // Redux-form reset function
     change: PropTypes.func.isRequired,
     children: PropTypes.node,
+    get: PropTypes.func.isRequired,
+    query: PropTypes.func.isRequired,
+    isFetchingData: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -109,6 +114,53 @@ class SearchBar extends Component {
     }, 300);
   }
 
+  /**
+   * Callback function to handle form submit event
+   *
+   * @param {Object}
+   */
+  submitCallback({ search, startDate, endDate }) {
+    this.prepareAndSumbit({ search, startDate, endDate }, this.state.formData);
+  }
+
+  /**
+   * Prepare data and submit request
+   *
+   * @param {String} search
+   */
+  prepareAndSumbit({ search, startDate, endDate }, formData) {
+    const { get, query, isFetchingData, token } = this.props;
+    const hasDateRange = startDate && endDate;
+    let queryString = formDataToQueryString(formData);
+
+    // Set loading
+    isFetchingData();
+    if (!search && !hasDateRange) {
+      // get
+      get({ token, queryString });
+    } else {
+      if (search && !hasDateRange) {
+        // query by text only
+        query(token, `${search}?${queryString}`);
+        return false;
+      }
+
+      if (hasDateRange) {
+        if (search) {
+          // query by text and date range
+          queryString = `?query=${search}&startDate=${startDate}&endDate=${endDate}`;
+          query(token, queryString);
+          return false;
+        }
+
+        // query by date range
+        queryString = `?startDate=${startDate}&endDate=${endDate}`;
+        query(token, queryString);
+        return false;
+      }
+    }
+  }
+
   render() {
     const { handleSubmit, submitCallback, startDateError } = this.props;
     const { modalOpen, startDate, endDate } = this.state;
@@ -160,22 +212,11 @@ class SearchBar extends Component {
               </div>
               <div className={s.date}>
                 {startDateError ? (
-                  <ErrorText
-                    key={'startDate'}
-                    id={'startDate'}
-                    error={startDateError}
-                  />
+                  <ErrorText key={'startDate'} id={'startDate'} error={startDateError} />
                 ) : null}
               </div>
             </div>
             <div>
-              <Button
-                type="button"
-                text="Create"
-                ariaLabel="Create user"
-                color="purple"
-                onClick={(e) => this.openCreateUserModal(e)}
-              />
               {this.props.children}
               <Button
                 type="button"
@@ -195,14 +236,16 @@ class SearchBar extends Component {
           contentLabel={'User modal'}
           exitIconClassName="white"
         >
-          <InfiniteCalendar
-            width={360}
-            height={400}
-            theme={infiniteCalendarTheme()}
-            min={this.minDate}
-            minDate={this.minDate}
-            onSelect={this.dateSelectHandler}
-          />
+          {modalOpen ? (
+            <InfiniteCalendar
+              width={360}
+              height={400}
+              theme={infiniteCalendarTheme()}
+              min={this.minDate}
+              minDate={this.minDate}
+              onSelect={this.dateSelectHandler}
+            />
+          ) : null}
         </ModalWrapper>
       </div>
     );
@@ -231,21 +274,20 @@ function validate({ startDate, endDate }) {
  */
 function mapStateToProps(state) {
   const { usersSearch } = state.form;
+  const { auth } = state.auth;
+  const token = auth && auth.user ? auth.user.token : '';
   const startDateError =
     usersSearch && usersSearch.syncErrors && usersSearch.syncErrors.startDate
       ? usersSearch.syncErrors.startDate
       : '';
   let search = '';
 
-  if (
-    state.form.search &&
-    state.form.search.values &&
-    state.form.search.values.search
-  ) {
+  if (state.form.search && state.form.search.values && state.form.search.values.search) {
     search = state.form.search.values.search;
   }
 
   return {
+    token,
     search,
     startDateError,
   };

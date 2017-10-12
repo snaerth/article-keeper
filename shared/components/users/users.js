@@ -29,6 +29,7 @@ class Users extends Component {
     pagination: PropTypes.object.isRequired,
     search: PropTypes.string,
     change: PropTypes.func,
+    reset: PropTypes.func,
   };
 
   constructor(props) {
@@ -169,9 +170,10 @@ class Users extends Component {
    */
   paginateHandler(data) {
     const formData = { ...this.state.formData };
+    const { search } = this.props;
     formData.page = data.selected + 1;
     this.setState(() => ({ formData }));
-    this.prepareAndSumbit(this.props.search, formData);
+    this.prepareAndSumbit({ search }, formData);
   }
 
   /**
@@ -202,7 +204,16 @@ class Users extends Component {
   }
 
   render() {
-    const { data, isFetching, error, pagination, reset, change } = this.props;
+    const {
+      data,
+      isFetching,
+      error,
+      pagination,
+      reset,
+      change,
+      actions: { getUsersBySearchQuery, getUsers, isFetchingData },
+    } = this.props;
+
     const { activeView, modalOpen } = this.state;
 
     return (
@@ -216,6 +227,9 @@ class Users extends Component {
                 submitCallback={this.submitCallback}
                 reset={reset}
                 change={change}
+                query={getUsersBySearchQuery}
+                get={getUsers}
+                isFetchingData={isFetchingData}
               >
                 <Button
                   type="button"
@@ -249,6 +263,7 @@ class Users extends Component {
             <UsersModal
               deleteHandler={this.deleteHandler}
               activeView={activeView}
+              closeModalHandler={this.closeModal}
             />
           ) : null}
         </ModalWrapper>
@@ -265,7 +280,6 @@ class Users extends Component {
  */
 function mapStateToProps(state) {
   const { users: { error, isFetching, data, user }, auth } = state;
-
   const token = auth && auth.user ? auth.user.token : '';
   let pagination = {};
 

@@ -42,6 +42,7 @@ class Input extends Component {
       required,
     } = this.props;
     const { active } = this.state;
+    const hasError = meta && meta.error && meta.touched;
 
     return (
       <div>
@@ -50,7 +51,7 @@ class Input extends Component {
             s.input,
             id === 'search' ? s.searchInput : '',
             active || input.value ? s.active : '',
-            meta && meta.error ? s.error : '',
+            hasError ? s.error : '',
           )}
         >
           <input
@@ -71,16 +72,10 @@ class Input extends Component {
             </label>
           ) : null}
           {children ? (
-            <span
-              className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}
-            >
-              {children}
-            </span>
+            <span className={classnames(s.icon, hidelabel ? s.iconNoLable : '')}>{children}</span>
           ) : null}
         </span>
-        {meta && meta.error && meta.touched ? (
-          <ErrorText key={id} id={id} error={meta.error} />
-        ) : null}
+        {hasError ? <ErrorText key={id} id={id} error={meta.error} /> : null}
       </div>
     );
   }

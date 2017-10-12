@@ -15,6 +15,7 @@ class UserModal extends Component {
     data: PropTypes.object,
     name: PropTypes.string.isRequired,
     deleteHandler: PropTypes.func.isRequired,
+    closeModalHandler: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -41,9 +42,13 @@ class UserModal extends Component {
    * @param {Number} viewId
    */
   changeView(viewId) {
-    this.setState(() => ({
-      activeView: this.state.views[viewId],
-    }));
+    if (viewId !== null) {
+      this.setState(() => ({
+        activeView: this.state.views[viewId],
+      }));
+    } else {
+      this.props.closeModalHandler();
+    }
   }
 
   /**
@@ -111,9 +116,7 @@ class UserModal extends Component {
         <header>
           <div className="banner">
             <Container>
-              <h1 className={s.title}>
-                {this.setHeaderTitle(activeView, name)}
-              </h1>
+              <h1 className={s.title}>{this.setHeaderTitle(activeView, name)}</h1>
             </Container>
           </div>
         </header>

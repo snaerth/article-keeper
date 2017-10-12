@@ -6,6 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Finsih refactoring users and searchbar as well as logger
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Gera menu líkari þessum
