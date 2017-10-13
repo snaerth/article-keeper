@@ -121,10 +121,11 @@ export function getUsers({ token, queryString }) {
 /**
  * Gets users from api by search query
  *
- * @param {String} token
- * @param {String} queryString
+ * @param {Object} obj - An object
+ * @param {String} obj.token - Token string for authentication
+ * @param {String} obj.queryString - Query string
  */
-export function getUsersBySearchQuery(token, queryString) {
+export function getUsersBySearchQuery({ token, queryString }) {
   return async (dispatch) => {
     try {
       const url = `/api/users/${queryString}`;
@@ -191,7 +192,11 @@ export function updateUser(token, id, data, imageFormData) {
 
       if (imageFormData) {
         // Update userimage
-        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
+        const imageRes = await axios.post(
+          '/api/users/userimage',
+          imageFormData,
+          config,
+        );
         dispatch({ type: UPDATE_USER_SUCCESS, payload: imageRes.data });
       } else {
         dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
@@ -227,7 +232,11 @@ export function createUser(token, data, imageFormData) {
 
       if (imageFormData) {
         // Upload userimage
-        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
+        const imageRes = await axios.post(
+          '/api/users/userimage',
+          imageFormData,
+          config,
+        );
         dispatch({ type: CREATE_USER_SUCCESS, payload: imageRes.data });
       } else {
         dispatch({ type: CREATE_USER_SUCCESS, payload: res.data });

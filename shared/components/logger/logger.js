@@ -2,77 +2,49 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Field } from 'redux-form';
-import InfiniteCalendar from 'react-infinite-calendar';
 // Components
-import {
-  getLogs,
-  isFetchingData,
-  isNotFetchingData,
-  getLogsBySearchQuery,
-  deleteLogById,
-} from './actions';
+import * as actionCreators from './actions';
 import LoggerTable from './loggerTable';
 import LoggerModalData from './loggerModalData';
+import SearchBar from '../common/searchBar';
 import Loader from '../common/loader';
-import Input from '../common/input';
-import Button from '../common/button';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
-import ErrorText from '../common/errorText';
 // Utils
-import infiniteCalendarTheme from '../../utils/themes';
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
-import { formatInputDate } from '../../utils/date';
-// Svg
-import Search from '../../assets/images/search.svg';
-import Calendar from '../../assets/images/calendar.svg';
 // Styles
 import tableStyles from '../../styles/table.css';
 import s from './logger.scss';
 
 class Logger extends Component {
   static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
-    startDateError: PropTypes.string,
     actions: PropTypes.object.isRequired,
     data: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    serverError: PropTypes.string,
-    reset: PropTypes.func.isRequired,
     pagination: PropTypes.object.isRequired,
     search: PropTypes.string,
     change: PropTypes.func,
+    reset: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
-    this.dateTypes = ['startdate', 'enddate'];
-    this.minDate = new Date(1930, 1, 1);
 
     this.state = {
       modalOpen: false,
       currentRowData: null,
       formData: { limit: 50, page: 1 },
-      focusedInput: null,
-      startDate: null,
-      endDate: null,
-      modalDateType: this.dateTypes[0],
-      modalShowDate: false,
     };
 
     this.rowClassName = this.rowClassName.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.clearInputs = this.clearInputs.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
-    this.dateSelectHandler = this.dateSelectHandler.bind(this);
   }
 
   /**
@@ -83,7 +55,7 @@ class Logger extends Component {
     const { token } = this.props;
     const { formData } = this.state;
     const queryString = formDataToQueryString(formData);
-    this.props.actions.getLogs(token, queryString);
+    this.props.actions.getLogs({ token, queryString });
   }
 
   /**
@@ -114,90 +86,13 @@ class Logger extends Component {
   }
 
   /**
-   * Clears serach inputs for querying logs
-   *
-   * @param {Object} event
-   */
-  clearInputs(event) {
-    event.preventDefault();
-    this.props.reset();
-    this.setState(() => ({
-      focusedInput: null,
-      startDate: null,
-      endDate: null,
-    }));
-  }
-
-  /**
    * Set state to close modal and reset current row data
    */
   closeModal() {
     this.setState(() => ({
       currentRowData: null,
       modalOpen: false,
-      modalShowDate: false,
     }));
-  }
-
-  /**
-   * Sets state property modalShowDate to true
-   *
-   * @param {String} type
-   */
-  showDatePicker(type) {
-    if (!this.dateTypes.includes(type)) throw Error('Invalid type. Try string startdate or enddate');
-
-    this.setState(() => ({
-      modalShowDate: true,
-      modalDateType: type,
-      modalOpen: true,
-    }));
-  }
-
-  /**
-   * Handles form submit event
-   * @param {Object}
-   */
-  handleFormSubmit({ search }) {
-    this.prepareAndSumbit(search, this.state.formData);
-  }
-
-  /**
-   * Prepare data and submit request
-   * @param {String} search
-   */
-  prepareAndSumbit(search, formData) {
-    const { token, actions } = this.props;
-    const { startDate, endDate } = this.state;
-    const hasDateRange = startDate && endDate;
-    let queryString = formDataToQueryString(formData);
-
-    // Set loading
-    actions.isFetchingData();
-    if (!search && !hasDateRange) {
-      // get all logs
-      actions.getLogs(token, queryString || '');
-    } else {
-      if (search && !hasDateRange) {
-        // query by text only
-        actions.getLogsBySearchQuery(token, `${search}?${queryString}`);
-        return false;
-      }
-
-      if (hasDateRange) {
-        if (search) {
-          // query by text and date range
-          queryString = `${search}&startDate=${startDate}&endDate=${endDate}`;
-          actions.getLogsBySearchQuery(token, queryString);
-          return false;
-        }
-
-        // query by date range
-        queryString = `?startDate=${startDate}&endDate=${endDate}`;
-        actions.getLogsBySearchQuery(token, queryString);
-        return false;
-      }
-    }
   }
 
   /**
@@ -222,40 +117,15 @@ class Logger extends Component {
     const queryString = formDataToQueryString(this.state.formData);
     this.closeModal();
     actions.deleteLogById(this.props.token, id);
-    actions.getLogs(token, queryString);
+    actions.getLogs({ token, queryString });
   }
 
   /**
-   * On date select handler. Sets state for date
+   * Renders error message box
    *
-   * @param {Date} date
+   * @param {String} error
+   * @returns {JSX}
    */
-  dateSelectHandler(date) {
-    if (!date) return Error('No date returned from DatePicker');
-    const { modalDateType } = this.state;
-
-    // SetTimeout delay is because of animation header is laggy
-    setTimeout(() => {
-      // Set state for startdate or enddate
-      if (modalDateType === 'startdate') {
-        const startDate = formatInputDate(date);
-        this.setState({ startDate });
-        this.props.change('startDate', startDate);
-      } else if (modalDateType === 'enddate') {
-        const endDate = formatInputDate(date);
-        this.setState({ endDate });
-        this.props.change('endDate', endDate);
-      }
-    }, 300);
-  }
-
-
-  /**
-     * Renders error message box
-     *
-     * @param {String} error
-     * @returns {JSX}
-     */
   renderError(error) {
     return (
       <fieldset className="noPadding">
@@ -269,87 +139,29 @@ class Logger extends Component {
       data,
       isFetching,
       error,
-      serverError,
-      handleSubmit,
       pagination,
-      startDateError,
+      reset,
+      change,
+      actions: { getLogsBySearchQuery, getLogs, isFetchingData },
     } = this.props;
-    const { currentRowData } = this.state;
+    const { currentRowData, formData, modalOpen } = this.state;
 
     return (
       <div>
         {error ? this.renderError(error) : null}
-        {serverError ? this.renderError(serverError) : null}
         <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
-          {data
-            ? <div className={isFetching ? 'almostHidden' : ''}>
-              <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-                <div className={s.inputContainer}>
-                  <div>
-                    <div className={s.searchInputContainer}>
-                      <Field
-                        component={Input}
-                        name="search"
-                        id="search"
-                        type="text"
-                        label="Search"
-                        placeholder="Search logs..."
-                      >
-                        <Search
-                          className={s.searchIcon}
-                          onClick={handleSubmit(this.handleFormSubmit)}
-                        />
-                      </Field>
-                    </div>
-                  </div>
-                  <div className={s.dateContainer}>
-                    <div className={s.date}>
-                      <Field
-                        component={(props) => <Input {...props} required />}
-                        name="startDate"
-                        id="startDate"
-                        type="date"
-                        label="Start date"
-                        value={this.state.startDate}
-                        placeholder="From: "
-                      >
-                        <Calendar onClick={() => this.showDatePicker('startdate')} />
-                      </Field>
-                    </div>
-                    <div className={s.date}>
-                      <Field
-                        component={(props) => <Input {...props} required />}
-                        name="endDate"
-                        id="endDate"
-                        type="date"
-                        label="End date"
-                        value={this.state.endDate}
-                        placeholder="To: "
-                      >
-                        <Calendar onClick={() => this.showDatePicker('enddate')} />
-                      </Field>
-                    </div>
-                    <div className={s.date}>
-                      {startDateError ? <ErrorText key={'startDate'} id={'startDate'} error={startDateError} /> : null}
-                    </div>
-                  </div>
-                  <div>
-                    <Button
-                      type="button"
-                      text="Clear"
-                      ariaLabel="Clear inputs"
-                      color="grey"
-                      onClick={(e) => this.clearInputs(e)}
-                    />
-                    <Button
-                      type="submit"
-                      text="Search"
-                      ariaLabel="Search logs"
-                    />
-                  </div>
-                </div>
-              </form>
+          {data ? (
+            <div className={isFetching ? 'almostHidden' : ''}>
+              <SearchBar
+                submitCallback={this.submitCallback}
+                reset={reset}
+                change={change}
+                query={getLogsBySearchQuery}
+                get={getLogs}
+                isFetchingData={isFetchingData}
+                formData={formData}
+              />
               <LoggerTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
@@ -361,32 +173,21 @@ class Logger extends Component {
                 onPageChangeHandler={this.paginateHandler}
               />
             </div>
-            : null}
+          ) : null}
         </div>
         <ModalWrapper
-          className={!this.state.modalShowDate ? 'mw992' : 'mv360'}
-          isOpen={this.state.modalOpen}
+          className="mw992"
+          isOpen={modalOpen}
           onRequestClose={this.closeModal}
           contentLabel={'Log modal'}
           exitIconClassName="white"
         >
-          <div>
-            {this.state.modalShowDate ?
-              <InfiniteCalendar
-                width={360}
-                height={400}
-                theme={infiniteCalendarTheme()}
-                min={this.minDate}
-                minDate={this.minDate}
-                onSelect={this.dateSelectHandler}
-              /> : null}
-            {!this.state.modalShowDate && currentRowData ?
-              <LoggerModalData
-                data={currentRowData}
-                deleteHandler={this.deleteHandler}
-              /> : null}
-          </div>
-
+          {modalOpen ? (
+            <LoggerModalData
+              data={currentRowData}
+              deleteHandler={this.deleteHandler}
+            />
+          ) : null}
         </ModalWrapper>
       </div>
     );
@@ -400,50 +201,22 @@ class Logger extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { logs: { error, isFetching, data }, logsSearch, auth } = state;
-  const startDateError = (logsSearch && logsSearch.syncErrors && logsSearch.syncErrors.startDate) ? logsSearch.syncErrors.startDate : '';
-  const serverError = state.common.error;
+  const { logs: { error, isFetching, data }, auth } = state;
   const token = auth && auth.user ? auth.user.token : '';
   let pagination = {};
-  let search = '';
 
   if (data) {
     const { limit, page, pages, total } = data;
     pagination = createPagination({ limit, pages, page, total });
   }
 
-  if (
-    state.form.search &&
-    state.form.search.values &&
-    state.form.search.values.search
-  ) {
-    search = state.form.search.values.search;
-  }
-
   return {
     error,
-    serverError,
     isFetching,
     token,
     data,
     pagination,
-    search,
-    startDateError,
   };
-}
-
-/**
- * Valdates if startDate is bigger than endDate
- * @param {startDate:String | endDate:String} object
- */
-function validate({ startDate, endDate }) {
-  const errors = {};
-
-  if (startDate > endDate) {
-    errors.startDate = 'From date is bigger than to date';
-  }
-
-  return errors;
 }
 
 /**
@@ -454,23 +227,8 @@ function validate({ startDate, endDate }) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(
-      {
-        getLogs,
-        isFetchingData,
-        isNotFetchingData,
-        getLogsBySearchQuery,
-        deleteLogById,
-      },
-      dispatch,
-    ),
+    actions: bindActionCreators(actionCreators, dispatch),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm({
-    form: 'logsSearch',
-    fields: ['search'],
-    validate,
-  })(Logger),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(Logger);

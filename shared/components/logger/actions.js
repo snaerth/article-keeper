@@ -31,10 +31,11 @@ export function isNotFetchingData() {
 /**
  * Gets logs from api
  *
- * @param {String} token
- * @param {String} queryString
+ * @param {Object} obj - An object
+ * @param {String} obj.token - Token string for authentication
+ * @param {String} obj.queryString - Query string
  */
-export function getLogs(token, queryString) {
+export function getLogs({ token, queryString }) {
   return async (dispatch) => {
     try {
       const url = `/api/logs?${queryString}`;
@@ -56,10 +57,11 @@ export function getLogs(token, queryString) {
 /**
  * Gets logs from api by search query
  *
- * @param {String} token
- * @param {String} queryString
+ * @param {Object} obj - An object
+ * @param {String} obj.token - Token string for authentication
+ * @param {String} obj.queryString - Query string
  */
-export function getLogsBySearchQuery(token, queryString) {
+export function getLogsBySearchQuery({ token, queryString }) {
   return async (dispatch) => {
     try {
       const url = `/api/logs/${queryString}`;

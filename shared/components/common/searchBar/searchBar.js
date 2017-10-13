@@ -145,7 +145,7 @@ class SearchBar extends Component {
     } else {
       if (search && !hasDateRange) {
         // query by text only
-        query(token, `${search}?${queryString}`);
+        query({ token, queryString: `${search}?${queryString}` });
         return false;
       }
 
@@ -153,13 +153,13 @@ class SearchBar extends Component {
         if (search) {
           // query by text and date range
           queryString = `?query=${search}&startDate=${startDate}&endDate=${endDate}`;
-          query(token, queryString);
+          query({ token, queryString });
           return false;
         }
 
         // query by date range
         queryString = `?startDate=${startDate}&endDate=${endDate}`;
-        query(token, queryString);
+        query({ token, queryString });
         return false;
       }
     }
