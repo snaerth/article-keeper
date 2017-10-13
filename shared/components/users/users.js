@@ -45,7 +45,6 @@ class Users extends Component {
     this.rowClassName = this.rowClassName.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.submitCallback = this.submitCallback.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
     this.openCreateUserModal = this.openCreateUserModal.bind(this);
@@ -117,53 +116,6 @@ class Users extends Component {
   }
 
   /**
-   * Callback function to handle form submit event
-   *
-   * @param {Object}
-   */
-  submitCallback({ search, startDate, endDate }) {
-    this.prepareAndSumbit({ search, startDate, endDate }, this.state.formData);
-  }
-
-  /**
-   * Prepare data and submit request
-   *
-   * @param {String} search
-   */
-  prepareAndSumbit({ search, startDate, endDate }, formData) {
-    const { token, actions } = this.props;
-    const hasDateRange = startDate && endDate;
-    let queryString = formDataToQueryString(formData);
-
-    // Set loading
-    actions.isFetchingData();
-    if (!search && !hasDateRange) {
-      // get all users
-      actions.getUsers({ token, queryString });
-    } else {
-      if (search && !hasDateRange) {
-        // query by text only
-        actions.getUsersBySearchQuery(token, `${search}?${queryString}`);
-        return false;
-      }
-
-      if (hasDateRange) {
-        if (search) {
-          // query by text and date range
-          queryString = `?query=${search}&startDate=${startDate}&endDate=${endDate}`;
-          actions.getUsersBySearchQuery(token, queryString);
-          return false;
-        }
-
-        // query by date range
-        queryString = `?startDate=${startDate}&endDate=${endDate}`;
-        actions.getUsersBySearchQuery(token, queryString);
-        return false;
-      }
-    }
-  }
-
-  /**
    * Changes current page state and submits
    *
    * @param  {Object} data
@@ -181,11 +133,11 @@ class Users extends Component {
    *
    * @param  {String} id
    */
-  deleteHandler(id) {
+  async deleteHandler(id) {
     const { actions, token } = this.props;
     const queryString = formDataToQueryString(this.state.formData);
     this.closeModal();
-    actions.deleteUserById(this.props.token, id);
+    await actions.deleteUserById(this.props.token, id);
     actions.getUsers({ token, queryString });
   }
 
@@ -214,7 +166,7 @@ class Users extends Component {
       actions: { getUsersBySearchQuery, getUsers, isFetchingData },
     } = this.props;
 
-    const { activeView, modalOpen } = this.state;
+    const { activeView, modalOpen, formData } = this.state;
 
     return (
       <div>
@@ -230,6 +182,7 @@ class Users extends Component {
                 query={getUsersBySearchQuery}
                 get={getUsers}
                 isFetchingData={isFetchingData}
+                formData={formData}
               >
                 <Button
                   type="button"

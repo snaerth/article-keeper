@@ -65,7 +65,7 @@ class UserModal extends Component {
       case 'delete':
         return (
           <DeleteUser
-            id={data.id}
+            id={data._id} // eslint-disable-line
             name={data.name}
             changeViewHandler={this.changeView}
             deleteHandler={deleteHandler}
@@ -116,7 +116,9 @@ class UserModal extends Component {
         <header>
           <div className="banner">
             <Container>
-              <h1 className={s.title}>{this.setHeaderTitle(activeView, name)}</h1>
+              <h1 className={s.title}>
+                {this.setHeaderTitle(activeView, name)}
+              </h1>
             </Container>
           </div>
         </header>

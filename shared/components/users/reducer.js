@@ -65,6 +65,7 @@ export default function (state = initialState, action) {
         ...state,
         infoUser: null,
         user: null,
+        image: null,
       };
 
     case GET_USERS_SUCCESS:

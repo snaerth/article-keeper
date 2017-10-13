@@ -23,7 +23,6 @@ class SearchBar extends Component {
   static propTypes = {
     token: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    submitCallback: PropTypes.func.isRequired,
     startDateError: PropTypes.string,
     reset: PropTypes.func.isRequired, // Redux-form reset function
     change: PropTypes.func.isRequired,
@@ -31,6 +30,10 @@ class SearchBar extends Component {
     get: PropTypes.func.isRequired,
     query: PropTypes.func.isRequired,
     isFetchingData: PropTypes.func.isRequired,
+    formData: PropTypes.shape({
+      limit: PropTypes.number.isRequired,
+      page: PropTypes.number.isRequired,
+    }),
   };
 
   constructor(props) {
@@ -47,6 +50,7 @@ class SearchBar extends Component {
 
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.submitCallback = this.submitCallback.bind(this);
     this.dateSelectHandler = this.dateSelectHandler.bind(this);
   }
 
@@ -120,7 +124,7 @@ class SearchBar extends Component {
    * @param {Object}
    */
   submitCallback({ search, startDate, endDate }) {
-    this.prepareAndSumbit({ search, startDate, endDate }, this.state.formData);
+    this.prepareAndSumbit({ search, startDate, endDate }, this.props.formData);
   }
 
   /**
@@ -162,12 +166,12 @@ class SearchBar extends Component {
   }
 
   render() {
-    const { handleSubmit, submitCallback, startDateError } = this.props;
+    const { handleSubmit, startDateError } = this.props;
     const { modalOpen, startDate, endDate } = this.state;
 
     return (
       <div>
-        <form onSubmit={handleSubmit(submitCallback)} noValidate>
+        <form onSubmit={handleSubmit(this.submitCallback)} noValidate>
           <div className={s.inputContainer}>
             <div>
               <div className={s.searchInputContainer}>
@@ -212,7 +216,11 @@ class SearchBar extends Component {
               </div>
               <div className={s.date}>
                 {startDateError ? (
-                  <ErrorText key={'startDate'} id={'startDate'} error={startDateError} />
+                  <ErrorText
+                    key={'startDate'}
+                    id={'startDate'}
+                    error={startDateError}
+                  />
                 ) : null}
               </div>
             </div>
@@ -273,29 +281,30 @@ function validate({ startDate, endDate }) {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { usersSearch } = state.form;
-  const { auth } = state.auth;
+  const { defaultSearch } = state.form;
+  const { auth } = state;
   const token = auth && auth.user ? auth.user.token : '';
+  const { search } = state.form;
   const startDateError =
-    usersSearch && usersSearch.syncErrors && usersSearch.syncErrors.startDate
-      ? usersSearch.syncErrors.startDate
+    defaultSearch &&
+    defaultSearch.syncErrors &&
+    defaultSearch.syncErrors.startDate
+      ? defaultSearch.syncErrors.startDate
       : '';
-  let search = '';
-
-  if (state.form.search && state.form.search.values && state.form.search.values.search) {
-    search = state.form.search.values.search;
-  }
 
   return {
     token,
-    search,
+    search:
+      search && search.values && search.values.search
+        ? search.values.search
+        : '',
     startDateError,
   };
 }
 
 export default connect(mapStateToProps, null)(
   reduxForm({
-    form: 'usersSearch',
+    form: 'defaultSearch',
     fields: ['search'],
     validate,
   })(SearchBar),
