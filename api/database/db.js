@@ -26,7 +26,7 @@ export async function createAdminUser() {
         adminUser.email = email;
         adminUser.name = 'Admin';
         adminUser.password = 'Admin123';
-        adminUser.roles = ['admin', 'user'];
+        adminUser.roles = ['admin', 'superuser', 'user'];
 
         // save default admin user to the database
         return adminUser.save((err) => {

@@ -32,7 +32,7 @@ const schema = {
   roles: {
     type: Array,
     required: true,
-    enum: ['user', 'admin'],
+    enum: ['user', 'admin', 'superuser'],
     default: 'user',
   },
   imageUrl: {
@@ -131,7 +131,10 @@ userSchema.pre('findOneAndUpdate', function preUpdate(next) {
 });
 
 // Compare password to encrypted password
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
+userSchema.methods.comparePassword = function comparePassword(
+  candidatePassword,
+  callback,
+) {
   bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
     if (error) {
       return callback(error);

@@ -6,6 +6,7 @@ import {
   getUsers,
   uploadUserImage,
   isAdmin,
+  isSuperUser,
 } from '../controllers/users';
 
 /**
@@ -15,15 +16,15 @@ import {
  */
 export default function (app, requireAuth) {
   // Create user
-  app.post('/users', [requireAuth, isAdmin], createUser);
+  app.post('/users', [requireAuth, isSuperUser], createUser);
   // Get all users
-  app.get('/users', [requireAuth, isAdmin], getUsers);
+  app.get('/users', [requireAuth, isSuperUser], getUsers);
   // Get user by search query
-  app.get('/users/:query', [requireAuth, isAdmin], getUser);
+  app.get('/users/:query', [requireAuth, isSuperUser], getUser);
   // Update user
-  app.put('/users/:id', [requireAuth, isAdmin], updateUser);
+  app.put('/users/:id', [requireAuth, isSuperUser], updateUser);
   // Delete user
   app.delete('/users/:id', [requireAuth, isAdmin], deleteUser);
   // Upload images
-  app.post('/users/userimage', [requireAuth, isAdmin], uploadUserImage);
+  app.post('/users/userimage', [requireAuth, isSuperUser], uploadUserImage);
 }

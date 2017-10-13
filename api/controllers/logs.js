@@ -18,13 +18,7 @@ const sortVals = dbSortValues(); // [-1,1,'asc','desc']
  * @param {String|Number} time
  * @returns {Object} sort
  */
-function addToPaginationObject(
-  pagination,
-  msg = 1,
-  level = 1,
-  name = 1,
-  time = 1,
-) {
+function addToPaginationObject(pagination, msg, level, name, time) {
   const sort = {};
   if (sortVals.includes(msg)) sort.msg = msg;
   if (sortVals.includes(level)) sort.level = level;

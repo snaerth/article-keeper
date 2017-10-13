@@ -51,16 +51,54 @@ export function tokenForUser(user) {
 }
 
 /**
- * Check whether user has admin roles
+ * Creates user roles array
+ *
+ * @param {Array} roles
+ * @returns {Array}
+ */
+function createUserRoles(roles) {
+  const arr = ['user'];
+  if (Array.isArray(roles)) {
+    if (roles.includes('admin')) {
+      arr.push('admin');
+    }
+
+    if (roles.includes('superuser')) {
+      arr.push('superuser');
+    }
+  }
+
+  return arr;
+}
+
+/**
+ * Check whether user has admin role
  *
  * @param {Object} req
  * @param {Object} res
  * @param {Func} next
- * @returns {undefined
  * @author Snær Seljan Þóroddsson
  */
 export function isAdmin(req, res, next) {
   if (req.user && req.user.roles.includes('admin')) {
+    return next();
+  }
+
+  return res.status(401).send({ error: 'Unauthorized' });
+}
+
+/**
+ * Check whether user has superuser role
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Func} next
+ * @author Snær Seljan Þóroddsson
+ */
+export function isSuperUser(req, res, next) {
+  const { user, user: { roles } } = req;
+
+  if (user && (roles.includes('superuser') || roles.includes('admin'))) {
     return next();
   }
 
@@ -75,17 +113,20 @@ export function isAdmin(req, res, next) {
  * @param {String|Number} email
  * @param {String|Number} dateOfBirth
  * @returns {Object} sort
+ * @author Snær Seljan Þóroddsson
  */
 function addToPaginationObject(
   pagination,
-  name = 1,
-  email = 1,
-  dateOfBirth = 1,
+  name,
+  email,
+  dateOfBirth,
+  createdAt,
 ) {
   const sort = {};
   if (sortVals.includes(name)) sort.name = name;
   if (sortVals.includes(email)) sort.email = email;
   if (sortVals.includes(dateOfBirth)) sort.dateOfBirth = dateOfBirth;
+  if (sortVals.includes(createdAt)) sort.createdAt = createdAt;
   if (Object.keys(sort).length !== 0) {
     pagination.sort = sort;
   }
@@ -357,10 +398,7 @@ export async function createUser(req, res) {
         password,
         dateOfBirth,
         phone,
-        roles:
-          Array.isArray(roles) && roles.includes('admin')
-            ? ['user', 'admin']
-            : ['user'],
+        roles: createUserRoles(roles),
       });
       // Save user in database
       await saveUser(user);
@@ -489,7 +527,11 @@ export async function getUser(req, res) {
   pagination.select = select;
 
   try {
-    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
+    const searchQuery = await prepareMongooseDataBaseQuery(
+      query,
+      startDate,
+      endDate,
+    );
     // Fetch user by search query from database
     const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
@@ -513,6 +555,7 @@ export async function getUsers(req, res) {
     name,
     email,
     dateOfBirth,
+    createdAt,
     page,
     query,
     startDate,
@@ -522,12 +565,16 @@ export async function getUsers(req, res) {
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
   // Enrich pagination object
-  pagination = addToPaginationObject(pagination, name, email, dateOfBirth);
+  pagination = addToPaginationObject(pagination, name, email, dateOfBirth, createdAt);
   // Only select these properties
   pagination.select = select;
 
   try {
-    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
+    const searchQuery = await prepareMongooseDataBaseQuery(
+      query,
+      startDate,
+      endDate,
+    );
     // Fetch user by search query from database
     // Fetch Users from database
     const result = await User.paginate(searchQuery, pagination);
@@ -577,10 +624,7 @@ export async function updateUser(req, res) {
       if (dateOfBirth) $set.dateOfBirth = dateOfBirth;
       if (phone) $set.phone = phone;
       if (roles) {
-        $set.roles =
-          Array.isArray(roles) && roles.includes('admin')
-            ? ['user', 'admin']
-            : ['user'];
+        $set.roles = createUserRoles(roles);
       }
 
       $set.updatedAt = new Date();

@@ -1,4 +1,4 @@
-import { isAdmin } from '../controllers/users';
+import { isSuperUser } from '../controllers/users';
 import {
   getNews,
   deleteNews,
@@ -14,8 +14,8 @@ import {
  */
 export default function (app, requireAuth) {
   // News
-  app.get('/news', [requireAuth, isAdmin], getNews);
-  app.put('/news', [requireAuth, isAdmin], updateNews);
-  app.delete('/news', [requireAuth, isAdmin], deleteNews);
-  app.post('/news', [requireAuth, isAdmin], createNews);
+  app.get('/news', [requireAuth, isSuperUser], getNews);
+  app.put('/news', [requireAuth, isSuperUser], updateNews);
+  app.delete('/news', [requireAuth, isSuperUser], deleteNews);
+  app.post('/news', [requireAuth, isSuperUser], createNews);
 }

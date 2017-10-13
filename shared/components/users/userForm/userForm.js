@@ -65,7 +65,15 @@ class UserForm extends Component {
 
     const { dateOfBirth, email, name, password, phone } = formValues;
     const data = { dateOfBirth, email, name, password, phone };
-    data.roles = formValues.admin === true ? ['admin', 'user'] : ['user'];
+    data.roles = ['user'];
+
+    if (formValues.admin === true) {
+      data.roles.push('admin');
+    }
+
+    if (formValues.superuser === true) {
+      data.roles.push('superuser');
+    }
 
     let formData = null;
     if (image) {
@@ -238,6 +246,15 @@ class UserForm extends Component {
                     label="Admin"
                   />
                 </div>
+                <div className={s.checkbox}>
+                  <Field
+                    component={Checkbox}
+                    name="superuser"
+                    id="superuser"
+                    type="checkbox"
+                    label="Superuser"
+                  />
+                </div>
               </fieldset>
             </div>
             <div className={s.row}>
@@ -372,6 +389,7 @@ function mapStateToProps(state, ownProps) {
       phone: phone || '',
       dateOfBirth: dateOfBirth ? formatInputDate(dateOfBirth) : '',
       admin: !!roles.includes('admin'),
+      superuser: !!roles.includes('superuser'),
     };
   }
 
