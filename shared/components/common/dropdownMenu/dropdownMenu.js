@@ -9,7 +9,7 @@ class DropdownMenu extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     visible: PropTypes.bool.isRequired,
-    callbackCloseFn: PropTypes.bool.isRequired,
+    callbackCloseFn: PropTypes.func.isRequired,
   };
 
   handleClickOutside = () => {

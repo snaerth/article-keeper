@@ -6,8 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Create edit user setja input hægra megin
-  - Finsih refactoring users and searchbar as well as logger
+  - React virtualized setja sort 
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Gera menu líkari þessum

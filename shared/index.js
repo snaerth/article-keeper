@@ -17,7 +17,6 @@ import Signout from './routes/signout';
 import ResetPassword from './routes/resetPassword';
 import NotFound from './routes/not-found';
 import Profile from './routes/profile';
-import Admin from './routes/admin';
 import Users from './routes/users';
 import Logger from './routes/logger';
 
@@ -76,7 +75,6 @@ class App extends Component {
             <Route path="/profile" component={Profile} />
             <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
             <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
-            <PrivateRoute path="/admin" component={Admin} authenticated={isAdmin} />
             <Route component={NotFound} />
           </Switch>
         </Content>
