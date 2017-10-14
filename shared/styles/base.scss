@@ -148,23 +148,6 @@ input:-webkit-autofill {
   padding: 0;
 }
 
-// Navigation
-nav .active {
-  color: $primary-black;
-  border-bottom: 1px solid $primary-black;
-}
-
-// Banner
-.banner {
-  padding: 40px 0;
-  background: $primary-color;
-
-  h1 {
-    margin: 0;
-    color: $primary-white;
-  }
-}
-
 // Almost hidden
 .almostHidden {
   opacity: 0.6;
