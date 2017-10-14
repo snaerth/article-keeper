@@ -1,0 +1,40 @@
+@import '~styles/variables';
+
+.container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #252525;
+
+  .center {
+    position: relative;
+    top: 50%;
+    text-align: center;
+    transform: translateY(-50%);
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.4em;
+    }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+
+    h1,
+    p,
+    a {
+      color: $primary-white;
+    }
+  }
+}

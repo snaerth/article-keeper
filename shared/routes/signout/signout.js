@@ -33,11 +33,8 @@ class Signout extends Component {
           <div className={signoutContainer}>
             <h2>
               You have successfully been signed out.
-              {' '}
               <br />
-              {' '}
-              You can sign in again at any
-              time.
+              You can sign in again at any time.
             </h2>
             <br />
             <div className={buttonContainer}>

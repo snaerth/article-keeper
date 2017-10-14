@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import Banner from '../../components/common/banner';
+import { Link } from 'react-router-dom';
+import s from './notFound.scss';
 
 export default class NotFound extends Component {
   static propTypes = {
@@ -21,7 +22,13 @@ export default class NotFound extends Component {
     return (
       <div>
         <Helmet title="Profile" />
-        <Banner text="404 Page was not found" />
+        <section className={s.container}>
+          <div className={s.center}>
+            <h1>404</h1>
+            <p>The page you were looking for was not found.</p>
+            <Link to="/">Go back to Dashboard</Link>
+          </div>
+        </section>
       </div>
     );
   }

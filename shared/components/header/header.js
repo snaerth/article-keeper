@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { NavLink } from 'react-router-dom';
-import s from './header.scss';
+import { NavLink, Link } from 'react-router-dom';
+// Components
 import ModalWrapper from '../common/modal';
 import AuthWrapper from '../auth/authWrapper';
-import Container from '../common/container';
+import Avatar from '../common/avatar';
+import DropdownMenu from '../common/dropdownMenu';
 import Navigation from '../navigation';
 import * as actionCreators from '../auth/actions';
+// Styles
+import s from './header.scss';
 
 /**
  * Header Component
@@ -19,13 +22,20 @@ class Header extends Component {
     roles: PropTypes.array,
     modalOpen: PropTypes.bool,
     actions: PropTypes.object.isRequired,
+    imageUrl: PropTypes.string,
+    name: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
 
+    this.state = {
+      dropdownVisible: false,
+    };
+
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.avatarClickHandler = this.avatarClickHandler.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -45,6 +55,15 @@ class Header extends Component {
   }
 
   /**
+   * Handles avatar click event
+   * 
+   * @param {bool} visible
+   */
+  avatarClickHandler(visible) {
+    this.setState(() => ({ dropdownVisible: visible }));
+  }
+
+  /**
    * Renders links if authenticated
    *
    * @returns {Component} Link
@@ -54,12 +73,6 @@ class Header extends Component {
 
     if (roles && roles.includes('admin')) {
       return [
-        <NavLink to="/profile" key="profile" activeClassName={s.active}>
-          Profile
-        </NavLink>,
-        <NavLink to="/admin" key="admin" activeClassName={s.active}>
-          Admin
-        </NavLink>,
         <NavLink to="/users" key="users" activeClassName={s.active}>
           Users
         </NavLink>,
@@ -77,7 +90,7 @@ class Header extends Component {
   }
 
   render() {
-    const { authenticated } = this.props;
+    const { authenticated, imageUrl, name } = this.props;
     return (
       <div className={s.container}>
         <Navigation>
@@ -87,9 +100,22 @@ class Header extends Component {
           {authenticated ? (
             [
               this.renderAuthLinks(),
-              <NavLink to="/signout" key="signout" activeClassName={s.active}>
-                Sign out
-              </NavLink>,
+              <span
+                key={`avatar-${name}`}
+                role="button"
+                tabIndex="0"
+                onClick={() => this.avatarClickHandler(true)}
+              >
+                <Avatar imageUrl={imageUrl} name={name}>
+                  <DropdownMenu
+                    visible={this.state.dropdownVisible}
+                    callbackCloseFn={this.avatarClickHandler}
+                  >
+                    <Link to="/profile">Profile</Link>
+                    <Link to="/signout">Sign out</Link>
+                  </DropdownMenu>
+                </Avatar>
+              </span>,
             ]
           ) : (
             <NavLink to="/signin" role="button" key="signin" onClick={(e) => this.openModal(e)}>
@@ -127,11 +153,14 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { authenticated } = state.auth;
-  const { modalOpen } = state.common;
+  const { auth: { authenticated }, common: { modalOpen } } = state;
+  const { user } = state.auth;
+
   const newStateToProps = {
     authenticated,
     modalOpen,
+    imageUrl: user.imageUrl || '',
+    name: user.name || '',
   };
 
   if (state.auth.user && state.auth.user.roles) {

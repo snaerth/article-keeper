@@ -404,6 +404,7 @@ const values = {
           'redux-thunk',
           'react-modal',
           'react-virtualized',
+          'react-onclickoutside',
           'smoothscroll-polyfill',
         ],
 
@@ -473,9 +474,7 @@ const values = {
       plugins.push('transform-decorators-legacy');
 
       // Remove stage-# prests
-      presets.forEach(
-        (val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1),
-      );
+      presets.forEach((val, pos) => String(val).match(/stage-\d/) && presets.splice(pos, 1));
       // Add stage-0 to list of presets
       presets.push('stage-0');
 
