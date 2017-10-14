@@ -80,26 +80,22 @@ class Header extends Component {
     const { authenticated } = this.props;
     return (
       <div className={s.container}>
-        <Container>
-          <Navigation>
-            <NavLink to="/" activeClassName={s.noActive}>
-              Dashboard
+        <Navigation>
+          <NavLink to="/" activeClassName={s.noActive}>
+            Dashboard
+          </NavLink>
+          <span className={s.logo}>ADMIN SYSTEM</span>
+          {!authenticated ? (
+            <NavLink to="/signin" role="button" key="signin" onClick={(e) => this.openModal(e)}>
+              Sign in / Sign up
             </NavLink>
-            <span className={s.logo}>ADMIN SYSTEM</span>
-            {!authenticated ? (
-              <NavLink to="/signin" role="button" key="signin" onClick={(e) => this.openModal(e)}>
-                Sign in / Sign up
-              </NavLink>
-            ) : (
-              <NavLink to="/signout" key="signout" activeClassName={s.active}>
-                Sign out
-              </NavLink>
-            )}
-          </Navigation>
-          <Navigation className="normal">
-            {authenticated ? this.renderAuthLinks() : null}
-          </Navigation>
-        </Container>
+          ) : (
+            <NavLink to="/signout" key="signout" activeClassName={s.active}>
+              Sign out
+            </NavLink>
+          )}
+        </Navigation>
+        <Navigation className="normal">{authenticated ? this.renderAuthLinks() : null}</Navigation>
 
         <ModalWrapper
           isOpen={this.props.modalOpen}

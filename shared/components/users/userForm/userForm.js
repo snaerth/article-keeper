@@ -170,105 +170,103 @@ class UserForm extends Component {
           {this.renderInfo(infoUser)}
           {this.renderError(errorUser)}
           <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
-            <div className={s.row}>
-              <fieldset>
-                <Field
-                  component={Input}
-                  name="name"
-                  id="name"
-                  type="text"
-                  label="Name"
-                  placeholder="Full name"
-                >
-                  <Person />
-                </Field>
-              </fieldset>
-              <fieldset>
-                <Field
-                  component={Input}
-                  name="email"
-                  id="email"
-                  type="email"
-                  label="Email"
-                  placeholder="someone@example.com"
-                >
-                  <Email />
-                </Field>
-              </fieldset>
-            </div>
-            <div className={s.row}>
-              <fieldset>
-                <Field
-                  component={Password}
-                  name="password"
-                  id="password"
-                  type="password"
-                  label="Password"
-                  autoComplete="new-password"
-                  placeholder="Must have at least 6 characters"
-                />
-              </fieldset>
-              <fieldset>
-                <Field
-                  component={Input}
-                  name="phone"
-                  id="phone"
-                  type="text"
-                  label="Phone"
-                  placeholder="(555) 555-5555"
-                >
-                  <Phone />
-                </Field>
-              </fieldset>
-            </div>
-            <div className={s.row}>
-              <fieldset>
-                <Field
-                  component={(props) => <Input {...props} required />}
-                  name="dateOfBirth"
-                  id="dateOfBirth"
-                  type="date"
-                  label="Date of birth"
-                >
-                  <Calendar />
-                </Field>
-              </fieldset>
-              <fieldset>
-                <div>
-                  <strong>User roles</strong>
-                </div>
-                <div className={s.checkbox}>
+            <div className={s.container}>
+              <div className={s.row}>
+                <fieldset>
                   <Field
-                    component={Checkbox}
-                    name="admin"
-                    id="admin"
-                    type="checkbox"
-                    label="Admin"
-                  />
-                </div>
-                <div className={s.checkbox}>
+                    component={Input}
+                    name="name"
+                    id="name"
+                    type="text"
+                    label="Name *"
+                    placeholder="Full name"
+                  >
+                    <Person />
+                  </Field>
+                </fieldset>
+                <fieldset>
                   <Field
-                    component={Checkbox}
-                    name="superuser"
-                    id="superuser"
-                    type="checkbox"
-                    label="Superuser"
+                    component={Input}
+                    name="email"
+                    id="email"
+                    type="email"
+                    label="Email *"
+                    placeholder="someone@example.com"
+                  >
+                    <Email />
+                  </Field>
+                </fieldset>
+                <fieldset>
+                  <Field
+                    component={Password}
+                    name="password"
+                    id="password"
+                    type="password"
+                    label="Password *"
+                    autoComplete="new-password"
+                    placeholder="Must have at least 6 characters"
                   />
-                </div>
-              </fieldset>
-            </div>
-            <div className={s.row}>
-              <fieldset>
-                <div>
-                  <strong>Profile image</strong>
-                </div>
-                <FileUploader
-                  accept="image/*"
-                  onDrop={this.onDrop}
-                  multiple={false}
-                  image={image || (user ? user.imageUrl : '')}
-                />
-              </fieldset>
+                </fieldset>
+                <fieldset>
+                  <Field
+                    component={Input}
+                    name="phone"
+                    id="phone"
+                    type="text"
+                    label="Phone"
+                    placeholder="(555) 555-5555"
+                  >
+                    <Phone />
+                  </Field>
+                </fieldset>
+                <fieldset>
+                  <Field
+                    component={(props) => <Input {...props} required />}
+                    name="dateOfBirth"
+                    id="dateOfBirth"
+                    type="date"
+                    label="Date of birth"
+                  >
+                    <Calendar />
+                  </Field>
+                </fieldset>
+              </div>
+              <div className={s.row}>
+                <fieldset>
+                  <div className={s.profileImageLabel}>
+                    <strong>Profile image</strong>
+                  </div>
+                  <FileUploader
+                    accept="image/*"
+                    onDrop={this.onDrop}
+                    multiple={false}
+                    image={image || (user ? user.imageUrl : '')}
+                  />
+                </fieldset>
+                <fieldset>
+                  <div>
+                    <strong>User roles</strong>
+                  </div>
+                  <div className={s.checkbox}>
+                    <Field
+                      component={Checkbox}
+                      name="admin"
+                      id="admin"
+                      type="checkbox"
+                      label="Admin"
+                    />
+                  </div>
+                  <div className={s.checkbox}>
+                    <Field
+                      component={Checkbox}
+                      name="superuser"
+                      id="superuser"
+                      type="checkbox"
+                      label="Superuser"
+                    />
+                  </div>
+                </fieldset>
+              </div>
             </div>
             <div className={s.editContainer}>
               <div className={s.pullRight}>

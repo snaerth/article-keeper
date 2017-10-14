@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // Components
-import Container from '../../common/container';
 import ViewUser from '../viewUser';
 import DeleteUser from '../deleteUser';
 import UserForm from '../userForm';
+import Banner from '../../common/banner';
 // Styles
 import s from './userModal.scss';
 
@@ -114,13 +114,7 @@ class UserModal extends Component {
     return (
       <article className={s.modal}>
         <header>
-          <div className="banner">
-            <Container>
-              <h1 className={s.title}>
-                {this.setHeaderTitle(activeView, name)}
-              </h1>
-            </Container>
-          </div>
+          <Banner text={this.setHeaderTitle(activeView, name)} />
         </header>
         {this.setView()}
       </article>

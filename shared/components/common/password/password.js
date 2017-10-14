@@ -60,7 +60,7 @@ class Password extends Component {
           className={classnames(
             s.input,
             active || input.value ? s.active : '',
-            meta && meta.error ? s.error : '',
+            meta && meta.error && meta.touched ? s.error : '',
           )}
         >
           <input
@@ -78,18 +78,11 @@ class Password extends Component {
           <label className={s.inputLabel} htmlFor={id}>
             <span className={s.inputLabelContent}>{label}</span>
           </label>
-          <span
-            className={s.icon}
-            onClick={this.toggleVisibility}
-            role="button"
-            tabIndex={0}
-          >
+          <span className={s.icon} onClick={this.toggleVisibility} role="button" tabIndex={0}>
             {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
           </span>
         </span>
-        {meta.error && meta.touched ? (
-          <ErrorText key={id} id={id} error={meta.error} />
-        ) : null}
+        {meta.error && meta.touched ? <ErrorText key={id} id={id} error={meta.error} /> : null}
       </div>
     );
   }

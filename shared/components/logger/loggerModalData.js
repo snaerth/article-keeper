@@ -6,6 +6,7 @@ import shortid from 'shortid';
 import levels from './level';
 import Container from '../common/container';
 import Button from '../common/button';
+import Banner from '../common/banner';
 
 import tableStyles from '../../styles/table.css';
 import styles from './logger.scss';
@@ -23,14 +24,9 @@ function renderObjectRecursive(obj) {
   return keys.map((v, i) => {
     if (values[i] && typeof values[i] === 'object') {
       return (
-        <div
-          key={shortid.generate()}
-          className={classnames(styles.row, styles.rowPadding)}
-        >
+        <div key={shortid.generate()} className={classnames(styles.row, styles.rowPadding)}>
           <div>{v}</div>
-          <div className={styles.overflowHidden}>
-            {renderObjectRecursive(values[i])}
-          </div>
+          <div className={styles.overflowHidden}>{renderObjectRecursive(values[i])}</div>
         </div>
       );
     }
@@ -51,11 +47,7 @@ function LoggerModalData({ data, deleteHandler }) {
   return (
     <article className={styles.modal}>
       <header>
-        <div className="banner">
-          <Container>
-            <h1 className={styles.title}>Log</h1>
-          </Container>
-        </div>
+        <Banner text="Logs" />
       </header>
       <section>
         <div className={classnames(tableStyles.tableOddRow, styles.row)}>
@@ -87,17 +79,13 @@ function LoggerModalData({ data, deleteHandler }) {
         {req ? (
           <div className={classnames(tableStyles.tableOddRow, styles.row)}>
             <div>Request</div>
-            <div className={styles.overflowHidden}>
-              {renderObjectRecursive(req)}
-            </div>
+            <div className={styles.overflowHidden}>{renderObjectRecursive(req)}</div>
           </div>
         ) : null}
         {res ? (
           <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
             <div>Response</div>
-            <div className={styles.overflowHidden}>
-              {renderObjectRecursive(res)}
-            </div>
+            <div className={styles.overflowHidden}>{renderObjectRecursive(res)}</div>
           </div>
         ) : null}
       </section>

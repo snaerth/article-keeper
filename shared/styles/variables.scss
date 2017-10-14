@@ -1,6 +1,6 @@
 // Colors
 $primary-color-dark: #7b1fa2;
-$primary-color: #9c27b0;
+$primary-color: #b03df1;
 $primary-color-light: #e1bee7;
 $primary-color-text: #fff;
 $accent-color: #607d8b;
@@ -12,7 +12,7 @@ $primary-button-color: #212121;
 $primary-yellow: #ffc107;
 $primary-red: #f44336;
 $primary-green: #4caf50;
-$primary-blue: #03a9f4;
+$primary-blue: #1271db;
 $primary-black: #000;
 $primary-white: #fff;
 $primary-card: #fff;
@@ -44,8 +44,8 @@ $box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
 $box-shadow-color: rgba(0, 0, 0, 0.2);
 $gutter: 15px;
 $container-gutter-mobile: $gutter;
-$container-gutter-tablet: 50px;
-$container-gutter-desktop: 70px;
+$container-gutter-tablet: 15px;
+$container-gutter-desktop: 30px;
 // page dimensions
 $page-width: 1200px;
 $limit: $page-width+($container-gutter-desktop * 2);

@@ -23,9 +23,28 @@
   transition: fill 0.2s ease-out;
 }
 
+.profileImageLabel {
+  margin-bottom: 15px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 1em;
+
+  @include viewport(tablet) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2em 1em;
+
+    > div:first-child fieldset {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 
   @include viewport(handset) {
     grid-template-columns: 1fr;
@@ -44,4 +63,3 @@
     margin-right: 0;
   }
 }
-
