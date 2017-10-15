@@ -35,7 +35,6 @@ class Header extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.avatarClickHandler = this.avatarClickHandler.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -59,9 +58,9 @@ class Header extends Component {
    * 
    * @param {bool} visible
    */
-  avatarClickHandler(visible) {
+  avatarClickHandler = (visible) => {
     this.setState(() => ({ dropdownVisible: visible }));
-  }
+  };
 
   /**
    * Renders links if authenticated
@@ -100,13 +99,8 @@ class Header extends Component {
           {authenticated ? (
             [
               this.renderAuthLinks(),
-              <span
-                key={`avatar-${name}`}
-                role="button"
-                tabIndex="0"
-                onClick={() => this.avatarClickHandler(true)}
-              >
-                <Avatar imageUrl={imageUrl} name={name}>
+              <span key="last-menu-item">
+                <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
                   <DropdownMenu
                     visible={this.state.dropdownVisible}
                     callbackCloseFn={this.avatarClickHandler}
@@ -156,18 +150,20 @@ function mapStateToProps(state) {
   const { auth: { authenticated }, common: { modalOpen } } = state;
   const { user } = state.auth;
 
-  const newStateToProps = {
+  const obj = {
     authenticated,
     modalOpen,
-    imageUrl: user.imageUrl || '',
-    name: user.name || '',
+    imageUrl: user ? user.imageUrl : '',
+    name: user ? user.name : '',
   };
 
-  if (state.auth.user && state.auth.user.roles) {
-    newStateToProps.roles = state.auth.user.roles;
+  if (user) {
+    obj.roles = user.roles || '';
+    obj.imageUrl = user.imageUrl || '';
+    obj.name = user.name || '';
   }
 
-  return newStateToProps;
+  return obj;
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, null, {

@@ -18,6 +18,7 @@ class DropdownMenu extends Component {
 
   render() {
     const { children, visible } = this.props;
+
     return (
       <div className={classnames(s.dropdown, visible ? s.active : '')}>
         <ul>{children.map((item) => <li key={shortid.generate()}>{item}</li>)}</ul>

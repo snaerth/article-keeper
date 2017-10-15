@@ -56,18 +56,11 @@ class LoggerTable extends PureComponent {
             rowCount={list.length}
             sort={this.sort}
             rowGetter={({ index }) => list[index]}
-            onRowClick={({ event, index, rowData }) =>
-              onRowClickHandler(event, index, rowData)}
+            onRowClick={({ event, index, rowData }) => onRowClickHandler(event, index, rowData)}
           >
+            <Column className={tableStyles.tableColumn} label="Id" dataKey="_id" width={210} />
             <Column
-              className={tableStyles.tableColumn}
-              label="Id"
-              dataKey="_id"
-              width={210}
-            />
-            <Column
-              cellDataGetter={(columnData) =>
-                formatISODateTime(columnData.rowData.time)}
+              cellDataGetter={(columnData) => formatISODateTime(columnData.rowData.time)}
               className={tableStyles.tableColumn}
               label="Time"
               dataKey="time"
@@ -79,18 +72,8 @@ class LoggerTable extends PureComponent {
               dataKey="level"
               width={80}
             />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Message"
-              dataKey="msg"
-              width={300}
-            />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Name"
-              dataKey="name"
-              width={210}
-            />
+            <Column className={tableStyles.tableColumn} label="Message" dataKey="msg" width={300} />
+            <Column className={tableStyles.tableColumn} label="Name" dataKey="name" width={210} />
           </Table>
         )}
       </AutoSizer>

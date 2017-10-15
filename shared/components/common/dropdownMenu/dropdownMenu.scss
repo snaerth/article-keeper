@@ -4,6 +4,7 @@
   position: relative;
 
   ul {
+    display: none;
     position: absolute;
     right: 0;
     top: 1em;
@@ -12,8 +13,6 @@
     background: $primary-white;
     border-radius: $border-radius;
     transition: all 0.2s ease-in-out;
-    transform: scale3d(0, 0, 0);
-    transform-origin: 100% 0;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
     &::before {
@@ -51,7 +50,7 @@
 
   &.active {
     ul {
-      transform: scale3d(1, 1, 1);
+      display: block;
     }
   }
 }

@@ -5,6 +5,7 @@ import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import formatISODateTime from '../../../utils/date';
 import getUserEmail from '../../../utils/userHelper';
+import SortDirection from '../../../utils/sortDirection';
 import NotifyBox from '../../common/notifyBox';
 import tableStyles from '../../../styles/table.css';
 
@@ -12,8 +13,47 @@ class UsersTable extends PureComponent {
   static propTypes = {
     list: PropTypes.array.isRequired,
     onRowClickHandler: PropTypes.func.isRequired,
+    onSortClickHandler: PropTypes.func.isRequired,
     rowClassName: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      sort: [
+        {
+          sortBy: 'name',
+          sortDirection: 'ASC',
+        },
+        {
+          sortBy: 'email',
+          sortDirection: 'ASC',
+        },
+        {
+          sortBy: 'createdAt',
+          sortDirection: 'ASC',
+        },
+        {
+          sortBy: 'roles',
+          sortDirection: 'ASC',
+        },
+      ],
+    };
+
+    this.sort = this.sort.bind(this);
+  }
+
+  /**
+   * 
+   * 
+   * @param {Object} obj
+   * @param {String} obj.sortBy - column header name
+   * @param {String} obj.sortDirection - sort direction 
+   */
+  sort({ sortBy, sortDirection }) {
+    this.props.onSortClickHandler(sortBy, sortDirection);
+  }
 
   render() {
     const { list, onRowClickHandler, rowClassName } = this.props;
@@ -37,19 +77,14 @@ class UsersTable extends PureComponent {
             headerClassName={tableStyles.tableHeader}
             rowClassName={rowClassName}
             rowCount={list.length}
+            sort={this.sort}
             rowGetter={({ index }) => list[index]}
-            onRowClick={({ event, index, rowData }) =>
-              onRowClickHandler(event, index, rowData)}
+            onRowClick={({ event, index, rowData }) => onRowClickHandler(event, index, rowData)}
           >
             <Column
               cellRenderer={(cellData) => {
                 if (cellData.rowData.thumbnailUrl) {
-                  return (
-                    <img
-                      src={cellData.rowData.thumbnailUrl}
-                      alt={cellData.rowData.name}
-                    />
-                  );
+                  return <img src={cellData.rowData.thumbnailUrl} alt={cellData.rowData.name} />;
                 }
                 return null;
               }}
@@ -57,13 +92,9 @@ class UsersTable extends PureComponent {
               label="Image"
               dataKey="thumbnailUrl"
               width={100}
+              disableSort
             />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Name"
-              dataKey="name"
-              width={250}
-            />
+            <Column className={tableStyles.tableColumn} label="Name" dataKey="name" width={250} />
             <Column
               cellRenderer={(cellData) => {
                 let email = cellData.rowData.email;
@@ -75,7 +106,7 @@ class UsersTable extends PureComponent {
               getUserEmail
               className={tableStyles.tableColumn}
               label="Email"
-              dataKey="thumbnailUrl"
+              dataKey="email"
               width={210}
             />
             <Column
@@ -83,21 +114,16 @@ class UsersTable extends PureComponent {
               label="Id"
               dataKey="_id"
               width={230}
+              disableSort
             />
             <Column
-              cellDataGetter={(columnData) =>
-                formatISODateTime(columnData.rowData.createdAt)}
+              cellDataGetter={(columnData) => formatISODateTime(columnData.rowData.createdAt)}
               className={tableStyles.tableColumn}
               label="Created at"
               dataKey="createdAt"
               width={180}
             />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Roles"
-              dataKey="roles"
-              width={150}
-            />
+            <Column className={tableStyles.tableColumn} label="Roles" dataKey="roles" width={150} />
           </Table>
         )}
       </AutoSizer>

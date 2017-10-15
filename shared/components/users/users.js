@@ -44,6 +44,7 @@ class Users extends Component {
 
     this.rowClassName = this.rowClassName.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
+    this.onSortClickHandler = this.onSortClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
@@ -102,6 +103,16 @@ class Users extends Component {
       currentRowData: rowData,
       modalOpen: true,
     });
+  }
+
+  /**
+   * Sort handler for table sorting
+   * 
+   * @param {String} sortBy 
+   * @param {String} sortDirection 
+   */
+  onSortClickHandler(sortBy, sortDirection) {
+    console.log(sortBy, sortDirection);
   }
 
   /**
@@ -195,6 +206,7 @@ class Users extends Component {
               <UsersTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
+                onSortClickHandler={this.onSortClickHandler}
                 rowClassName={this.rowClassName}
               />
               <Pagination
