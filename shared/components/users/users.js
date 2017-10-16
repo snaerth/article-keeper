@@ -29,7 +29,6 @@ class Users extends Component {
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
     pagination: PropTypes.object.isRequired,
-    search: PropTypes.string,
     change: PropTypes.func,
     reset: PropTypes.func,
   };
