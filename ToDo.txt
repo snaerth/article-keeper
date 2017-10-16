@@ -6,7 +6,8 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - React virtualized setja sort 
+  - Laga pagination
+  - React virtualized setja sort
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Gera menu líkari þessum

@@ -21,6 +21,7 @@ import s from './searchBar.scss';
 
 class SearchBar extends Component {
   static propTypes = {
+    search: PropTypes.string,
     token: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     startDateError: PropTypes.string,
@@ -52,6 +53,19 @@ class SearchBar extends Component {
     this.openModal = this.openModal.bind(this);
     this.submitCallback = this.submitCallback.bind(this);
     this.dateSelectHandler = this.dateSelectHandler.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.formData !== this.props.formData) {
+      const { startDate, endDate } = this.state;
+      const { search } = this.props;
+      let formData = nextProps.formData;
+      if (search) {
+        formData = { limit: 100, page: 1 };
+      }
+
+      this.prepareAndSumbit({ search, startDate, endDate }, formData);
+    }
   }
 
   /**
@@ -284,20 +298,20 @@ function mapStateToProps(state) {
   const { defaultSearch } = state.form;
   const { auth } = state;
   const token = auth && auth.user ? auth.user.token : '';
-  const { search } = state.form;
   const startDateError =
     defaultSearch &&
     defaultSearch.syncErrors &&
     defaultSearch.syncErrors.startDate
       ? defaultSearch.syncErrors.startDate
       : '';
+  const search =
+    defaultSearch && defaultSearch.values && defaultSearch.values.search
+      ? defaultSearch.values.search
+      : '';
 
   return {
     token,
-    search:
-      search && search.values && search.values.search
-        ? search.values.search
-        : '',
+    search,
     startDateError,
   };
 }

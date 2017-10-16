@@ -33,7 +33,7 @@ const schema = {
 const logSchema = new Schema(schema);
 
 mongoosePaginate.paginate.options = {
-  limit: 50,
+  limit: 100,
 };
 
 // Add mongoose pagination plugin to schema

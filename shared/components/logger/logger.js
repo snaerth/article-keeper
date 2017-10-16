@@ -11,6 +11,7 @@ import Loader from '../common/loader';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
+import Card from '../common/card';
 // Utils
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
@@ -26,7 +27,6 @@ class Logger extends Component {
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string,
     pagination: PropTypes.object.isRequired,
-    search: PropTypes.string,
     change: PropTypes.func,
     reset: PropTypes.func,
   };
@@ -37,10 +37,11 @@ class Logger extends Component {
     this.state = {
       modalOpen: false,
       currentRowData: null,
-      formData: { limit: 50, page: 1 },
+      formData: { limit: 100, page: 1 },
     };
 
     this.rowClassName = this.rowClassName.bind(this);
+    this.onSortClickHandler = this.onSortClickHandler.bind(this);
     this.onRowClickHandler = this.onRowClickHandler.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.paginateHandler = this.paginateHandler.bind(this);
@@ -69,6 +70,16 @@ class Logger extends Component {
       return tableStyles.headerRow;
     }
     return index % 2 === 0 ? tableStyles.tableEvenRow : tableStyles.tableOddRow;
+  }
+
+  /**
+   * Sort handler for table sorting
+   *
+   * @param {String} sortBy
+   * @param {String} sortDirection
+   */
+  onSortClickHandler(sortBy, sortDirection) {
+    console.log(sortBy, sortDirection);
   }
 
   /**
@@ -104,7 +115,6 @@ class Logger extends Component {
     const formData = { ...this.state.formData };
     formData.page = data.selected + 1;
     this.setState(() => ({ formData }));
-    this.prepareAndSumbit(this.props.search, formData);
   }
 
   /**
@@ -147,7 +157,7 @@ class Logger extends Component {
     const { currentRowData, formData, modalOpen } = this.state;
 
     return (
-      <div>
+      <Card>
         {error ? this.renderError(error) : null}
         <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting logs...</Loader> : null}
@@ -165,6 +175,7 @@ class Logger extends Component {
               <LoggerTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
+                onSortClickHandler={this.onSortClickHandler}
                 rowClassName={this.rowClassName}
               />
               <Pagination
@@ -189,7 +200,7 @@ class Logger extends Component {
             />
           ) : null}
         </ModalWrapper>
-      </div>
+      </Card>
     );
   }
 }

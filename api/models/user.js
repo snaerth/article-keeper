@@ -92,7 +92,7 @@ const userSchema = new Schema(schema);
 
 // Pagination
 mongoosePaginate.paginate.options = {
-  limit: 50,
+  limit: 100,
 };
 
 // Add mongoose pagination plugin to schema

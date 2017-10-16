@@ -12,6 +12,8 @@ import Loader from '../common/loader';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
+import Card from '../common/card';
+
 // Utils
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
@@ -38,7 +40,7 @@ class Users extends Component {
     this.state = {
       modalOpen: false,
       currentRowData: null,
-      formData: { limit: 50, page: 1 },
+      formData: { limit: 3, page: 1 },
       activeView: 'view',
     };
 
@@ -107,9 +109,9 @@ class Users extends Component {
 
   /**
    * Sort handler for table sorting
-   * 
-   * @param {String} sortBy 
-   * @param {String} sortDirection 
+   *
+   * @param {String} sortBy
+   * @param {String} sortDirection
    */
   onSortClickHandler(sortBy, sortDirection) {
     console.log(sortBy, sortDirection);
@@ -133,10 +135,8 @@ class Users extends Component {
    */
   paginateHandler(data) {
     const formData = { ...this.state.formData };
-    const { search } = this.props;
     formData.page = data.selected + 1;
     this.setState(() => ({ formData }));
-    this.prepareAndSumbit({ search }, formData);
   }
 
   /**
@@ -180,7 +180,7 @@ class Users extends Component {
     const { activeView, modalOpen, formData } = this.state;
 
     return (
-      <div>
+      <Card>
         {error ? this.renderError(error) : null}
         <div className={s.minHeight200}>
           {isFetching ? <Loader absolute>Getting users...</Loader> : null}
@@ -232,7 +232,7 @@ class Users extends Component {
             />
           ) : null}
         </ModalWrapper>
-      </div>
+      </Card>
     );
   }
 }
