@@ -21,6 +21,7 @@ import s from './searchBar.scss';
 
 class SearchBar extends Component {
   static propTypes = {
+    sortBy: PropTypes.object,
     search: PropTypes.string,
     token: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -56,12 +57,17 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.formData !== this.props.formData) {
+    if (nextProps.formData !== this.props.formData || nextProps.sortBy !== this.props.sortBy) {
       const { startDate, endDate } = this.state;
       const { search } = this.props;
       let formData = nextProps.formData;
       if (search) {
         formData = { limit: 100, page: 1 };
+      }
+
+      if (nextProps.sortBy) {
+        const sortBy = nextProps.sortBy;
+        formData = { ...formData, ...sortBy };
       }
 
       this.prepareAndSumbit({ search, startDate, endDate }, formData);
@@ -144,7 +150,11 @@ class SearchBar extends Component {
   /**
    * Prepare data and submit request
    *
-   * @param {String} search
+   * @param {Object} obj
+   * @param {String} obj.search
+   * @param {String} obj.startDate
+   * @param {String} obj.endDate
+   * @param {Object} formData
    */
   prepareAndSumbit({ search, startDate, endDate }, formData) {
     const { get, query, isFetchingData, token } = this.props;
@@ -230,11 +240,7 @@ class SearchBar extends Component {
               </div>
               <div className={s.date}>
                 {startDateError ? (
-                  <ErrorText
-                    key={'startDate'}
-                    id={'startDate'}
-                    error={startDateError}
-                  />
+                  <ErrorText key={'startDate'} id={'startDate'} error={startDateError} />
                 ) : null}
               </div>
             </div>
@@ -299,9 +305,7 @@ function mapStateToProps(state) {
   const { auth } = state;
   const token = auth && auth.user ? auth.user.token : '';
   const startDateError =
-    defaultSearch &&
-    defaultSearch.syncErrors &&
-    defaultSearch.syncErrors.startDate
+    defaultSearch && defaultSearch.syncErrors && defaultSearch.syncErrors.startDate
       ? defaultSearch.syncErrors.startDate
       : '';
   const search =

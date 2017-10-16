@@ -37,11 +37,9 @@ class UsersTable extends PureComponent {
   sort({ sortBy, sortDirection }) {
     const { sort } = this.state;
     const result = sortHelper(sort, sortBy, sortDirection);
+
     // Callback to parent component
-    this.props.onSortClickHandler(
-      result.currentSort.sortBy,
-      result.currentSort.sortDirection,
-    );
+    this.props.onSortClickHandler(result.currentSort.sortBy, result.currentSort.sortDirection);
     this.setState({ sort: result.sort });
   }
 
@@ -69,18 +67,12 @@ class UsersTable extends PureComponent {
             rowCount={list.length}
             sort={this.sort}
             rowGetter={({ index }) => list[index]}
-            onRowClick={({ event, index, rowData }) =>
-              onRowClickHandler(event, index, rowData)}
+            onRowClick={({ event, index, rowData }) => onRowClickHandler(event, index, rowData)}
           >
             <Column
               cellRenderer={(cellData) => {
                 if (cellData.rowData.thumbnailUrl) {
-                  return (
-                    <img
-                      src={cellData.rowData.thumbnailUrl}
-                      alt={cellData.rowData.name}
-                    />
-                  );
+                  return <img src={cellData.rowData.thumbnailUrl} alt={cellData.rowData.name} />;
                 }
                 return null;
               }}
@@ -90,12 +82,7 @@ class UsersTable extends PureComponent {
               width={100}
               disableSort
             />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Name"
-              dataKey="name"
-              width={250}
-            />
+            <Column className={tableStyles.tableColumn} label="Name" dataKey="name" width={250} />
             <Column
               cellRenderer={(cellData) => {
                 let email = cellData.rowData.email;
@@ -118,19 +105,13 @@ class UsersTable extends PureComponent {
               disableSort
             />
             <Column
-              cellDataGetter={(columnData) =>
-                formatISODateTime(columnData.rowData.createdAt)}
+              cellDataGetter={(columnData) => formatISODateTime(columnData.rowData.createdAt)}
               className={tableStyles.tableColumn}
               label="Created at"
               dataKey="createdAt"
               width={180}
             />
-            <Column
-              className={tableStyles.tableColumn}
-              label="Roles"
-              dataKey="roles"
-              width={150}
-            />
+            <Column className={tableStyles.tableColumn} label="Roles" dataKey="roles" width={150} />
           </Table>
         )}
       </AutoSizer>

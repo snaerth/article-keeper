@@ -13,7 +13,6 @@ import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
 import Card from '../common/card';
-
 // Utils
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
@@ -40,6 +39,7 @@ class Users extends Component {
       modalOpen: false,
       currentRowData: null,
       formData: { limit: 3, page: 1 },
+      sortBy: null,
       activeView: 'view',
     };
 
@@ -113,7 +113,11 @@ class Users extends Component {
    * @param {String} sortDirection
    */
   onSortClickHandler(sortBy, sortDirection) {
-    console.log(sortBy, sortDirection);
+    const currentSortBy = {};
+    currentSortBy[sortBy] = sortDirection;
+    this.setState({
+      sortBy: currentSortBy,
+    });
   }
 
   /**
@@ -176,7 +180,7 @@ class Users extends Component {
       actions: { getUsersBySearchQuery, getUsers, isFetchingData },
     } = this.props;
 
-    const { activeView, modalOpen, formData } = this.state;
+    const { activeView, modalOpen, formData, sortBy } = this.state;
 
     return (
       <Card>
@@ -193,6 +197,7 @@ class Users extends Component {
                 get={getUsers}
                 isFetchingData={isFetchingData}
                 formData={formData}
+                sortBy={sortBy}
               >
                 <Button
                   type="button"
