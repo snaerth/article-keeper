@@ -76,6 +76,7 @@ class LoggerTable extends PureComponent {
               label="Id"
               dataKey="_id"
               width={210}
+              disableSort
             />
             <Column
               cellDataGetter={(columnData) =>

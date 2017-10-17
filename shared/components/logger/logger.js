@@ -79,7 +79,11 @@ class Logger extends Component {
    * @param {String} sortDirection
    */
   onSortClickHandler(sortBy, sortDirection) {
-    console.log(sortBy, sortDirection);
+    const currentSortBy = {};
+    currentSortBy[sortBy] = sortDirection;
+    this.setState({
+      sortBy: currentSortBy,
+    });
   }
 
   /**
@@ -154,7 +158,7 @@ class Logger extends Component {
       change,
       actions: { getLogsBySearchQuery, getLogs, isFetchingData },
     } = this.props;
-    const { currentRowData, formData, modalOpen } = this.state;
+    const { currentRowData, formData, modalOpen, sortBy } = this.state;
 
     return (
       <Card>
@@ -171,6 +175,7 @@ class Logger extends Component {
                 get={getLogs}
                 isFetchingData={isFetchingData}
                 formData={formData}
+                sortBy={sortBy}
               />
               <LoggerTable
                 list={data.docs}

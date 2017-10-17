@@ -25,20 +25,24 @@ export default SortDirection;
  * @returns {Object} { sort:Array, currentSort:Object}
  */
 export function sortHelper(sort, sortBy, sortDirection) {
-  const currentSort = { sortBy, sortDirection };
+  const currentSort = { sortBy, sortDirection: sortDirection.toLowerCase() };
 
   if (sort.length !== 0) {
-    for (let i = 0; i < sort.length; i++) {
-      if (sort[i].sortBy === sortBy) {
-        // Toggle sort direction
-        sort[i].sortDirection =
-          sort[i].sortDirection === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC;
-        // Set
-        currentSort.sortBy = sortBy;
-        currentSort.sortDirection = sort[i].sortDirection;
-        break;
-      }
+    const i = sort.findIndex((item) => item.sortBy === sortBy);
+
+    if (i !== -1) {
+      currentSort.sortDirection =
+        sort[i].sortDirection === SortDirection.ASC
+          ? SortDirection.DESC.toLowerCase()
+          : SortDirection.ASC.toLowerCase();
+
+      sort.splice(i, 1);
+      sort.push(currentSort);
+    } else {
+      sort.push({ sortBy, sortDirection });
     }
+  } else {
+    sort.push(currentSort);
   }
 
   return {
