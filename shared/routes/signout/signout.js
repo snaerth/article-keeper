@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import styles from './signout.scss';
 import Button from '../../components/common/button';
 import Container from '../../components/common/container';
-import Banner from '../../components/common/banner';
 import * as actionCreators from '../../components/auth/actions';
 
 /**
