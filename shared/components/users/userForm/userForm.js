@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { reduxForm, Field } from 'redux-form';
+import InfiniteCalendar from 'react-infinite-calendar';
 import * as actionCreators from '../actions';
 
 // Components
@@ -15,11 +16,13 @@ import Button from '../../common/button';
 import NotifyBox from '../../common/notifyBox';
 import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
+import ModalWrapper from '../../common/modal';
 // Utils
 import validateEmail, { isPhoneNumber } from './../../../utils/validate';
 import { formDataToQueryString } from './../../../utils/urlHelpers';
 import getUserEmail from './../../../utils/userHelper';
 import { formatInputDate } from './../../../utils/date';
+import infiniteCalendarTheme from './../../../utils/themes';
 // Svg
 import Person from '../../../assets/images/person.svg';
 import Email from '../../../assets/images/email.svg';
@@ -43,13 +46,59 @@ class UserForm extends Component {
     user: PropTypes.object,
     initialValues: PropTypes.object,
     changeViewHandler: PropTypes.func.isRequired,
+    change: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
+    this.minDate = new Date(1930, 1, 1);
+
+    this.state = {
+      modalOpen: false,
+      dateOfBirth: null,
+    };
+
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.dateSelectHandler = this.dateSelectHandler.bind(this);
     this.onDrop = this.onDrop.bind(this);
+  }
+
+  /**
+   * Set state to close modal and reset current row data
+   */
+  closeModal() {
+    this.setState(() => ({
+      modalOpen: false,
+    }));
+  }
+
+  /**
+   * Sets state property modalShowDate to true
+   */
+  openModal() {
+    this.setState(() => ({
+      modalOpen: true,
+    }));
+  }
+
+  /**
+   * On date select handler. Sets state for date
+   *
+   * @param {Date} date
+   */
+  dateSelectHandler(date) {
+    if (!date) return Error('No date returned from DatePicker');
+    const { change } = this.props;
+
+    // SetTimeout delay is because of animation header is laggy
+    setTimeout(() => {
+      const dateOfBirth = formatInputDate(date);
+      this.setState({ dateOfBirth });
+      change('dateOfBirth', dateOfBirth);
+    }, 300);
   }
 
   /**
@@ -159,6 +208,8 @@ class UserForm extends Component {
       user,
     } = this.props;
 
+    const { modalOpen } = this.state;
+
     return (
       <Container>
         {isFetchingUser ? (
@@ -227,7 +278,7 @@ class UserForm extends Component {
                     type="date"
                     label="Date of birth"
                   >
-                    <Calendar />
+                    <Calendar onClick={() => this.openModal()} />
                   </Field>
                 </fieldset>
               </div>
@@ -286,6 +337,24 @@ class UserForm extends Component {
             </div>
           </form>
         </div>
+        <ModalWrapper
+          className="mv360"
+          isOpen={modalOpen}
+          onRequestClose={this.closeModal}
+          contentLabel={'User modal'}
+          exitIconClassName="white"
+        >
+          {modalOpen ? (
+            <InfiniteCalendar
+              width={360}
+              height={400}
+              theme={infiniteCalendarTheme()}
+              min={this.minDate}
+              minDate={this.minDate}
+              onSelect={this.dateSelectHandler}
+            />
+          ) : null}
+        </ModalWrapper>
       </Container>
     );
   }
