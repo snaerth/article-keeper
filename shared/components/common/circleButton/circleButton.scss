@@ -1,0 +1,31 @@
+@import '~styles/variables';
+
+.circle {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 98;
+  padding: 0;
+  margin: 0 auto;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: $primary-color;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
+  transition: 0.15s;
+
+  &:hover,
+  &:focus {
+    background: darken($primary-color, 15%);
+    box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.3);
+    transform: translate3d(0, -5px, 0);
+  }
+
+  svg {
+    fill: $primary-white;
+  }
+}

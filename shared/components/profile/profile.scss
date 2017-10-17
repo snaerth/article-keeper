@@ -1,17 +1,60 @@
 @import '~styles/variables';
+@import '~styles/mixins';
 
 .grid {
   display: grid;
   grid-template-columns: 30% 70%;
   grid-template-rows: 100%;
   grid-column-gap: 1em;
+
+  @include viewport(handset) {
+    grid-template-columns: 100%;
+    grid-row-gap: 1em;
+  }
+
+  @include viewport(tablet) {
+    grid-template-columns: 40% 60%;
+    grid-column-gap: 1em;
+  }
+
+  @include viewport(desktop) {
+    grid-template-columns: 30% 70%;
+    grid-column-gap: 2em;
+  }
+}
+
+.row {
+  display: grid;
+  margin-bottom: 5px;
+  font-size: 14px;
+  grid-template-columns: 100px 1fr;
+
+  > div:nth-child(1) {
+    font-weight: bold;
+  }
+
+  @include viewport(tablet) {
+    grid-template-columns: 150px 1fr;
+
+    > div:nth-child(1) {
+      font-size: 16px;
+    }
+
+    > div:nth-child(2) {
+      font-size: 14px;
+    }
+  }
 }
 
 .card {
   position: relative;
-  padding: 2em;
+  padding: 1em;
   background: $primary-card;
   border: $border solid $border-color;
+
+  @include viewport(tablet) {
+    padding: 2em;
+  }
 }
 
 .profileInformation {
@@ -24,7 +67,7 @@
 
 .profileImage {
   display: inline-block;
-  min-width: 280px;
+  width: 100%;
   cursor: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE1LjUgMTRoLS43OWwtLjI4LS4yN0MxNS40MSAxMi41OSAxNiAxMS4xMSAxNiA5LjUgMTYgNS45MSAxMy4wOSAzIDkuNSAzUzMgNS45MSAzIDkuNSA1LjkxIDE2IDkuNSAxNmMxLjYxIDAgMy4wOS0uNTkgNC4yMy0xLjU3bC4yNy4yOHYuNzlsNSA0Ljk5TDIwLjQ5IDE5bC00Ljk5LTV6bS02IDBDNy4wMSAxNCA1IDExLjk5IDUgOS41UzcuMDEgNSA5LjUgNSAxNCA3LjAxIDE0IDkuNSAxMS45OSAxNCA5LjUgMTR6Ii8+ICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMFYweiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTIgMTBoLTJ2Mkg5di0ySDdWOWgyVjdoMXYyaDJ2MXoiLz48L3N2Zz4='),
     auto;
   border: $border solid $border-color;
@@ -45,15 +88,13 @@
   fill: $primary-grey;
 }
 
-@media screen and (max-width: $max-960) {
-  .grid {
-    grid-template-columns: 40% 60%;
-  }
-}
+.editButton {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
 
-@media screen and (max-width: $max-768) {
-  .grid {
-    grid-template-columns: 100%;
-    grid-row-gap: 1em;
+  @include viewport(tablet) {
+    right: 50px;
+    bottom: 50px;
   }
 }

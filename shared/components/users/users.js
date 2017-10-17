@@ -38,7 +38,7 @@ class Users extends Component {
     this.state = {
       modalOpen: false,
       currentRowData: null,
-      formData: { limit: 3, page: 1 },
+      formData: { limit: 100, page: 1 },
       sortBy: null,
       activeView: 'view',
     };
