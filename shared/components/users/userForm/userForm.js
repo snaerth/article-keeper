@@ -137,6 +137,10 @@ class UserForm extends Component {
           await actions.updateUser(token, _id, data, formData); // eslint-disable-line
           break;
 
+        case 'profile':
+          await actions.updateUser(token, _id, data, formData, 'profile'); // eslint-disable-line
+          break;
+
         default:
           await actions.createUser(token, data, formData);
           break;
@@ -196,6 +200,18 @@ class UserForm extends Component {
     );
   }
 
+  /**
+   * Checks type and returns string
+   * 
+   * @param {String} type 
+   * @returns {String}
+   */
+  getButtonText(type) {
+    if (type === 'edit') return 'Edit';
+    if (type === 'create') return 'Create';
+    if (type === 'profile') return 'Update';
+  }
+
   render() {
     const {
       handleSubmit,
@@ -207,13 +223,15 @@ class UserForm extends Component {
       type,
       user,
     } = this.props;
-
     const { modalOpen } = this.state;
+    const buttonText = this.getButtonText(type);
 
     return (
       <Container>
         {isFetchingUser ? (
-          <Loader absolute>{type === 'edit' ? 'Updating user' : 'Create new user'}</Loader>
+          <Loader absolute>
+            {type === 'edit' || type === 'profile' ? 'Updating user' : 'Create new user'}
+          </Loader>
         ) : null}
         <div
           className={isFetchingUser ? classnames(s.formContainer, 'almostHidden') : s.formContainer}
@@ -328,11 +346,7 @@ class UserForm extends Component {
                   color="grey"
                   onClick={() => changeViewHandler(type === 'edit' ? 0 : null)}
                 />
-                <Button
-                  type="submit"
-                  text={type === 'edit' ? 'Edit' : 'Create'}
-                  ariaLabel={type === 'edit' ? 'Edit user' : 'Create user'}
-                />
+                <Button type="submit" text={buttonText} ariaLabel={`${buttonText} user`} />
               </div>
             </div>
           </form>
@@ -433,8 +447,11 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
  * @returns {Object}
  */
 function mapStateToProps(state, ownProps) {
-  const { errorUser, infoUser, image, isFetchingUser, user } = state.users;
-  const token = state.auth && state.auth.user ? state.auth.user.token : '';
+  const { type } = ownProps;
+  const { errorUser, infoUser, image, isFetchingUser } = state.users;
+  let user = null;
+  user = type === 'profile' ? state.auth.user : state.users.user;
+  const token = user.token;
   const newProps = {
     image,
     isFetchingUser,
@@ -443,7 +460,7 @@ function mapStateToProps(state, ownProps) {
     infoUser,
   };
 
-  if (user && ownProps.type !== 'create') {
+  if (user && type !== 'create') {
     newProps.user = user;
 
     const { name, phone, dateOfBirth, roles, imageUrl } = user;

@@ -72,15 +72,12 @@ class UserModal extends Component {
           />
         );
 
-      case 'create':
+      case 'profile':
       case 'edit':
-        return (
-          <UserForm
-            type={activeView}
-            user={activeView === 'edit' ? data : {}}
-            changeViewHandler={this.changeView}
-          />
-        );
+        return <UserForm type={activeView} user={data} changeViewHandler={this.changeView} />;
+
+      case 'create':
+        return <UserForm type={activeView} user={{}} changeViewHandler={this.changeView} />;
 
       default:
         return <ViewUser data={data} changeViewHandler={this.changeView} />;
@@ -129,7 +126,12 @@ class UserModal extends Component {
  * @param {Object} ownProps - Components own props
  * @returns {Object}
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  if (ownProps.activeView === 'profile') {
+    const { user } = state.auth;
+    return { data: user, name: user.name };
+  }
+
   const { user } = state.users;
   if (user) {
     return { data: user, name: user.name };

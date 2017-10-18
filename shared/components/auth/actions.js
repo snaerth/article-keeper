@@ -146,11 +146,7 @@ export function addUserImage(formData, token) {
     };
 
     try {
-      const response = await axios.post(
-        '/api/users/userimage',
-        formData,
-        config,
-      );
+      const response = await axios.post('/api/users/userimage', formData, config);
       // Dispatch USER_UPDATED action to authReducer
       dispatch({ type: USER_UPDATED, payload: response.data });
       // Save token to localStorage

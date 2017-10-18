@@ -115,13 +115,7 @@ export function isSuperUser(req, res, next) {
  * @returns {Object} sort
  * @author Snær Seljan Þóroddsson
  */
-function addToPaginationObject(
-  pagination,
-  name,
-  email,
-  dateOfBirth,
-  createdAt,
-) {
+function addToPaginationObject(pagination, name, email, dateOfBirth, createdAt) {
   const sort = {};
   if (sortVals.includes(name)) sort.name = name;
   if (sortVals.includes(email)) sort.email = email;
@@ -244,11 +238,9 @@ export async function uploadUserImage(req, res) {
       };
 
       // Find user by email and populate user props
-      const updatedUser = await User.findOneAndUpdate(
-        { email },
-        { $set },
-        { new: true },
-      ).select(select);
+      const updatedUser = await User.findOneAndUpdate({ email }, { $set }, { new: true }).select(
+        select,
+      );
 
       // Send response object with and user information
       return res.status(200).json(updatedUser);
@@ -435,13 +427,8 @@ export async function deleteUser(req, res) {
     const user = await User.findByIdAndRemove(id);
     if (user) {
       // Log in db
-      log.info(
-        { req, res, info: `User ${user.email} deleted` },
-        `User ${user.email} deleted`,
-      );
-      return res
-        .status(200)
-        .send({ success: `User ${user.email} successfully deleted` });
+      log.info({ req, res, info: `User ${user.email} deleted` }, `User ${user.email} deleted`);
+      return res.status(200).send({ success: `User ${user.email} successfully deleted` });
     }
 
     return res.status(404).send(`User ${id} not found`);
@@ -527,11 +514,7 @@ export async function getUser(req, res) {
   pagination.select = select;
 
   try {
-    const searchQuery = await prepareMongooseDataBaseQuery(
-      query,
-      startDate,
-      endDate,
-    );
+    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
     // Fetch user by search query from database
     const result = await User.paginate(searchQuery, pagination);
     return res.status(200).send(result);
@@ -550,17 +533,7 @@ export async function getUser(req, res) {
  * @author Snær Seljan Þóroddsson
  */
 export async function getUsers(req, res) {
-  const {
-    limit,
-    name,
-    email,
-    dateOfBirth,
-    createdAt,
-    page,
-    query,
-    startDate,
-    endDate,
-  } = req.query;
+  const { limit, name, email, dateOfBirth, createdAt, page, query, startDate, endDate } = req.query;
 
   // Get default pagination object
   let pagination = createPaginationObject(page, limit);
@@ -570,11 +543,7 @@ export async function getUsers(req, res) {
   pagination.select = select;
 
   try {
-    const searchQuery = await prepareMongooseDataBaseQuery(
-      query,
-      startDate,
-      endDate,
-    );
+    const searchQuery = await prepareMongooseDataBaseQuery(query, startDate, endDate);
     // Fetch user by search query from database
     // Fetch Users from database
     const result = await User.paginate(searchQuery, pagination);
@@ -630,17 +599,20 @@ export async function updateUser(req, res) {
       $set.updatedAt = new Date();
 
       // Find user by email and populate user props
-      const updatedUser = await User.findOneAndUpdate(
-        { $or },
-        { $set },
-        { new: true },
-      ).select(select);
+      const updatedUser = await User.findOneAndUpdate({ $or }, { $set }, { new: true });
 
       // Log in db
-      log.info(
-        { req, res, info: updatedUser },
-        `User ${updatedUser.email} updated in db`,
-      );
+      log.info({ req, res, info: updatedUser }, `User ${updatedUser.email} updated in db`);
+
+      if (req.user.email === updatedUser.email) {
+        const test = new User(updatedUser); // ToDO finish this
+        const user = removeUserProps(test); // eslint-disable-line
+        // Send response object with user token and user information
+        return res.status(200).json({
+          token: tokenForUser(updatedUser),
+          ...user,
+        });
+      }
 
       return res.status(200).json(updatedUser);
     } catch (err) {

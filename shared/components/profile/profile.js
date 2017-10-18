@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+// Components
 import ModalWrapper from '../common/modal';
 import ImageBlurWrapper from '../common/imageBlurWrapper';
 import CircleButton from '../common/circleButton';
 import Tags from '../common/tags';
+import UsersModal from '../users/userModal';
 // Utils
 import formatISODateTime, { formatDateWithMonthName } from '../../utils/date';
 // Svg
@@ -99,15 +101,7 @@ class Profile extends Component {
    * @returns {JSX}
    */
   renderAdditonalInformation(user) {
-    const {
-      dateOfBirth,
-      phone,
-      email,
-      roles,
-      createdAt,
-      updatedAt,
-      name,
-    } = user;
+    const { dateOfBirth, phone, email, roles, createdAt, updatedAt, name } = user;
 
     return (
       <div className={classnames(s.card, s.profileInformation)}>
@@ -173,11 +167,7 @@ class Profile extends Component {
         <div className={s.grid}>
           <div className={classnames(s.card, s.cardLeft)}>
             {imageUrl ? (
-              <div
-                onClick={() => this.openModal('image')}
-                role="button"
-                tabIndex={0}
-              >
+              <div onClick={() => this.openModal('image')} role="button" tabIndex={0}>
                 <img src={imageUrl} alt={name} className={s.profileImage} />
               </div>
             ) : (
@@ -193,18 +183,20 @@ class Profile extends Component {
           </CircleButton>
         </div>
         <ModalWrapper
+          className={editUserModalActive ? 'mw992' : ''}
           isOpen={modalIsOpen}
           onRequestClose={this.closeModal}
-          contentLabel="Image Modal"
+          contentLabel="Profile modal"
+          exitIconClassName={editUserModalActive ? 'white' : ''}
         >
-          {modalIsOpen && imageModalActive ? (
-            <ImageBlurWrapper
-              src={imageUrl}
-              thumbnail={thumbnailUrl}
-              alt={name}
-            />
-          ) : null}
-          {modalIsOpen && editUserModalActive ? 'Test' : null}
+          <div>
+            {modalIsOpen && imageModalActive ? (
+              <ImageBlurWrapper src={imageUrl} thumbnail={thumbnailUrl} alt={name} />
+            ) : null}
+            {modalIsOpen && editUserModalActive ? (
+              <UsersModal activeView="profile" closeModalHandler={this.closeModal} />
+            ) : null}
+          </div>
         </ModalWrapper>
       </div>
     );

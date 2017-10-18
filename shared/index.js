@@ -72,7 +72,7 @@ class App extends Component {
             <Route path="/about" component={About} />
             <Route path="/signout" component={Signout} />
             <Route path="/reset/:token" component={ResetPassword} />
-            <Route path="/profile" component={Profile} />
+            <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
             <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
             <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
             <Route component={NotFound} />

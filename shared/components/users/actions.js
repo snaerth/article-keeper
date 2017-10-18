@@ -17,6 +17,7 @@ import {
   SET_USER,
   UNSET_SET_USER,
 } from './types';
+import { USER_UPDATED } from '../auth/types';
 import { errorHelper } from '../../common/actions';
 
 /**
@@ -176,8 +177,9 @@ export function deleteUserById(token, id) {
  * @param {String} id
  * @param {Object} data - Form post data
  * @param {Object} imageFormData - Image formData
+ * @param {String=} type
  */
-export function updateUser(token, id, data, imageFormData) {
+export function updateUser(token, id, data, imageFormData, type) {
   return async (dispatch) => {
     try {
       const url = `/api/users/${id}`;
@@ -192,14 +194,26 @@ export function updateUser(token, id, data, imageFormData) {
 
       if (imageFormData) {
         // Update userimage
-        const imageRes = await axios.post(
-          '/api/users/userimage',
-          imageFormData,
-          config,
-        );
+        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
         dispatch({ type: UPDATE_USER_SUCCESS, payload: imageRes.data });
+
+        if (type === 'profile') {
+          // Save token to localStorage
+          localStorage.setItem('user', {
+            user: JSON.stringify(imageRes.data),
+          });
+          dispatch({ type: USER_UPDATED, payload: { user: imageRes.data } });
+        }
       } else {
-        dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
+        dispatch({ type: UPDATE_USER_SUCCESS, payload: { user: res.data } });
+
+        if (type === 'profile') {
+          // Save token to localStorage
+          localStorage.setItem('user', {
+            user: JSON.stringify(res.data),
+          });
+          dispatch({ type: USER_UPDATED, payload: res.data });
+        }
       }
 
       return Promise.resolve('User updated');
@@ -232,11 +246,7 @@ export function createUser(token, data, imageFormData) {
 
       if (imageFormData) {
         // Upload userimage
-        const imageRes = await axios.post(
-          '/api/users/userimage',
-          imageFormData,
-          config,
-        );
+        const imageRes = await axios.post('/api/users/userimage', imageFormData, config);
         dispatch({ type: CREATE_USER_SUCCESS, payload: imageRes.data });
       } else {
         dispatch({ type: CREATE_USER_SUCCESS, payload: res.data });

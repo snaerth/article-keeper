@@ -6,6 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - Finish updateUser in controllers
   - Setja edit profile button virkni
   - Gera menu
   - Add info logs to controllers

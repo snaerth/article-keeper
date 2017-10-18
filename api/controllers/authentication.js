@@ -25,16 +25,12 @@ const applicationUrl = `${PROTOCOL}://${HOST}:${PORT}`;
  */
 export function removeUserProps(user, moreProps) {
   let delProps = ['__v', 'createdAt', 'password'];
-  delProps =
-    moreProps && moreProps.length ? delProps.concat(moreProps) : delProps;
+  delProps = moreProps && moreProps.length ? delProps.concat(moreProps) : delProps;
 
   const newUser = user.toObject();
 
   for (let i = 0; i < delProps.length; i++) {
-    const hasBarProperty = Object.prototype.hasOwnProperty.call(
-      newUser,
-      delProps[i],
-    );
+    const hasBarProperty = Object.prototype.hasOwnProperty.call(newUser, delProps[i]);
 
     if (hasBarProperty) {
       delete newUser[delProps[i]];
@@ -128,14 +124,7 @@ export function signOut(req, res) {
  * @returns {String} error
  * @author Snær Seljan Þóroddsson
  */
-export function validateSignup({
-  email,
-  password,
-  newPassword,
-  name,
-  dateOfBirth,
-  phone,
-}) {
+export function validateSignup({ email, password, newPassword, name, dateOfBirth, phone }) {
   // Check if email exist in request
   if (!email) {
     return 'You must provide email';
@@ -347,14 +336,10 @@ export async function forgotPassword(req, res) {
     const data = await sendResetPasswordEmail({ url, email, name });
     return res
       .status(200)
-      .send(
-        `An e-mail has been sent to ${data.email} with further instructions.`,
-      );
+      .send(`An e-mail has been sent to ${data.email} with further instructions.`);
   } catch (err) {
     log.error({ req, res, err }, 'Error in forgot password');
-    return res
-      .status(550)
-      .send({ error: "Coundn't reset password at this time.", err });
+    return res.status(550).send({ error: "Coundn't reset password at this time.", err });
   }
 }
 
@@ -375,15 +360,11 @@ export async function resetPassword(req, res) {
     try {
       const user = await updateUserPassword({ token, password });
       log.info({ req, res, info: user }, `Password updated for ${user.email}`);
-      return res.send(
-        `Success! Your password has been changed for ${user.email}.`,
-      );
+      return res.send(`Success! Your password has been changed for ${user.email}.`);
     } catch (err) {
       log.error({ req, res, err }, 'Password is invalid or token has expired.');
 
-      return res
-        .status(200)
-        .send({ error: 'Password is invalid or token has expired.' });
+      return res.status(200).send({ error: 'Password is invalid or token has expired.' });
     }
   } else {
     return res.status(200).send({ error: 'Token and password are required' });
