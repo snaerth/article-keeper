@@ -217,6 +217,8 @@ export async function signup(req, res) {
       const data = await saveUser(user);
       // Remove unwanted props for client
       const newUser = removeUserProps(user);
+      // Log signup
+      log.info({ req, res, info: newUser }, `User ${email} signed up`);
       // Send response object with user token and user information
       return res.status(200).json({
         token: tokenForUser(data),
@@ -243,19 +245,23 @@ export async function signup(req, res) {
 export function signin(req, res) {
   const user = req.user;
   let data = null;
+  let userObj = null;
 
   if (user) {
-    const userObject = removeUserProps(user);
+    userObj = removeUserProps(user);
 
     data = {
       token: tokenForUser(user),
-      ...userObject,
+      ...userObj,
     };
 
     if (user.roles.includes('admin')) {
       data.role = 'admin';
     }
   }
+
+  // Log signin
+  log.info({ req, res, info: userObj }, `User ${userObj.email} logged in`);
 
   return res.status(200).json(data);
 }

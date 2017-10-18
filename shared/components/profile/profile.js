@@ -27,18 +27,38 @@ class Profile extends Component {
 
     this.state = {
       modalIsOpen: false,
+      imageModalActive: false,
+      editUserModalActive: false,
       focused: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  /**
+   * Changes state and opens modal
+   *
+   * @param {String} type
+   */
+  openModal(type) {
+    if (type === 'image') {
+      this.setState({ modalIsOpen: true, imageModalActive: true });
+    }
+
+    if (type === 'edituser') {
+      this.setState({ modalIsOpen: true, editUserModalActive: true });
+    }
   }
 
+  /**
+   * Closes modal and changes state
+   */
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({
+      modalIsOpen: false,
+      imageModalActive: false,
+      editUserModalActive: false,
+    });
   }
 
   informationSetup(user) {
@@ -79,7 +99,15 @@ class Profile extends Component {
    * @returns {JSX}
    */
   renderAdditonalInformation(user) {
-    const { dateOfBirth, phone, email, roles, createdAt, updatedAt, name } = user;
+    const {
+      dateOfBirth,
+      phone,
+      email,
+      roles,
+      createdAt,
+      updatedAt,
+      name,
+    } = user;
 
     return (
       <div className={classnames(s.card, s.profileInformation)}>
@@ -126,18 +154,13 @@ class Profile extends Component {
             </div>
           ) : null}
         </section>
-        <div className={s.editButton}>
-          <CircleButton>
-            <Edit />
-          </CircleButton>
-        </div>
       </div>
     );
   }
 
   render() {
     const { user } = this.props;
-    const { modalIsOpen } = this.state;
+    const { modalIsOpen, imageModalActive, editUserModalActive } = this.state;
 
     if (!user) {
       return <div>User is missing!</div>;
@@ -150,7 +173,11 @@ class Profile extends Component {
         <div className={s.grid}>
           <div className={classnames(s.card, s.cardLeft)}>
             {imageUrl ? (
-              <div onClick={this.openModal} role="button" tabIndex={0}>
+              <div
+                onClick={() => this.openModal('image')}
+                role="button"
+                tabIndex={0}
+              >
                 <img src={imageUrl} alt={name} className={s.profileImage} />
               </div>
             ) : (
@@ -160,13 +187,24 @@ class Profile extends Component {
           </div>
           {this.renderAdditonalInformation(user)}
         </div>
-        <div className="circle-button">+</div>
+        <div className={s.editButton}>
+          <CircleButton onClick={() => this.openModal('edituser')}>
+            <Edit />
+          </CircleButton>
+        </div>
         <ModalWrapper
           isOpen={modalIsOpen}
           onRequestClose={this.closeModal}
           contentLabel="Image Modal"
         >
-          <ImageBlurWrapper src={imageUrl} thumbnail={thumbnailUrl} alt={name} />
+          {modalIsOpen && imageModalActive ? (
+            <ImageBlurWrapper
+              src={imageUrl}
+              thumbnail={thumbnailUrl}
+              alt={name}
+            />
+          ) : null}
+          {modalIsOpen && editUserModalActive ? 'Test' : null}
         </ModalWrapper>
       </div>
     );

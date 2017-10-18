@@ -14,7 +14,7 @@ class UserModal extends Component {
     activeView: PropTypes.string.isRequired,
     data: PropTypes.object,
     name: PropTypes.string.isRequired,
-    deleteHandler: PropTypes.func.isRequired,
+    deleteHandler: PropTypes.func,
     closeModalHandler: PropTypes.func.isRequired,
   };
 

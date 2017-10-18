@@ -191,7 +191,7 @@ class UserForm extends Component {
     if (!msg) return null;
     return (
       <fieldset>
-        <NotifyBox text={msg} type="info" id="userUpdated" />
+        <NotifyBox text={msg} type="success" id="userUpdated" />
       </fieldset>
     );
   }

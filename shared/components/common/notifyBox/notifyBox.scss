@@ -1,9 +1,10 @@
 @import '~styles/variables';
 
 .box {
-  padding: 11px 15px;
+  padding: 11px 15px 15px;
   margin: 0 0 2em;
   width: 100%;
+  color: $primary-white;
   border-radius: $border-radius;
   box-shadow: $box-shadow;
 }
@@ -18,4 +19,15 @@
 
 .info {
   background: $primary-blue;
+}
+
+.warning {
+  background: $primary-yellow;
+}
+
+.icon {
+  position: relative;
+  top: 4px;
+  margin-right: 10px;
+  fill: $primary-white;
 }

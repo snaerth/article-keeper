@@ -22,7 +22,6 @@
   &:focus {
     background: darken($primary-color, 15%);
     box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.3);
-    transform: translate3d(0, -5px, 0);
   }
 
   svg {

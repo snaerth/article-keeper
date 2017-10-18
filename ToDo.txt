@@ -6,19 +6,16 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-
-  - Sort icon set in headerRowRenderer
-  - React virtualized setja sort
+  - Setja edit profile button virkni
+  - Gera menu
+  - Add info logs to controllers
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
   - Gera menu líkari þessum
     - https://www.pinterest.com/pin/95771929553255353/
-  - Setja leit í component
-  - Gera sort by dálka
-  - laga útlit fyrir leit hvað varðar takka
+    - https://codepen.io/jcoulterdesign/pen/qdWxEm
 
   - Uppfæra eins líkt og react-universally
-  - EditUser gera dynamic fyrir edit og create
   - Remove removeUserProps, use mongoose select instead
   - Users server
     - Create + test  => test is not over

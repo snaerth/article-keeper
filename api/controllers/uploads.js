@@ -56,6 +56,7 @@ export async function saveImage(image, uploadDir) {
       ]);
 
       const thumbnailUrl = `${fileName}-thumbnail${ext}`;
+
       resolve({
         url: uploadDir + imageUrl,
         thumbnail: uploadDir + thumbnailUrl,

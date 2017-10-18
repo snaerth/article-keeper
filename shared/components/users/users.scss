@@ -41,3 +41,14 @@
     }
   }
 }
+
+.createButton {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+
+  @include viewport(tablet) {
+    right: 50px;
+    bottom: 50px;
+  }
+}

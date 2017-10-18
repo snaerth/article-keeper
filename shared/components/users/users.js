@@ -7,15 +7,17 @@ import * as actionCreators from './actions';
 import UsersTable from './userTable';
 import UsersModal from './userModal';
 import SearchBar from '../common/searchBar';
-import Button from '../common/button';
 import Loader from '../common/loader';
 import NotifyBox from '../common/notifyBox';
 import ModalWrapper from '../common/modal';
 import Pagination from '../common/pagination';
 import Card from '../common/card';
+import CircleButton from '../common/circleButton';
 // Utils
 import createPagination from '../../utils/pagination';
 import { formDataToQueryString } from '../../utils/urlHelpers';
+// Svg
+import AddIcon from '../../assets/images/add.svg';
 // Styles
 import tableStyles from '../../styles/table.css';
 import s from './users.scss';
@@ -198,15 +200,7 @@ class Users extends Component {
                 isFetchingData={isFetchingData}
                 formData={formData}
                 sortBy={sortBy}
-              >
-                <Button
-                  type="button"
-                  text="Create"
-                  ariaLabel="Create user"
-                  color="purple"
-                  onClick={(e) => this.openCreateUserModal(e)}
-                />
-              </SearchBar>
+              />
               <UsersTable
                 list={data.docs}
                 onRowClickHandler={this.onRowClickHandler}
@@ -220,6 +214,11 @@ class Users extends Component {
               />
             </div>
           ) : null}
+        </div>
+        <div className={s.createButton}>
+          <CircleButton onClick={(e) => this.openCreateUserModal(e)}>
+            <AddIcon />
+          </CircleButton>
         </div>
         <ModalWrapper
           className={'mw992'}
