@@ -45,6 +45,7 @@ export default function (state = initialState, action) {
         error: null,
         image: null,
         user: null,
+        infoUser: null,
       };
 
     case SET_PREVIEW_USER_IMAGE:

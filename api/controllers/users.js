@@ -605,8 +605,7 @@ export async function updateUser(req, res) {
       log.info({ req, res, info: updatedUser }, `User ${updatedUser.email} updated in db`);
 
       if (req.user.email === updatedUser.email) {
-        const test = new User(updatedUser); // ToDO finish this
-        const user = removeUserProps(test); // eslint-disable-line
+        const user = removeUserProps(new User(updatedUser)); // eslint-disable-line
         // Send response object with user token and user information
         return res.status(200).json({
           token: tokenForUser(updatedUser),

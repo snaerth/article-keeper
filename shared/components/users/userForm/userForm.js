@@ -66,6 +66,10 @@ class UserForm extends Component {
     this.onDrop = this.onDrop.bind(this);
   }
 
+  componentWillUnmount() {
+    this.props.actions.clean();
+  }
+
   /**
    * Set state to close modal and reset current row data
    */

@@ -212,7 +212,7 @@ export function updateUser(token, id, data, imageFormData, type) {
           localStorage.setItem('user', {
             user: JSON.stringify(res.data),
           });
-          dispatch({ type: USER_UPDATED, payload: res.data });
+          dispatch({ type: USER_UPDATED, payload: { user: res.data } });
         }
       }
 
