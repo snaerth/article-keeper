@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AppLayout, { Content } from 'components/app-layout';
 import config from './utils/config';
-
 // Components
 import Header from './components/header';
-
+import Menu from './components/common/menu';
+import * as actionCreators from './components/auth/actions';
+// Container Components
+import PrivateRoute from './containers/privateRoute';
 // Routes
 import Dashboard from './routes/dashboard';
 import About from './routes/about';
@@ -19,12 +21,6 @@ import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Users from './routes/users';
 import Logger from './routes/logger';
-
-// Components
-import * as actionCreators from './components/auth/actions';
-
-// Container Components
-import PrivateRoute from './containers/privateRoute';
 
 class App extends Component {
   static propTypes = {
@@ -67,6 +63,7 @@ class App extends Component {
         <Helmet {...config('helmet')} />
         <Header />
         <Content>
+          <Menu open />
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route path="/about" component={About} />
