@@ -16,12 +16,16 @@ import {
 export default function (app, requireAuth) {
   // Get all logs
   app.get('/logs', [requireAuth, isSuperUser], getLogs);
+
   // Get logs by search query
   app.get('/logs/:query', [requireAuth, isSuperUser], getLogsBySearchQuery);
+
   // Delete all logs
   app.delete('/logs', [requireAuth, isAdmin], deleteAllLogs);
+
   // Get log by id
   app.delete('/logs/:id', [requireAuth, isSuperUser], deleteLogsById);
+  
   // Create fake logs
   app.post('/logs/create-fake-logs', [requireAuth, isAdmin], createFakeLogs);
 }
