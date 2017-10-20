@@ -65,9 +65,9 @@ function ServerHTML(props) {
   );
 
   const headerElements = removeNil([
+    ...ifElse(helmet)(() => helmet.meta.toComponent(), []),
     ...ifElse(helmet)(() => helmet.title.toComponent(), []),
     ...ifElse(helmet)(() => helmet.base.toComponent(), []),
-    ...ifElse(helmet)(() => helmet.meta.toComponent(), []),
     ...ifElse(helmet)(() => helmet.link.toComponent(), []),
     ifElse(clientEntryAssets && clientEntryAssets.css)(() =>
       stylesheetTag(clientEntryAssets.css),
@@ -85,7 +85,9 @@ function ServerHTML(props) {
     // @see https://github.com/ctrlplusb/react-async-component
     ifElse(asyncComponentsState)(() =>
       inlineScript(
-        `window.__ASYNC_COMPONENTS_REHYDRATE_STATE__=${serialize(asyncComponentsState)};`,
+        `window.__ASYNC_COMPONENTS_REHYDRATE_STATE__=${serialize(
+          asyncComponentsState,
+        )};`,
       ),
     ),
     ifElse(jobsState)(() =>
@@ -104,7 +106,9 @@ function ServerHTML(props) {
     // preventing wrong feature set in chrome simulator
     ifElse(config('polyfillIO.enabled'))(() =>
       scriptTag(
-        `${config('polyfillIO.url')}?features=${config('polyfillIO.features').join(',')}&flags=gated`,
+        `${config('polyfillIO.url')}?features=${config(
+          'polyfillIO.features',
+        ).join(',')}&flags=gated`,
       ),
     ),
     // When we are in development mode our development server will
@@ -116,7 +120,9 @@ function ServerHTML(props) {
         config('bundles.client.devVendorDLL.enabled'),
     )(() =>
       scriptTag(
-        `${config('bundles.client.webPath')}${config('bundles.client.devVendorDLL.name')}.js?t=${Date.now()}`,
+        `${config('bundles.client.webPath')}${config(
+          'bundles.client.devVendorDLL.name',
+        )}.js?t=${Date.now()}`,
       ),
     ),
     ifElse(clientEntryAssets && clientEntryAssets.js)(() =>
