@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import s from './content.scss';
 
 export default function Content({ children }) {
-  return (
-    <main role="main" className={s.content}>
-      {children}
-    </main>
-  );
+  return <div className={s.content}>{children}</div>;
 }
 
 Content.propTypes = {

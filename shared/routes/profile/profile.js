@@ -6,7 +6,7 @@ import Container from '../../components/common/container';
 const ProfileRoute = () => (
   <div>
     <Helmet title="Profile" />
-    <Container className="mt25">
+    <Container className="pt25">
       <Profile />
     </Container>
   </div>

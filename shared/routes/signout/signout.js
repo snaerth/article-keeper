@@ -27,7 +27,7 @@ class Signout extends Component {
     return (
       <div>
         <Helmet title="Sign out" />
-        <Container className="mt25">
+        <Container className="pt25">
           <div className={signoutContainer}>
             <h2>
               You have successfully been signed out.

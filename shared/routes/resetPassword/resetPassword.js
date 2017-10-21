@@ -6,7 +6,7 @@ import ResetPassword from '../../components/auth/resetPassword';
 const ResetPasswordRoute = () => (
   <div>
     <Helmet title="Reset password" />
-    <Container className="mt25">
+    <Container className="pt25">
       <ResetPassword />
     </Container>
   </div>
