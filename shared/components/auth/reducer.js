@@ -24,7 +24,6 @@ if (localStorageChecker()) {
   try {
     user = JSON.parse(localStorage.getItem('user'));
   } catch (error) {
-    localStorage.removeItem('user');
     console.log(error); // eslint-disable-line
   }
 }

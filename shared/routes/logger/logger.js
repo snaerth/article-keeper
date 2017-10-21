@@ -6,7 +6,7 @@ import Container from '../../components/common/container';
 const LoggerRoute = () => (
   <div>
     <Helmet title="Logger" />
-    <Container className="pt25">
+    <Container>
       <Logger />
     </Container>
   </div>

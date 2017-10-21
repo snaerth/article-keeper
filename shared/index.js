@@ -62,7 +62,7 @@ class App extends Component {
       <AppLayout>
         <Helmet {...config('helmet')} />
         <Header />
-        <main>
+        <main style={{ display: 'flex' }}>
           <Menu open />
           <Content>
             <Switch>
@@ -70,21 +70,9 @@ class App extends Component {
               <Route path="/about" component={About} />
               <Route path="/signout" component={Signout} />
               <Route path="/reset/:token" component={ResetPassword} />
-              <PrivateRoute
-                path="/profile"
-                component={Profile}
-                authenticated={isAdmin}
-              />
-              <PrivateRoute
-                path="/users"
-                component={Users}
-                authenticated={isAdmin}
-              />
-              <PrivateRoute
-                path="/logs"
-                component={Logger}
-                authenticated={isAdmin}
-              />
+              <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
+              <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
+              <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
               <Route component={NotFound} />
             </Switch>
           </Content>
@@ -102,12 +90,7 @@ class App extends Component {
 function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   // Check if user is admin user
-  const isAdmin = !!(
-    user &&
-    user.roles &&
-    user.roles.length > 0 &&
-    user.roles.includes('admin')
-  );
+  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
 
   return { authenticated, isAdmin };
 }

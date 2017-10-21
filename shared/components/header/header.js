@@ -97,20 +97,17 @@ class Header extends Component {
             Dashboard
           </NavLink>
           {authenticated ? (
-            [
-              this.renderAuthLinks(),
-              <span key="last-menu-item">
-                <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
-                  <DropdownMenu
-                    visible={this.state.dropdownVisible}
-                    callbackCloseFn={this.avatarClickHandler}
-                  >
-                    <Link to="/profile">Profile</Link>
-                    <Link to="/signout">Sign out</Link>
-                  </DropdownMenu>
-                </Avatar>
-              </span>,
-            ]
+            <span key="last-menu-item">
+              <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
+                <DropdownMenu
+                  visible={this.state.dropdownVisible}
+                  callbackCloseFn={this.avatarClickHandler}
+                >
+                  <Link to="/profile">Profile</Link>
+                  <Link to="/signout">Sign out</Link>
+                </DropdownMenu>
+              </Avatar>
+            </span>
           ) : (
             <NavLink to="/signin" role="button" key="signin" onClick={(e) => this.openModal(e)}>
               Sign in / Sign up

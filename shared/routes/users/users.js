@@ -7,7 +7,7 @@ import Container from '../../components/common/container';
 const UsersRoute = () => (
   <div>
     <Helmet title="Users" />
-    <Container className="pt25">
+    <Container>
       <Users />
     </Container>
   </div>
