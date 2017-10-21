@@ -28,6 +28,7 @@ class App extends Component {
     history: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
+    menuOpen: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -57,13 +58,13 @@ class App extends Component {
   }
 
   render() {
-    const { isAdmin } = this.props;
+    const { isAdmin, menuOpen } = this.props;
     return (
       <AppLayout>
         <Helmet {...config('helmet')} />
         <Header />
         <main style={{ display: 'flex' }}>
-          <Menu open />
+          <Menu open={menuOpen} />
           <Content>
             <Switch>
               <Route exact path="/" component={Dashboard} />
@@ -89,10 +90,11 @@ class App extends Component {
  */
 function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
+  const { menuOpen } = state.common;
   // Check if user is admin user
   const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
 
-  return { authenticated, isAdmin };
+  return { authenticated, isAdmin, menuOpen };
 }
 
 /**

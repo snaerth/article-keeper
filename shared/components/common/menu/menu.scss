@@ -6,8 +6,42 @@
   width: 100%;
   background: $menu-background;
   box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
+  transition: margin 0.5s;
 }
 
 .open {
-  transition: all 0.5s;
+  margin-left: -256px;
+}
+
+.dropdown {
+  position: relative;
+
+  ul {
+    margin: 0;
+
+    li {
+      display: block;
+      width: 100%;
+
+      a {
+        display: inline-block;
+        padding: 1em 18px 1em 33px;
+        width: 100%;
+        color: $primary-white;
+        white-space: pre;
+        box-sizing: border-box;
+        text-decoration: none;
+
+        &:hover {
+          background: $menu-background-hover;
+        }
+      }
+    }
+  }
+
+  &.active {
+    ul {
+      display: block;
+    }
+  }
 }

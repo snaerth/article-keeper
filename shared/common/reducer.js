@@ -1,7 +1,8 @@
-import { MODAL_OPEN, MODAL_CLOSE, ERROR_UNKNOWN } from './types';
+import { MODAL_OPEN, MODAL_CLOSE, MENU_OPEN, MENU_CLOSE, ERROR_UNKNOWN } from './types';
 
 const initialState = {
   modalOpen: false,
+  menuOpen: true,
 };
 
 export default function (state = initialState, action) {
@@ -22,6 +23,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         modalOpen: false,
+      };
+
+    case MENU_OPEN:
+      return {
+        ...state,
+        menuOpen: true,
+      };
+
+    case MENU_CLOSE:
+      return {
+        ...state,
+        menuOpen: false,
       };
 
     default:

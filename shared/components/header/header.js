@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 // Components
 import ModalWrapper from '../common/modal';
@@ -9,18 +9,20 @@ import AuthWrapper from '../auth/authWrapper';
 import Avatar from '../common/avatar';
 import DropdownMenu from '../common/dropdownMenu';
 import Navigation from '../navigation';
-import * as actionCreators from '../auth/actions';
+import { openModal, closeModal } from '../auth/actions';
+import { closeMenu, openMenu } from '../../common/actions';
 // Styles
 import s from './header.scss';
 
 /**
  * Header Component
  */
-class Header extends Component {
+class Header extends PureComponent {
   static propTypes = {
     authenticated: PropTypes.bool,
     roles: PropTypes.array,
-    modalOpen: PropTypes.bool,
+    modalOpen: PropTypes.bool.isRequired,
+    menuOpen: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     imageUrl: PropTypes.string,
     name: PropTypes.string,
@@ -35,6 +37,7 @@ class Header extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.menuClickHandler = this.menuClickHandler.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -44,8 +47,16 @@ class Header extends Component {
     }
   }
 
-  openModal(e) {
-    e.preventDefault();
+  menuClickHandler() {
+    const { menuOpen, actions } = this.props;
+    if (!menuOpen) {
+      actions.openMenu();
+    } else {
+      actions.closeMenu();
+    }
+  }
+
+  openModal() {
     this.props.actions.openModal();
   }
 
@@ -92,7 +103,7 @@ class Header extends Component {
     const { authenticated, imageUrl, name } = this.props;
     return (
       <div className={s.container}>
-        <Navigation>
+        <Navigation onClick={this.menuClickHandler}>
           <NavLink to="/" activeClassName={s.noActive}>
             Dashboard
           </NavLink>
@@ -134,7 +145,7 @@ class Header extends Component {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actionCreators, dispatch),
+    actions: bindActionCreators({ closeMenu, openMenu, openModal, closeModal }, dispatch),
   };
 }
 
@@ -144,12 +155,13 @@ function mapDispatchToProps(dispatch) {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { auth: { authenticated }, common: { modalOpen } } = state;
+  const { auth: { authenticated }, common: { modalOpen, menuOpen } } = state;
   const { user } = state.auth;
 
   const obj = {
     authenticated,
     modalOpen,
+    menuOpen,
     imageUrl: user ? user.imageUrl : '',
     name: user ? user.name : '',
   };

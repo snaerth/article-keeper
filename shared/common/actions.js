@@ -1,4 +1,4 @@
-import { MODAL_OPEN, MODAL_CLOSE, ERROR_UNKNOWN } from './types';
+import { MODAL_OPEN, MODAL_CLOSE, MENU_OPEN, MENU_CLOSE, ERROR_UNKNOWN } from './types';
 
 /**
  * Handles error from server
@@ -20,11 +20,7 @@ export function authError(type, error) {
       payload = 'Unauthorized';
     }
 
-    if (
-      payload &&
-      typeof payload === 'string' &&
-      payload.toLowerCase() === 'proxy_error'
-    ) {
+    if (payload && typeof payload === 'string' && payload.toLowerCase() === 'proxy_error') {
       payload = 'Error connecting to server';
     }
   } else if (error.message) {
@@ -84,4 +80,24 @@ export function openModal() {
  */
 export function closeModal() {
   return { type: MODAL_CLOSE };
+}
+
+/**
+ * Open menu
+ *
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+export function openMenu() {
+  return { type: MENU_OPEN };
+}
+
+/**
+ * Close menu
+ *
+ * @returns {Object}
+ * @author Snær Seljan Þóroddsson
+ */
+export function closeMenu() {
+  return { type: MENU_CLOSE };
 }
