@@ -23,24 +23,29 @@ class Menu extends Component {
         <div className={s.dropdown}>
           <ul>
             <li>
-              <Dashboard />
-              <Link to="/">Dashboard</Link>
+              <Link to="/">
+                <Dashboard />Dashboard
+              </Link>
             </li>
             <li>
-              <Users />
-              <Link to="/profile">Profile</Link>
+              <Link to="/profile">
+                <Users />Profile
+              </Link>
             </li>
             <li>
-              <Users />
-              <Link to="/users">Users</Link>
+              <Link to="/users">
+                <Users />Users
+              </Link>
             </li>
             <li>
-              <Logs />
-              <Link to="/logs">Logs</Link>
+              <Link to="/logs">
+                <Logs />Logs
+              </Link>
             </li>
             <li>
-              <Power />
-              <Link to="/signout">Sign out</Link>
+              <Link to="/signout">
+                <Power />Sign out
+              </Link>
             </li>
           </ul>
         </div>
