@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styles from './signout.scss';
 import Button from '../../components/common/button';
-import Container from '../../components/common/container';
 import * as actionCreators from '../../components/auth/actions';
 
 /**
@@ -27,24 +26,22 @@ class Signout extends Component {
     return (
       <div>
         <Helmet title="Sign out" />
-        <Container className="pt25">
-          <div className={signoutContainer}>
-            <h2>
-              You have successfully been signed out.
-              <br />
-              You can sign in again at any time.
-            </h2>
+        <div className={signoutContainer}>
+          <h2>
+            You have successfully been signed out.
             <br />
-            <div className={buttonContainer}>
-              <Link to="/">
-                <Button text="Back to home" ariaLabel="Back to home" />
-              </Link>
-              <Link to="/signin">
-                <Button text="Sign in" ariaLabel="Sign in" />
-              </Link>
-            </div>
+            You can sign in again at any time.
+          </h2>
+          <br />
+          <div className={buttonContainer}>
+            <Link to="/">
+              <Button text="Back to home" ariaLabel="Back to home" />
+            </Link>
+            <Link to="/signin">
+              <Button text="Sign in" ariaLabel="Sign in" />
+            </Link>
           </div>
-        </Container>
+        </div>
       </div>
     );
   }
