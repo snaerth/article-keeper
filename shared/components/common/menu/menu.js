@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import anime from 'animejs';
 // Svg
 import Dashboard from '../../../assets/images/dashboard.svg';
 import Power from '../../../assets/images/power.svg';
@@ -15,13 +16,38 @@ class Menu extends Component {
     open: PropTypes.bool.isRequired,
   };
 
+  componentDidMount() {
+    this.animateLinks();
+  }
+
+  animateLinks() {
+    const tl = anime.timeline();
+    tl
+      .add({
+        targets: this.ul.children,
+        translateY: '100%',
+      })
+      .add({
+        targets: this.ul.children,
+        translateY: '0%',
+        opacity: {
+          value: 1,
+          duration: 300,
+        },
+        delay(el, i) {
+          return i * 50;
+        },
+        easing: 'easeOutExpo',
+      });
+  }
+
   render() {
     const { open } = this.props;
 
     return (
       <div className={classnames(s.container, open ? s.open : '')}>
         <div className={s.dropdown}>
-          <ul>
+          <ul ref={(c) => (this.ul = c)}>
             <li>
               <Link to="/">
                 <Dashboard />Dashboard

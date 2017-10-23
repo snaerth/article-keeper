@@ -6,7 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Gera menu
+  - Gera menu setja animation og transition group þegar animatear open og closed
   - Add info logs to controllers
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
