@@ -33,7 +33,9 @@
         white-space: pre;
         box-sizing: border-box;
         text-decoration: none;
+        transition: background $transition-duration ease-in-out;
 
+        &.active,
         &:hover {
           background: $menu-background-hover;
         }

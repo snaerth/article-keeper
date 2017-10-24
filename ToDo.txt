@@ -7,6 +7,7 @@ TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
   - Gera menu setja animation og transition group þegar animatear open og closed
+  - Container setja maxwidth og einnig laga responsive á content
   - Add info logs to controllers
   - Fix pagination test
   - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
@@ -15,7 +16,7 @@ TODO
     - https://codepen.io/jcoulterdesign/pen/qdWxEm
 
   - Uppfæra eins líkt og react-universally
-  - Remove removeUserProps, use mongoose select instead
+    - Remove removeUserProps, use mongoose select instead
   - Users server
     - Create + test  => test is not over
     - Update + test => test is not over

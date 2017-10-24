@@ -59,6 +59,7 @@ class App extends Component {
 
   render() {
     const { isAdmin, menuOpen } = this.props;
+
     return (
       <AppLayout>
         <Helmet {...config('helmet')} />
@@ -71,9 +72,21 @@ class App extends Component {
               <Route path="/about" component={About} />
               <Route path="/signout" component={Signout} />
               <Route path="/reset/:token" component={ResetPassword} />
-              <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
-              <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
-              <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
+              <PrivateRoute
+                path="/profile"
+                component={Profile}
+                authenticated={isAdmin}
+              />
+              <PrivateRoute
+                path="/users"
+                component={Users}
+                authenticated={isAdmin}
+              />
+              <PrivateRoute
+                path="/logs"
+                component={Logger}
+                authenticated={isAdmin}
+              />
               <Route component={NotFound} />
             </Switch>
           </Content>
@@ -92,7 +105,12 @@ function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   const { menuOpen } = state.common;
   // Check if user is admin user
-  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
+  const isAdmin = !!(
+    user &&
+    user.roles &&
+    user.roles.length > 0 &&
+    user.roles.includes('admin')
+  );
 
   return { authenticated, isAdmin, menuOpen };
 }

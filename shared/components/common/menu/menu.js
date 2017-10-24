@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import anime from 'animejs';
 // Svg
 import Dashboard from '../../../assets/images/dashboard.svg';
@@ -17,10 +17,10 @@ class Menu extends Component {
   };
 
   componentDidMount() {
-    this.animateLinks();
+    this.animateNavLinks();
   }
 
-  animateLinks() {
+  animateNavLinks() {
     const tl = anime.timeline();
     tl
       .add({
@@ -49,29 +49,29 @@ class Menu extends Component {
         <div className={s.dropdown}>
           <ul ref={(c) => (this.ul = c)}>
             <li>
-              <Link to="/">
+              <NavLink to="/" exact activeClassName={s.active}>
                 <Dashboard />Dashboard
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/profile">
+              <NavLink to="/profile" activeClassName={s.active}>
                 <Users />Profile
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/users">
+              <NavLink to="/users" activeClassName={s.active}>
                 <Users />Users
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/logs">
+              <NavLink to="/logs" activeClassName={s.active}>
                 <Logs />Logs
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/signout">
+              <NavLink to="/signout">
                 <Power />Sign out
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>
