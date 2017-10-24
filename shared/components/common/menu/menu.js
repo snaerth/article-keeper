@@ -26,13 +26,16 @@ class Menu extends Component {
       .add({
         targets: this.ul.children,
         translateY: '100%',
+        opacity: {
+          value: 0,
+        },
       })
       .add({
         targets: this.ul.children,
         translateY: '0%',
         opacity: {
           value: 1,
-          duration: 300,
+          duration: 1000,
         },
         delay(el, i) {
           return i * 50;
