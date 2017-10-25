@@ -37,13 +37,9 @@ class App extends Component {
     authenticated: PropTypes.bool.isRequired,
   };
 
-  componentDidUpdate(prevProps) {
+  componentWillMount() {
     const { location, authenticated, history } = this.props;
-    if (
-      location.pathname === '/signin' &&
-      authenticated &&
-      authenticated !== prevProps.authenticated
-    ) {
+    if (location.pathname === '/signin' && authenticated) {
       history.push('/');
     }
   }

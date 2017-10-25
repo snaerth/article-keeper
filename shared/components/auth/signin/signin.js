@@ -30,7 +30,7 @@ class Signin extends Component {
     errorMessage: PropTypes.string,
     isFetching: PropTypes.bool,
     onClick: PropTypes.func,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
   };
 
   constructor(props) {
@@ -102,7 +102,12 @@ class Signin extends Component {
             </fieldset>
             <fieldset>
               <div>
-                <Button text="Sign in" ariaLabel="Sign in" className="fullWidth" color="purple">
+                <Button
+                  text="Sign in"
+                  ariaLabel="Sign in"
+                  className="fullWidth"
+                  color="purple"
+                >
                   <ArrowForward className={iconArrowForward} />
                 </Button>
               </div>
@@ -118,7 +123,11 @@ class Signin extends Component {
                   Forgot password?
                 </Link>
               ) : (
-                <Link role="button" to="/forgotpassword" className="link-slideright">
+                <Link
+                  role="button"
+                  to="/forgotpassword"
+                  className="link-slideright"
+                >
                   Forgot password?
                 </Link>
               )}

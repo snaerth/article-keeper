@@ -1,7 +1,10 @@
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import {
+  AsyncComponentProvider,
+  createAsyncContext,
+} from 'react-async-component';
 import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-redux';
@@ -32,7 +35,9 @@ export default function reactApplicationMiddleware(req, res) {
     }
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
-    const html = renderToStaticMarkup(<ServerHTML helmet={Helmet.rewind()} nonce={nonce} />);
+    const html = renderToStaticMarkup(
+      <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />,
+    );
     res.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
