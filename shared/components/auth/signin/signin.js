@@ -39,7 +39,7 @@ class Signin extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.actions.clean();
   }
 
@@ -102,12 +102,7 @@ class Signin extends Component {
             </fieldset>
             <fieldset>
               <div>
-                <Button
-                  text="Sign in"
-                  ariaLabel="Sign in"
-                  className="fullWidth"
-                  color="purple"
-                >
+                <Button text="Sign in" ariaLabel="Sign in" className="fullWidth" color="purple">
                   <ArrowForward className={iconArrowForward} />
                 </Button>
               </div>
@@ -123,11 +118,7 @@ class Signin extends Component {
                   Forgot password?
                 </Link>
               ) : (
-                <Link
-                  role="button"
-                  to="/forgotpassword"
-                  className="link-slideright"
-                >
+                <Link role="button" to="/forgotpassword" className="link-slideright">
                   Forgot password?
                 </Link>
               )}

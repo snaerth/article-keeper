@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Switch, Route, withRouter } from 'react-router-dom';
@@ -27,7 +27,7 @@ import Users from './routes/users';
 import Logger from './routes/logger';
 import Signin from './routes/signin';
 
-class App extends Component {
+class App extends PureComponent {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -37,7 +37,7 @@ class App extends Component {
     authenticated: PropTypes.bool.isRequired,
   };
 
-  componentWillMount() {
+  componentDidUpdate() {
     const { location, authenticated, history } = this.props;
     if (location.pathname === '/signin' && authenticated) {
       history.push('/');
@@ -57,33 +57,12 @@ class App extends Component {
             <Content>
               <Switch>
                 <Route path="/reset/:token" component={ResetPassword} />
-                <PrivateRoute
-                  exact
-                  path="/"
-                  component={Dashboard}
-                  authenticated={isAdmin}
-                />
-                <PrivateRoute
-                  path="/about"
-                  component={About}
-                  authenticated={isAdmin}
-                />
+                <PrivateRoute exact path="/" component={Dashboard} authenticated={isAdmin} />
+                <PrivateRoute path="/about" component={About} authenticated={isAdmin} />
                 <Route path="/signout" component={Signout} />
-                <PrivateRoute
-                  path="/profile"
-                  component={Profile}
-                  authenticated={isAdmin}
-                />
-                <PrivateRoute
-                  path="/users"
-                  component={Users}
-                  authenticated={isAdmin}
-                />
-                <PrivateRoute
-                  path="/logs"
-                  component={Logger}
-                  authenticated={isAdmin}
-                />
+                <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
+                <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
+                <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
                 <Route path="/signin" component={Signin} />
                 <Route component={NotFound} />
               </Switch>
@@ -105,13 +84,7 @@ function mapStateToProps(state) {
   const { menuOpen } = state.common;
 
   // Check if user is admin user
-  const isAdmin = !!(
-    user &&
-    user.roles &&
-    user.roles.length > 0 &&
-    user.roles.includes('admin')
-  );
-
+  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
   return { authenticated, isAdmin, menuOpen };
 }
 
@@ -130,4 +103,4 @@ App.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(App));
