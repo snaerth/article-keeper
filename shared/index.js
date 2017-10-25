@@ -5,14 +5,17 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import AppLayout, { Content } from 'components/app-layout';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import config from './utils/config';
+
 // Components
 import Header from './components/header';
 import Menu from './components/common/menu';
+import ScrollToTop from './components/common/scrollToTop';
 import * as actionCreators from './components/auth/actions';
+
 // Container Components
 import PrivateRoute from './containers/privateRoute';
+
 // Routes
 import Dashboard from './routes/dashboard';
 import About from './routes/about';
@@ -22,6 +25,7 @@ import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Users from './routes/users';
 import Logger from './routes/logger';
+import Signin from './routes/signin';
 
 class App extends Component {
   static propTypes = {
@@ -30,31 +34,17 @@ class App extends Component {
     actions: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     menuOpen: PropTypes.bool.isRequired,
+    authenticated: PropTypes.bool.isRequired,
   };
 
-  componentDidMount() {
-    this.onRouteChanged(this.props.location.pathname);
-  }
-
   componentDidUpdate(prevProps) {
-    const { location } = this.props;
-    if (location !== prevProps.location) {
-      this.onRouteChanged(location.pathname);
-    }
-  }
-
-  /**
-   * When route changes in router and pathname includes signin or signup,
-   * then redirect to home and open signin modal
-   *
-   * @param {String} pathname
-   * @returns {undefined}
-   */
-  onRouteChanged(pathname) {
-    const { history } = this.props;
-    if (pathname.includes('/signin') || pathname.includes('/signup')) {
+    const { location, authenticated, history } = this.props;
+    if (
+      location.pathname === '/signin' &&
+      authenticated &&
+      authenticated !== prevProps.authenticated
+    ) {
       history.push('/');
-      this.props.actions.openModal();
     }
   }
 
@@ -67,30 +57,42 @@ class App extends Component {
         <Header />
         <main style={{ display: 'flex' }}>
           <Menu open={menuOpen} />
-          <Content>
-            <Switch>
-              <Route exact path="/" component={Dashboard} />
-              <Route path="/about" component={About} />
-              <Route path="/signout" component={Signout} />
-              <Route path="/reset/:token" component={ResetPassword} />
-              <PrivateRoute
-                path="/profile"
-                component={Profile}
-                authenticated={isAdmin}
-              />
-              <PrivateRoute
-                path="/users"
-                component={Users}
-                authenticated={isAdmin}
-              />
-              <PrivateRoute
-                path="/logs"
-                component={Logger}
-                authenticated={isAdmin}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </Content>
+          <ScrollToTop>
+            <Content>
+              <Switch>
+                <Route path="/reset/:token" component={ResetPassword} />
+                <PrivateRoute
+                  exact
+                  path="/"
+                  component={Dashboard}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/about"
+                  component={About}
+                  authenticated={isAdmin}
+                />
+                <Route path="/signout" component={Signout} />
+                <PrivateRoute
+                  path="/profile"
+                  component={Profile}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/users"
+                  component={Users}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/logs"
+                  component={Logger}
+                  authenticated={isAdmin}
+                />
+                <Route path="/signin" component={Signin} />
+                <Route component={NotFound} />
+              </Switch>
+            </Content>
+          </ScrollToTop>
         </main>
       </AppLayout>
     );
@@ -105,6 +107,7 @@ class App extends Component {
 function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   const { menuOpen } = state.common;
+
   // Check if user is admin user
   const isAdmin = !!(
     user &&

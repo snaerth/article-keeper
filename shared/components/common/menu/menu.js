@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import anime from 'animejs';
 // Svg
 import Dashboard from '../../../assets/images/dashboard.svg';
+import Person from '../../../assets/images/person.svg';
 import Power from '../../../assets/images/power.svg';
 import Users from '../../../assets/images/users.svg';
 import Logs from '../../../assets/images/logs.svg';
@@ -58,7 +59,7 @@ class Menu extends Component {
             </li>
             <li>
               <NavLink to="/profile" activeClassName={s.active}>
-                <Users />Profile
+                <Person />Profile
               </NavLink>
             </li>
             <li>

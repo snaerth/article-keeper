@@ -200,6 +200,7 @@ class Users extends Component {
                 isFetchingData={isFetchingData}
                 formData={formData}
                 sortBy={sortBy}
+                searchPlaceholder="Search users..."
               />
               <UsersTable
                 list={data.docs}

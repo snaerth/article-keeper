@@ -56,7 +56,8 @@ class Header extends PureComponent {
     }
   }
 
-  openModal() {
+  openModal(e) {
+    e.preventDefault();
     this.props.actions.openModal();
   }
 
@@ -66,7 +67,7 @@ class Header extends PureComponent {
 
   /**
    * Handles avatar click event
-   * 
+   *
    * @param {bool} visible
    */
   avatarClickHandler = (visible) => {
@@ -109,7 +110,11 @@ class Header extends PureComponent {
           </NavLink>
           {authenticated ? (
             <span key="last-menu-item">
-              <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
+              <Avatar
+                imageUrl={imageUrl}
+                name={name}
+                callbackOpenFn={this.avatarClickHandler}
+              >
                 <DropdownMenu
                   visible={this.state.dropdownVisible}
                   callbackCloseFn={this.avatarClickHandler}
@@ -120,7 +125,12 @@ class Header extends PureComponent {
               </Avatar>
             </span>
           ) : (
-            <NavLink to="/signin" role="button" key="signin" onClick={(e) => this.openModal(e)}>
+            <NavLink
+              to="/signin"
+              role="button"
+              key="signin"
+              onClick={(e) => this.openModal(e)}
+            >
               Sign in / Sign up
             </NavLink>
           )}
@@ -145,7 +155,10 @@ class Header extends PureComponent {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeMenu, openMenu, openModal, closeModal }, dispatch),
+    actions: bindActionCreators(
+      { closeMenu, openMenu, openModal, closeModal },
+      dispatch,
+    ),
   };
 }
 

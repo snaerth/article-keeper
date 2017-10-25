@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
@@ -11,7 +11,7 @@ import * as actionCreators from '../../components/auth/actions';
 /**
  * Signout component
  */
-class Signout extends Component {
+class Signout extends PureComponent {
   static propTypes = {
     actions: PropTypes.object.isRequired,
   };

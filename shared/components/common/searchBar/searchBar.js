@@ -24,6 +24,7 @@ class SearchBar extends Component {
     sortBy: PropTypes.object,
     search: PropTypes.string,
     token: PropTypes.string.isRequired,
+    searchPlaceholder: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     startDateError: PropTypes.string,
     reset: PropTypes.func.isRequired, // Redux-form reset function
@@ -57,7 +58,10 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.formData !== this.props.formData || nextProps.sortBy !== this.props.sortBy) {
+    if (
+      nextProps.formData !== this.props.formData ||
+      nextProps.sortBy !== this.props.sortBy
+    ) {
       const { startDate, endDate } = this.state;
       const { search } = this.props;
       let formData = nextProps.formData;
@@ -190,7 +194,7 @@ class SearchBar extends Component {
   }
 
   render() {
-    const { handleSubmit, startDateError } = this.props;
+    const { handleSubmit, startDateError, searchPlaceholder } = this.props;
     const { modalOpen, startDate, endDate } = this.state;
 
     return (
@@ -205,7 +209,7 @@ class SearchBar extends Component {
                   id="search"
                   type="text"
                   label="Search"
-                  placeholder="Search users..."
+                  placeholder={searchPlaceholder}
                 >
                   <Search onClick={handleSubmit} />
                 </Field>
@@ -240,7 +244,11 @@ class SearchBar extends Component {
               </div>
               <div className={s.date}>
                 {startDateError ? (
-                  <ErrorText key={'startDate'} id={'startDate'} error={startDateError} />
+                  <ErrorText
+                    key={'startDate'}
+                    id={'startDate'}
+                    error={startDateError}
+                  />
                 ) : null}
               </div>
             </div>
@@ -305,7 +313,9 @@ function mapStateToProps(state) {
   const { auth } = state;
   const token = auth && auth.user ? auth.user.token : '';
   const startDateError =
-    defaultSearch && defaultSearch.syncErrors && defaultSearch.syncErrors.startDate
+    defaultSearch &&
+    defaultSearch.syncErrors &&
+    defaultSearch.syncErrors.startDate
       ? defaultSearch.syncErrors.startDate
       : '';
   const search =

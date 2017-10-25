@@ -176,6 +176,7 @@ class Logger extends Component {
                 isFetchingData={isFetchingData}
                 formData={formData}
                 sortBy={sortBy}
+                searchPlaceholder="Search logs..."
               />
               <LoggerTable
                 list={data.docs}
