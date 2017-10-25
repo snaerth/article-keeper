@@ -10,7 +10,6 @@ import config from './utils/config';
 // Components
 import Header from './components/header';
 import Menu from './components/common/menu';
-import AnimatedWrapper from './components/common/animateWrapper';
 import * as actionCreators from './components/auth/actions';
 // Container Components
 import PrivateRoute from './containers/privateRoute';
@@ -23,11 +22,6 @@ import NotFound from './routes/not-found';
 import Profile from './routes/profile';
 import Users from './routes/users';
 import Logger from './routes/logger';
-
-const firstChild = (props) => {
-  const childrenArray = React.Children.toArray(props.children);
-  return childrenArray[0] || null;
-};
 
 class App extends Component {
   static propTypes = {
@@ -65,7 +59,7 @@ class App extends Component {
   }
 
   render() {
-    const { isAdmin, menuOpen, location } = this.props;
+    const { isAdmin, menuOpen } = this.props;
 
     return (
       <AppLayout>
@@ -74,22 +68,26 @@ class App extends Component {
         <main style={{ display: 'flex' }}>
           <Menu open={menuOpen} />
           <Content>
-            <Switch location={location}>
-              <Route
-                exact
-                path="/"
-                children={({ match, ...rest }) => (
-                  <TransitionGroup component={firstChild}>
-                    {match && <Dashboard {...rest} />}
-                  </TransitionGroup>
-                )}
-              />
+            <Switch>
+              <Route exact path="/" component={Dashboard} />
               <Route path="/about" component={About} />
               <Route path="/signout" component={Signout} />
               <Route path="/reset/:token" component={ResetPassword} />
-              <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
-              <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
-              <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
+              <PrivateRoute
+                path="/profile"
+                component={Profile}
+                authenticated={isAdmin}
+              />
+              <PrivateRoute
+                path="/users"
+                component={Users}
+                authenticated={isAdmin}
+              />
+              <PrivateRoute
+                path="/logs"
+                component={Logger}
+                authenticated={isAdmin}
+              />
               <Route component={NotFound} />
             </Switch>
           </Content>
@@ -108,7 +106,12 @@ function mapStateToProps(state) {
   const { authenticated, user } = state.auth;
   const { menuOpen } = state.common;
   // Check if user is admin user
-  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
+  const isAdmin = !!(
+    user &&
+    user.roles &&
+    user.roles.length > 0 &&
+    user.roles.includes('admin')
+  );
 
   return { authenticated, isAdmin, menuOpen };
 }

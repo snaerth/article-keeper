@@ -68,6 +68,9 @@ class UserForm extends Component {
 
   componentWillUnmount() {
     this.props.actions.clean();
+    if (this.props.type === 'edit') {
+      this.props.actions.setUser(this.props.user);
+    }
   }
 
   /**
@@ -342,7 +345,7 @@ class UserForm extends Component {
               </div>
             </div>
             <div className={s.editContainer}>
-              <div className={s.pullRight}>
+              <div className={s.buttonsContainer}>
                 <Button
                   type="button"
                   text="Cancel"

@@ -101,7 +101,15 @@ class Profile extends Component {
    * @returns {JSX}
    */
   renderAdditonalInformation(user) {
-    const { dateOfBirth, phone, email, roles, createdAt, updatedAt, name } = user;
+    const {
+      dateOfBirth,
+      phone,
+      email,
+      roles,
+      createdAt,
+      updatedAt,
+      name,
+    } = user;
 
     return (
       <div className={classnames(s.card, s.profileInformation)}>
@@ -167,7 +175,11 @@ class Profile extends Component {
         <div className={s.grid}>
           <div className={classnames(s.card, s.cardLeft)}>
             {imageUrl ? (
-              <div onClick={() => this.openModal('image')} role="button" tabIndex={0}>
+              <div
+                onClick={() => this.openModal('image')}
+                role="button"
+                tabIndex={0}
+              >
                 <img src={imageUrl} alt={name} className={s.profileImage} />
               </div>
             ) : (
@@ -183,7 +195,7 @@ class Profile extends Component {
           </CircleButton>
         </div>
         <ModalWrapper
-          className={editUserModalActive ? 'mw992' : ''}
+          className={editUserModalActive ? 'mw992' : 'mw600'}
           isOpen={modalIsOpen}
           onRequestClose={this.closeModal}
           contentLabel="Profile modal"
@@ -191,10 +203,17 @@ class Profile extends Component {
         >
           <div>
             {modalIsOpen && imageModalActive ? (
-              <ImageBlurWrapper src={imageUrl} thumbnail={thumbnailUrl} alt={name} />
+              <ImageBlurWrapper
+                src={imageUrl}
+                thumbnail={thumbnailUrl}
+                alt={name}
+              />
             ) : null}
             {modalIsOpen && editUserModalActive ? (
-              <UsersModal activeView="profile" closeModalHandler={this.closeModal} />
+              <UsersModal
+                activeView="profile"
+                closeModalHandler={this.closeModal}
+              />
             ) : null}
           </div>
         </ModalWrapper>

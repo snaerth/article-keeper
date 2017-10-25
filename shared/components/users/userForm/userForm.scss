@@ -1,7 +1,8 @@
 @import '~styles/variables';
 @import '~styles/mixins';
 
-.pullRight {
+.buttonsContainer {
+  min-height: 50px;
   text-align: right;
 
   button {
