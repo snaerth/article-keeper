@@ -10,7 +10,8 @@ import config from './config';
 import db from './database/db';
 import { createDirectorys } from './services/fileService';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// https://github.com/facebook/react/issues/812#issuecomment-172929366
+process.env = JSON.parse(JSON.stringify(process.env));
 
 // VARIABLES
 const { API_PORT, DB_URL, SESSION_SECRET } = config;
