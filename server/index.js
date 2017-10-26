@@ -13,6 +13,9 @@ import errorHandlers from './middleware/errorHandlers';
 import enforceHttps from './middleware/enforceHttps';
 import config from '../config';
 
+// https://github.com/facebook/react/issues/812#issuecomment-172929366
+process.env = JSON.parse(JSON.stringify(process.env));
+
 // Api target
 const target = `${config('apiProtocol')}://${config('apiHost')}:${config('apiPort')}`;
 
