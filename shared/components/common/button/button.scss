@@ -12,7 +12,13 @@
   border-radius: $border-radius;
   border: 0;
   overflow: hidden;
-  transition: box-shadow 0.25s ease-out, background 0.15s ease-out, color 0.2s ease-out;
+  transition: box-shadow 0.25s ease-out, background 0.15s ease-out,
+    color 0.2s ease-out;
+
+  &.large {
+    padding: 15px 50px;
+    font-size: 35px;
+  }
 
   &:hover {
     background: darken($primary-button-color, 100%);

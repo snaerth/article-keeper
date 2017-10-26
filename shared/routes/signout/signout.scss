@@ -1,6 +1,26 @@
-.signoutContainer {
-  margin-top: 100px;
-  text-align: center;
+@import '~styles/variables';
+
+.container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: all;
+  background: $priamry-background-linear;
+
+  .center {
+    position: relative;
+    top: 50%;
+    text-align: center;
+    transform: translateY(-50%);
+
+    h1,
+    p {
+      color: $primary-white;
+    }
+  }
 }
 
 .buttonContainer {

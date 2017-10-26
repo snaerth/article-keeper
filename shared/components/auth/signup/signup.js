@@ -131,7 +131,7 @@ class Signup extends Component {
         {isFetching ? <Loader absolute>Signing up</Loader> : null}
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError(errorMessage)}
-          <MainHeading text="Sign up with email" className="medium" />
+          <MainHeading className="medium">Sign up with email</MainHeading>
           <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
             <fieldset>
               <Field

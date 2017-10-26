@@ -84,30 +84,16 @@ class Signin extends Component {
         {!isFetching ? this.renderMessages() : null}
         {isFetching ? <Loader absolute>Sending email</Loader> : null}
         <div className={isFetching ? 'almostHidden' : ''}>
-          <form
-            onSubmit={handleSubmit(this.handleFormSubmit)}
-            noValidate
-            autoComplete="off"
-          >
-            <MainHeading text="Forgot password" className="medium" />
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
+            <MainHeading className="medium">Forgot password</MainHeading>
             <fieldset>
-              <Field
-                component={Input}
-                name="email"
-                id="email"
-                type="email"
-                label="Email"
-              >
+              <Field component={Input} name="email" id="email" type="email" label="Email">
                 <Email />
               </Field>
             </fieldset>
             <fieldset>
               <div>
-                <Button
-                  text="Reset password"
-                  ariaLabel="Reset password"
-                  className="fullWidth"
-                >
+                <Button text="Reset password" ariaLabel="Reset password" className="fullWidth">
                   <ArrowForward className={s.iconArrowForward} />
                 </Button>
               </div>

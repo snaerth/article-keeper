@@ -6,12 +6,12 @@ import styles from './MainHeading.scss';
 /**
  * Main heading component
  */
-const MainHeading = ({ text, className }) => (
-  <h1 className={classnames(styles.heading, styles[className])}>{text}</h1>
+const MainHeading = ({ children, className }) => (
+  <h1 className={classnames(styles.heading, styles[className])}>{children}</h1>
 );
 
 MainHeading.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
 };
 

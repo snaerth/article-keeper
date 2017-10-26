@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import styles from './signout.scss';
+// Components
 import Button from '../../components/common/button';
 import { signoutUser } from '../../components/auth/actions';
+import MainHeading from '../../components/common/mainheading';
+// Styles
+import s from './signout.scss';
 
-/**
- * Signout component
- */
 class Signout extends PureComponent {
   static propTypes = {
     actions: PropTypes.object.isRequired,
@@ -21,24 +21,24 @@ class Signout extends PureComponent {
   }
 
   render() {
-    const { signoutContainer, buttonContainer } = styles;
-
     return (
       <div>
         <Helmet title="Sign out" />
-        <div className={signoutContainer}>
-          <h2>
-            You have successfully been signed out.
+        <section className={s.container}>
+          <div className={s.center}>
+            <MainHeading className="medium">
+              You have successfully been signed out.
+              <br />
+              You can sign in again at any time.
+            </MainHeading>
             <br />
-            You can sign in again at any time.
-          </h2>
-          <br />
-          <div className={buttonContainer}>
-            <Link to="/signin">
-              <Button text="Sign in" ariaLabel="Sign in" />
-            </Link>
+            <div className={s.buttonContainer}>
+              <Link to="/signin">
+                <Button text="Sign in" ariaLabel="Sign in" className="large" />
+              </Link>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     );
   }

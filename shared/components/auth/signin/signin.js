@@ -77,7 +77,7 @@ class Signin extends Component {
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError()}
           <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-            <MainHeading text="Sign in with email" className="medium" />
+            <MainHeading className="medium">Sign in</MainHeading>
             <fieldset>
               <Field
                 component={Input}
