@@ -1,7 +1,7 @@
 {
-	"name": "Ueno.",
-	"short_name": "Ueno.",
-	"description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
+	"name": "Article keeper",
+	"short_name": "Article keeper",
+	"description": "Content management system for creating news, blogs or articles",
 	"lang": "en",
 	"start_url": "./",
 	"icons": [
@@ -31,7 +31,7 @@
 			"type": "image\/png"
 		}
 	],
-	"theme_color": "#00E2AD",
-	"background_color": "#00E2AD",
+	"theme_color": "#8254ea",
+	"background_color": "#8254ea",
 	"display": "standalone"
 }
