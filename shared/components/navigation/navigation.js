@@ -10,18 +10,21 @@ export default class Navigation extends PureComponent {
     children: PropTypes.node,
     className: PropTypes.string,
     onClick: PropTypes.func.isRequired,
+    authenticated: PropTypes.bool.isRequired,
   };
 
   render() {
     const { nav, list, item, link, first } = s;
-    const { className, children, onClick } = this.props;
+    const { className, children, onClick, authenticated } = this.props;
 
     return (
       <nav className={classnames(nav, className ? s[className] : '')}>
         <ul className={list}>
-          <li>
-            <Menu className={s.menu} onClick={() => onClick()} />
-          </li>
+          {authenticated ? (
+            <li>
+              <Menu className={s.menu} onClick={() => onClick()} />
+            </li>
+          ) : null}
           {React.Children.map(children, (component, index) => {
             if (component.type === 'div') {
               return component;

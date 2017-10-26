@@ -104,17 +104,13 @@ class Header extends PureComponent {
     const { authenticated, imageUrl, name } = this.props;
     return (
       <div className={s.container}>
-        <Navigation onClick={this.menuClickHandler}>
+        <Navigation onClick={this.menuClickHandler} authenticated={authenticated}>
           <NavLink to="/" activeClassName={s.noActive}>
-            Dashboard
+            Current route
           </NavLink>
           {authenticated ? (
             <span key="last-menu-item">
-              <Avatar
-                imageUrl={imageUrl}
-                name={name}
-                callbackOpenFn={this.avatarClickHandler}
-              >
+              <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
                 <DropdownMenu
                   visible={this.state.dropdownVisible}
                   callbackCloseFn={this.avatarClickHandler}
@@ -125,13 +121,8 @@ class Header extends PureComponent {
               </Avatar>
             </span>
           ) : (
-            <NavLink
-              to="/signin"
-              role="button"
-              key="signin"
-              onClick={(e) => this.openModal(e)}
-            >
-              Sign in / Sign up
+            <NavLink to="/signin" role="button" key="signin">
+              Sign in
             </NavLink>
           )}
         </Navigation>
@@ -155,10 +146,7 @@ class Header extends PureComponent {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(
-      { closeMenu, openMenu, openModal, closeModal },
-      dispatch,
-    ),
+    actions: bindActionCreators({ closeMenu, openMenu, openModal, closeModal }, dispatch),
   };
 }
 

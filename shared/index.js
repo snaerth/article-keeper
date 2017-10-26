@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import AppLayout, { Content } from 'components/app-layout';
 import config from './utils/config';
 
@@ -11,7 +10,6 @@ import config from './utils/config';
 import Header from './components/header';
 import Menu from './components/common/menu';
 import ScrollToTop from './components/common/scrollToTop';
-import * as actionCreators from './components/auth/actions';
 
 // Container Components
 import PrivateRoute from './containers/privateRoute';
@@ -31,7 +29,6 @@ class App extends PureComponent {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     menuOpen: PropTypes.bool.isRequired,
     authenticated: PropTypes.bool.isRequired,
@@ -45,14 +42,14 @@ class App extends PureComponent {
   }
 
   render() {
-    const { isAdmin, menuOpen } = this.props;
+    const { isAdmin, menuOpen, authenticated } = this.props;
 
     return (
       <AppLayout>
         <Helmet {...config('helmet')} />
         <Header />
         <main style={{ display: 'flex' }}>
-          <Menu open={menuOpen} />
+          {authenticated ? <Menu open={menuOpen} /> : null}
           <ScrollToTop>
             <Content>
               <Switch>
@@ -88,19 +85,8 @@ function mapStateToProps(state) {
   return { authenticated, isAdmin, menuOpen };
 }
 
-/**
- * Maps dispatch to components props
- * @param {Object} dispatch - Redux dispatch medhod
- * @returns {Object}
- */
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actionCreators, dispatch),
-  };
-}
-
 App.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(App));
+export default withRouter(connect(mapStateToProps, null, null, { pure: false })(App));

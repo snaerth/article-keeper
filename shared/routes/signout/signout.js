@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styles from './signout.scss';
 import Button from '../../components/common/button';
-import * as actionCreators from '../../components/auth/actions';
+import { signoutUser } from '../../components/auth/actions';
 
 /**
  * Signout component
@@ -34,9 +34,6 @@ class Signout extends PureComponent {
           </h2>
           <br />
           <div className={buttonContainer}>
-            <Link to="/">
-              <Button text="Back to home" ariaLabel="Back to home" />
-            </Link>
             <Link to="/signin">
               <Button text="Sign in" ariaLabel="Sign in" />
             </Link>
@@ -56,7 +53,7 @@ class Signout extends PureComponent {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actionCreators, dispatch),
+    actions: bindActionCreators({ signoutUser }, dispatch),
   };
 }
 
