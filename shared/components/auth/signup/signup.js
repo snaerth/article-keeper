@@ -132,7 +132,11 @@ class Signup extends Component {
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError(errorMessage)}
           <MainHeading className="medium">Sign up with email</MainHeading>
-          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
+          <form
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            noValidate
+            autoComplete="off"
+          >
             <fieldset>
               <Field
                 component={Input}
@@ -164,6 +168,7 @@ class Signup extends Component {
                 id="password"
                 type="password"
                 label="Password"
+                autoComplete="new-password"
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>
@@ -187,7 +192,12 @@ class Signup extends Component {
             </fieldset>
             <fieldset className={s.fieldsetButton}>
               <div>
-                <Button text="Sign up" ariaLabel="Sign up" className="fullWidth" color="purple">
+                <Button
+                  text="Sign up"
+                  ariaLabel="Sign up"
+                  className="fullWidth"
+                  color="purple"
+                >
                   <ArrowForward className={s.iconArrowForward} />
                 </Button>
               </div>
@@ -239,7 +249,10 @@ function validate({ email, password, name }) {
     errors.name = 'Name required';
   }
 
-  if (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2)) {
+  if (
+    !/^([^0-9]*)$/.test(name) ||
+    (name && name.trim().split(' ').length < 2)
+  ) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 

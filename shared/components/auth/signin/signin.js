@@ -76,7 +76,11 @@ class Signin extends Component {
         {isFetching ? <Loader absolute>Signing in...</Loader> : null}
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError()}
-          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+          <form
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            noValidate
+            autoComplete="off"
+          >
             <MainHeading className="medium">Sign in</MainHeading>
             <fieldset>
               <Field
@@ -85,6 +89,7 @@ class Signin extends Component {
                 id="email"
                 type="email"
                 label="Email"
+                autoComplete="off"
                 placeholder="someone@example.com"
               >
                 <Email />
@@ -97,12 +102,18 @@ class Signin extends Component {
                 id="password"
                 type="password"
                 label="Password"
+                autoComplete="new-password"
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>
             <fieldset>
               <div>
-                <Button text="Sign in" ariaLabel="Sign in" className="fullWidth" color="purple">
+                <Button
+                  text="Sign in"
+                  ariaLabel="Sign in"
+                  className="fullWidth"
+                  color="purple"
+                >
                   <ArrowForward className={iconArrowForward} />
                 </Button>
               </div>
@@ -118,7 +129,11 @@ class Signin extends Component {
                   Forgot password?
                 </Link>
               ) : (
-                <Link role="button" to="/forgotpassword" className="link-slideright">
+                <Link
+                  role="button"
+                  to="/forgotpassword"
+                  className="link-slideright"
+                >
                   Forgot password?
                 </Link>
               )}
@@ -174,7 +189,16 @@ function validate({ email, password }) {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error, isFetching: state.auth.isFetching };
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
+  return {
+    errorMessage: state.auth.error,
+    isFetching: state.auth.isFetching,
+    initialValues,
+  };
 }
 
 /**
