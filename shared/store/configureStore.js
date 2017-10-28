@@ -8,8 +8,7 @@ export default function configureStore(initialState) {
     initialState,
     compose(
       applyMiddleware(reduxThunk),
-      typeof window === 'object' &&
-        typeof window.devToolsExtension !== 'undefined'
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
         ? window.devToolsExtension()
         : (f) => f,
     ),

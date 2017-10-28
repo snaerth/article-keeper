@@ -164,6 +164,7 @@ class Signup extends Component {
                 id="password"
                 type="password"
                 label="Password"
+                autoComplete="new-password"
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>

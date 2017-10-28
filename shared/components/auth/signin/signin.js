@@ -76,7 +76,7 @@ class Signin extends Component {
         {isFetching ? <Loader absolute>Signing in...</Loader> : null}
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError()}
-          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
             <MainHeading className="medium">Sign in</MainHeading>
             <fieldset>
               <Field
@@ -97,6 +97,7 @@ class Signin extends Component {
                 id="password"
                 type="password"
                 label="Password"
+                autoComplete="new-password"
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>
