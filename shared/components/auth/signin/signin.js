@@ -76,11 +76,7 @@ class Signin extends Component {
         {isFetching ? <Loader absolute>Signing in...</Loader> : null}
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError()}
-          <form
-            onSubmit={handleSubmit(this.handleFormSubmit)}
-            noValidate
-            autoComplete="off"
-          >
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
             <MainHeading className="medium">Sign in</MainHeading>
             <fieldset>
               <Field
@@ -108,12 +104,7 @@ class Signin extends Component {
             </fieldset>
             <fieldset>
               <div>
-                <Button
-                  text="Sign in"
-                  ariaLabel="Sign in"
-                  className="fullWidth"
-                  color="purple"
-                >
+                <Button text="Sign in" ariaLabel="Sign in" className="fullWidth" color="purple">
                   <ArrowForward className={iconArrowForward} />
                 </Button>
               </div>
@@ -129,11 +120,7 @@ class Signin extends Component {
                   Forgot password?
                 </Link>
               ) : (
-                <Link
-                  role="button"
-                  to="/forgotpassword"
-                  className="link-slideright"
-                >
+                <Link role="button" to="/forgotpassword" className="link-slideright">
                   Forgot password?
                 </Link>
               )}

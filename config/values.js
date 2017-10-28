@@ -52,6 +52,12 @@ const values = {
   // The port on which the client bundle development server should run.
   clientDevServerPort: EnvVars.number('CLIENT_DEV_PORT', 7331),
 
+  // Crypto algorithm
+  cryptoAlgorrithm: EnvVars.string('CRYPTO_ALGORITHM', 'aes-256-ctr'),
+
+  // Crypto password
+  cryptoPassword: EnvVars.string('CRYPTO_PASSWORD', 'dkjeonvb1'),
+
   // This is an example environment variable which is used within the react
   // application to demonstrate the usage of environment variables across
   // the client and server bundles.

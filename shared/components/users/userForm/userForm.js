@@ -463,7 +463,7 @@ function mapStateToProps(state, ownProps) {
     user = state.users.user;
   }
 
-  const token = user.token;
+  const token = user.token || state.auth.user.token;
   const newProps = {
     image,
     isFetchingUser,

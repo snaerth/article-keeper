@@ -1,15 +1,13 @@
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import timing from 'utils/timing';
+import { decrypt } from '../../utils/security';
 import configureStore from '../../../shared/store/configureStore';
 import config from '../../../config';
 import App from '../../../shared';
@@ -35,9 +33,7 @@ export default function reactApplicationMiddleware(req, res) {
     }
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
-    const html = renderToStaticMarkup(
-      <ServerHTML helmet={Helmet.rewind()} nonce={nonce} />,
-    );
+    const html = renderToStaticMarkup(<ServerHTML helmet={Helmet.rewind()} nonce={nonce} />);
     res.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
@@ -56,6 +52,7 @@ export default function reactApplicationMiddleware(req, res) {
   // Compile an initial state
   const preloadedState = {};
 
+  // Check if user exist in request cookies
   if (req.cookies.user && req.cookies.userExpires) {
     preloadedState.auth = {
       user: req.cookies.user,
@@ -70,6 +67,15 @@ export default function reactApplicationMiddleware(req, res) {
       res.clearCookie('user');
       res.clearCookie('userExpires');
     }
+  } else if (req.headers.userInformation) {
+    const userInformation = decrypt(req.headers.userInformation);
+    const { expireTime, user } = userInformation;
+    preloadedState.auth = {
+      user,
+      authenticated: true,
+    };
+    res.cookie('user', user);
+    res.cookie('userExpires', new Date(Date.now() + expireTime));
   }
 
   // Create a new Redux store instance

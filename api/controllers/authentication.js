@@ -1,7 +1,9 @@
 import randombytes from 'randombytes';
+import fetch from 'node-fetch';
 import { validateEmail, isPhoneNumber } from '../utils/validate';
 import sendMail from '../services/mailService';
 import log from '../services/logService';
+import { encrypt } from '../services/securityService';
 import {
   tokenForUser,
   updateUserPassword,
@@ -63,7 +65,7 @@ export function successSocialCallback(req, res) {
     const expireTime = 30 * 24 * 60 * 1000; // 30 days
     res.cookie('userExpires', new Date(Date.now() + expireTime));
 
-    return res.status(200).redirect(`${applicationUrl}/profile`);
+    return res.status(200).redirect(`${applicationUrl}`);
   }
 
   return res.status(401).send('Access denied');
@@ -194,6 +196,7 @@ export async function signup(req, res) {
   }
 
   const { email, password, name } = req.body;
+  const expireTime = 30 * 24 * 60 * 1000; // 30 days
   // Validate post request inputs
   const validateError = validateSignup({ email, password, name });
 
@@ -206,13 +209,29 @@ export async function signup(req, res) {
       const data = await saveUser(user);
       // Remove unwanted props for client
       const newUser = removeUserProps(user);
-      // Log signup
-      log.info({ req, res, info: newUser }, `User ${email} signed up`);
-      // Send response object with user token and user information
-      return res.status(200).json({
+      const userInformation = {
         token: tokenForUser(data),
         ...newUser,
+      };
+
+      // Store user and jwt token in a cookie
+      res.cookie('user', userInformation);
+      res.cookie('userExpires', new Date(Date.now() + expireTime));
+
+      // Log signup
+      log.info({ req, res, info: newUser }, `User ${email} signed up`);
+
+      // Send get request to client to store user information in cookies on client server
+      await fetch(applicationUrl, {
+        headers: {
+          userInformation: {
+            user: encrypt(JSON.stringify(userInformation)),
+            expireTime,
+          },
+        },
       });
+
+      return res.status(200).json(userInformation);
     } catch (err) {
       log.error({ req, res, err }, 'Error signin up user');
       return res.status(422).send({ error: err });
@@ -231,10 +250,11 @@ export async function signup(req, res) {
  * @returns {Object} res
  * @author Snær Seljan Þóroddsson
  */
-export function signin(req, res) {
+export async function signin(req, res) {
   const user = req.user;
   let data = null;
   let userObj = null;
+  const expireTime = 30 * 24 * 60 * 1000; // 30 days
 
   if (user) {
     userObj = removeUserProps(user);
@@ -247,10 +267,24 @@ export function signin(req, res) {
     if (user.roles.includes('admin')) {
       data.role = 'admin';
     }
+
+    // Store user and jwt token in a cookie
+    res.cookie('user', data);
+    res.cookie('userExpires', new Date(Date.now() + expireTime));
   }
 
   // Log signin
   log.info({ req, res, info: userObj }, `User ${userObj.email} logged in`);
+
+  // Send get request to client to store user information in cookies on client server
+  await fetch(applicationUrl, {
+    headers: {
+      userInformation: {
+        user: encrypt(JSON.stringify(data)),
+        expireTime,
+      },
+    },
+  });
 
   return res.status(200).json(data);
 }
