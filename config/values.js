@@ -53,7 +53,7 @@ const values = {
   clientDevServerPort: EnvVars.number('CLIENT_DEV_PORT', 7331),
 
   // Crypto algorithm
-  cryptoAlgorrithm: EnvVars.string('CRYPTO_ALGORITHM', 'aes-256-ctr'),
+  cryptoAlgorrithm: EnvVars.string('CRYPTO_ALGORITHM', 'aes192'),
 
   // Crypto password
   cryptoPassword: EnvVars.string('CRYPTO_PASSWORD', 'dkjeonvb1'),

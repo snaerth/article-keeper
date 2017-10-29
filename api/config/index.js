@@ -74,7 +74,7 @@ const config = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
 
   // Crypto algorithm
-  CRYPTO_ALGORITHM: 'aes-256-ctr',
+  CRYPTO_ALGORITHM: 'aes192',
 
   // Crypto password
   CRYPTO_PASSWORD: process.env.CRYPTO_PASSWORD || 'dkjeonvb1',

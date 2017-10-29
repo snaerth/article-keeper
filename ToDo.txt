@@ -6,8 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Fix signin error
-  - Finish signin error
+  - Warning: Use Cipheriv for counter mode of aes-256-ctr
   - Gera menu setja animation og transition group þegar animatear open og closed
   - Container setja maxwidth og einnig laga responsive á content
   - Add info logs to controllers

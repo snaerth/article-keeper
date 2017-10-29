@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
+import shortid from 'shortid';
 // Components
 import ModalWrapper from '../common/modal';
 import AuthWrapper from '../auth/authWrapper';
@@ -102,6 +103,8 @@ class Header extends PureComponent {
 
   render() {
     const { authenticated, imageUrl, name } = this.props;
+    const avatarId = shortid.generate();
+
     return (
       <div className={s.container}>
         <Navigation onClick={this.menuClickHandler} authenticated={authenticated}>
@@ -110,10 +113,17 @@ class Header extends PureComponent {
           </NavLink>
           {authenticated ? (
             <span key="last-menu-item">
-              <Avatar imageUrl={imageUrl} name={name} callbackOpenFn={this.avatarClickHandler}>
+              <Avatar
+                id={avatarId}
+                imageUrl={imageUrl}
+                name={name}
+                childrenVisible={this.state.dropdownVisible}
+                callbackOpenFn={this.avatarClickHandler}
+              >
                 <DropdownMenu
                   visible={this.state.dropdownVisible}
                   callbackCloseFn={this.avatarClickHandler}
+                  excludeId={avatarId}
                 >
                   <Link to="/profile">Profile</Link>
                   <Link to="/signout">Sign out</Link>

@@ -10,10 +10,16 @@ class DropdownMenu extends Component {
     children: PropTypes.node.isRequired,
     visible: PropTypes.bool.isRequired,
     callbackCloseFn: PropTypes.func.isRequired,
+    excludeId: PropTypes.string.isRequired,
   };
 
-  handleClickOutside = () => {
-    this.props.callbackCloseFn(false);
+  handleClickOutside = (e) => {
+    e.preventDefault();
+    const { excludeId, visible, callbackCloseFn } = this.props;
+    const targetId = e.target.id;
+    if (excludeId !== targetId && visible) {
+      callbackCloseFn(false);
+    }
   };
 
   render() {
