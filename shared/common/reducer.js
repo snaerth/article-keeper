@@ -1,8 +1,12 @@
 import { MODAL_OPEN, MODAL_CLOSE, MENU_OPEN, MENU_CLOSE, ERROR_UNKNOWN } from './types';
 
+if (typeof window === 'undefined') {
+  global.window = {};
+}
+
 const initialState = {
   modalOpen: false,
-  menuOpen: true,
+  menuOpen: !(window && window.innerWidth < 1080),
 };
 
 export default function (state = initialState, action) {

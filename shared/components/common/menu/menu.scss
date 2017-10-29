@@ -1,4 +1,5 @@
 @import '~styles/variables';
+@import '~styles/mixins';
 
 .container {
   flex: 0 0 256px;
@@ -7,7 +8,7 @@
   width: 100%;
   background: $menu-background;
   box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
-  transition: margin 0.5s;
+  transition: margin 200ms ease;
 }
 
 .open {
@@ -22,6 +23,7 @@
 
     li {
       display: block;
+      opacity: 0;
       width: 100%;
 
       a {

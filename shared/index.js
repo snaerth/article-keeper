@@ -32,6 +32,7 @@ class App extends PureComponent {
     isAdmin: PropTypes.bool.isRequired,
     menuOpen: PropTypes.bool.isRequired,
     authenticated: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired,
   };
 
   componentDidUpdate() {

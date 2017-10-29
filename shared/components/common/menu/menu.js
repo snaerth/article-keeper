@@ -29,6 +29,7 @@ class Menu extends Component {
         translateY: '100%',
         opacity: {
           value: 0,
+          duration: 0,
         },
       })
       .add({

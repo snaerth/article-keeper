@@ -16,7 +16,6 @@ class Avatar extends Component {
   };
 
   handleClick = () => {
-    console.log(!this.props.childrenVisible);
     this.props.callbackOpenFn(!this.props.childrenVisible);
   };
 
