@@ -71,7 +71,7 @@ class Header extends PureComponent {
    *
    * @param {bool} visible
    */
-  avatarClickHandler = (visible) => {
+  avatarClickHandler = visible => {
     this.setState(() => ({ dropdownVisible: visible }));
   };
 
@@ -103,13 +103,16 @@ class Header extends PureComponent {
 
   render() {
     const { authenticated, imageUrl, name } = this.props;
-    const avatarId = shortid.generate();
+    const avatarId = 'avatar-id-SkfUUXq7CW';
 
     return (
       <div className={s.container}>
-        <Navigation onClick={this.menuClickHandler} authenticated={authenticated}>
+        <Navigation
+          onClick={this.menuClickHandler}
+          authenticated={authenticated}
+        >
           <NavLink to="/" activeClassName={s.noActive}>
-            Current route
+            Dashboard
           </NavLink>
           {authenticated ? (
             <span key="last-menu-item">
@@ -156,7 +159,10 @@ class Header extends PureComponent {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeMenu, openMenu, openModal, closeModal }, dispatch),
+    actions: bindActionCreators(
+      { closeMenu, openMenu, openModal, closeModal },
+      dispatch
+    ),
   };
 }
 

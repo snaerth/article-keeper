@@ -1,5 +1,19 @@
+@import '~styles/mixins';
+
 .content {
-  padding: 2em;
+  padding: 0;
   width: 100%;
   max-width: 1600px;
+
+  @include viewport(handset) {
+    padding: 0;
+  }
+
+  @include viewport(tablet) {
+    padding: 1em;
+  }
+
+  @include viewport(desktop) {
+    padding: 2em;
+  }
 }

@@ -6,18 +6,11 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - Warning: Use Cipheriv for counter mode of aes-256-ctr
-  - Gera menu setja animation og transition group þegar animatear open og closed
+  - Laga villu
+    - Warning: setState(...): Can only update a mounting component. This usually means you called setState() outside componentWillMount() on the server. This is a no-op.
   - Container setja maxwidth og einnig laga responsive á content
   - Add info logs to controllers
   - Fix pagination test
-  - Ef unauthorized þá vísa á signin síðu frá server eða client sjá hvernig kemur út.
-  - Gera menu líkari þessum
-    - https://www.pinterest.com/pin/95771929553255353/
-    - https://codepen.io/jcoulterdesign/pen/qdWxEm
-
-  - Uppfæra eins líkt og react-universally
-    - Remove removeUserProps, use mongoose select instead
   - Users server
     - Create + test  => test is not over
     - Update + test => test is not over
@@ -30,9 +23,7 @@ TODO
   - Date picker geta manually skrifað inn dagsetingu.
   - Finish reset password
   - Klára önnur test
-
   - Búa til news edit, delete, create, view fyrir news
   - Muna að búa til test fyrir allt
-  - Update dependencys - React fiber og annað
 
 

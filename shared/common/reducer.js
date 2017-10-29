@@ -1,15 +1,17 @@
-import { MODAL_OPEN, MODAL_CLOSE, MENU_OPEN, MENU_CLOSE, ERROR_UNKNOWN } from './types';
-
-if (typeof window === 'undefined') {
-  global.window = {};
-}
+import {
+  MODAL_OPEN,
+  MODAL_CLOSE,
+  MENU_OPEN,
+  MENU_CLOSE,
+  ERROR_UNKNOWN,
+} from './types';
 
 const initialState = {
   modalOpen: false,
-  menuOpen: !(window && window.innerWidth < 1080),
+  menuOpen: true,
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case ERROR_UNKNOWN:
       return {

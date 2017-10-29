@@ -7,7 +7,7 @@ class Dashboard extends PureComponent {
     return (
       <div>
         <Helmet title="Dashboard" />
-        <MediumEditor />
+        Dashboard
       </div>
     );
   }

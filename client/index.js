@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import smoothscroll from 'smoothscroll-polyfill';
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { AsyncComponentProvider } from 'react-async-component';
 import { JobProvider } from 'react-jobs';
@@ -32,7 +32,8 @@ window.store = store;
 const supportsHistory = 'pushState' in window.history;
 
 // Get any rehydrateState for the async components.
-const asyncComponentsRehydrateState = window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line
+const asyncComponentsRehydrateState =
+  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__; // eslint-disable-line
 
 // Get any "rehydrate" state sent back by the server
 // eslint-disable-next-line no-underscore-dangle
@@ -61,7 +62,7 @@ function renderApp(TheApp) {
   // We use the react-async-component in order to support code splitting of
   // our bundle output. It's important to use this helper.
   // @see https://github.com/ctrlplusb/react-async-component
-  asyncBootstrapper(app).then(() => render(app, container));
+  asyncBootstrapper(app).then(() => hydrate(app, container));
 }
 
 // Execute the first render of our app.

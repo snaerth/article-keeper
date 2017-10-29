@@ -55,12 +55,33 @@ class App extends PureComponent {
             <Content>
               <Switch>
                 <Route path="/reset/:token" component={ResetPassword} />
-                <PrivateRoute exact path="/" component={Dashboard} authenticated={isAdmin} />
-                <PrivateRoute path="/about" component={About} authenticated={isAdmin} />
+                <PrivateRoute
+                  exact
+                  path="/"
+                  component={Dashboard}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/about"
+                  component={About}
+                  authenticated={isAdmin}
+                />
                 <Route path="/signout" component={Signout} />
-                <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
-                <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
-                <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
+                <PrivateRoute
+                  path="/profile"
+                  component={Profile}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/users"
+                  component={Users}
+                  authenticated={isAdmin}
+                />
+                <PrivateRoute
+                  path="/logs"
+                  component={Logger}
+                  authenticated={isAdmin}
+                />
                 <Route path="/signin" component={Signin} />
                 <Route component={NotFound} />
               </Switch>
@@ -82,7 +103,12 @@ function mapStateToProps(state) {
   const { menuOpen } = state.common;
 
   // Check if user is admin user
-  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
+  const isAdmin = !!(
+    user &&
+    user.roles &&
+    user.roles.length > 0 &&
+    user.roles.includes('admin')
+  );
   return { authenticated, isAdmin, menuOpen };
 }
 
@@ -90,4 +116,6 @@ App.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
 };
 
-export default withRouter(connect(mapStateToProps, null, null, { pure: false })(App));
+export default withRouter(
+  connect(mapStateToProps, null, null, { pure: false })(App)
+);
