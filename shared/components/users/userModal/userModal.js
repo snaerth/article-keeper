@@ -74,22 +74,10 @@ class UserModal extends Component {
 
       case 'profile':
       case 'edit':
-        return (
-          <UserForm
-            type={activeView}
-            user={data}
-            changeViewHandler={this.changeView}
-          />
-        );
+        return <UserForm type={activeView} user={data} changeViewHandler={this.changeView} />;
 
       case 'create':
-        return (
-          <UserForm
-            type={activeView}
-            user={{}}
-            changeViewHandler={this.changeView}
-          />
-        );
+        return <UserForm type={activeView} user={{}} changeViewHandler={this.changeView} />;
 
       default:
         return <ViewUser data={data} changeViewHandler={this.changeView} />;

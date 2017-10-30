@@ -115,12 +115,22 @@ class UserForm extends Component {
    * @returns {undefined}
    */
   async handleFormSubmit(formValues) {
-    const { actions, token, type, user: { _id }, image } = this.props;
+    const {
+      actions, token, type, user: { _id }, image,
+    } = this.props;
     // Set loading
     actions.isFetchingUser();
 
-    const { dateOfBirth, email, name, password, phone } = formValues;
-    const data = { dateOfBirth, email, name, password, phone };
+    const {
+      dateOfBirth, email, name, password, phone,
+    } = formValues;
+    const data = {
+      dateOfBirth,
+      email,
+      name,
+      password,
+      phone,
+    };
     data.roles = ['user'];
 
     if (formValues.admin === true) {
@@ -358,14 +368,14 @@ class UserForm extends Component {
             </div>
           </form>
         </div>
-        <ModalWrapper
-          className="mv360"
-          isOpen={modalOpen}
-          onRequestClose={this.closeModal}
-          contentLabel={'User modal'}
-          exitIconClassName="white"
-        >
-          {modalOpen ? (
+        {modalOpen ? (
+          <ModalWrapper
+            className="mv360"
+            isOpen={modalOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="User modal"
+            exitIconClassName="white"
+          >
             <InfiniteCalendar
               width={360}
               height={400}
@@ -374,8 +384,8 @@ class UserForm extends Component {
               minDate={this.minDate}
               onSelect={this.dateSelectHandler}
             />
-          ) : null}
-        </ModalWrapper>
+          </ModalWrapper>
+        ) : null}
       </Container>
     );
   }
@@ -394,7 +404,9 @@ class UserForm extends Component {
  * @param {Object} props
  * @return {Object} errors
  */
-function validate({ email, password, name, phone, dateOfBirth }, props) {
+function validate({
+  email, password, name, phone, dateOfBirth,
+}, props) {
   const { type } = props;
   const errors = {};
 
@@ -455,12 +467,15 @@ function validate({ email, password, name, phone, dateOfBirth }, props) {
  */
 function mapStateToProps(state, ownProps) {
   const { type } = ownProps;
-  const { errorUser, infoUser, image, isFetchingUser } = state.users;
+  const {
+    errorUser, infoUser, image, isFetchingUser, user: usr,
+  } = state.users;
+  const { user: authUser } = state.auth;
   let user = {};
   if (type === 'profile') {
-    user = state.auth.user;
+    user = authUser;
   } else if (type === 'edit') {
-    user = state.users.user;
+    user = usr;
   }
 
   const token = user.token || state.auth.user.token;
@@ -475,7 +490,9 @@ function mapStateToProps(state, ownProps) {
   if (user && type !== 'create') {
     newProps.user = user;
 
-    const { name, phone, dateOfBirth, roles, imageUrl } = user;
+    const {
+      name, phone, dateOfBirth, roles, imageUrl,
+    } = user;
 
     newProps.initialValues = {
       name: name || '',
@@ -504,10 +521,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm({
-    form: 'userform',
-    fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
-    validate,
-  })(UserForm),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+  form: 'userform',
+  fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
+  validate,
+})(UserForm));

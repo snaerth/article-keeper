@@ -31,7 +31,6 @@ class Profile extends Component {
       modalIsOpen: false,
       imageModalActive: false,
       editUserModalActive: false,
-      focused: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -102,13 +101,7 @@ class Profile extends Component {
    */
   renderAdditonalInformation(user) {
     const {
-      dateOfBirth,
-      phone,
-      email,
-      roles,
-      createdAt,
-      updatedAt,
-      name,
+      dateOfBirth, phone, email, roles, createdAt, updatedAt, name,
     } = user;
 
     return (
@@ -176,6 +169,7 @@ class Profile extends Component {
           <div className={classnames(s.card, s.cardLeft)}>
             {imageUrl ? (
               <div
+                onKeyDown={() => this.openModal('image')}
                 onClick={() => this.openModal('image')}
                 role="button"
                 tabIndex={0}
@@ -194,29 +188,24 @@ class Profile extends Component {
             <Edit />
           </CircleButton>
         </div>
-        <ModalWrapper
-          className={editUserModalActive ? 'mw992' : 'mw600'}
-          isOpen={modalIsOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Profile modal"
-          exitIconClassName={editUserModalActive ? 'white' : ''}
-        >
-          <div>
-            {modalIsOpen && imageModalActive ? (
-              <ImageBlurWrapper
-                src={imageUrl}
-                thumbnail={thumbnailUrl}
-                alt={name}
-              />
-            ) : null}
-            {modalIsOpen && editUserModalActive ? (
-              <UsersModal
-                activeView="profile"
-                closeModalHandler={this.closeModal}
-              />
-            ) : null}
-          </div>
-        </ModalWrapper>
+        {modalIsOpen ? (
+          <ModalWrapper
+            className={editUserModalActive ? 'mw992' : 'mw600'}
+            isOpen={modalIsOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="Profile modal"
+            exitIconClassName={editUserModalActive ? 'white' : ''}
+          >
+            <div>
+              {imageModalActive ? (
+                <ImageBlurWrapper src={imageUrl} thumbnail={thumbnailUrl} alt={name} />
+              ) : null}
+              {editUserModalActive ? (
+                <UsersModal activeView="profile" closeModalHandler={this.closeModal} />
+              ) : null}
+            </div>
+          </ModalWrapper>
+        ) : null}
       </div>
     );
   }

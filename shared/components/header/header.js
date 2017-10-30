@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
-import shortid from 'shortid';
 // Components
 import ModalWrapper from '../common/modal';
 import AuthWrapper from '../auth/authWrapper';
@@ -71,7 +70,7 @@ class Header extends PureComponent {
    *
    * @param {bool} visible
    */
-  avatarClickHandler = visible => {
+  avatarClickHandler = (visible) => {
     this.setState(() => ({ dropdownVisible: visible }));
   };
 
@@ -102,15 +101,14 @@ class Header extends PureComponent {
   }
 
   render() {
-    const { authenticated, imageUrl, name } = this.props;
+    const {
+      authenticated, imageUrl, name, modalOpen,
+    } = this.props;
     const avatarId = 'avatar-id-SkfUUXq7CW';
 
     return (
       <div className={s.container}>
-        <Navigation
-          onClick={this.menuClickHandler}
-          authenticated={authenticated}
-        >
+        <Navigation onClick={this.menuClickHandler} authenticated={authenticated}>
           <NavLink to="/" activeClassName={s.noActive}>
             Dashboard
           </NavLink>
@@ -139,14 +137,15 @@ class Header extends PureComponent {
             </NavLink>
           )}
         </Navigation>
-
-        <ModalWrapper
-          isOpen={this.props.modalOpen}
-          onRequestClose={this.closeModal}
-          contentLabel={'Authentication'}
-        >
-          <AuthWrapper />
-        </ModalWrapper>
+        {modalOpen ? (
+          <ModalWrapper
+            isOpen={modalOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="Authentication"
+          >
+            <AuthWrapper />
+          </ModalWrapper>
+        ) : null}
       </div>
     );
   }
@@ -160,8 +159,13 @@ class Header extends PureComponent {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { closeMenu, openMenu, openModal, closeModal },
-      dispatch
+      {
+        closeMenu,
+        openMenu,
+        openModal,
+        closeModal,
+      },
+      dispatch,
     ),
   };
 }

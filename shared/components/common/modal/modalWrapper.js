@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import classnames from 'classnames';
@@ -41,28 +41,41 @@ const Modals = {
 /**
  * Modal component
  */
-const ModalWrapper = (props) => (
-  <Modal {...props} closeTimeoutMS={300} style={Modals}>
-    <div
-      className={classnames(
-        s.modalInner,
-        props.className ? s[props.className] : '',
-      )}
-    >
-      <ExitIcon
-        className={classnames(s.exit, s[props.exitIconClassName])}
-        onClick={props.onRequestClose}
-      />
-      {props.children}
-    </div>
-  </Modal>
-);
+class ModalWrapper extends PureComponent {
+  render() {
+    const {
+      className,
+      onRequestClose,
+      exitIconClassName,
+      children,
+      contentLabel,
+      isOpen,
+    } = this.props;
+
+    return (
+      <Modal
+        contentLabel={contentLabel}
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        closeTimeoutMS={300}
+        style={Modals}
+      >
+        <div className={classnames(s.modalInner, className ? s[className] : '')}>
+          <ExitIcon className={classnames(s.exit, s[exitIconClassName])} onClick={onRequestClose} />
+          {children}
+        </div>
+      </Modal>
+    );
+  }
+}
 
 ModalWrapper.propTypes = {
   onRequestClose: PropTypes.func.isRequired,
   children: PropTypes.element,
   className: PropTypes.string,
   exitIconClassName: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
+  contentLabel: PropTypes.string.isRequired,
 };
 
 export default ModalWrapper;
