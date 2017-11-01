@@ -158,7 +158,9 @@ class Logger extends Component {
       change,
       actions: { getLogsBySearchQuery, getLogs, isFetchingData },
     } = this.props;
-    const { currentRowData, formData, modalOpen, sortBy } = this.state;
+    const {
+      currentRowData, formData, modalOpen, sortBy,
+    } = this.state;
 
     return (
       <Card>
@@ -192,20 +194,17 @@ class Logger extends Component {
             </div>
           ) : null}
         </div>
-        <ModalWrapper
-          className="mw992"
-          isOpen={modalOpen}
-          onRequestClose={this.closeModal}
-          contentLabel={'Log modal'}
-          exitIconClassName="white"
-        >
-          {modalOpen ? (
-            <LoggerModalData
-              data={currentRowData}
-              deleteHandler={this.deleteHandler}
-            />
-          ) : null}
-        </ModalWrapper>
+        {modalOpen ? (
+          <ModalWrapper
+            className="mw992"
+            isOpen={modalOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="Log modal"
+            exitIconClassName="white"
+          >
+            <LoggerModalData data={currentRowData} deleteHandler={this.deleteHandler} />
+          </ModalWrapper>
+        ) : null}
       </Card>
     );
   }
@@ -223,8 +222,15 @@ function mapStateToProps(state) {
   let pagination = {};
 
   if (data) {
-    const { limit, page, pages, total } = data;
-    pagination = createPagination({ limit, pages, page, total });
+    const {
+      limit, page, pages, total,
+    } = data;
+    pagination = createPagination({
+      limit,
+      pages,
+      page,
+      total,
+    });
   }
 
   return {

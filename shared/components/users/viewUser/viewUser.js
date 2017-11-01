@@ -4,9 +4,7 @@ import Container from '../../common/container';
 import ImageBlurWrapper from '../../common/imageBlurWrapper';
 import Button from '../../common/button';
 import Tags from '../../common/tags';
-import formatISODateTime, {
-  formatDateWithMonthName,
-} from '../../../utils/date';
+import formatISODateTime, { formatDateWithMonthName } from '../../../utils/date';
 import getUserEmail from '../../../utils/userHelper';
 import Person from '../../../assets/images/person.svg';
 import s from './viewUser.scss';

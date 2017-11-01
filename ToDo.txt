@@ -6,8 +6,9 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
+  - User profile edit click virkar ekki á input
   - Laga villu
-    - Villa í modal og fara yfir eslint once again
+    - eslint once again
     - Warning: setState(...): Can only update a mounting component. This usually means you called setState() outside componentWillMount() on the server. This is a no-op.
   - Container setja maxwidth og einnig laga responsive á content
   - Add info logs to controllers

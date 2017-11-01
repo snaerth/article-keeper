@@ -2,7 +2,7 @@ import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
   // include home and about route in same chunk e.g main
-  resolve: () => System.import(/* webpackChunkName: "users" */ './deleteUser'),
+  resolve: () => System.import(/* webpackChunkName: "users" */ './delete'),
 });
 
-// export { default } from './deleteUser';
+// export { default } from './delete';

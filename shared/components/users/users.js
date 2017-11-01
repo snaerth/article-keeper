@@ -39,7 +39,6 @@ class Users extends Component {
 
     this.state = {
       modalOpen: false,
-      currentRowData: null,
       formData: { limit: 100, page: 1 },
       sortBy: null,
       activeView: 'view',
@@ -74,7 +73,6 @@ class Users extends Component {
     event.preventDefault();
     this.props.actions.unsetUser();
     this.setState(() => ({
-      currentRowData: null,
       modalOpen: true,
       activeView: 'create',
     }));
@@ -103,7 +101,6 @@ class Users extends Component {
   onRowClickHandler(event, index, rowData) {
     this.props.actions.setUser(rowData);
     this.setState({
-      currentRowData: rowData,
       modalOpen: true,
     });
   }
@@ -127,7 +124,6 @@ class Users extends Component {
    */
   closeModal() {
     this.setState(() => ({
-      currentRowData: null,
       modalOpen: false,
       activeView: 'view',
     }));
@@ -182,7 +178,9 @@ class Users extends Component {
       actions: { getUsersBySearchQuery, getUsers, isFetchingData },
     } = this.props;
 
-    const { activeView, modalOpen, formData, sortBy } = this.state;
+    const {
+      activeView, modalOpen, formData, sortBy,
+    } = this.state;
 
     return (
       <Card>
@@ -221,21 +219,21 @@ class Users extends Component {
             <AddIcon />
           </CircleButton>
         </div>
-        <ModalWrapper
-          className={'mw992'}
-          isOpen={modalOpen}
-          onRequestClose={this.closeModal}
-          contentLabel={'User modal'}
-          exitIconClassName="white"
-        >
-          {modalOpen ? (
+        {modalOpen ? (
+          <ModalWrapper
+            className="mw992"
+            isOpen={modalOpen}
+            onRequestClose={this.closeModal}
+            contentLabel="User modal"
+            exitIconClassName="white"
+          >
             <UsersModal
               deleteHandler={this.deleteHandler}
               activeView={activeView}
               closeModalHandler={this.closeModal}
             />
-          ) : null}
-        </ModalWrapper>
+          </ModalWrapper>
+        ) : null}
       </Card>
     );
   }
@@ -248,13 +246,24 @@ class Users extends Component {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { users: { error, isFetching, data, user }, auth } = state;
+  const {
+    users: {
+      error, isFetching, data, user,
+    }, auth,
+  } = state;
   const token = auth && auth.user ? auth.user.token : '';
   let pagination = {};
 
   if (data) {
-    const { limit, page, pages, total } = data;
-    pagination = createPagination({ limit, pages, page, total });
+    const {
+      limit, page, pages, total,
+    } = data;
+    pagination = createPagination({
+      limit,
+      pages,
+      page,
+      total,
+    });
   }
 
   return {

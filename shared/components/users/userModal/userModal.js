@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // Components
 import ViewUser from '../viewUser';
-import DeleteUser from '../deleteUser';
 import UserForm from '../userForm';
 import Banner from '../../common/banner';
+import DeleteUser from '../../common/delete';
 // Styles
 import s from './userModal.scss';
 
 class UserModal extends Component {
   static propTypes = {
-    activeView: PropTypes.string.isRequired,
+    activeView: PropTypes.string,
     data: PropTypes.object,
     name: PropTypes.string.isRequired,
     deleteHandler: PropTypes.func,
@@ -65,10 +65,12 @@ class UserModal extends Component {
       case 'delete':
         return (
           <DeleteUser
-            id={data._id} // eslint-disable-line
-            name={data.name}
-            changeViewHandler={this.changeView}
+            text={`Do you really want to delete ${data.name}`}
+            deleteButtonText="Delete user"
             deleteHandler={deleteHandler}
+            deleteHandlerId={data._id} // eslint-disable-line
+            cancelHandler={this.changeView}
+            cancelHandlerId={0}
           />
         );
 

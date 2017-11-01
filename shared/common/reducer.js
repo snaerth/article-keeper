@@ -1,17 +1,11 @@
-import {
-  MODAL_OPEN,
-  MODAL_CLOSE,
-  MENU_OPEN,
-  MENU_CLOSE,
-  ERROR_UNKNOWN,
-} from './types';
+import { MODAL_OPEN, MODAL_CLOSE, MENU_OPEN, MENU_CLOSE, ERROR_UNKNOWN } from './types';
 
 const initialState = {
   modalOpen: false,
   menuOpen: true,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case ERROR_UNKNOWN:
       return {

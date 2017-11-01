@@ -85,7 +85,7 @@ class UsersTable extends PureComponent {
             <Column className={tableStyles.tableColumn} label="Name" dataKey="name" width={250} />
             <Column
               cellRenderer={(cellData) => {
-                let email = cellData.rowData.email;
+                let { email } = cellData.rowData;
                 if (!email) {
                   email = getUserEmail(cellData.rowData);
                 }
