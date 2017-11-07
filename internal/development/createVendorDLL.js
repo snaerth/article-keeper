@@ -17,18 +17,10 @@ function createVendorDLL(bundleName, bundleConfig) {
   // We calculate a hash of the package.json's dependencies, which we can use
   // to determine if dependencies have changed since the last time we built
   // the vendor dll.
-  const currentDependenciesHash = md5(
-    JSON.stringify(
-      devDLLDependencies.map((dep) => [
-        dep,
-        pkg.dependencies[dep],
-        pkg.devDependencies[dep],
-      ]),
-      // We do this to include any possible version numbers we may have for
-      // a dependency. If these change then our hash should too, which will
-      // result in a new dev dll build.
-    ),
-  );
+  // We do this to include any possible version numbers we may have for
+  // a dependency. If these change then our hash should too, which will
+  // result in a new dev dll build.
+  const currentDependenciesHash = md5(JSON.stringify(devDLLDependencies.map((dep) => [dep, pkg.dependencies[dep], pkg.devDependencies[dep]])));
 
   const vendorDLLHashFilePath = pathResolve(
     appRootDir.get(),
@@ -50,11 +42,7 @@ function createVendorDLL(bundleName, bundleConfig) {
       },
       plugins: [
         new webpack.DllPlugin({
-          path: pathResolve(
-            appRootDir.get(),
-            bundleConfig.outputPath,
-            `./${dllConfig.name}.json`,
-          ),
+          path: pathResolve(appRootDir.get(), bundleConfig.outputPath, `./${dllConfig.name}.json`),
           name: dllConfig.name,
         }),
       ],
@@ -93,7 +81,9 @@ function createVendorDLL(bundleName, bundleConfig) {
         message: `Generating a new "${bundleName}" Vendor DLL for boosted development performance.
 The Vendor DLL helps to speed up your development workflow by reducing Webpack build times.  It does this by seperating Vendor DLLs from your primary bundles, thereby allowing Webpack to ignore them when having to rebuild your code for changes.  We recommend that you add all your client bundle specific dependencies to the Vendor DLL configuration (within /config).`,
       });
-      buildVendorDLL().then(resolve).catch(reject);
+      buildVendorDLL()
+        .then(resolve)
+        .catch(reject);
     } else {
       // first check if the md5 hashes match
       const dependenciesHash = fs.readFileSync(vendorDLLHashFilePath, 'utf8');
@@ -105,7 +95,9 @@ The Vendor DLL helps to speed up your development workflow by reducing Webpack b
           level: 'warn',
           message: `New "${bundleName}" vendor dependencies detected. Regenerating the vendor dll...`,
         });
-        buildVendorDLL().then(resolve).catch(reject);
+        buildVendorDLL()
+          .then(resolve)
+          .catch(reject);
       } else {
         log({
           title: 'vendorDLL',

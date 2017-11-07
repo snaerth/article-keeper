@@ -6,7 +6,7 @@ import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
-import timing from 'utils/timing';
+import timing from '../../utils/timing';
 import { decrypt } from '../../utils/security';
 import configureStore from '../../../shared/store/configureStore';
 import config from '../../../config';
@@ -17,12 +17,12 @@ import ServerHTML from './ServerHTML';
  * React application middleware, supports server side rendering.
  */
 export default function reactApplicationMiddleware(req, res) {
+  const { nonce } = res.locals;
   // Ensure a nonce has been provided to us.
   // See the server/middleware/security.js for more info.
-  if (typeof res.locals.nonce !== 'string') {
+  if (typeof nonce !== 'string') {
     throw new Error('A "nonce" value has not been attached to the res');
   }
-  const nonce = res.locals.nonce;
 
   // It's possible to disable SSR, which can be useful in development mode.
   // In this case traditional client side only rendering will occur.
@@ -76,6 +76,10 @@ export default function reactApplicationMiddleware(req, res) {
     };
     res.cookie('user', user);
     res.cookie('userExpires', new Date(Date.now() + expireTime));
+  } else {
+    preloadedState.auth = {
+      authenticated: false,
+    };
   }
 
   // Create a new Redux store instance
@@ -104,17 +108,15 @@ export default function reactApplicationMiddleware(req, res) {
     const appString = renderToString(app);
     endRenderTiming();
 
-    const html = renderToStaticMarkup(
-      <ServerHTML
-        reactAppString={appString}
-        nonce={nonce}
-        helmet={Helmet.rewind()}
-        routerState={reactRouterContext}
-        preloadedState={preloadedState}
-        jobsState={jobContext.getState()}
-        asyncComponentsState={asyncComponentsContext.getState()}
-      />,
-    );
+    const html = renderToStaticMarkup(<ServerHTML
+      reactAppString={appString}
+      nonce={nonce}
+      helmet={Helmet.rewind()}
+      routerState={reactRouterContext}
+      preloadedState={preloadedState}
+      jobsState={jobContext.getState()}
+      asyncComponentsState={asyncComponentsContext.getState()}
+    />);
 
     // Check if the router context contains a redirect, if so we need to set
     // the specific status and redirect header and end the res.

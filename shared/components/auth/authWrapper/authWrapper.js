@@ -59,45 +59,32 @@ class AuthWrapper extends Component {
     return (
       <div className={s.container}>
         <div className={s.containerOuter}>
-          {!renderOrder[0]
-            ? <div className={s.back}>
+          {!renderOrder[0] ? (
+            <div className={s.back}>
               <button onClick={(e) => this.changeAuthComp(e, 0)}>
                 <ArrowBackward className={s.iconArrowBackward} />
               </button>
             </div>
-            : null}
-          {renderOrder[0]
-            ? <SocialsButtons className={s.containerAuth}>
+          ) : null}
+          {renderOrder[0] ? (
+            <SocialsButtons className={s.containerAuth}>
               <p className={s.textCenter}>
-                <Link
-                  role="button"
-                  to="/signin"
-                  onClick={(e) => this.changeAuthComp(e, 1)}
-                >
-                    Sign in
+                <Link role="button" to="/signin" onClick={(e) => this.changeAuthComp(e, 1)}>
+                  Sign in
                 </Link>
                 <span /> or <span />
-                <Link
-                  role="button"
-                  to="/signup"
-                  onClick={(e) => this.changeAuthComp(e, 2)}
-                >
-                    Sign up
+                <Link role="button" to="/signup" onClick={(e) => this.changeAuthComp(e, 2)}>
+                  Sign up
                 </Link>
                 <span /> with email
               </p>
             </SocialsButtons>
-            : null}
-          {renderOrder[1]
-            ? <Signin
-              className={s.containerAuth}
-              onClick={(e) => this.changeAuthComp(e, 3)}
-            />
-            : null}
+          ) : null}
+          {renderOrder[1] ? (
+            <Signin className={s.containerAuth} onClick={(e) => this.changeAuthComp(e, 3)} />
+          ) : null}
           {renderOrder[2] ? <Signup className={s.containerAuth} /> : null}
-          {renderOrder[3]
-            ? <ForgotPassword className={s.containerAuth} />
-            : null}
+          {renderOrder[3] ? <ForgotPassword className={s.containerAuth} /> : null}
         </div>
       </div>
     );

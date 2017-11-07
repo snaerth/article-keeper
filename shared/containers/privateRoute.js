@@ -5,6 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 class PrivateRoute extends PureComponent {
   renderHandler(props) {
     const { component, authenticated } = this.props;
+
     if (authenticated) {
       return React.createElement(component, props);
     }
@@ -29,7 +30,7 @@ class PrivateRoute extends PureComponent {
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
   exact: PropTypes.bool,
-  path: PropTypes.string.isRequired,
+  path: PropTypes.string,
   authenticated: PropTypes.bool.isRequired,
 };
 

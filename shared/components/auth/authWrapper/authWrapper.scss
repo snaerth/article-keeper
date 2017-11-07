@@ -61,13 +61,8 @@
 }
 
 .containerAuth {
-  padding: 4em 2em 2em;
   width: 100%;
   min-width: 100%;
-
-  @include viewport(handset) {
-    padding: 4em 1em 1em;
-  }
 }
 
 .mb25 {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ViewUser from '../viewUser';
 import UserForm from '../userForm';
 import Banner from '../../common/banner';
-import DeleteUser from '../../common/delete';
+import Delete from '../../common/delete';
 // Styles
 import s from './userModal.scss';
 
@@ -64,7 +64,7 @@ class UserModal extends Component {
 
       case 'delete':
         return (
-          <DeleteUser
+          <Delete
             text={`Do you really want to delete ${data.name}`}
             deleteButtonText="Delete user"
             deleteHandler={deleteHandler}

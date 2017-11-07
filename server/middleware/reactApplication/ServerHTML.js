@@ -29,12 +29,7 @@ const clientEntryAssets = getClientBundleEntryAssets();
 
 function stylesheetTag(stylesheetFilePath) {
   return (
-    <link
-      href={stylesheetFilePath}
-      media="screen, projection"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href={stylesheetFilePath} media="screen, projection" rel="stylesheet" type="text/css" />
   );
 }
 
@@ -57,11 +52,7 @@ function ServerHTML(props) {
 
   // Creates an inline script definition that is protected by the nonce.
   const inlineScript = (body) => (
-    <script
-      nonce={nonce}
-      type="text/javascript"
-      dangerouslySetInnerHTML={{ __html: body }}
-    />
+    <script nonce={nonce} type="text/javascript" dangerouslySetInnerHTML={{ __html: body }} />
   );
 
   const headerElements = removeNil([
@@ -69,9 +60,7 @@ function ServerHTML(props) {
     ...ifElse(helmet)(() => helmet.base.toComponent(), []),
     ...ifElse(helmet)(() => helmet.meta.toComponent(), []),
     ...ifElse(helmet)(() => helmet.link.toComponent(), []),
-    ifElse(clientEntryAssets && clientEntryAssets.css)(() =>
-      stylesheetTag(clientEntryAssets.css),
-    ),
+    ifElse(clientEntryAssets && clientEntryAssets.css)(() => stylesheetTag(clientEntryAssets.css)),
     ...ifElse(helmet)(() => helmet.style.toComponent(), []),
   ]);
 
@@ -84,59 +73,35 @@ function ServerHTML(props) {
     // to initialise so that the checksum matches the server response.
     // @see https://github.com/ctrlplusb/react-async-component
     ifElse(asyncComponentsState)(() =>
-      inlineScript(
-        `window.__ASYNC_COMPONENTS_REHYDRATE_STATE__=${serialize(asyncComponentsState)};`,
-      ),
-    ),
-    ifElse(jobsState)(() =>
-      inlineScript(`window.__JOBS_STATE__=${serialize(jobsState)}`),
-    ),
-    ifElse(routerState)(() =>
-      inlineScript(`window.__ROUTER_STATE__=${serialize(routerState)}`),
-    ),
+      inlineScript(`window.__ASYNC_COMPONENTS_REHYDRATE_STATE__=${serialize(asyncComponentsState)};`)),
+    ifElse(jobsState)(() => inlineScript(`window.__JOBS_STATE__=${serialize(jobsState)}`)),
+    ifElse(routerState)(() => inlineScript(`window.__ROUTER_STATE__=${serialize(routerState)}`)),
     ifElse(preloadedState)(() =>
-      inlineScript(`window.__PRELOADED_STATE__=${serialize(preloadedState)}`),
-    ),
+      inlineScript(`window.__PRELOADED_STATE__=${serialize(preloadedState)}`)),
     // Enable the polyfill io script?
     // This can't be configured within a react-helmet component as we
     // may need the polyfill's before our client JS gets parsed.
     // The gated flag is added for feature detection,
     // preventing wrong feature set in chrome simulator
     ifElse(config('polyfillIO.enabled'))(() =>
-      scriptTag(
-        `${config('polyfillIO.url')}?features=${config('polyfillIO.features').join(',')}&flags=gated`,
-      ),
-    ),
+      scriptTag(`${config('polyfillIO.url')}?features=${config('polyfillIO.features').join(',')}&flags=gated`)),
     // When we are in development mode our development server will
     // generate a vendor DLL in order to dramatically reduce our
     // compilation times.  Therefore we need to inject the path to the
     // vendor dll bundle below.
-    ifElse(
-      process.env.BUILD_FLAG_IS_DEV === 'true' &&
-        config('bundles.client.devVendorDLL.enabled'),
-    )(() =>
-      scriptTag(
-        `${config('bundles.client.webPath')}${config('bundles.client.devVendorDLL.name')}.js?t=${Date.now()}`,
-      ),
-    ),
-    ifElse(clientEntryAssets && clientEntryAssets.js)(() =>
-      scriptTag(clientEntryAssets.js),
-    ),
+    ifElse(process.env.BUILD_FLAG_IS_DEV === 'true' && config('bundles.client.devVendorDLL.enabled'))(() =>
+      scriptTag(`${config('bundles.client.webPath')}${config('bundles.client.devVendorDLL.name')}.js?t=${Date.now()}`)),
+    ifElse(clientEntryAssets && clientEntryAssets.js)(() => scriptTag(clientEntryAssets.js)),
     ...ifElse(helmet)(() => helmet.script.toComponent(), []),
   ]);
 
   return (
     <HTML
-      htmlAttributes={ifElse(helmet)(
-        () => helmet.htmlAttributes.toComponent(),
-        null,
-      )}
+      htmlAttributes={ifElse(helmet)(() => helmet.htmlAttributes.toComponent(), null)}
       headerElements={headerElements.map((x, idx) => (
         <KeyedComponent key={idx}>{x}</KeyedComponent>
       ))}
-      bodyElements={bodyElements.map((x, idx) => (
-        <KeyedComponent key={idx}>{x}</KeyedComponent>
-      ))}
+      bodyElements={bodyElements.map((x, idx) => <KeyedComponent key={idx}>{x}</KeyedComponent>)}
       appBodyString={reactAppString}
     />
   );

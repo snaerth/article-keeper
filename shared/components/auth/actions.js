@@ -80,9 +80,9 @@ export function signinUser({ email, password }) {
  * Stores token in localStorage if response success and dispatches action AUTH_USER
  * if auth error dispatch error auth
  *
- * @param {Object} email, password, name, formData
+ * @param {{ email: String, password: String, name: String }} email, password, name
  */
-export function signupUser({ email, password, name, formData }) {
+export function signupUser({ email, password, name }) {
   return (dispatch) =>
     new Promise(async (resolve, reject) => {
       try {
@@ -99,27 +99,8 @@ export function signupUser({ email, password, name, formData }) {
 
         // Dispatch api action to authReducer
         dispatch({ type: SIGNUP_USER, payload });
-        // Reroute user to home page
-        if (!formData) {
-          // Save token to localStorage
-          localStorage.setItem('user', JSON.stringify(response.data));
-          return resolve();
-        }
-
-        const config = {
-          headers: {
-            authorization: response.data.token,
-          },
-        };
-
-        const res = await axios.post('/api/users/userimage', formData, config);
-        // Dispatch USER_UPDATED action to authReducer
-        dispatch({ type: USER_UPDATED, payload: res.data });
         // Save token to localStorage
-        localStorage.setItem('user', {
-          user: JSON.stringify(res.data),
-        });
-
+        localStorage.setItem('user', JSON.stringify(response.data));
         return resolve();
       } catch (error) {
         dispatch(authError(AUTH_ERROR, error));

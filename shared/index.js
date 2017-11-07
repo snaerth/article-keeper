@@ -29,17 +29,11 @@ class App extends PureComponent {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
     menuOpen: PropTypes.bool.isRequired,
     authenticated: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
-    this.checkRoute();
-  }
-
-  componentDidUpdate() {
+  componentDidMount() {
     this.checkRoute();
   }
 
@@ -49,13 +43,16 @@ class App extends PureComponent {
    */
   checkRoute() {
     const { location, authenticated, history } = this.props;
+
     if (location.pathname === '/signin' && authenticated) {
       history.push('/');
+    } else if (authenticated) {
+      history.push(location.pathname);
     }
   }
 
   render() {
-    const { isAdmin, menuOpen, authenticated } = this.props;
+    const { menuOpen, authenticated } = this.props;
 
     return (
       <AppLayout>
@@ -67,14 +64,14 @@ class App extends PureComponent {
             <Content>
               <Switch>
                 <Route path="/reset/:token" component={ResetPassword} />
-                <PrivateRoute exact path="/" component={Dashboard} authenticated={isAdmin} />
-                <PrivateRoute path="/about" component={About} authenticated={isAdmin} />
+                <PrivateRoute exact path="/" component={Dashboard} authenticated={authenticated} />
+                <PrivateRoute path="/about" component={About} authenticated={authenticated} />
                 <Route path="/signout" component={Signout} />
-                <PrivateRoute path="/profile" component={Profile} authenticated={isAdmin} />
-                <PrivateRoute path="/users" component={Users} authenticated={isAdmin} />
-                <PrivateRoute path="/logs" component={Logger} authenticated={isAdmin} />
+                <PrivateRoute path="/profile" component={Profile} authenticated={authenticated} />
+                <PrivateRoute path="/users" component={Users} authenticated={authenticated} />
+                <PrivateRoute path="/logs" component={Logger} authenticated />
                 <Route path="/signin" component={Signin} />
-                <Route component={NotFound} />
+                <PrivateRoute component={NotFound} authenticated={authenticated} />
               </Switch>
             </Content>
           </ScrollToTop>
@@ -90,16 +87,9 @@ class App extends PureComponent {
  * @returns {Object}
  */
 function mapStateToProps(state) {
-  const { authenticated, user } = state.auth;
+  const { authenticated } = state.auth;
   const { menuOpen } = state.common;
-
-  // Check if user is admin user
-  const isAdmin = !!(user && user.roles && user.roles.length > 0 && user.roles.includes('admin'));
-  return { authenticated, isAdmin, menuOpen };
+  return { authenticated, menuOpen };
 }
-
-App.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
-};
 
 export default withRouter(connect(mapStateToProps, null, null, { pure: false })(App));

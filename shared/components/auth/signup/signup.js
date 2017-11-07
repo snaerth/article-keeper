@@ -11,7 +11,6 @@ import Password from '../../common/password';
 import Button from '../../common/button';
 import MainHeading from '../../common/mainheading';
 import NotifyBox from '../../common/notifyBox';
-import FileUploader from '../../common/fileUploader';
 import Loader from '../../common/loader';
 import validateEmail from './../../../utils/validate';
 import Person from '../../../assets/images/person.svg';
@@ -29,7 +28,6 @@ class Signup extends Component {
     actions: PropTypes.object.isRequired,
     history: PropTypes.object,
     errorMessage: PropTypes.string,
-    image: PropTypes.object,
     isFetching: PropTypes.bool,
     className: PropTypes.string.isRequired,
   };
@@ -38,12 +36,6 @@ class Signup extends Component {
     super(props);
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.fileUploaderToggler = this.fileUploaderToggler.bind(this);
-
-    this.state = {
-      showImageLoader: false,
-    };
   }
 
   componentWillMount() {
@@ -60,42 +52,15 @@ class Signup extends Component {
   async handleFormSubmit({ email, password, name }) {
     this.props.actions.isFetching();
 
-    // TODO make async promise or something to wait for signup user
-    let formData = null;
-
-    if (this.props.image) {
-      formData = new FormData();
-      formData.append('image', this.props.image);
-    }
-
     try {
       await this.props.actions.signupUser({
         email,
         password,
         name,
-        formData,
       });
       this.props.history.push('/profile');
     } catch (error) {
       // No need to do something with error because error is already handled
-    }
-  }
-
-  /**
-     * Handles on drop for dropzone component
-     *
-     * @param {Array} acceptedFiles
-     * @param {Array} rejectedFiles
-     * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
-     */
-  onDrop(acceptedFiles, rejectedFiles) {
-    if (rejectedFiles.length > 0) {
-      this.props.errorMessage = 'Only images allowed.';
-      return;
-    }
-    if (acceptedFiles.length > 0) {
-      this.props.actions.setPreviewUserImage(acceptedFiles[0]);
     }
   }
 
@@ -111,20 +76,10 @@ class Signup extends Component {
     return <NotifyBox strongText="Error: " text={errorMessage} type="error" />;
   }
 
-  /**
-     * Toggles showImageLoader state
-     *
-     * @returns {undefined}
-     * @author Snær Seljan Þóroddsson
-     */
-  fileUploaderToggler() {
-    this.setState({
-      showImageLoader: !this.state.showImageLoader,
-    });
-  }
-
   render() {
-    const { handleSubmit, errorMessage, isFetching, className } = this.props;
+    const {
+      handleSubmit, errorMessage, isFetching, className,
+    } = this.props;
 
     return (
       <div className={className}>
@@ -132,11 +87,7 @@ class Signup extends Component {
         <div className={isFetching ? 'almostHidden' : ''}>
           {this.renderError(errorMessage)}
           <MainHeading className="medium">Sign up with email</MainHeading>
-          <form
-            onSubmit={handleSubmit(this.handleFormSubmit)}
-            noValidate
-            autoComplete="off"
-          >
+          <form onSubmit={handleSubmit(this.handleFormSubmit)} noValidate autoComplete="off">
             <fieldset>
               <Field
                 component={Input}
@@ -172,32 +123,9 @@ class Signup extends Component {
                 placeholder="Must have at least 6 characters"
               />
             </fieldset>
-            <fieldset className={s.noPaddingBottom}>
-              <Button
-                onClick={() => this.fileUploaderToggler()}
-                text="Add profile image"
-                color="grey"
-                ariaLabel="Add profile image"
-                type="button"
-                className="fullWidth"
-              />{' '}
-              {this.state.showImageLoader ? (
-                <FileUploader
-                  accept="image/*"
-                  onDrop={this.onDrop}
-                  multiple={false}
-                  image={this.props.image}
-                />
-              ) : null}
-            </fieldset>
             <fieldset className={s.fieldsetButton}>
               <div>
-                <Button
-                  text="Sign up"
-                  ariaLabel="Sign up"
-                  className="fullWidth"
-                  color="purple"
-                >
+                <Button text="Sign up" ariaLabel="Sign up" className="fullWidth" color="purple">
                   <ArrowForward className={s.iconArrowForward} />
                 </Button>
               </div>
@@ -249,10 +177,7 @@ function validate({ email, password, name }) {
     errors.name = 'Name required';
   }
 
-  if (
-    !/^([^0-9]*)$/.test(name) ||
-    (name && name.trim().split(' ').length < 2)
-  ) {
+  if (!/^([^0-9]*)$/.test(name) || (name && name.trim().split(' ').length < 2)) {
     errors.name = 'Name has aleast two names consisting of letters';
   }
 
@@ -285,10 +210,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm({
-    form: 'signup',
-    fields: ['name', 'email', 'password', 'image'],
-    validate,
-  })(Signup),
-);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+  form: 'signup',
+  fields: ['name', 'email', 'password'],
+  validate,
+})(Signup));

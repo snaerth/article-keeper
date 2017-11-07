@@ -10,7 +10,7 @@ import s from './socialsButtons.css';
 const SocialsButtons = ({ className, children }) => (
   <div className={className}>
     <fieldset>
-      <MainHeading text="Sign in with a social network" className="medium" />
+      <MainHeading className="medium">Sign in with a social network</MainHeading>
       <ButtonLink
         href="/api/auth/facebook"
         text="Continue with facebook"

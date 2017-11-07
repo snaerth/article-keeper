@@ -12,9 +12,7 @@ class HotClientServer {
     const httpPathRegex = /^https?:\/\/(.*):([\d]{1,5})/i;
     const httpPath = compiler.options.output.publicPath;
     if (!httpPath.startsWith('http') && !httpPathRegex.test(httpPath)) {
-      throw new Error(
-        'You must supply an absolute public path to a development build of a web target bundle as it will be hosted on a seperate development server to any node target bundles.',
-      );
+      throw new Error('You must supply an absolute public path to a development build of a web target bundle as it will be hosted on a seperate development server to any node target bundles.');
     }
 
     this.webpackDevMiddleware = createWebpackMiddleware(compiler, {
@@ -67,9 +65,7 @@ class HotClientServer {
   dispose() {
     this.webpackDevMiddleware.close();
 
-    return this.listenerManager
-      ? this.listenerManager.dispose()
-      : Promise.resolve();
+    return this.listenerManager ? this.listenerManager.dispose() : Promise.resolve();
   }
 }
 
