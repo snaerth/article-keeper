@@ -56,7 +56,7 @@ class UserForm extends Component {
 
     this.state = {
       modalOpen: false,
-      dateOfBirth: null,
+      dateOfBirth: null, // eslint-disable-line react/no-unused-state
     };
 
     this.closeModal = this.closeModal.bind(this);
@@ -103,7 +103,7 @@ class UserForm extends Component {
     // SetTimeout delay is because of animation header is laggy
     setTimeout(() => {
       const dateOfBirth = formatInputDate(date);
-      this.setState({ dateOfBirth });
+      this.setState({ dateOfBirth }); // eslint-disable-line react/no-unused-state
       change('dateOfBirth', dateOfBirth);
     }, 300);
   }
@@ -521,8 +521,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'userform',
-  fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
-  validate,
-})(UserForm));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: 'userform',
+    fields: ['name', 'email', 'password', 'image', 'phone', 'dateOfBirth', 'admin', 'user'],
+    validate,
+  })(UserForm),
+);

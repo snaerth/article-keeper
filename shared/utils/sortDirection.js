@@ -28,7 +28,7 @@ export function sortHelper(sort, sortBy, sortDirection) {
   const currentSort = { sortBy, sortDirection: sortDirection.toLowerCase() };
 
   if (sort.length !== 0) {
-    const i = sort.findIndex(item => item.sortBy === sortBy);
+    const i = sort.findIndex((item) => item.sortBy === sortBy);
 
     if (i !== -1) {
       currentSort.sortDirection =

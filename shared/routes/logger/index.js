@@ -2,7 +2,7 @@ import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
   // include home and about route in same chunk e.g main
-  resolve: () => System.import(/* webpackChunkName: "logger" */ './logger'),
+  resolve: () => import(/* webpackChunkName: "logger" */ './logger'),
 });
 
 // export { default } from './logger';

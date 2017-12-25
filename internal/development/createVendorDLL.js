@@ -20,7 +20,11 @@ function createVendorDLL(bundleName, bundleConfig) {
   // We do this to include any possible version numbers we may have for
   // a dependency. If these change then our hash should too, which will
   // result in a new dev dll build.
-  const currentDependenciesHash = md5(JSON.stringify(devDLLDependencies.map((dep) => [dep, pkg.dependencies[dep], pkg.devDependencies[dep]])));
+  const currentDependenciesHash = md5(
+    JSON.stringify(
+      devDLLDependencies.map((dep) => [dep, pkg.dependencies[dep], pkg.devDependencies[dep]]),
+    ),
+  );
 
   const vendorDLLHashFilePath = pathResolve(
     appRootDir.get(),
@@ -54,7 +58,9 @@ function createVendorDLL(bundleName, bundleConfig) {
       log({
         title: 'vendorDLL',
         level: 'info',
-        message: `Vendor DLL build complete. The following dependencies have been included:\n\t-${devDLLDependencies.join('\n\t-')}\n`,
+        message: `Vendor DLL build complete. The following dependencies have been included:\n\t-${devDLLDependencies.join(
+          '\n\t-',
+        )}\n`,
       });
 
       const webpackConfig = webpackConfigFactory();

@@ -4,7 +4,7 @@ import config from '../../config';
 
 /**
  * Encrypts text string
- * @param {String} text 
+ * @param {String} text
  */
 export function encrypt(text) {
   try {
@@ -19,7 +19,7 @@ export function encrypt(text) {
 
 /**
  * Decrypts text string
- * @param {String} text 
+ * @param {String} text
  */
 export function decrypt(text) {
   try {

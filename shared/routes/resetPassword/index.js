@@ -1,7 +1,7 @@
 import { asyncComponent } from 'react-async-component';
 
 export default asyncComponent({
-  resolve: () => System.import('./resetPassword'),
+  resolve: () => import('./resetPassword'),
   ssrMode: 'boundary',
   name: 'Reset password',
 });

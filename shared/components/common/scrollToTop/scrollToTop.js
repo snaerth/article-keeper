@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'; // eslint-disable-line
 import PropTypes from 'prop-types';
 
 class ScrollToTop extends PureComponent {

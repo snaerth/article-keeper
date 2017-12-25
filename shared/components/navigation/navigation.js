@@ -14,8 +14,12 @@ export default class Navigation extends PureComponent {
   };
 
   render() {
-    const { nav, list, item, link, first } = s;
-    const { className, children, onClick, authenticated } = this.props;
+    const {
+      nav, list, item, link, first,
+    } = s;
+    const {
+      className, children, onClick, authenticated,
+    } = this.props;
 
     return (
       <nav className={classnames(nav, className ? s[className] : '')}>
