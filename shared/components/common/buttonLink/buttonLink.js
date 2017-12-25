@@ -7,7 +7,9 @@ import s from './buttonLink.scss';
  * ButtonLink component
  */
 const ButtonLink = (props) => {
-  const { href, text, title, color, className = '', onClick } = props;
+  const {
+    href, text, title, color, className = '', onClick,
+  } = props;
   const classNamesArr = className.split(' ');
   const cNames = classNamesArr.map((cName) => s[cName]).join(' ');
 

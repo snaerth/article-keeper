@@ -10,14 +10,14 @@ export default function configureStore(initialState) {
       applyMiddleware(reduxThunk),
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
         ? window.devToolsExtension()
-        : (f) => f,
+        : f => f,
     ),
   );
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers');
+      const nextRootReducer = require('../reducers'); // eslint-disable-line global-require
       store.replaceReducer(nextRootReducer);
     });
   }

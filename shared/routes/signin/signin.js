@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-
 // Components
-import SigninComponent from '../../components/auth/signin';
 import AuthWrapper from '../../components/auth/authWrapper';
-
 // Styles
 import s from './signin.scss';
 
@@ -17,7 +14,6 @@ export default class Signin extends Component {
           <div className={s.center}>
             <div className={s.signinContainer}>
               <div className={s.signinContainerInner}>
-                {/* <SigninComponent /> */}
                 <AuthWrapper />
               </div>
             </div>

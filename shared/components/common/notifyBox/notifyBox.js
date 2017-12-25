@@ -76,7 +76,9 @@ class Error extends Component {
   }
 
   render() {
-    const { text, strongText, type, className, id } = this.props;
+    const {
+      text, strongText, type, className, id,
+    } = this.props;
 
     return (
       <div

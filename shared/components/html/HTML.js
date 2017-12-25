@@ -18,20 +18,15 @@ import PropTypes from 'prop-types';
  */
 function HTML(props) {
   const {
-    htmlAttributes,
-    headerElements,
-    bodyElements,
-    appBodyString,
+    htmlAttributes, headerElements, bodyElements, appBodyString,
   } = props;
 
   return (
     <html {...htmlAttributes}>
-      <head>
-        { headerElements }
-      </head>
+      <head>{headerElements}</head>
       <body>
         <div id="app" dangerouslySetInnerHTML={{ __html: appBodyString }} />
-        { bodyElements }
+        {bodyElements}
       </body>
     </html>
   );

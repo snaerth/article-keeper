@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import s from './checkbox.scss';
 import ErrorText from '../errorText';
 
-const Input = ({ meta, id, label, input, required, disabled }) => (
+const Input = ({
+  meta, id, label, input, required, disabled,
+}) => (
   <div className={s.checkbox}>
     <input
       {...input}

@@ -104,6 +104,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  CustomImageSideButton,
-);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomImageSideButton);

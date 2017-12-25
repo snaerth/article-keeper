@@ -20,10 +20,18 @@ class Avatar extends Component {
   };
 
   render() {
-    const { imageUrl, name, children, id } = this.props;
+    const {
+      imageUrl, name, children, id,
+    } = this.props;
 
     return (
-      <div className={s.avatar} role="button" tabIndex="0" onClick={this.handleClick}>
+      <div
+        className={s.avatar}
+        role="button"
+        tabIndex="0"
+        onClick={this.handleClick}
+        onKeyPress={this.handleClick}
+      >
         {imageUrl ? <img src={imageUrl} alt={name} id={id} /> : <Person id={id} />}
         {children}
       </div>

@@ -1,8 +1,4 @@
-import formatISODateTime, {
-  checkTime,
-  formatISODate,
-  formatDateWithMonthName,
-} from '../date';
+import formatISODateTime, { checkTime, formatISODate, formatDateWithMonthName } from '../date';
 
 describe('Run tests for date', () => {
   test('Check if time is bigger or smaller than zero', () => {

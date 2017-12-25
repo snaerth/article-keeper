@@ -21,9 +21,7 @@ export default function getParameterByName(url, paramName) {
  * example: formData = {foo: 'foo', bar: 'bar'} = foo=foo&bar=bar
  */
 export function formDataToQueryString(formData) {
-  const queryParams = Object.entries(formData).map(
-    (e) => `${encodeURIComponent(e[0])}=${encodeURIComponent(e[1])}`,
-  );
+  const queryParams = Object.entries(formData).map(e => `${encodeURIComponent(e[0])}=${encodeURIComponent(e[1])}`);
 
   return queryParams.join('&');
 }

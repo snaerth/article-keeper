@@ -44,7 +44,7 @@ if (process.env.BUILD_FLAG_IS_DEV === 'false' && config('serviceWorker.enabled')
 
 // Proxy hot module reload development server when flagged to do so.
 if (process.env.BUILD_FLAG_IS_DEV === 'true' && config('clientDevProxy')) {
-  app.use(require('./middleware/devServerProxy').default);
+  app.use(require('./middleware/devServerProxy').default); // eslint-disable-line
 }
 
 if (process.env.BUILD_FLAG_IS_DEV === 'false' && config('enforceHttps')) {
@@ -67,7 +67,8 @@ app.use(...errorHandlers);
 
 // Create an http listener for our express app.
 const listener = app.listen(config('port'), () =>
-  console.log(`Server listening on port ${config('port')}`));
+  console.log(`Server listening on port ${config('port')}`),
+);
 
 // We export the listener as it will be handy for our development hot reloader,
 // or for exposing a general extension layer for application customisations.

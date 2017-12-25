@@ -48,32 +48,35 @@ class MediumEditor extends Component {
     const { editorState } = this.state;
     // const contentState = editorState.getCurrentContent();
 
-    editorState.getCurrentContent().getBlockMap().map((block) => {
-      const type = block.getType();
+    editorState
+      .getCurrentContent()
+      .getBlockMap()
+      .map((block) => {
+        const type = block.getType();
 
-      if (type === 'atomic:image') {
-        block.getData()._root.entries[0][1] = 'user.jpg'; // eslint-disable-line
-        block.getData().get('src');
+        if (type === 'atomic:image') {
+          block.getData()._root.entries[0][1] = 'user.jpg'; // eslint-disable-line
+          block.getData().get('src');
 
-        // Do stuff
+          // Do stuff
 
-        // const rangeToReplace = new SelectionState({
+          // const rangeToReplace = new SelectionState({
 
-        //   anchorKey: block.getKey(),
+          //   anchorKey: block.getKey(),
 
-        //   focusKey: block.getKey(),
+          //   focusKey: block.getKey(),
 
-        // });
+          // });
 
-        // Modifier.replaceText(contentState, rangeToReplace, 'test.png');
+          // Modifier.replaceText(contentState, rangeToReplace, 'test.png');
 
-        // const newContentState = editorState.getCurrentContent();
+          // const newContentState = editorState.getCurrentContent();
 
-        // this.setState({ editorState });
-      }
+          // this.setState({ editorState });
+        }
 
-      return true;
-    });
+        return true;
+      });
   }
 
   /**
@@ -104,7 +107,7 @@ class MediumEditor extends Component {
     return (
       <div>
         <Editor
-          ref={(ref) => this.editor = ref}
+          ref={(ref) => (this.editor = ref)}
           editorState={editorState}
           sideButtons={this.sideButtons}
           onChange={this.onChange}
@@ -114,12 +117,7 @@ class MediumEditor extends Component {
         <div className={s.container}>
           <div className={s.row}>
             <div className={s.cell}>
-              <ButtonLink
-                href="/"
-                text="Save"
-                title="Save"
-                onClick={(e) => this.onSave(e)}
-              />
+              <ButtonLink href="/" text="Save" title="Save" onClick={(e) => this.onSave(e)} />
             </div>
           </div>
         </div>
@@ -136,11 +134,15 @@ class MediumEditor extends Component {
  * @author Snær Seljan Þóroddsson
  */
 function mapStateToProps(state) {
-  let token = '';
-  if (state.auth.user && state.auth.user.token) {
-    token = state.auth.user.token;
+  const { user } = state.auth;
+  if (user && user.token) {
+    const { token } = user;
+    const { formData } = state.editor;
+
+    return { token, formData };
   }
-  return { token, formData: state.editor.formData };
+
+  return { token: null, formData: null };
 }
 
 /**

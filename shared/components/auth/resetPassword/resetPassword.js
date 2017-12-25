@@ -29,22 +29,22 @@ class ResetPassword extends Component {
   }
 
   /**
-     * Handles form submit event
-     *
-     * @param {Object}
-     * @returns {undefined}
-     */
+   * Handles form submit event
+   *
+   * @param {Object}
+   * @returns {undefined}
+   */
   handleFormSubmit({ password }) {
-    const token = this.props.params.token;
+    const { token } = this.props.params;
     this.props.actions.isFetching();
     this.props.actions.resetPassword({ password, token });
   }
 
   /**
-     * Renders messages in a notifycation box
-     *
-     * @returns {JSX}
-     */
+   * Renders messages in a notifycation box
+   *
+   * @returns {JSX}
+   */
   renderMessages() {
     const { errorMessage, message } = this.props;
 
@@ -62,11 +62,7 @@ class ResetPassword extends Component {
           </fieldset>
           <fieldset>
             <Link to="/signin">
-              <Button
-                text="Sign in"
-                className="fullWidth"
-                ariaLabel="Sign in"
-              />
+              <Button text="Sign in" className="fullWidth" ariaLabel="Sign in" />
             </Link>
           </fieldset>
         </div>
@@ -84,11 +80,7 @@ class ResetPassword extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form
-        onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}
-        noValidate
-        autoComplete="off"
-      >
+      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))} noValidate autoComplete="off">
         <fieldset>
           <Field
             component={Password}
@@ -100,11 +92,7 @@ class ResetPassword extends Component {
           />
         </fieldset>
         <fieldset>
-          <Button
-            text="Reset password"
-            ariaLabel="Reset password"
-            className="fullWidth"
-          >
+          <Button text="Reset password" ariaLabel="Reset password" className="fullWidth">
             <ArrowForward className={s.iconArrowForward} />
           </Button>
         </fieldset>
@@ -117,8 +105,8 @@ class ResetPassword extends Component {
     return (
       <div className={s.container}>
         <p>
-          Please enter your new password. We will send you an email
-          to confirm the password has changed.
+          Please enter your new password. We will send you an email to confirm the password has
+          changed.
         </p>
         {!isFetching ? this.renderMessages() : null}
         {isFetching ? <Loader>Resetting password</Loader> : this.renderForm()}
@@ -180,7 +168,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm({ form: 'resetPassword', fields: ['password'], validate })(
-    ResetPassword,
-  ),
+  reduxForm({ form: 'resetPassword', fields: ['password'], validate })(ResetPassword),
 );

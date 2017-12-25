@@ -18,19 +18,23 @@ class Pagination extends Component {
 
     return (
       <ReactPaginate
-        previousLabel={'❮'}
-        nextLabel={'❯'}
-        breakLabel={<a role="button" tabIndex="0">...</a>}
-        breakClassName={'break-me'}
+        previousLabel="❮"
+        nextLabel="❯"
+        breakLabel={
+          <a role="button" tabIndex="0">
+            ...
+          </a>
+        }
+        breakClassName="break-me"
         pageCount={pageCount}
         initialPage={initialPage - 1}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={onPageChangeHandler}
         disableInitialCallback
-        containerClassName={'pagination'}
-        subContainerClassName={'pages pagination'}
-        activeClassName={'active'}
+        containerClassName="pagination"
+        subContainerClassName="pages pagination"
+        activeClassName="active"
       />
     );
   }

@@ -7,14 +7,12 @@ import styles from './button.scss';
  * Button component
  */
 const Button = (props) => {
-  const { text, ariaLabel, color, className, onClick, type } = props;
+  const {
+    text, ariaLabel, color, className, onClick, type,
+  } = props;
   return (
     <button
-      className={classnames(
-        styles.button,
-        styles[color],
-        styles[className],
-      )}
+      className={classnames(styles.button, styles[color], styles[className])}
       type={type || 'submit'}
       aria-label={ariaLabel}
       onClick={onClick}

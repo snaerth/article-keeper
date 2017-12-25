@@ -585,14 +585,7 @@ function processCanvasRGB(canvas, top_x, top_y, width, height, radius) {
   radius |= 0;
 
   let imageData = getImageDataFromCanvas(canvas, top_x, top_y, width, height);
-  imageData = processImageDataRGB(
-    imageData,
-    top_x,
-    top_y,
-    width,
-    height,
-    radius,
-  );
+  imageData = processImageDataRGB(imageData, top_x, top_y, width, height, radius);
 
   canvas.getContext('2d').putImageData(imageData, top_x, top_y);
 }
@@ -778,10 +771,7 @@ function processImageDataRGB(imageData, top_x, top_y, width, height, radius) {
       g_out_sum -= stackIn.g;
       b_out_sum -= stackIn.b;
 
-      p =
-        (x +
-          ((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width) <<
-        2;
+      p = (x + ((p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1) * width) << 2;
 
       r_sum += r_in_sum += stackIn.r = pixels[p];
       g_sum += g_in_sum += stackIn.g = pixels[p + 1];

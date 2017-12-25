@@ -1,3 +1,1 @@
-import notifyBox from './notifyBox';
-
-export default notifyBox;
+export { default } from './notifyBox';

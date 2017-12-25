@@ -14,9 +14,9 @@ const Input = (props) => (
       id={props.id}
       placeholder={props.placeholder}
     />
-    {props.meta.error && props.meta.touched
-      ? <ErrorText key={props.id} id={props.id} error={props.meta.error} />
-      : null}
+    {props.meta.error && props.meta.touched ? (
+      <ErrorText key={props.id} id={props.id} error={props.meta.error} />
+    ) : null}
   </span>
 );
 

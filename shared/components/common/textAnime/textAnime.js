@@ -48,9 +48,7 @@ class TextAnime extends Component {
     return (
       <h1 className={s.ml10} ref={(c) => (this.container = c)}>
         <span className={s.textWrapper}>
-          <span className={s.letters}>
-            {this.renderLetters(this.props.text)}
-          </span>
+          <span className={s.letters}>{this.renderLetters(this.props.text)}</span>
         </span>
       </h1>
     );

@@ -2,10 +2,7 @@ import getParameterByName, { formDataToQueryString } from '../urlHelpers';
 
 describe('Test for query params helper', () => {
   test('Get param value from query string', () => {
-    const result = getParameterByName(
-      'http://www.example.com/?limit=50&pages=3',
-      'limit',
-    );
+    const result = getParameterByName('http://www.example.com/?limit=50&pages=3', 'limit');
     expect(result).toEqual('50');
   });
 

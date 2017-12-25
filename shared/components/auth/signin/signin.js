@@ -44,21 +44,21 @@ class Signin extends Component {
   }
 
   /**
-     * Handles form submit event
-     * @param {Object}
-     * @returns {undefined}
-     */
+   * Handles form submit event
+   * @param {Object}
+   * @returns {undefined}
+   */
   handleFormSubmit({ email, password }) {
     this.props.actions.isFetching();
     this.props.actions.signinUser({ email, password });
   }
 
   /**
-     * Renders error message box
-     *
-     * @param {String} error
-     * @returns {JSX}
-     */
+   * Renders error message box
+   *
+   * @param {String} error
+   * @returns {JSX}
+   */
   renderError(error) {
     const { errorMessage } = this.props;
     const msg = errorMessage || error;
@@ -68,7 +68,9 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, isFetching, onClick, className } = this.props;
+    const {
+      handleSubmit, isFetching, onClick, className,
+    } = this.props;
     const { iconArrowForward, textCenter, mb25 } = s;
 
     return (

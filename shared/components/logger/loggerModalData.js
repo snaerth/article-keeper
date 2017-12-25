@@ -23,11 +23,11 @@ class LoggerModalData extends PureComponent {
     this.showDeleteView = this.showDeleteView.bind(this);
   }
   /**
-  * Render rows from object properties recursively
-  *
-  * @param {Object} obj
-  * @returns {JSX}
-  */
+   * Render rows from object properties recursively
+   *
+   * @param {Object} obj
+   * @returns {JSX}
+   */
   renderObjectRecursive(obj) {
     const keys = Object.keys(obj);
     const values = Object.values(obj);

@@ -8,7 +8,9 @@ import Face from '../../../assets/images/face.svg';
 /**
  * FileLoader component
  */
-const FileLoader = ({ onDrop, multiple, accept, image }) => (
+const FileLoader = ({
+  onDrop, multiple, accept, image,
+}) => (
   <div className={s.uploadPhotoContainer}>
     <Dropzone
       onDrop={onDrop}
@@ -20,9 +22,7 @@ const FileLoader = ({ onDrop, multiple, accept, image }) => (
         <div className={s.dropzoneBoxImage}>
           <UploadPhoto width="50" height="50" className={s.svg} />
         </div>
-        <div className={s.dropzoneBoxText}>
-          Drop image here or click to select image to upload.
-        </div>
+        <div className={s.dropzoneBoxText}>Drop image here or click to select image to upload.</div>
       </div>
     </Dropzone>
     {image ? (

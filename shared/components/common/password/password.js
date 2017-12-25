@@ -37,8 +37,8 @@ class Password extends Component {
   }
 
   /**
-     * Toggles passwordVisibility state and input type
-     */
+   * Toggles passwordVisibility state and input type
+   */
   toggleVisibility = () => {
     let { type } = this.state;
     const { passwordVisibility } = this.state;
@@ -52,7 +52,9 @@ class Password extends Component {
 
   render() {
     const { passwordVisibility, type, active } = this.state;
-    const { id, meta, input, placeholder, autoComplete, label } = this.props;
+    const {
+      id, meta, input, placeholder, autoComplete, label,
+    } = this.props;
 
     return (
       <div>
@@ -78,7 +80,13 @@ class Password extends Component {
           <label className={s.inputLabel} htmlFor={id}>
             <span className={s.inputLabelContent}>{label}</span>
           </label>
-          <span className={s.icon} onClick={this.toggleVisibility} role="button" tabIndex={0}>
+          <span
+            className={s.icon}
+            onClick={this.toggleVisibility}
+            onKeyPress={this.toggleVisibility}
+            role="button"
+            tabIndex={0}
+          >
             {!passwordVisibility ? <VisibilitySvg /> : <VisibilityOffSvg />}
           </span>
         </span>

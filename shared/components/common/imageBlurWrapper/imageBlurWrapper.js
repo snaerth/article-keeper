@@ -31,7 +31,7 @@ class ImageBlurWrapper extends Component {
     const img = new Image();
     img.src = thumbnail || 'images/thumbnails/placeholder.png';
     img.onload = () => {
-      const canvas = this.canvas;
+      const { canvas } = this;
       processImage(img, canvas, blur || 10);
     };
   }
@@ -61,12 +61,7 @@ class ImageBlurWrapper extends Component {
 
     return (
       <figure className={s.container}>
-        <img
-          src={visible ? src : ''}
-          alt={alt}
-          className={s.image}
-          ref={(c) => (this.image = c)}
-        />
+        <img src={visible ? src : ''} alt={alt} className={s.image} ref={(c) => (this.image = c)} />
         <canvas ref={(c) => (this.canvas = c)} className={s.canvas} />
       </figure>
     );

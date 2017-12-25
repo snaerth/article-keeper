@@ -76,7 +76,7 @@ class Timing {
     const arr = [];
     this.timings.forEach(({ name, start, end }, key) => {
       const [s, ns] = this.diff(end, start);
-      arr.push(`${key}=${(s + (ns / 1000000000)).toFixed(3)}; "${name}"`);
+      arr.push(`${key}=${(s + ns / 1000000000).toFixed(3)}; "${name}"`);
     });
     return arr.join(', ');
   }
