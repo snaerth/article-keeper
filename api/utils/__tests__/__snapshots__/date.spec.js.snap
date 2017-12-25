@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Run tests for dates Parse date to YYYY-mm-dd format 1`] = `"received is not a function"`;

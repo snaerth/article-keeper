@@ -148,7 +148,6 @@
 // Focus
 .inputField:focus + .inputLabel,
 .active .inputLabel {
-  pointer-events: none;
   transform: translate3d(-2px, -25px, 0) scale3d(0.8, 0.8, 0.8);
   transform-origin: 0 0;
 }

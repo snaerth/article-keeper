@@ -6,7 +6,7 @@
 TODO
   - Setja upp http2 locally
   -----------------------------------------------------------------------------
-  - User profile edit click virkar ekki á input
+  - User profile edit click virkar ekki á input - IMPORTANT
   - Laga villu
     - eslint once again
     - Warning: setState(...): Can only update a mounting component. This usually means you called setState() outside componentWillMount() on the server. This is a no-op.
