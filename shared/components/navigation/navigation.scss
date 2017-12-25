@@ -1,19 +1,19 @@
 @import '~styles/variables';
 
-.nav {
-  padding: 10px 0;
-
-  .list {
-    justify-content: flex-start;
-  }
-}
-
 .list {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   margin: 0;
   list-style: none;
+}
+
+.nav {
+  padding: 10px 0;
+
+  .list {
+    justify-content: flex-start;
+  }
 }
 
 .item {
@@ -31,21 +31,21 @@
   }
 }
 
-.link:not(svg) {
-  padding: 8px 0;
-  font-size: 14px;
-  color: $navbar-text;
-  text-decoration: none;
-  outline: none;
-  transition: border-color $hover-transition, color $hover-transition;
-
-  &:hover {
-    color: rgba(255, 255, 255, 0.9);
-  }
-}
-
 .first .link {
   font-size: 20px;
+
+  &:not(svg) {
+    padding: 8px 0;
+    font-size: 14px;
+    color: $navbar-text;
+    text-decoration: none;
+    outline: none;
+    transition: border-color $hover-transition, color $hover-transition;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
 }
 
 .menu {

@@ -13,6 +13,13 @@
   grid-column-gap: 1em;
 }
 
+.dropzoneBoxText {
+  align-self: center;
+  max-width: 200px;
+  color: $border-color;
+  text-align: center;
+}
+
 .dropzoneContainer {
   display: grid;
   border-radius: 1px;
@@ -44,13 +51,6 @@
 
 .dropzoneBoxImage {
   align-self: center;
-}
-
-.dropzoneBoxText {
-  align-self: center;
-  max-width: 200px;
-  color: $border-color;
-  text-align: center;
 }
 
 .imagePreviewContainer {

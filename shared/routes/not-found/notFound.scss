@@ -23,18 +23,18 @@
       margin-bottom: 1em;
     }
 
+    h1,
+    p,
+    a {
+      color: $primary-white;
+    }
+
     a {
       text-decoration: none;
 
       &:hover {
         color: $primary-color;
       }
-    }
-
-    h1,
-    p,
-    a {
-      color: $primary-white;
     }
   }
 }
