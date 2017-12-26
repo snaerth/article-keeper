@@ -175,7 +175,6 @@ export function signoutUser() {
     try {
       // Post email to api server to retreive new password
       const response = await axios.get('/api/signout');
-      await axios.get('/signout');
       localStorage.removeItem('user');
       dispatch({ type: UNAUTH_USER, payload: response.data });
     } catch (error) {

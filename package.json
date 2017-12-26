@@ -9,10 +9,8 @@
   "scripts": {
     "analyze:client": "babel-node internal/scripts/analyze --client",
     "analyze:server": "babel-node internal/scripts/analyze --server",
-    "build":
-      "npm run clean && cross-env NODE_ENV=production babel-node internal/scripts/build --optimize",
-    "build:dev":
-      "npm run clean && cross-env NODE_ENV=development babel-node internal/scripts/build",
+    "build": "npm run clean && cross-env NODE_ENV=production babel-node internal/scripts/build --optimize",
+    "build:dev": "npm run clean && cross-env NODE_ENV=development babel-node internal/scripts/build",
     "clean": "cross-env babel-node internal/scripts/clean",
     "deploy": "babel-node internal/scripts/deploy",
     "dev": "cross-env DEPLOYMENT=development babel-node internal/development",
@@ -47,15 +45,26 @@
   },
   "homepage": "https://github.com/ctrlplusb/react-universally#readme",
   "jest": {
-    "collectCoverageFrom": ["shared/**/*.{js,jsx}", "server/**/*.{js}", "api/**/*.{js}"],
-    "snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"],
-    "moduleDirectories": ["node_modules", "shared"],
+    "collectCoverageFrom": [
+      "shared/**/*.{js,jsx}",
+      "server/**/*.{js}",
+      "api/**/*.{js}"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/enzyme-to-json/serializer"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "shared"
+    ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "<rootDir>/internal/jest/styleMock.js",
       "\\.(je?pg|png|gif|ico|otf|ttf|eot|woff|woff2|svg)$": "<rootDir>/internal/jest/assetMock.js",
       "^mongoose$": "<rootDir>/node_modules/mongoose"
     },
-    "testPathIgnorePatterns": ["<rootDir>/(build|internal|node_modules|public|debug)/"]
+    "testPathIgnorePatterns": [
+      "<rootDir>/(build|internal|node_modules|public|debug)/"
+    ]
   },
   "dependencies": {
     "animejs": "2.2.0",
@@ -85,6 +94,7 @@
     "colors": "^1.1.2",
     "compression": "1.7.1",
     "cookie-parser": "^1.4.3",
+    "cookie-session": "2.0.0-beta.3",
     "cross-env": "5.1.3",
     "css-loader": "^0.28.7",
     "dotenv": "^4.0.0",
@@ -100,7 +110,7 @@
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "medium-draft": "0.5.6",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "1.7.3",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
     "offline-plugin": "^4.8.4",

@@ -7,7 +7,6 @@ import asyncBootstrapper from 'react-async-bootstrapper';
 import { Provider } from 'react-redux';
 import Helmet from 'react-helmet';
 import timing from '../../utils/timing';
-import { decrypt } from '../../utils/security';
 import configureStore from '../../../shared/store/configureStore';
 import config from '../../../config';
 import App from '../../../shared';
@@ -53,29 +52,18 @@ export default function reactApplicationMiddleware(req, res) {
   const preloadedState = {};
 
   // Check if user exist in request cookies
-  if (req.cookies.user && req.cookies.userExpires) {
-    preloadedState.auth = {
-      user: req.cookies.user,
-      authenticated: true,
-    };
-
-    // Check if session has expired
-    if (
-      req.cookies.userExpires &&
-      new Date(req.cookies.userExpires).getTime() < new Date().getTime()
-    ) {
-      res.clearCookie('user');
-      res.clearCookie('userExpires');
-    }
-  } else if (req.headers.userInformation) {
-    const userInformation = decrypt(req.headers.userInformation);
-    const { expireTime, user } = userInformation;
+  const { user, userExpires } = req.cookies;
+  if (user && userExpires) {
     preloadedState.auth = {
       user,
       authenticated: true,
     };
-    res.cookie('user', user);
-    res.cookie('userExpires', new Date(Date.now() + expireTime));
+
+    // Check if session has expired
+    if (userExpires && new Date(userExpires).getTime() < new Date().getTime()) {
+      res.clearCookie('user');
+      res.clearCookie('userExpires');
+    }
   } else {
     preloadedState.auth = {
       authenticated: false,
@@ -108,15 +96,17 @@ export default function reactApplicationMiddleware(req, res) {
     const appString = renderToString(app);
     endRenderTiming();
 
-    const html = renderToStaticMarkup(<ServerHTML
-      reactAppString={appString}
-      nonce={nonce}
-      helmet={Helmet.rewind()}
-      routerState={reactRouterContext}
-      preloadedState={preloadedState}
-      jobsState={jobContext.getState()}
-      asyncComponentsState={asyncComponentsContext.getState()}
-    />);
+    const html = renderToStaticMarkup(
+      <ServerHTML
+        reactAppString={appString}
+        nonce={nonce}
+        helmet={Helmet.rewind()}
+        routerState={reactRouterContext}
+        preloadedState={preloadedState}
+        jobsState={jobContext.getState()}
+        asyncComponentsState={asyncComponentsContext.getState()}
+      />,
+    );
 
     // Check if the router context contains a redirect, if so we need to set
     // the specific status and redirect header and end the res.

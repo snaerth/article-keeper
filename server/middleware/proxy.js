@@ -1,10 +1,16 @@
 import httpProxy from 'http-proxy';
+import { statusCodes } from '../data/httpStatusCodes';
 
 export default function Proxy({ app, target }) {
   const proxy = httpProxy.createProxyServer({ target });
 
   // Proxy to api server
   app.use('/api', (req, res) => {
+    if (req.url.includes('signout')) {
+      res.clearCookie('user');
+      res.clearCookie('userExpires');
+    }
+
     proxy.web(req, res, { target });
   });
 
@@ -16,7 +22,7 @@ export default function Proxy({ app, target }) {
     }
 
     if (!res.headersSent) {
-      res.writeHead(500, { 'content-type': 'application/json' });
+      res.writeHead(statusCodes.serverError, { 'content-type': 'application/json' });
     }
 
     const json = {
