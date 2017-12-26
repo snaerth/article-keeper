@@ -72,6 +72,9 @@ const values = {
   // Session secret
   sessionSecret: EnvVars.string('SESSION_SECRET', 'secret'),
 
+  // Session domain
+  sessionDomain: EnvVars.string('SESSION_DOMAIN', 'localhost'),
+
   // Disable server side rendering?
   disableSSR: false,
 
@@ -334,7 +337,7 @@ const values = {
   // and it is served by the "server" bundle.
   serviceWorker: {
     // Enabled?
-    enabled: false,
+    enabled: true,
     // Service worker name
     fileName: 'sw.js',
     // Paths to the public assets which should be included within our
@@ -517,7 +520,9 @@ const values = {
 // This protects us from accidentally including this configuration in our
 // client bundle. That would be a big NO NO to do. :)
 if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
-  throw new Error("You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.");
+  throw new Error(
+    "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.",
+  );
 }
 
 export default values;

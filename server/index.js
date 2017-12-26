@@ -28,7 +28,7 @@ const cookieSessinOptions = {
   name: 'session',
   cookie: {
     path: '/',
-    domain: 'localhost',
+    domain: config('sessionDomain'),
     maxAge: ONE_DAY,
     httpOnly: true,
   },
