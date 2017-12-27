@@ -67,17 +67,13 @@ class AuthWrapper extends Component {
             </div>
           ) : null}
           {renderOrder[0] ? (
-            <SocialsButtons className={s.containerAuth}>
-              <p className={s.textCenter}>
-                <Link role="button" to="/signin" onClick={(e) => this.changeAuthComp(e, 1)}>
-                  Sign in
-                </Link>
-                <span /> or <span />
+            <SocialsButtons className={s.containerAuth} onClick={(e) => this.changeAuthComp(e, 1)}>
+              <div className={s.textCenter}>
+                <span>No account? </span>
                 <Link role="button" to="/signup" onClick={(e) => this.changeAuthComp(e, 2)}>
-                  Sign up
+                  Create one.
                 </Link>
-                <span /> with email
-              </p>
+              </div>
             </SocialsButtons>
           ) : null}
           {renderOrder[1] ? (

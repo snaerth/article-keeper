@@ -116,7 +116,7 @@ class UserForm extends Component {
    */
   async handleFormSubmit(formValues) {
     const {
-      actions, token, type, user: { _id }, image,
+      actions, token, type, user: { id }, image,
     } = this.props;
     // Set loading
     actions.isFetchingUser();
@@ -151,11 +151,11 @@ class UserForm extends Component {
     try {
       switch (type) {
         case 'edit':
-          await actions.updateUser(token, _id, data, formData); // eslint-disable-line
+          await actions.updateUser(token, id, data, formData); // eslint-disable-line
           break;
 
         case 'profile':
-          await actions.updateUser(token, _id, data, formData, 'profile'); // eslint-disable-line
+          await actions.updateUser(token, id, data, formData, 'profile'); // eslint-disable-line
           break;
 
         default:

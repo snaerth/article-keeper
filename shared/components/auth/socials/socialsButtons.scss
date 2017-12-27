@@ -1,0 +1,11 @@
+@import '~styles/variables';
+
+.icon {
+  height: 24px;
+  width: 24px;
+  fill: #fff;
+
+  &.iconDark {
+    fill: $primary-button-color;
+  }
+}

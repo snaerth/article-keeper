@@ -59,7 +59,7 @@ class LoggerModalData extends PureComponent {
     const { data, deleteHandler } = this.props;
     if (!data) return <div>No log avaliable</div>;
     const {
-      _id, time, msg, name, level, err, req, res,
+      id, time, msg, name, level, err, req, res,
     } = data;
     const { showTable } = this.state;
 
@@ -73,7 +73,7 @@ class LoggerModalData extends PureComponent {
             <section>
               <div className={classnames(tableStyles.tableOddRow, styles.row)}>
                 <div>Id</div>
-                <div>{_id}</div>
+                <div>{id}</div>
               </div>
               <div className={classnames(tableStyles.tableEvenRow, styles.row)}>
                 <div>Time</div>
@@ -126,9 +126,9 @@ class LoggerModalData extends PureComponent {
           </div>
         ) : (
           <Delete
-            text={`Do you really want to delete ${_id}`}
+            text={`Do you really want to delete ${id}`}
             deleteHandler={deleteHandler}
-            deleteHandlerId={_id} // eslint-disable-line
+            deleteHandlerId={id} // eslint-disable-line
             cancelHandler={this.showDeleteView}
             cancelHandlerId
           />

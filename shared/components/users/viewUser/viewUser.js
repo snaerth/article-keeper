@@ -11,7 +11,7 @@ import s from './viewUser.scss';
 
 const View = ({ data, changeViewHandler }) => {
   const {
-    _id,
+    id,
     roles,
     profile,
     name,
@@ -48,7 +48,7 @@ const View = ({ data, changeViewHandler }) => {
             </div>
             <div className={s.row}>
               <div>Id</div>
-              <div>{_id}</div>
+              <div>{id}</div>
             </div>
             <div className={s.row}>
               <div>Roles</div>

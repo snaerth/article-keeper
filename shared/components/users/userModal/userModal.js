@@ -68,7 +68,7 @@ class UserModal extends Component {
             text={`Do you really want to delete ${data.name}`}
             deleteButtonText="Delete user"
             deleteHandler={deleteHandler}
-            deleteHandlerId={data._id} // eslint-disable-line
+            deleteHandlerId={data.id} // eslint-disable-line
             cancelHandler={this.changeView}
             cancelHandlerId={0}
           />

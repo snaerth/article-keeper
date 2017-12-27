@@ -15,7 +15,7 @@
   border: 0;
   text-decoration: none;
   overflow: hidden;
-  transition: box-shadow 0.25s ease-out, background 0.15s ease-out, color 0.2s ease-out;
+  transition: all 0.25s;
 
   &:hover {
     background: darken($primary-button-color, 100%);
@@ -43,21 +43,27 @@
   }
 }
 
+.grey {
+  color: $text-dark;
+  background: $primary-grey;
+
+  &:hover {
+    color: $text-dark;
+    background: darken($primary-grey, 15%);
+  }
+
+  &:focus {
+    color: $text-dark;
+    background: darken($primary-grey, 15%);
+  }
+}
+
 .facebook {
   background: $facebook;
 
   &:focus,
   &:hover {
     background: lighten($facebook, 5%);
-  }
-}
-
-.twitter {
-  background: $twitter;
-
-  &:focus,
-  &:hover {
-    background: darken($twitter, 10%);
   }
 }
 
@@ -80,22 +86,4 @@
 .icon.left {
   position: relative;
   top: 8px;
-}
-
-.button:hover .icon {
-  animation: forwardBackInfinite 1.2s infinite;
-}
-
-@keyframes forwardBackInfinite {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  60% {
-    transform: translate3d(5px, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
 }

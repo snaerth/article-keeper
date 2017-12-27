@@ -12,9 +12,6 @@ export default function getUserEmail(user) {
     case 'FACEBOOK':
       return user.facebook.email;
 
-    case 'TWITTER':
-      return user.twitter.email;
-
     case 'GOOGLE':
       return user.google.email;
 

@@ -100,7 +100,7 @@ class UsersTable extends PureComponent {
             <Column
               className={tableStyles.tableColumn}
               label="Id"
-              dataKey="_id"
+              dataKey="id"
               width={230}
               disableSort
             />

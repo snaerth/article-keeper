@@ -70,7 +70,7 @@ class LoggerTable extends PureComponent {
             <Column
               className={tableStyles.tableColumn}
               label="Id"
-              dataKey="_id"
+              dataKey="id"
               width={210}
               disableSort
             />

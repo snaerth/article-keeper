@@ -76,11 +76,6 @@ class Profile extends Component {
         info.imageUrl = user.imageUrl || user.facebook.image;
         break;
 
-      case 'TWITTER':
-        info.email = user.twitter.email;
-        info.imageUrl = user.imageUrl || user.twitter.image;
-        break;
-
       case 'GOOGLE':
         info.email = user.google.email;
         info.imageUrl = user.imageUrl || user.google.image;
